@@ -1,14 +1,13 @@
 ```mermaid
 classDiagram
-    %% === Benutzer & Rollen ===
-    
-    class Catan {
-       <<abstract>>
-    }
-    
+    %% === Benutzer & Rollen ===    
     
     class GameField {
        <<abstract>>
+    }
+    
+    class Desert {
+        
     }
 
     class Landscape {
@@ -39,7 +38,7 @@ classDiagram
    
     }
     
-    Catan <|-- GameField
+    GameField <|-- Desert
     GameField <|-- Landscape
     GameField <|-- Forest
     GameField <|-- SheepField
@@ -73,7 +72,6 @@ classDiagram
    
     }
     
-    Catan <|-- Resources
     Resources <|-- Wood
     Resources <|-- Wool
     Resources <|-- Wheat
@@ -109,7 +107,6 @@ classDiagram
      
     }
     
-    Catan <|-- Development
     Development <|-- Knight
     Development <|-- Progress
     Development <|-- Monopoly
@@ -130,7 +127,6 @@ classDiagram
    
     }
     
-    Catan <|-- Special
     Special <|-- LongestStreet
     Special <|-- LargestKnightPower
     
@@ -142,14 +138,14 @@ classDiagram
     
     
     class Buildings {
-        
+        <<abstract>>
     }
     
     class City {
    
     }
     
-    class Siege {
+    class Settelment {
    
     }
     
@@ -158,7 +154,7 @@ classDiagram
     }
     
     Buildings <|-- City
-    Buildings <|-- Siege
+    Buildings <|-- Settelment
     Buildings <|-- Street
 
     
@@ -167,17 +163,15 @@ classDiagram
     }
     
     class Dice {
-   
+        <<static>>
     }
     
     class NumberPieces {
    
     }
     
-    Catan <|-- GamePieces
     GamePieces <|-- Buildings
     GamePieces <|-- Bandit
-    GamePieces <|-- Dice
     GamePieces <|-- NumberPieces
     
     
@@ -194,24 +188,15 @@ classDiagram
    
     }
     
-    class Bank {
-    
-    }
-    
-    Wood <|-- Bank
-    Wool <|-- Bank
-    Wheat <|-- Bank
-    Clay <|-- Bank
-    Stone <|-- Bank
-    
-    Catan <|-- Player
     Player <|-- Human
     Player <|-- Bot
     Player <|-- Bank
     
     
-    class View {
-        <<abstract>>
+    class GUI {
+        
     }
     
-    Catan <|-- View
+    class Controler {
+        - rollDice()
+    }
