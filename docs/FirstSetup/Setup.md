@@ -42,7 +42,7 @@ Stellt sicher, dass folgende Software auf Eurem Rechner installiert ist:
 
    ```bash
    cd ExecptionFromCatan
-   ```j
+    ```
 
 ---
 
