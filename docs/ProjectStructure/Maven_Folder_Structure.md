@@ -7,8 +7,9 @@ This document describes the standardized folder structure of a Maven project usi
 ## Project Structure
 
 ```text
-my-javafx-app/
+ExceptionFromCatan/
 ├── pom.xml
+├── docs/                             # learned lessons
 └── src/
     ├── main/
     │   ├── java/
@@ -34,6 +35,9 @@ target/                               # Automatically created by Maven during bu
 ### `pom.xml`
 - Central configuration file of the Maven project.
 - Contains dependencies, plugins, project information, and build configuration.
+
+### `docs/`
+- Documentation of all relevant things.
 
 ### `src/main/java/`
 - Contains the **production source code**.
