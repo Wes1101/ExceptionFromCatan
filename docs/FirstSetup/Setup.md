@@ -1,69 +1,66 @@
-# Installations- und Setup-Anleitung für das bestehende JavaFX-Projekt
+# Installation and Setup Guide for the Existing JavaFX Project
 
-Dieses Dokument beschreibt, wie Ihr das vorhandene JavaFX-Maven-Projekt aus dem GitHub-Repository klont und in IntelliJ IDEA mit Java 21 und JavaFX 21.0.7 LTS zum Laufen bringt.
+This document explains how to clone the existing JavaFX Maven project from the GitHub repository and run it in IntelliJ IDEA using Java 21 and JavaFX 21.0.7 LTS.
 
 ---
 
-## 1. Voraussetzungen
+## 1. Prerequisites
 
-Stellt sicher, dass folgende Software auf Eurem Rechner installiert ist:
+Make sure the following software is installed on your computer:
 
 * **Java 21 JDK**
+    * Download and installation guide: [https://www.oracle.com/de/java/technologies/downloads/#java21](https://www.oracle.com/de/java/technologies/downloads/#java21)
 
-    * Download und Installationshinweis: [https://www.oracle.com/de/java/technologies/downloads/#java21](https://www.oracle.com/de/java/technologies/downloads/#java21)
-    * 
-
-* **JavaFX 21.0.7 LTS** (nur bei manueller Konfiguration erforderlich)
-
+* **JavaFX 21.0.7 LTS** (only required for manual configuration)
     * Download (Gluon): [https://gluonhq.com/products/javafx/](https://gluonhq.com/products/javafx/)
 
-
 * **Apache Maven**
-
-    * Download und Installationshinweis: [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
-    * Fügt die Ordner `bin` von Maven und JDK in Eure Umgebungsvariable `PATH` ein.
+    * Download and installation guide: [https://maven.apache.org/download.cgi](https://maven.apache.org/download.cgi)
+    * Add the `bin` folders of Maven and JDK to your system's `PATH` environment variable.
 
 ---
 
-## 2. Repository klonen
+## 2. Clone the Repository
 
-1. Öffnet ein Terminal oder Git-Bash.
-2. Wechselt in das Verzeichnis, in dem Ihr arbeiten möchtet:
+1. Open a terminal or Git Bash.
+2. Navigate to the directory where you want to work:
 
    ```bash
-   cd /pfad/zum/arbeitsverzeichnis
+   cd /path/to/working-directory
    ```
-3. Klont das GitHub-Repository:
+
+3. Clone the GitHub repository:
 
    ```bash
    git clone https://github.com/Wes1101/ExecptionFromCatan.git
    ```
-4. Wechselt in das Projektverzeichnis:
+
+4. Change to the project directory:
 
    ```bash
    cd ExecptionFromCatan
-    ```
+   ```
 
 ---
 
-## 3. Projekt in IntelliJ IDEA öffnen und JDK einbinden
+## 3. Open the Project in IntelliJ IDEA and Configure the JDK
 
-1. IntelliJ IDEA starten.
-2. **File → Open...** und das geklonte Projekt-Verzeichnis auswählen (`JavaFX-Projekt`).
-3. IntelliJ erkennt das Projekt als Maven-Projekt und lädt automatisch die `pom.xml`.
-4. **File → Project Structure...** (`Ctrl+Alt+Shift+S`) öffnen.
-5. Unter **Platform Settings → SDKs** auf das Pluszeichen (`+`) klicken und **JDK** wählen.
-6. Den Installationsordner Eures Java 21 JDK auswählen (z. B. `C:\Program Files\Java\jdk-21` oder `/usr/lib/jvm/jdk-21`).
-7. Unter **Project Settings → Project** als **Project SDK** Eure neu hinzugefügte JDK-Version auswählen.
-8. Optional: Unter **Modules** sicherstellen, dass bei jedem Modul das korrekte SDK eingetragen ist.
+1. Start IntelliJ IDEA.
+2. Go to **File → Open...** and select the cloned project directory (`JavaFX-Projekt`).
+3. IntelliJ will recognize it as a Maven project and automatically load the `pom.xml`.
+4. Open **File → Project Structure...** (`Ctrl+Alt+Shift+S`).
+5. Under **Platform Settings → SDKs**, click the plus icon (`+`) and choose **JDK**.
+6. Select the installation folder of your Java 21 JDK (e.g., `C:\Program Files\Java\jdk-21` or `/usr/lib/jvm/jdk-21`).
+7. Under **Project Settings → Project**, set the **Project SDK** to your newly added JDK.
+8. Optional: Under **Modules**, make sure the correct SDK is selected for each module.
 
 ---
 
-## 4. JavaFX in das Projekt einbinden
+## 4. Integrate JavaFX into the Project
 
-### a) Empfohlen: via Maven (vorausgesetzt `pom.xml` enthält bereits Dependencies)
+### a) Recommended: via Maven (assuming `pom.xml` already includes dependencies)
 
-Das Projekt nutzt Maven und sollte in der `pom.xml` bereits folgende Abhängigkeiten haben:
+The project uses Maven and should already include the following dependencies in the `pom.xml`:
 
 ```xml
 <properties>
@@ -98,39 +95,40 @@ Das Projekt nutzt Maven und sollte in der `pom.xml` bereits folgende Abhängigke
 </build>
 ```
 
-IntelliJ lädt die Abhängigkeiten automatisch neu, sobald Ihr die `pom.xml` speichert.
+IntelliJ will automatically reload the dependencies once you save the `pom.xml`.
 
-### b) Alternativ: manuelle Konfiguration
+### b) Alternatively: manual configuration
 
-Falls Ihr JavaFX nicht über Maven einbinden möchtet, fügt es als Global Library hinzu:
+If you do not want to use Maven to include JavaFX, add it as a Global Library:
 
-1. **File → Project Structure...** öffnen.
-2. Unter **Platform Settings → Global Libraries** auf das Pluszeichen klicken und **Java** wählen.
-3. In den JavaFX-SDK-Ordner (`.../javafx-sdk-21.0.7/lib`) wechseln und alle `.jar`-Dateien auswählen.
-4. Unter **Project Settings → Modules → Dependencies** die neue Library hinzufügen.
-5. In den Run/Debug-Konfigurationen bei **VM-Options** folgende Werte setzen:
+1. Open **File → Project Structure...**.
+2. Under **Platform Settings → Global Libraries**, click the plus icon and choose **Java**.
+3. Navigate to the JavaFX SDK folder (`.../javafx-sdk-21.0.7/lib`) and select all `.jar` files.
+4. Under **Project Settings → Modules → Dependencies**, add the new library.
+5. In the Run/Debug configurations, set the following in **VM options**:
 
    ```text
-   --module-path "<PFAD>/javafx-sdk-21.0.7/lib" --add-modules javafx.controls,javafx.fxml
+   --module-path "<PATH>/javafx-sdk-21.0.7/lib" --add-modules javafx.controls,javafx.fxml
    ```
 
 ---
 
-## 5. Projekt bauen und Anwendung starten
+## 5. Build the Project and Run the Application
 
-Wechselt im Terminal (oder in IntelliJ-Terminal) in das Projektverzeichnis und führt folgende Befehle aus:
+In the terminal (or IntelliJ terminal), navigate to the project directory and run the following commands:
 
-1. **Build und Tests ausführen**
+1. **Build and run tests**
 
    ```bash
    mvn clean install
    ```
-2. **Anwendung starten**
+
+2. **Start the application**
 
    ```bash
    mvn javafx:run
    ```
 
-Bei korrekter Konfiguration kompiliert Maven das Projekt, lädt alle Abhängigkeiten und startet Eure JavaFX-Anwendung.
+If configured correctly, Maven will compile the project, download all dependencies, and launch your JavaFX application.
 
 ---
