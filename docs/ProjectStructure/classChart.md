@@ -1,13 +1,37 @@
 ```mermaid
 classDiagram
-    %% === Benutzer & Rollen ===    
+    %% === Benutzer & Rollen === 
+
+    class Init {
+        +static main(string args[])
+    }   
     
     class GUI {
         
     }
 
     class GameController {
-        
+        -list~Player~ players
+        -list~Player~ sequence
+        -Bank bank
+        -CatanBoard catanboard
+        -int gameRound
+        -int dice1
+        -int dice2
+        -int victoryPoints
+
+        GameController()
+        gameStart()
+        mainGame()
+        gameEnd()
+
+        rollDice()
+    }
+
+    class Rules {
+        checkCity()
+        checkSettlement()
+        checkStreet()
     }
 
     GUI <--> GameController
@@ -21,6 +45,8 @@ classDiagram
 
     class CatanBoard {
        <<abstract>>
+
+       triggerBoard(diceNumber)
     }
 
     
@@ -48,16 +74,12 @@ classDiagram
         +diceNumber
         +list Vertex
         +list Edges
+        +NumberPieces diceNumber
 
         getCoord()
     }
 
     class Desert {
-        +id
-        +resource
-    }
-
-    class Landscape {
         +id
         +resource
     }
@@ -95,7 +117,6 @@ classDiagram
     }
     
     HexTile <|-- Desert
-    HexTile <|-- Landscape
     HexTile <|-- Forest
     HexTile <|-- SheepField
     HexTile <|-- WheatField
@@ -111,14 +132,39 @@ classDiagram
     class Resources {
         <<abstract>>
     }
+
+    class Wood {
+
+    }
+
+    class Sheep {
+        
+    }
+
+    class Wheat {
+        
+    }
+
+    class Bricks {
+        
+    }
     
+    class Stone {
+        
+    }
+
+    Resources <|-- Wood
+    Resources <|-- Sheep  
+    Resources <|-- Wheat    
+    Resources <|-- Bricks
+    Resources <|-- Stone  
     
     class Development {
         <<abstract>>
     }
     
     class Knight {
-   
+        
     }
     
     class Progress {
@@ -193,7 +239,10 @@ classDiagram
 
     
     class Bandit {
-   
+        -HexTile location
+        -discardTrigger
+
+        moveBandit(player)
     }
     
     class NumberPieces {
@@ -208,6 +257,15 @@ classDiagram
     
     class Player {
         <<abstract>>
+        -list~Resource~ resources
+        -list~Development~ cards
+
+        buySettelment()
+        buyCity()
+        buyStreet()
+        buyCard()
+        discardRandomCard() Resource
+        trade()
     }
     
     class Human {
@@ -220,7 +278,19 @@ classDiagram
     
     Player <|-- Human
     Player <|-- Bot
+
+    Player --> Buildings
+    Player --> CatanBoard
     
     class Bank {
-   
+        int wood
+        int SheepField
+        int wheat
+        int bricks
+        int stone
+        list~Development~ cards
+        
+        buyDevelopmentCard() card
+        spendResources(player, resource, amount)
     }
+```
