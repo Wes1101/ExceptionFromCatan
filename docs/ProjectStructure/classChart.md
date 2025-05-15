@@ -2,81 +2,115 @@
 classDiagram
     %% === Benutzer & Rollen ===    
     
-    class GameField {
+    class GUI {
+        
+    }
+
+    class GameController {
+        
+    }
+
+    GUI <--> GameController
+    GameController --> CatanBoard
+    GameController --> Development
+    GameController --> Special
+    GameController --> Resources
+    GameController --> GamePieces
+    GameController --> Player
+    GameController --> Bank
+
+    class CatanBoard {
        <<abstract>>
     }
+
     
+
+    class Edge {
+        +id
+        +list HexTile
+        +EdgeA
+        +EdgeB
+        +boolean road
+        +String player
+    }
+
+    class Vertex {
+        +id
+        +list HexTile
+        +list Vertex
+        +list Edge
+        +String building
+        +String player
+    }
+
+    class HexTile {
+        +axialCoord
+        +diceNumber
+        +list Vertex
+        +list Edges
+
+        getCoord()
+    }
+
     class Desert {
-        
+        +id
+        +resource
     }
 
     class Landscape {
-        
+        +id
+        +resource
     }
 
     class Forest {
-   
+        +id
+        +resource
     }
 
     class SheepField {
-   
+        +id
+        +resource
     }
 
     class WheatField {
-   
+        +id
+        +resource
     }
 
     class BricksField {
-   
+        +id
+        +resource
     }
 
     class StoneField {
-   
+        +id
+        +resource
     }
     
     class Harbor {
-   
+        +id
+        +resource
+        
+        trade()
     }
     
-    GameField <|-- Desert
-    GameField <|-- Landscape
-    GameField <|-- Forest
-    GameField <|-- SheepField
-    GameField <|-- WheatField
-    GameField <|-- BricksField
-    GameField <|-- StoneField
-    GameField <|-- Harbor
+    HexTile <|-- Desert
+    HexTile <|-- Landscape
+    HexTile <|-- Forest
+    HexTile <|-- SheepField
+    HexTile <|-- WheatField
+    HexTile <|-- BricksField
+    HexTile <|-- StoneField
+    HexTile <|-- Harbor
+
+    CatanBoard <|-- HexTile
+    CatanBoard <|-- Edge
+    CatanBoard <|-- Vertex
 
 
     class Resources {
         <<abstract>>
     }
-    
-    class Wood {
-   
-    }
-    
-    class Wool {
-   
-    }
-    
-    class Wheat {
-   
-    }
-    
-    class Clay {
-   
-    }
-    
-    class Stone {
-   
-    }
-    
-    Resources <|-- Wood
-    Resources <|-- Wool
-    Resources <|-- Wheat
-    Resources <|-- Clay
-    Resources <|-- Stone
     
     
     class Development {
@@ -162,10 +196,6 @@ classDiagram
    
     }
     
-    class Dice {
-        <<static>>
-    }
-    
     class NumberPieces {
    
     }
@@ -190,13 +220,7 @@ classDiagram
     
     Player <|-- Human
     Player <|-- Bot
-    Player <|-- Bank
     
-    
-    class GUI {
-        
-    }
-    
-    class Controler {
-        - rollDice()
+    class Bank {
+   
     }
