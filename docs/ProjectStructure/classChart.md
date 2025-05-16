@@ -20,36 +20,24 @@ classDiagram
         -int dice2
         -int victoryPoints
 
-        GameController()
-        gameStart()
-        mainGame()
-        gameEnd()
-
-        rollDice()
+        +GameController()
+        +gameStart()
+        +mainGame()
+        +gameEnd()
+        +rollDice()
     }
 
     class Rules {
-        checkCity()
-        checkSettlement()
-        checkStreet()
+        +checkCity()
+        +checkSettlement()
+        +checkStreet()
     }
-
-    GUI <--> GameController
-    GameController --> CatanBoard
-    GameController --> Development
-    GameController --> Special
-    GameController --> Resources
-    GameController --> GamePieces
-    GameController --> Player
-    GameController --> Bank
 
     class CatanBoard {
        <<abstract>>
 
-       triggerBoard(diceNumber)
+       +triggerBoard(diceNumber)
     }
-
-    
 
     class Edge {
         +id
@@ -76,7 +64,7 @@ classDiagram
         +list Edges
         +NumberPieces diceNumber
 
-        getCoord()
+        +getCoord()
     }
 
     class Desert {
@@ -113,21 +101,8 @@ classDiagram
         +id
         +resource
         
-        trade()
+        +trade()
     }
-    
-    HexTile <|-- Desert
-    HexTile <|-- Forest
-    HexTile <|-- SheepField
-    HexTile <|-- WheatField
-    HexTile <|-- BricksField
-    HexTile <|-- StoneField
-    HexTile <|-- Harbor
-
-    CatanBoard <|-- HexTile
-    CatanBoard <|-- Edge
-    CatanBoard <|-- Vertex
-
 
     class Resources {
         <<abstract>>
@@ -153,14 +128,9 @@ classDiagram
         
     }
 
-    Resources <|-- Wood
-    Resources <|-- Sheep  
-    Resources <|-- Wheat    
-    Resources <|-- Bricks
-    Resources <|-- Stone  
-    
     class Development {
         <<abstract>>
+        +playCard()
     }
     
     class Knight {
@@ -187,16 +157,9 @@ classDiagram
      
     }
     
-    Development <|-- Knight
-    Development <|-- Progress
-    Development <|-- Monopoly
-    Development <|-- StreetConstructing
-    Development <|-- Invention
-    Development <|-- VictoryPoints
-    
-    
     class Special {
         <<abstract>>
+        +checkAchievement()
     }
     
     class LongestStreet {
@@ -207,15 +170,9 @@ classDiagram
    
     }
     
-    Special <|-- LongestStreet
-    Special <|-- LargestKnightPower
-    
-    
-
     class GamePieces {
         <<abstract>>
     }
-    
     
     class Buildings {
         <<abstract>>
@@ -233,11 +190,6 @@ classDiagram
    
     }
     
-    Buildings <|-- City
-    Buildings <|-- Settelment
-    Buildings <|-- Street
-
-    
     class Bandit {
         -HexTile location
         -discardTrigger
@@ -245,27 +197,17 @@ classDiagram
         moveBandit(player)
     }
     
-    class NumberPieces {
-   
-    }
-    
-    GamePieces <|-- Buildings
-    GamePieces <|-- Bandit
-    GamePieces <|-- NumberPieces
-    
-    
-    
     class Player {
         <<abstract>>
         -list~Resource~ resources
         -list~Development~ cards
 
-        buySettelment()
-        buyCity()
-        buyStreet()
-        buyCard()
-        discardRandomCard() Resource
-        trade()
+        +buySettelment()
+        +buyCity()
+        +buyStreet()
+        +buyCard()
+        +discardRandomCard() Resource
+        +trade()
     }
     
     class Human {
@@ -276,21 +218,78 @@ classDiagram
    
     }
     
+    class Bank {
+        -int wood
+        -int SheepField
+        -int wheat
+        -int bricks
+        -int stone
+        -list~Development~ cards
+        
+        +buyDevelopmentCard() card
+        +spendResources(player, resource, amount)
+    }
+
+    %% Relationshis
+    
+    %% Inheritance
+    HexTile <|-- Desert
+    HexTile <|-- Forest
+    HexTile <|-- SheepField
+    HexTile <|-- WheatField
+    HexTile <|-- BricksField
+    HexTile <|-- StoneField
+    HexTile <|-- Harbor
+    
+    CatanBoard <|-- HexTile
+    CatanBoard <|-- Edge
+    CatanBoard <|-- Vertex
+    
     Player <|-- Human
     Player <|-- Bot
-
+    
+    GamePieces <|-- Buildings
+    GamePieces <|-- Bandit
+    
+    Buildings <|-- City
+    Buildings <|-- Settelment
+    Buildings <|-- Street
+    
+    Special <|-- LongestStreet
+    Special <|-- LargestKnightPower
+    
+    Resources <|-- Wood
+    Resources <|-- Sheep
+    Resources <|-- Wheat
+    Resources <|-- Bricks
+    Resources <|-- Stone
+    
+    Development <|-- Knight
+    Development <|-- Progress
+    Development <|-- Monopoly
+    Development <|-- StreetConstructing
+    Development <|-- Invention
+    Development <|-- VictoryPoints
+    
+    %% Association
+    Init --> GameController
+    Init --> GUI
+    
+    GUI <--> GameController
+    
+    GameController --> CatanBoard
+    GameController --> Special
+    GameController --> GamePieces
+    GameController --> Player
+    GameController --> Bank
+    
+    CatanBoard --> Bank
+    
+    Bank <--> Player
+    Bank --> Development
+    Bank --> Resources
+    
     Player --> Buildings
     Player --> CatanBoard
     
-    class Bank {
-        int wood
-        int SheepField
-        int wheat
-        int bricks
-        int stone
-        list~Development~ cards
-        
-        buyDevelopmentCard() card
-        spendResources(player, resource, amount)
-    }
 ```
