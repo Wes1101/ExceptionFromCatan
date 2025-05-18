@@ -1,13 +1,14 @@
 ```mermaid
 classDiagram
-    %% === Benutzer & Rollen === 
+
+%% === Benutzer & Rollen ===
 
     class Init {
         +static main(string args[])
-    }   
-    
+    }
+
     class GUI {
-        
+
     }
 
     class GameController {
@@ -34,9 +35,9 @@ classDiagram
     }
 
     class CatanBoard {
-       <<abstract>>
+        <<abstract>>
 
-       +triggerBoard(diceNumber)
+        +triggerBoard(diceNumber)
     }
 
     class Edge {
@@ -96,11 +97,11 @@ classDiagram
         +id
         +resource
     }
-    
+
     class Harbor {
         +id
         +resource
-        
+
         +trade()
     }
 
@@ -113,90 +114,90 @@ classDiagram
     }
 
     class Sheep {
-        
+
     }
 
     class Wheat {
-        
+
     }
 
     class Bricks {
-        
+
     }
-    
+
     class Stone {
-        
+
     }
 
     class Development {
         <<abstract>>
         +playCard()
     }
-    
+
     class Knight {
-        
+
     }
-    
+
     class Progress {
-   
+
     }
-    
+
     class Monopoly {
-   
+
     }
-    
+
     class StreetConstructing {
-   
+
     }
-    
+
     class Invention {
-   
+
     }
-    
+
     class VictoryPoints {
-     
+
     }
-    
+
     class Special {
         <<abstract>>
         +checkAchievement()
     }
-    
+
     class LongestStreet {
-   
+
     }
-    
+
     class LargestKnightPower {
-   
+
     }
-    
+
     class GamePieces {
         <<abstract>>
     }
-    
+
     class Buildings {
         <<abstract>>
     }
-    
+
     class City {
-   
+
     }
-    
+
     class Settelment {
-   
+
     }
-    
+
     class Street {
-   
+
     }
-    
+
     class Bandit {
         -HexTile location
         -discardTrigger
 
         moveBandit(player)
     }
-    
+
     class Player {
         <<abstract>>
         -list~Resource~ resources
@@ -209,15 +210,15 @@ classDiagram
         +discardRandomCard() Resource
         +trade()
     }
-    
+
     class Human {
-   
+
     }
-    
+
     class Bot {
-   
+
     }
-    
+
     class Bank {
         -int wood
         -int SheepField
@@ -225,14 +226,40 @@ classDiagram
         -int bricks
         -int stone
         -list~Development~ cards
-        
+
         +buyDevelopmentCard() card
         +spendResources(player, resource, amount)
     }
 
-    %% Relationshis
-    
-    %% Inheritance
+    class NetworkManager {
+        <<abstract>>
+        +start()
+        +stop()
+        +send(data)
+        +receive() data
+    }
+
+    class HostServer {
+        +start()
+        +acceptClients()
+        +broadcast(data)
+        +handleMove(data)
+    }
+
+    class ClientConnection {
+        +connectToHost(address)
+        +sendToHost(data)
+        +receiveFromHost() data
+    }
+
+    GameController --> NetworkManager
+    NetworkManager <|-- HostServer
+    NetworkManager <|-- ClientConnection
+
+
+%% Relationshis
+
+%% Inheritance
     HexTile <|-- Desert
     HexTile <|-- Forest
     HexTile <|-- SheepField
@@ -240,56 +267,102 @@ classDiagram
     HexTile <|-- BricksField
     HexTile <|-- StoneField
     HexTile <|-- Harbor
-    
+
     CatanBoard <|-- HexTile
     CatanBoard <|-- Edge
     CatanBoard <|-- Vertex
-    
+
     Player <|-- Human
     Player <|-- Bot
-    
+
     GamePieces <|-- Buildings
     GamePieces <|-- Bandit
-    
+
     Buildings <|-- City
     Buildings <|-- Settelment
     Buildings <|-- Street
-    
+
     Special <|-- LongestStreet
     Special <|-- LargestKnightPower
-    
+
     Resources <|-- Wood
     Resources <|-- Sheep
     Resources <|-- Wheat
     Resources <|-- Bricks
     Resources <|-- Stone
-    
+
     Development <|-- Knight
     Development <|-- Progress
     Development <|-- Monopoly
     Development <|-- StreetConstructing
     Development <|-- Invention
     Development <|-- VictoryPoints
-    
-    %% Association
+
+%% Association
     Init --> GameController
     Init --> GUI
-    
+
     GUI <--> GameController
-    
+
     GameController --> CatanBoard
     GameController --> Special
     GameController --> GamePieces
     GameController --> Player
     GameController --> Bank
-    
+
     CatanBoard --> Bank
-    
+
     Bank <--> Player
     Bank --> Development
     Bank --> Resources
-    
+
     Player --> Buildings
     Player --> CatanBoard
-    
+
+%%Priority
+    style Init fill: red
+    style GUI fill: red
+    style GameController fill: red
+    style Rules fill: red
+    style CatanBoard fill: red
+    style Edge fill: red
+    style Vertex fill: red
+    style HexTile fill: red
+    style Desert fill: red
+    style Forest fill: red
+    style SheepField fill: red
+    style WheatField fill: red
+    style BricksField fill: red
+    style StoneField fill: red
+    style Harbor fill: red
+    style Resources fill: red
+    style Wood fill: red
+    style Sheep fill: red
+    style Wheat fill: red
+    style Bricks fill: red
+    style Stone fill: red
+    style Development fill: none
+    style Knight fill: none
+    style Progress fill: none
+    style Monopoly fill: none
+    style StreetConstructing fill: none
+    style Invention fill: none
+    style VictoryPoints fill: none
+    style Special fill: none
+    style LongestStreet fill: none
+    style LargestKnightPower fill: none
+    style GamePieces fill: red
+    style Buildings fill: red
+    style City fill: none
+    style Settelment fill: red
+    style Street fill: red
+    style Bandit fill: red
+    style Player fill: red
+    style Human fill: red
+    style Bot fill: none
+    style Bank fill: red
+    style NetworkManager fill: green
+    style HostServer fill: green
+    style ClientConnection fill: green
+
 ```
