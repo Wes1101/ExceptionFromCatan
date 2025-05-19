@@ -14,7 +14,6 @@ Use the format:
 ```
 
 You can read more about it [here](./docs/git/branch_naming.md)
----
 
 ## Pull Request Workflow
 
