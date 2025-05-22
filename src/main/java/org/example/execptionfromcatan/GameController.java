@@ -7,6 +7,8 @@
  */
 package org.example.execptionfromcatan;
 
+import java.util.Random;
+
 public class GameController {
 
     private Player[] players;
@@ -32,7 +34,9 @@ public class GameController {
 
     public void gameEnd() {}
 
-    public int rollDice() {
-        return 0;
+    public void rollDice() {
+        Random rand = new Random();
+        dice1 = rand.nextInt(6) + 1;
+        dice2 = rand.nextInt(6) + 1;
     }
 }
