@@ -1,4 +1,4 @@
-package de.dhbw.execptionfromcatan;
+package de.dhbw.app;
 
 import java.io.IOException;
 import javafx.application.Application;

@@ -1,4 +1,4 @@
-package de.dhbw.execptionfromcatan;
+package de.dhbw.app;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
