@@ -5,7 +5,7 @@
                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>de.dhbw</groupId>
     <artifactId>ExecptionFromCatan</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ExecptionFromCatan</name>
@@ -89,7 +89,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>org.example.execptionfromcatan/org.example.execptionfromcatan.HelloApplication</mainClass>
+                            <mainClass>de.dhbw.execptionfromcatan/de.dhbw.execptionfromcatan.HelloApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -169,7 +169,7 @@
                             <shadedArtifactAttached>true</shadedArtifactAttached>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.example.execptionfromcatan/org.example.execptionfromcatan.HelloApplication</mainClass>
+                                    <mainClass>org.example.execptionfromcatan/de.dhbw.execptionfromcatan.HelloApplication</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>

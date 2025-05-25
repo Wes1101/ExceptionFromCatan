@@ -1,7 +1,7 @@
-module org.example.execptionfromcatan {
+module de.dhbw.execptionfromcatan {
   requires javafx.controls;
   requires javafx.fxml;
 
-  opens org.example.execptionfromcatan to javafx.fxml;
-  exports org.example.execptionfromcatan ;
+  opens de.dhbw.execptionfromcatan to javafx.fxml;
+  exports de.dhbw.execptionfromcatan ;
 }
