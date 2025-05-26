@@ -99,6 +99,16 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <!-- Configuration for debugging -->
+                        <id>debug</id>
+                        <configuration>
+                            <options>
+                                <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8001</option>
+                            </options>
+                            <mainClass>de.dhbw/de.dhbw.app.HelloApplication</mainClass>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>javafx-run</id>
                         <phase>prepare-package</phase> <!-- wichtig -->
                         <goals>
@@ -136,6 +146,20 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>write</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- SpotBugs -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.8.3.1</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>spotbugs</goal>
                         </goals>
                     </execution>
                 </executions>
