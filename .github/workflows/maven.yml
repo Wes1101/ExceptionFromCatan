@@ -31,10 +31,11 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
+        architecture: x64
         cache: maven
 
     - name: Run JavaFX application
-      run: mvn clean package javafx:run
+      run: mvn --batch-mode --update-snapshots package javafx:run
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
