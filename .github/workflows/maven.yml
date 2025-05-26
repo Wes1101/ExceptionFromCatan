@@ -35,7 +35,7 @@ jobs:
         cache: maven
 
     - name: Run JavaFX application
-      run: mvn --batch-mode --update-snapshots package javafx:run
+      run: mvn --batch-mode --update-snapshots package
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
