@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="ExecptionFromCatan" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+  <configuration default="false" name="ExecptionFromCatan (debug)" type="MavenRunConfiguration" factoryName="Maven">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
@@ -11,7 +11,8 @@
           </option>
           <option name="goals">
             <list>
-              <option value="javafx:run" />
+              <option value="clean" />
+              <option value="javafx:run@debug" />
             </list>
           </option>
           <option name="multimoduleDir" />
