@@ -11,6 +11,8 @@
           </option>
           <option name="goals">
             <list>
+              <option value="clean" />
+              <option value="verify" />
               <option value="javafx:run" />
             </list>
           </option>
