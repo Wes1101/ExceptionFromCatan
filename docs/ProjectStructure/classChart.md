@@ -1,9 +1,10 @@
 ```mermaid
+
 classDiagram
 
 %% === Benutzer & Rollen ===
 
-    class Init {
+    class app {
         +static main(string args[])
     }
 
@@ -252,10 +253,6 @@ classDiagram
         +receiveFromHost() data
     }
 
-    GameController --> NetworkManager
-    NetworkManager <|-- HostServer
-    NetworkManager <|-- ClientConnection
-
 
 %% Relationshis
 
@@ -299,9 +296,14 @@ classDiagram
     Development <|-- VictoryPoints
 
 %% Association
-    Init --> GameController
-    Init --> GUI
+    app --> GUI
+    app --> GameController
 
+    GameController --> NetworkManager
+    NetworkManager <|-- HostServer
+    NetworkManager <|-- ClientConnection
+
+    
     GUI <--> GameController
 
     GameController --> CatanBoard
@@ -364,5 +366,7 @@ classDiagram
     style NetworkManager fill: green
     style HostServer fill: green
     style ClientConnection fill: green
+
+```
 
 ```
