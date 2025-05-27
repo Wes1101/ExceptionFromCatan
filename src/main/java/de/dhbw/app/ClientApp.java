@@ -5,7 +5,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ClientApp extends Application {
 
   @Override
@@ -22,11 +24,11 @@ public class ClientApp extends Application {
   @Override
   public void stop() throws Exception {
     super.stop();
-    System.out.println("Client Application is closing...");
+    log.info("Client Application stopped.");
   }
 
   public static void main(String[] args) {
-    System.out.println("Starting Client Application...");
+    log.info("Client Application is starting...");
     launch();
   }
 }
