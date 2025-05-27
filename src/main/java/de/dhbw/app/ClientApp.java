@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * The ClientApp class is the main entry point for the JavaFX application.
+ */
 @Slf4j
 public class ClientApp extends Application {
 

@@ -6,4 +6,6 @@ module de.dhbw {
 
   opens de.dhbw.app to javafx.fxml;
   exports de.dhbw.app ;
+  exports  de.dhbw.network.client;
+  exports  de.dhbw.network.server;
 }
