@@ -18,7 +18,7 @@ public class GameController {
     private int gameRound;
     private int dice1;
     private int dice2;
-    private int vicoryPoints;
+    private int victoryPoints;
 
     public GameController(int playerAmount, int victoryPoints) {
         this.players = new Player[playerAmount];
@@ -29,7 +29,7 @@ public class GameController {
         this.bank = new Bank();
         this.catanBoard = new CatanBoard();
         this.gameRound = 0;
-        this.vicoryPoints = victoryPoints;
+        this.victoryPoints = victoryPoints;
     }
 
     public void gameStart() {
@@ -91,5 +91,15 @@ public class GameController {
         Random rand = new Random();
         dice1 = rand.nextInt(6) + 1;
         dice2 = rand.nextInt(6) + 1;
+    }
+
+    private boolean checkVictory() {
+        for (Player player : this.orderedPlayers) {
+            if (player.getVictoryPoints() >= this.victoryPoints) {
+                return true;
+            }
+
+        }
+        return false;
     }
 }
