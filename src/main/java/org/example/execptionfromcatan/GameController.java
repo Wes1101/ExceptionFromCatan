@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class GameController {
 
-    private Player[] players;
+    private final Player[] players;
     private Player[] orderedPlayers;
     private Bank bank;
     private CatanBoard catanBoard;
@@ -22,13 +22,66 @@ public class GameController {
 
     public GameController(int playerAmount, int victoryPoints) {
         this.players = new Player[playerAmount];
+        for (int i = 0; i < playerAmount; i++) {
+            players[i] = new Player();
+        }
+        this.orderedPlayers = new Player[playerAmount];
         this.bank = new Bank();
         this.catanBoard = new CatanBoard();
         this.gameRound = 0;
         this.vicoryPoints = victoryPoints;
     }
 
-    public void gameStart() {}
+    public void gameStart() {
+        int[] playerDiceNumber = new int[this.players.length];
+
+        for (int i = 0; i < this.players.length; i++) {
+            /*
+            gui.activePlayer(this.players[i]);
+            gui.startRollDiceAnimation();
+             */
+            this.rollDice();
+            //gui.showDice(dice1, dice2)
+            playerDiceNumber[i] = (this.dice1 + this.dice2);
+        }
+
+        //check highest number
+        int highestNumber = 0;
+        int highestNumberIndex = 0;
+        for (int i = 0; i < playerDiceNumber.length; i++) {
+            if (playerDiceNumber[i] > highestNumber) {
+                highestNumber = playerDiceNumber[i];
+                highestNumberIndex = i;
+            }
+        }
+
+        //place first settlement
+        int currentIndex = highestNumberIndex;
+        for (int i = 0; i < this.players.length; i++) {
+            /*
+            gui.activePlayer(this.players[currentIndex]);
+             */
+
+            //TODO: Build settlement and street
+
+            this.orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
+            currentIndex = currentIndex - 1;
+            if (currentIndex < 0) {
+                currentIndex = this.players.length - 1;
+            }
+        }
+
+        //place second settlement and get according resources
+        for (Player player : this.orderedPlayers) {
+            /*
+            gui.activePlayer(this.players[currentIndex]);
+             */
+
+            //TODO: Build settlement and street
+            //TODO: recieve according ressources
+        }
+
+    }
 
     public void mainGame() {}
 
