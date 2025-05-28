@@ -5,7 +5,7 @@
  * GameController Class
  * Handles all logic/interaction between objects for playing the game.
  */
-package org.example.execptionfromcatan;
+package de.dhbw.gameController;
 
 import java.util.Random;
 

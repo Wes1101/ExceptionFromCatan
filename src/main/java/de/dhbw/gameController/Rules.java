@@ -1,4 +1,4 @@
-package org.example.execptionfromcatan;
+package de.dhbw.gameController;
 
 public class Rules {
     public void checkCity(){}

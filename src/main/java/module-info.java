@@ -7,4 +7,6 @@ module de.dhbw {
 
   opens de.dhbw.frontEnd.board to javafx.fxml;
   exports de.dhbw.frontEnd.board ;
+
+  exports de.dhbw.gameController;
 }
