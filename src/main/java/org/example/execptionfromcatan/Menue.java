@@ -17,7 +17,7 @@ public class Menue extends Application {
         menue.setWidth(1152);
         menue.setHeight(648);
         menue.setResizable(false);
-/*Product until here is a empty non resisable Window 1152x648px with the name "Exception from ..." */
+/*Product until here is an empty non resisable Window 1152x648px with the name "Exception from ..." */
 
         /*Pane Settings*/
         VBox ground = new VBox();
@@ -58,17 +58,44 @@ public class Menue extends Application {
         TopFirstPane.setPrefSize(576, 324);
 
         StackPane BottomFirstPane = new StackPane();
-       BottomFirstPane.setStyle("-fx-background-color: lightblue;");
+        BottomFirstPane.setStyle("-fx-background-color: lightblue;");
         BottomFirstPane.setPrefSize(576, 324);
 
         firstverticalSplit.getItems().addAll(TopFirstPane, BottomFirstPane);// Fügt die beiden StackPanes zum SplitPane hinzu
         leftPane.getChildren().add(firstverticalSplit);// Fügt das SplitPane zum linken Pane hinzu
 /*Window got a left split into top and bottom side which is 33% of the window and a right side*/
 
-        Splitpane topsecondsplit = new SplitPane();
-        topsecondsplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        topsecondsplit.setPrefSize(, 648);
+        SplitPane topSecondSplit = new SplitPane();
+        topSecondSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        topSecondSplit.setPrefSize(576,324);
 
+        TopFirstPane.getChildren().add(topSecondSplit);
+
+        StackPane TopTopSecondPane = new StackPane();
+        TopTopSecondPane.setStyle("-fx-background-color: lightgreen;");
+        TopTopSecondPane.setPrefSize(288, 81);
+
+        StackPane TopBotSecondPane = new StackPane();
+        TopBotSecondPane.setStyle("-fx-background-color: red;");
+        TopBotSecondPane.setPrefSize(288, 81);
+
+    topSecondSplit.getItems().addAll(TopTopSecondPane, TopBotSecondPane);
+/*Top part gets Split a second time*/
+
+        SplitPane botSecondSplit = new SplitPane();
+        botSecondSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        botSecondSplit.setPrefSize(576,324);
+        BottomFirstPane.getChildren().add(botSecondSplit);
+
+        StackPane BotTopSecondPane = new StackPane();
+        BotTopSecondPane.setStyle("-fx-background-color: yellow;");
+        BotTopSecondPane.setPrefSize(288, 81);
+
+        StackPane NamesPane = new StackPane();
+        BotTopSecondPane.setStyle("-fx-background-color: violet;");
+        BotTopSecondPane.setPrefSize(288, 81);
+
+        botSecondSplit.getItems().addAll(BotTopSecondPane, NamesPane);
 
 
         menue.show();//Show the Stage with the defined settings and content
