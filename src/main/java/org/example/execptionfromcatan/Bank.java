@@ -7,30 +7,34 @@ import java.util.List;
 import java.util.Objects;
 
 @Getter
-public class Bank extends Player {
+public class Bank {
 
-    private final List<Resource> wood  = new ArrayList<>();
-    private final List<Resource> sheep = new ArrayList<>();
-    private final List<Resource> wheat = new ArrayList<>();
-    private final List<Resource> brick = new ArrayList<>();
-    private final List<Resource> stone = new ArrayList<>();
+    private final List<Resource> resources = new ArrayList<>();
 
     public Bank(int amountResources) {
-        for (int i = 0; i < amountResources; i++) {
-            this.wood.add(new Wood());
-            this.sheep.add(new Sheep());
-            this.wheat.add(new Wheat());
-            this.brick.add(new Brick());
-            this.stone.add(new Stone());
+        this.resources.add(new Wood(amountResources));
+        this.resources.add(new Sheep(amountResources));
+        this.resources.add(new Wheat(amountResources));
+        this.resources.add(new Brick(amountResources));
+        this.resources.add(new Stone(amountResources));
+    }
+
+    public void addResources(String type, int amount) {
+        for (Resource res : resources) {
+            if (res.getName().equalsIgnoreCase(type)) {
+                res.addAmount(amount);
+                return;
+            }
         }
     }
 
-    public int getAmountOfResources(String type) {
-        List<Resource> source = getResourceType(type);
-        if (Objects.isNull(source)) {
-            return 0;
-        } else {
-            return source.size();
+    public void removeResources(String type, int amount, Player target) {
+        for (Resource res : resources) {
+            if (res.getName().equalsIgnoreCase(type)) {
+                res.removeAmount(amount);
+                target.addResources(type, amount);
+                return;
+            }
         }
     }
 }
