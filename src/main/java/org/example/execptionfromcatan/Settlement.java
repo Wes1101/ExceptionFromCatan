@@ -2,11 +2,12 @@ package org.example.execptionfromcatan;
 
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * This class administers all functions related to Settlements, which are a subclass of Building.
  *
- * @Atussa Mehrawari
- * @Version 1.0
+ * @author Atussa Mehrawari
+ * @version 1.0
  *
  */
 
@@ -20,9 +21,9 @@ public class Settlement extends Building {
     public Map<ResourceType, Integer> getBuildCost() {
         Map<ResourceType, Integer> cost = new HashMap<>();
         cost.put(ResourceType.WOOD, 1);
-        cost.put(ResouceType.BRICK, 1);
+        cost.put(ResourceType.BRICK, 1);
         cost.put(ResourceType.SHEEP, 1);
-        cost.put(ResouceType.WHEAT, 1);
+        cost.put(ResourceType.WHEAT, 1);
         return cost;
     }
 

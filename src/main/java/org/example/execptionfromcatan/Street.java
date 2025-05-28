@@ -1,12 +1,13 @@
 package org.example.execptionfromcatan;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class administers all functions related to Streets, which are a subclass of Building.
+ * This class manages all functionality related to Streets, which are a subclass of Building.
  *
- * @Atussa Mehrawari
- * @Version 1.0
+ * @author Atussa Mehrawari
+ * @version 1.0
  *
  */
 

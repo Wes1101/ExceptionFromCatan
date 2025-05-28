@@ -1,17 +1,20 @@
 package org.example.execptionfromcatan;
 
+import java.util.Map;
+
 /**
- * This Class is administrating all main functions of the Buildings.
+ This abstract class manages all core functions of buildings in the game.
+ * Subclasses include specific building types like City and Street.
  *
- * @Atussa Mehrawari
- * @Version 1.0
+ * @author Atussa Mehrawari
+ * @version 1.0
  *
  */
 
 public abstract class Building extends GamePieces {
     protected Player owner;
 
-    public Building(Player owner, Hextile location) {
+    public Building(Player owner, HexTile location) {
         super(location);
         this.owner = owner;
     }
@@ -19,7 +22,15 @@ public abstract class Building extends GamePieces {
         return owner;
     }
 
-    public abstract Map<ResourceType, Integer> getBuildCost(); //** Methode, die zurückgibt, was das Gebäude kostet*/
+    /**
+     * Returns the resource cost required to build this building.
+     * @return Map of ResourceType to quantity
+     */
+    public abstract Map<ResourceType, Integer> getBuildCost();
 
-    public abstract String getType();  //** Gebäude Typ*/
+    /**
+     * Returns the type of the building (e.g., "City", "Street").
+     * @return the building type as a String
+     */
+    public abstract String getType();
 }
