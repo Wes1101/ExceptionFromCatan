@@ -40,27 +40,30 @@ public class Menu extends Application {
         // Spieleranzahl
         VBox playerCountBox = new VBox(5);
         Text playerCountText = new Text("Anzahl Spieler:");
-        Slider playerCountSlider = new Slider(3, 6, 3);
+        Slider playerCountSlider = new Slider(3, 6, 1);
         playerCountSlider.setShowTickLabels(true);
         playerCountSlider.setShowTickMarks(true);
         playerCountSlider.setMajorTickUnit(1);
+        playerCountSlider.setMinorTickCount(0);
         playerCountSlider.setSnapToTicks(true);
         playerCountBox.getChildren().addAll(playerCountText, playerCountSlider);
 
         // Siegpunkte
         VBox winPointsBox = new VBox(5);
         Text winPointsText = new Text("Siegpunkte:");
-        Slider winPointsSlider = new Slider(4, 20, 10);
+        Slider winPointsSlider = new Slider(4, 20, 1);
         winPointsSlider.setShowTickLabels(true);
         winPointsSlider.setShowTickMarks(true);
         winPointsSlider.setMajorTickUnit(2);
+        winPointsSlider.setMinorTickCount(1);
         winPointsSlider.setSnapToTicks(true);
         winPointsBox.getChildren().addAll(winPointsText, winPointsSlider);
 
         // Kartenabwurflimit
         VBox discardLimitBox = new VBox(5);
         Text discardLimitText = new Text("Kartenabwurflimit:");
-        Slider discardLimitSlider = new Slider(4, 10, 7);
+        Slider discardLimitSlider = new Slider(4, 10, 1);
+        discardLimitSlider.setValue(10);
         discardLimitSlider.setShowTickLabels(true);
         discardLimitSlider.setShowTickMarks(true);
         discardLimitSlider.setMajorTickUnit(1);
