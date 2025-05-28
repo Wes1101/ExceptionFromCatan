@@ -177,7 +177,7 @@ public class Menue extends Application {
 
         StackPane MaxCardThrowSliderPane = new StackPane();
 
-        MaxCardThrowSplit.getItems().addAll(WinPointsSliderTextPane, WinPointsSliderPane);
+        MaxCardThrowSplit.getItems().addAll(MaxCardThrowTextPane, MaxCardThrowSliderPane);
 
 
         SplitPane MaxCardThrow = new SplitPane();
