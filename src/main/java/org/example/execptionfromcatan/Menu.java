@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import java.util.Objects;
 
 
-public class Menue extends Application {
+public class Menu extends Application {
 
     @Override
     public void start(Stage menue) {
