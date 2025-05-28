@@ -12,12 +12,12 @@ public class HexTile
 {
     private AxialCoord axialCoord;
     private int diceNumbers;
-    private int List<Vertex> vertices;
+    private List<Vertex> vertices;
     private List<Edge> edges;
 
     /**
      *Erzeugt eine Hex-Kachel mit den gegebenen Koordinaten sowie Würfelzahl.
-     * @param coord (Anzahl der Koordinaten (x,y))
+     * @param coord (Anzahl der Koordinaten ( x , y ) )
      * @param diceNumber (Die Würfelzahl, die die dazugehörige Kachel erzeugt)
      */
 
@@ -51,7 +51,7 @@ public class HexTile
     }
 
     /**
-     *Fügt dieser Kachel einen Eckpunkt hinzu und verknüpft disen mit dem eckpunkt der kachel
+     *Fügt dieser Kachel einen Eckpunkt hinzu und verknüpft diesen mit dem Eckpunkt der Kachel.
      * @param vertex der Eckpunkt wird hinzugefügt.
      */
 
@@ -65,7 +65,7 @@ public class HexTile
     }
 
     /**
-     *Fügt der Kachel eine Kante hinzu und Verknüpft diese zurück zu dieser Kachel.
+     *Fügt der Kachel eine Kante hinzu und verknüpft diese zurück zu dieser Kachel.
      *
      * @param edge die hinzugefügte Kante.
      */
