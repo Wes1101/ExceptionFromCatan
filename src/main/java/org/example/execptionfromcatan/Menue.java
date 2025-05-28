@@ -2,11 +2,13 @@ package org.example.execptionfromcatan;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 public class Menue extends Application {
 
@@ -85,6 +87,7 @@ public class Menue extends Application {
         SplitPane botSecondSplit = new SplitPane();
         botSecondSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
         botSecondSplit.setPrefSize(576,324);
+        botSecondSplit.setDividerPositions(0.25);
         BottomFirstPane.getChildren().add(botSecondSplit);
 
         StackPane BotTopSecondPane = new StackPane();
@@ -96,6 +99,64 @@ public class Menue extends Application {
         BotTopSecondPane.setPrefSize(288, 81);
 
         botSecondSplit.getItems().addAll(BotTopSecondPane, NamesPane);
+
+        SplitPane TopBotThirdSplit = new SplitPane();
+        TopBotThirdSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        TopBotThirdSplit.setPrefSize(576,324);
+
+        StackPane TopTopThirdPane = new StackPane();
+        TopTopThirdPane.setStyle("-fx-background-color: orange;");
+        TopTopThirdPane.setPrefSize(288, 81);
+
+        StackPane TopBotThirdPane = new StackPane();
+        TopBotThirdPane.setStyle("-fx-background-color: purple;");
+        TopBotThirdPane.setPrefSize(288, 81);
+
+        TopBotThirdSplit.getItems().addAll(TopTopThirdPane, TopBotThirdPane);
+        TopBotSecondPane.getChildren().add(TopBotThirdSplit);
+
+        //Button
+        Button startButton = new Button("Start Game");
+        startButton.setPrefSize(240,60);
+
+        TopTopSecondPane.getChildren().add(startButton);
+
+        // Sliders
+        Slider playerCountSlider = new Slider(3, 6, 1);
+        playerCountSlider.setShowTickLabels(true);
+        playerCountSlider.setSnapToTicks(true);
+        playerCountSlider.setMajorTickUnit(1);
+        playerCountSlider.setMinorTickCount(0);
+        playerCountSlider.setPrefSize(200,50);
+
+        Slider winPointsSlider = new Slider(3, 6, 1);
+        winPointsSlider.setShowTickLabels(true);
+        winPointsSlider.setSnapToTicks(true);
+        winPointsSlider.setMajorTickUnit(1);
+        winPointsSlider.setMinorTickCount(0);
+        winPointsSlider.setPrefSize(200,50);
+
+        Slider maxCardThrow = new Slider(3, 6, 1);
+        maxCardThrow.setShowTickLabels(true);
+        maxCardThrow.setSnapToTicks(true);
+        maxCardThrow.setMajorTickUnit(1);
+        maxCardThrow.setMinorTickCount(0);
+        maxCardThrow.setPrefSize(200,50);
+
+
+
+        TopTopThirdPane.getChildren().add(playerCountSlider);
+        TopBotThirdPane.getChildren().add(winPointsSlider);
+        BotTopSecondPane.getChildren().add(maxCardThrow);
+
+
+
+
+
+
+
+
+
 
 
         menue.show();//Show the Stage with the defined settings and content
