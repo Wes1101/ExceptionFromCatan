@@ -13,11 +13,11 @@ public class Menue extends Application {
     @Override
     public void start(Stage menue) {
         /*Stage Settings*/
-        menue.setTitle("Exception from Catan: SiedlungsOverflow"); // Setzt den Titel des Fensters
-        menue.setWidth(1152);// Setzt die Breite des Fensters
-        menue.setHeight(648);// Setzt die Höhe des Fensters
-        menue.setResizable(false);// Verhindert, dass das Fenster in der Größe verändert werden kann
-/*Product until here is a empty Window 1152x648px with the name "Exception from ..." */
+        menue.setTitle("Exception from Catan: SiedlungsOverflow");
+        menue.setWidth(1152);
+        menue.setHeight(648);
+        menue.setResizable(false);
+/*Product until here is a empty non resisable Window 1152x648px with the name "Exception from ..." */
 
         /*Pane Settings*/
         VBox ground = new VBox();
@@ -26,43 +26,52 @@ public class Menue extends Application {
 
         // SplitPane first erstellen
         SplitPane firstsplit = new SplitPane();
-        firstsplit.setPrefSize(1152, 648);//Setzt die Größe des SplitPanes
-        firstsplit.setDividerPositions(0.333); // Setzt die Position des Teilers auf 33%
+        firstsplit.setPrefSize(1152, 648);
+        firstsplit.setDividerPositions(0.333);
 /*Product is split by a splitpane which splits the menue into a left part 2/6 big and a right part 4/6big*/
         // Linkes Pane (pink)
-        StackPane leftPane = new StackPane();// Erstellen eines StackPane für das linke Pane
-        leftPane.setStyle("-fx-background-color: pink;");// Setzt die Hintergrundfarbe des linken Panes auf Pink
-        leftPane.setPrefSize(576, 324);// Setzt die Größe des linken Panes
+        StackPane leftPane = new StackPane();
+        leftPane.setStyle("-fx-background-color: pink;");
+        leftPane.setPrefSize(576, 324);
 
         // Rechtes Pane (z.B. leer oder mit Inhalt)
-        StackPane rightPane = new StackPane();// Erstellen eines StackPane für das rechte Pane
+        StackPane rightPane = new StackPane();
         rightPane.setStyle("-fx-background-color: lightblue;");
-        rightPane.setPrefSize(576, 324);// Setzt die Größe des rechten Panes
+        rightPane.setPrefSize(576, 324);
 /*Two Stack Panes are used to change the background colour of the splitpanes for better understanding which panes which*/
 
         // Beide Panes zum SplitPane hinzufügen
-        firstsplit.getItems().addAll(leftPane, rightPane);// Fügt die beiden StackPanes zum SplitPane hinzu
+        firstsplit.getItems().addAll(leftPane, rightPane);
 
 
         // SplitPane zum Hauptlayout hinzufügen
-        ground.getChildren().add(firstsplit);// Fügt das SplitPane zum Hauptlayout (VBox) hinzu
+        ground.getChildren().add(firstsplit);
 /*MAJOR Window 1152x648 split into 2 separate parts */
 
         SplitPane firstverticalSplit = new SplitPane();
         firstverticalSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
         firstverticalSplit.setPrefSize(1152, 648);
+/*First Vertikal Split to turn the left field into 2 Boxes*/
 
-        StackPane TopFirstPane = new StackPane();// Erstellen eines StackPane für das rechte Pane
-        rightPane.setStyle("-fx-background-color: pink;");
-        rightPane.setPrefSize(576, 324);// Setzt die Größe des rechten Panes
-        StackPane BottomFirstPane = new StackPane();// Erstellen eines StackPane für das rechte Pane
-        rightPane.setStyle("-fx-background-color: lightblue;");
-        rightPane.setPrefSize(576, 324);// Setzt die Größe des rechten Panes
+        StackPane TopFirstPane = new StackPane();
+        TopFirstPane.setStyle("-fx-background-color: pink;");
+        TopFirstPane.setPrefSize(576, 324);
+
+        StackPane BottomFirstPane = new StackPane();
+       BottomFirstPane.setStyle("-fx-background-color: lightblue;");
+        BottomFirstPane.setPrefSize(576, 324);
 
         firstverticalSplit.getItems().addAll(TopFirstPane, BottomFirstPane);// Fügt die beiden StackPanes zum SplitPane hinzu
         leftPane.getChildren().add(firstverticalSplit);// Fügt das SplitPane zum linken Pane hinzu
+/*Window got a left split into top and bottom side which is 33% of the window and a right side*/
 
-        menue.show();
+        Splitpane topsecondsplit = new SplitPane();
+        topsecondsplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        topsecondsplit.setPrefSize(, 648);
+
+
+
+        menue.show();//Show the Stage with the defined settings and content
     }
 
     public static void main(String[] args) {
