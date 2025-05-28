@@ -3,3 +3,8 @@
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
 }
+.leftPane {
+    -fx-background-image: url("leftLauncher.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
