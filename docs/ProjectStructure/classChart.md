@@ -230,22 +230,18 @@ classDiagram
         +spendResources(player, resource, amount)
     }
 
-    class NetworkManager {
-        <<abstract>>
-        +start()
-        +stop()
-        +send(data)
-        +receive() data
+    class NetworkMessage {
     }
 
-    class HostServer {
+    class Server {
         +start()
         +acceptClients()
         +broadcast(data)
-        +handleMove(data)
+    }
+    class ClientHandler {
     }
 
-    class ClientConnection {
+    class Client {
         +connectToHost(address)
         +sendToHost(data)
         +receiveFromHost() data
@@ -288,9 +284,11 @@ classDiagram
 %% Association
     Menu --> GUI
     Menu --> GameController
-    GameController --> NetworkManager
-    NetworkManager <|-- HostServer
-    NetworkManager <|-- ClientConnection
+    GameController --> Server
+    Server --> ClientHandler
+    GameController --> Client
+    Client --> NetworkMessage
+    Server --> NetworkMessage
     GUI <--> GameController
     GameController --> CatanBoard
     GameController --> Special
