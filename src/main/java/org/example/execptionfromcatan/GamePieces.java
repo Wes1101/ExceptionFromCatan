@@ -22,7 +22,8 @@ public abstract class GamePieces {
         this.location = location;
     }
 
-    public HexTile getLocation() { return location; }
+    public HexTile getLocation() {
+        return location;
     }
 
     public abstract String getType();
