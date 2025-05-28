@@ -108,7 +108,9 @@ public class GameController {
         }
     }
 
-    public void gameEnd() {}
+    public void gameEnd() {
+        //TODO: Clarify what this method should do
+    }
 
     private void rollDice() {
         Random rand = new Random();
