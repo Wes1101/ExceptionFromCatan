@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
+import java.util.Objects;
 
 
 public class Menue extends Application {
@@ -29,100 +30,106 @@ public class Menue extends Application {
         menue.setScene(new Scene(ground, Color.WHITE));
         /*Product got a VBox which is used to set the Background to white and serve as the first scene*/
 
+        //Style sheet implementation
+
+        menue.getScene().getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("/org/example/execptionfromcatan/menue.css")).toExternalForm());
+
+
         // SplitPane first erstellen
-        SplitPane firstsplit = new SplitPane();
-        firstsplit.setPrefSize(1152, 648);
-        firstsplit.setDividerPositions(0.333);
-        /*Product is split by a splitpane which splits the menue into a left part 2/6 big and a right part 4/6big*/
+        SplitPane SplitFirsth = new SplitPane();
+        SplitFirsth.setPrefSize(1152, 648);
+        SplitFirsth.setDividerPositions(0.333);
+        /*Product is split by a splitpane which splits the menue into a left part 2/6 big and a right part 4/6 big*/
         // Linkes Pane (pink)
         StackPane leftPane = new StackPane();
-        leftPane.setStyle("-fx-background-color: pink;");
+        //leftPane.setStyle("-fx-background-color: pink;");
         leftPane.setPrefSize(576, 324);
 
         // Rechtes Pane (z.B. leer oder mit Inhalt)
         StackPane rightPane = new StackPane();
-        rightPane.setStyle("-fx-background-color: lightblue;");
+        //rightPane.setStyle("-fx-background-color: lightblue;");
         rightPane.setPrefSize(576, 324);
         /*Two Stack Panes are used to change the background colour of the splitpanes for better understanding which panes which*/
 
         // Beide Panes zum SplitPane hinzufügen
-        firstsplit.getItems().addAll(leftPane, rightPane);
+        SplitFirsth.getItems().addAll(leftPane, rightPane);
 
 
         // SplitPane zum Hauptlayout hinzufügen
-        ground.getChildren().add(firstsplit);
+        ground.getChildren().add(SplitFirsth);
         /*MAJOR Window 1152x648 split into 2 separate parts */
 
-        SplitPane firstverticalSplit = new SplitPane();
-        firstverticalSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        firstverticalSplit.setPrefSize(1152, 648);
+        SplitPane SplitSecondv = new SplitPane();
+        SplitSecondv.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        SplitSecondv.setPrefSize(1152, 648);
         /*First Vertikal Split to turn the left field into 2 Boxes*/
 
-        StackPane TopFirstPane = new StackPane();
-        TopFirstPane.setStyle("-fx-background-color: pink;");
-        TopFirstPane.setPrefSize(576, 324);
+        StackPane SplitSecondvTopPane = new StackPane();
+        // SplitSecondvTopPane.setStyle("-fx-background-color: pink;");
+        SplitSecondvTopPane.setPrefSize(576, 324);
 
-        StackPane BottomFirstPane = new StackPane();
-        BottomFirstPane.setStyle("-fx-background-color: lightblue;");
-        BottomFirstPane.setPrefSize(576, 324);
+        StackPane SplitSecondvBotPane = new StackPane();
+        //BottomFirstPane.setStyle("-fx-background-color: lightblue;");
+        SplitSecondvBotPane.setPrefSize(576, 324);
 
-        firstverticalSplit.getItems().addAll(TopFirstPane, BottomFirstPane);// Fügt die beiden StackPanes zum SplitPane hinzu
-        leftPane.getChildren().add(firstverticalSplit);// Fügt das SplitPane zum linken Pane hinzu
+        SplitSecondv.getItems().addAll(SplitSecondvTopPane, SplitSecondvBotPane);// Fügt die beiden StackPanes zum SplitPane hinzu
+        leftPane.getChildren().add(SplitSecondv);// Fügt das SplitPane zum linken Pane hinzu
         /*Window got a left split into top and bottom side which is 33% of the window and a right side*/
 
-        SplitPane topSecondSplit = new SplitPane();
-        topSecondSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        topSecondSplit.setPrefSize(576, 324);
+        SplitPane SplitThirdTopv = new SplitPane();
+        SplitThirdTopv.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        SplitThirdTopv.setPrefSize(576, 324);
 
-        TopFirstPane.getChildren().add(topSecondSplit);
+        SplitSecondvTopPane.getChildren().add(SplitThirdTopv);
 
-        StackPane TopTopSecondPane = new StackPane();
-        TopTopSecondPane.setStyle("-fx-background-color: lightgreen;");
-        TopTopSecondPane.setPrefSize(288, 81);
+        StackPane SplitThirdTopvTop = new StackPane();
+        //SplitThirdTopvTop.setStyle("-fx-background-color: lightgreen;");
+        SplitThirdTopvTop.setPrefSize(288, 81);
 
-        StackPane TopBotSecondPane = new StackPane();
-        TopBotSecondPane.setStyle("-fx-background-color: red;");
-        TopBotSecondPane.setPrefSize(288, 81);
+        StackPane SplitThirdTopvBot = new StackPane();
+        //SplitThirdTopvBot.setStyle("-fx-background-color: red;");
+        SplitThirdTopvBot.setPrefSize(288, 81);
 
-        topSecondSplit.getItems().addAll(TopTopSecondPane, TopBotSecondPane);
+        SplitThirdTopv.getItems().addAll(SplitThirdTopvTop, SplitThirdTopvBot);
         /*Top part gets Split a second time*/
 
-        SplitPane botSecondSplit = new SplitPane();
-        botSecondSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
-        botSecondSplit.setPrefSize(576, 324);
-        botSecondSplit.setDividerPositions(0.25);
-        BottomFirstPane.getChildren().add(botSecondSplit);
+        SplitPane SplitFourthBotv = new SplitPane();
+        SplitFourthBotv.setOrientation(javafx.geometry.Orientation.VERTICAL);
+        SplitFourthBotv.setPrefSize(576, 324);
+        SplitFourthBotv.setDividerPositions(0.25);
+        SplitSecondvBotPane.getChildren().add(SplitFourthBotv);
 
-        StackPane BotTopSecondPane = new StackPane();
-        BotTopSecondPane.setStyle("-fx-background-color: yellow;");
-        BotTopSecondPane.setPrefSize(288, 81);
+        StackPane SplitFourthBotvTop = new StackPane();
+        //SplitFourthBotvTop.setStyle("-fx-background-color: yellow;");
+        SplitFourthBotvTop.setPrefSize(288, 81);
 
-        StackPane NamesPane = new StackPane();
-        BotTopSecondPane.setStyle("-fx-background-color: violet;");
-        BotTopSecondPane.setPrefSize(288, 81);
+        StackPane SplitFourthBotvBot = new StackPane();
+        //SplitFourthBotvTop.setStyle("-fx-background-color: violet;");
+        SplitFourthBotvTop.setPrefSize(288, 81);
 
-        botSecondSplit.getItems().addAll(BotTopSecondPane, NamesPane);
+        SplitFourthBotv.getItems().addAll(SplitFourthBotvTop, SplitFourthBotvBot);
 
         SplitPane TopBotThirdSplit = new SplitPane();
         TopBotThirdSplit.setOrientation(javafx.geometry.Orientation.VERTICAL);
         TopBotThirdSplit.setPrefSize(576, 324);
 
         StackPane TopTopThirdPane = new StackPane();
-        TopTopThirdPane.setStyle("-fx-background-color: orange;");
+        //TopTopThirdPane.setStyle("-fx-background-color: orange;");
         TopTopThirdPane.setPrefSize(288, 81);
 
         StackPane TopBotThirdPane = new StackPane();
-        TopBotThirdPane.setStyle("-fx-background-color: purple;");
+        //TopBotThirdPane.setStyle("-fx-background-color: purple;");
         TopBotThirdPane.setPrefSize(288, 81);
 
         TopBotThirdSplit.getItems().addAll(TopTopThirdPane, TopBotThirdPane);
-        TopBotSecondPane.getChildren().add(TopBotThirdSplit);
+        SplitThirdTopvBot.getChildren().add(TopBotThirdSplit);
 
         //Button
         Button startButton = new Button("Start Game");
         startButton.setPrefSize(240, 60);
 
-        TopTopSecondPane.getChildren().add(startButton);
+        SplitThirdTopvTop.getChildren().add(startButton);
 
         // Sliders
         Slider playerCountSlider = new Slider(3, 6, 1);
@@ -187,7 +194,7 @@ public class Menue extends Application {
 
         TopTopThirdPane.getChildren().add(PlayerCountSliderSplit);
         TopBotThirdPane.getChildren().add(WinPointsSliderSplit);
-        BotTopSecondPane.getChildren().add(MaxCardThrowSplit);
+        SplitFourthBotvTop.getChildren().add(MaxCardThrowSplit);
 
         Text playerCountText = new Text("Anzahl Spieler:");
         Text winPointsText = new Text("Siegpunkte:");
@@ -200,7 +207,6 @@ public class Menue extends Application {
         PlayerCountSliderPane.getChildren().add(playerCountSlider);
         WinPointsSliderPane.getChildren().add(winPointsSlider);
         MaxCardThrowSliderPane.getChildren().add(maxCardThrow);
-
 
 
         menue.show();//Show the Stage with the defined settings and content
