@@ -9,5 +9,8 @@
         <module name="ExecptionFromCatan" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Game_Interface" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -5,9 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5604dd58-0937-418f-8b55-a98ee8379cbc" name="Changes" comment="– All nodes have been assigned fx:id attributes  &#10;– The file structure has been reorganized">
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game_Interface/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game_Interface/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game_Interface/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Game_Interface/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/exceptionfromcatan/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/exceptionfromcatan/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/card-bar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/card-bar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/card-bar.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/card-bar.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/exceptionfromcatan/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/exceptionfromcatan/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="feature/31-scene-spielfeld-erstellen" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,12 +35,15 @@
     &quot;assignee&quot;: &quot;AdrianJBecker&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Wes1101/ExceptionFromCatan.git&quot;,
-    &quot;accountId&quot;: &quot;9c4f8fc2-c6f9-4ebf-8b08-ee321a4c7d80&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Wes1101/ExceptionFromCatan.git",
+    "accountId": "67399024-bb66-4b66-9a60-f413142c046c"
   }
-}</component>
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -42,23 +52,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Maven.ExecptionFromCatan (debug).executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "feature/31-scene-spielfeld-erstellen",
-    "last_opened_file_path": "C:/Users/Adria/IdeaProjects/Game_Interface",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.ExecptionFromCatan (debug).executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/31-scene-spielfeld-erstellen&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Adria/IdeaProjects/Game_Interface&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Adria\IdeaProjects\Game_Interface" />
       <recent name="C:\Users\Adria\IdeaProjects\Game_Interface\src\main\java" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Adria\IdeaProjects\Game_Interface" />
     </key>
   </component>
   <component name="TaskManager">
@@ -69,6 +82,19 @@
       <option name="presentableId" value="Default" />
       <updated>1748423525345</updated>
     </task>
+    <task id="LOCAL-00001" summary="– All nodes have been assigned fx:id attributes  &#10;– The file structure has been reorganized">
+      <option name="closed" value="true" />
+      <created>1748455018209</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1748455018209</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="– All nodes have been assigned fx:id attributes  &#10;– The file structure has been reorganized" />
+    <option name="LAST_COMMIT_MESSAGE" value="– All nodes have been assigned fx:id attributes  &#10;– The file structure has been reorganized" />
   </component>
 </project>

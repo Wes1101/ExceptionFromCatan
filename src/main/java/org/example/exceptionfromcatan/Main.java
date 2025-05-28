@@ -14,7 +14,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/card-bar.fxml"));
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/card-bar.fxml")
+        );
 
 
         // Start propertys

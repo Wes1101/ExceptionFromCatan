@@ -130,7 +130,7 @@
                               <Image url="@grain_card.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lumber_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
+                        <Label fx:id="grain_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
                            <font>
                               <Font name="EB Garamond Regular" size="24.0" />
                            </font>
@@ -150,7 +150,7 @@
                               <Image url="@brick_card.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lumber_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
+                        <Label fx:id="brick_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
                            <font>
                               <Font name="EB Garamond Regular" size="24.0" />
                            </font>
@@ -170,7 +170,7 @@
                               <Image url="@ore_card.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lumber_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
+                        <Label fx:id="ore_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
                            <font>
                               <Font name="EB Garamond Regular" size="24.0" />
                            </font>
@@ -190,7 +190,7 @@
                               <Image url="@wool_card.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="lumber_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
+                        <Label fx:id="wool_card_number" alignment="TOP_CENTER" style="-fx-background-color: EEE1C1; -fx-background-radius: 9; -fx-padding: 0 5;" text="0" textFill="#412515">
                            <font>
                               <Font name="EB Garamond Regular" size="24.0" />
                            </font>
