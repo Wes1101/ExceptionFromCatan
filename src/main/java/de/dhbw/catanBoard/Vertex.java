@@ -1,4 +1,4 @@
-package org.example.execptionfromcatan;
+package de.dhbw.catanBoard;
 import java.util.List;
 import java.util.ArrayList;
 
