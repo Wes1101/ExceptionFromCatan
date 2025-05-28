@@ -17,22 +17,22 @@ import java.util.Objects;
 public class Menu extends Application {
 
     @Override
-    public void start(Stage menue) {
+    public void start(Stage menu) {
         /*Stage Settings*/
-        menue.setTitle("Exception from Catan: SiedlungsOverflow");
-        menue.setWidth(1152);
-        menue.setHeight(648);
-        menue.setResizable(false);
+        menu.setTitle("Exception from Catan: SiedlungsOverflow");
+        menu.setWidth(1152);
+        menu.setHeight(648);
+        menu.setResizable(false);
         /*Product until here is an empty non resisable Window 1152x648px with the name "Exception from ..." */
 
         /*Pane Settings*/
         VBox ground = new VBox();
-        menue.setScene(new Scene(ground, Color.WHITE));
+        menu.setScene(new Scene(ground, Color.WHITE));
         /*Product got a VBox which is used to set the Background to white and serve as the first scene*/
 
         //Style sheet implementation
 
-        menue.getScene().getStylesheets().add(
+        menu.getScene().getStylesheets().add(
                 Objects.requireNonNull(getClass().getResource("/org/example/execptionfromcatan/menue.css")).toExternalForm());
 
 
@@ -40,7 +40,7 @@ public class Menu extends Application {
         SplitPane SplitFirsth = new SplitPane();
         SplitFirsth.setPrefSize(1152, 648);
         SplitFirsth.setDividerPositions(0.333);
-        /*Product is split by a splitpane which splits the menue into a left part 2/6 big and a right part 4/6 big*/
+        /*Product is split by a splitpane which splits the menu into a left part 2/6 big and a right part 4/6 big*/
         // Linkes Pane (pink)
         StackPane leftPane = new StackPane();
         //leftPane.setStyle("-fx-background-color: pink;");
@@ -209,7 +209,7 @@ public class Menu extends Application {
         MaxCardThrowSliderPane.getChildren().add(maxCardThrow);
 
 
-        menue.show();//Show the Stage with the defined settings and content
+        menu.show();//Show the Stage with the defined settings and content
     }
 
     public static void main(String[] args) {
