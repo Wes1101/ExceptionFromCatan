@@ -8,7 +8,7 @@ import org.example.execptionfromcatan.tiles.HexTile;
  * This Class is administrating all the game pieces.
  *
  * @Atussa Mehrawari
- * @Version??
+ * @Version 0.1
  *
  */
 
@@ -20,6 +20,9 @@ public abstract class GamePieces {
 
     public GamePieces(HexTile location) {
         this.location = location;
+    }
+
+    public HexTile getLocation() { return location; }
     }
 
     public abstract String getType();
