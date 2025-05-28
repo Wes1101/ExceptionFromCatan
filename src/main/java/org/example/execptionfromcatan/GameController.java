@@ -110,7 +110,7 @@ public class GameController {
 
     public void gameEnd() {}
 
-    public void rollDice() {
+    private void rollDice() {
         Random rand = new Random();
         dice1 = rand.nextInt(6) + 1;
         dice2 = rand.nextInt(6) + 1;
