@@ -7,6 +7,7 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
@@ -131,14 +132,14 @@ public class Menue extends Application {
         playerCountSlider.setMinorTickCount(0);
         playerCountSlider.setPrefSize(200, 50);
 
-        Slider winPointsSlider = new Slider(3, 6, 1);
+        Slider winPointsSlider = new Slider(4, 20, 1);
         winPointsSlider.setShowTickLabels(true);
         winPointsSlider.setSnapToTicks(true);
-        winPointsSlider.setMajorTickUnit(1);
-        winPointsSlider.setMinorTickCount(0);
+        winPointsSlider.setMajorTickUnit(2);
+        winPointsSlider.setMinorTickCount(1);
         winPointsSlider.setPrefSize(200, 50);
 
-        Slider maxCardThrow = new Slider(3, 6, 1);
+        Slider maxCardThrow = new Slider(4, 10, 1);
         maxCardThrow.setShowTickLabels(true);
         maxCardThrow.setSnapToTicks(true);
         maxCardThrow.setMajorTickUnit(1);
@@ -187,6 +188,19 @@ public class Menue extends Application {
         TopTopThirdPane.getChildren().add(PlayerCountSliderSplit);
         TopBotThirdPane.getChildren().add(WinPointsSliderSplit);
         BotTopSecondPane.getChildren().add(MaxCardThrowSplit);
+
+        Text playerCountText = new Text("Anzahl Spieler:");
+        Text winPointsText = new Text("Siegpunkte:");
+        Text maxCardThrowText = new Text("Kartenabwurflimit:");
+
+        PlayerCountSliderTextPane.getChildren().add(playerCountText);
+        WinPointsSliderTextPane.getChildren().add(winPointsText);
+        MaxCardThrowTextPane.getChildren().add(maxCardThrowText);
+
+        PlayerCountSliderPane.getChildren().add(playerCountSlider);
+        WinPointsSliderPane.getChildren().add(winPointsSlider);
+        MaxCardThrowSliderPane.getChildren().add(maxCardThrow);
+
 
 
         menue.show();//Show the Stage with the defined settings and content
