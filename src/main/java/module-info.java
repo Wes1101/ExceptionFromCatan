@@ -4,4 +4,7 @@ module de.dhbw {
 
   opens de.dhbw.app to javafx.fxml;
   exports de.dhbw.app ;
+
+  opens de.dhbw.frontEnd.board to javafx.fxml;
+  exports de.dhbw.frontEnd.board ;
 }

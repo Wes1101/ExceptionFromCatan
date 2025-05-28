@@ -1,5 +1,6 @@
 package de.dhbw.app;
 
+import de.dhbw.frontEnd.board.SceneBoard;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,5 +22,7 @@ public class HelloApplication extends Application {
 
   public static void main(String[] args) {
     launch();
+    //    SceneBoard scene = new SceneBoard();
+    //    scene.start(new Stage());
   }
 }
