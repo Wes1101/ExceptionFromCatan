@@ -10,7 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 
-import java.util.Stack;
+
 
 public class Menue extends Application {
 
@@ -185,8 +185,8 @@ public class Menue extends Application {
 
 
         TopTopThirdPane.getChildren().add(PlayerCountSliderSplit);
-        TopBotThirdPane.getChildren().add(MaxCardThrowSplit);
-        BotTopSecondPane.getChildren().add(maxCardThrow);
+        TopBotThirdPane.getChildren().add(WinPointsSliderSplit);
+        BotTopSecondPane.getChildren().add(MaxCardThrowSplit);
 
 
         menue.show();//Show the Stage with the defined settings and content
