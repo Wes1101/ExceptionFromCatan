@@ -8,14 +8,17 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class Menu extends Application {
 
     @Override
     public void start(Stage menu) {
-        menu.setTitle("Exception from Catan: SiedlungsOverflow");
+        menu.setTitle("Launcher Exception from Catan");
         menu.setWidth(1152);
         menu.setHeight(648);
         menu.setResizable(false);
@@ -29,10 +32,11 @@ public class Menu extends Application {
         leftMenu.setPrefWidth(384); // 1/3 von 1152
         leftMenu.setPadding(new Insets(30, 10, 10, 10));
         leftMenu.setSpacing(15);
+        leftMenu.getStyleClass().add("leftMenu");
 
         // Start-Button
         Button startButton = new Button("Start Game");
-        startButton.setPrefSize(300, 70);
+        startButton.setPrefSize(340, 70);
 
         // Multiplayer Checkbox
         CheckBox multiplayerCheckBox = new CheckBox("Multiplayer");
@@ -41,6 +45,7 @@ public class Menu extends Application {
         VBox playerCountBox = new VBox(5);
         Text playerCountText = new Text("Anzahl Spieler:");
         Slider playerCountSlider = new Slider(3, 6, 1);
+        playerCountSlider.setMaxSize(340, 70);
         playerCountSlider.setShowTickLabels(true);
         playerCountSlider.setShowTickMarks(true);
         playerCountSlider.setMajorTickUnit(1);
@@ -52,17 +57,20 @@ public class Menu extends Application {
         VBox winPointsBox = new VBox(5);
         Text winPointsText = new Text("Siegpunkte:");
         Slider winPointsSlider = new Slider(4, 20, 1);
+        winPointsSlider.setMaxSize(340, 70);
         winPointsSlider.setShowTickLabels(true);
         winPointsSlider.setShowTickMarks(true);
         winPointsSlider.setMajorTickUnit(2);
         winPointsSlider.setMinorTickCount(1);
         winPointsSlider.setSnapToTicks(true);
         winPointsBox.getChildren().addAll(winPointsText, winPointsSlider);
+System.out.println(winPointsSlider.getProperties().size());
 
         // Kartenabwurflimit
         VBox discardLimitBox = new VBox(5);
         Text discardLimitText = new Text("Kartenabwurflimit:");
         Slider discardLimitSlider = new Slider(4, 10, 1);
+        discardLimitSlider.setMaxSize(340, 70);
         discardLimitSlider.setValue(10);
         discardLimitSlider.setShowTickLabels(true);
         discardLimitSlider.setShowTickMarks(true);
@@ -81,14 +89,29 @@ public class Menu extends Application {
 
         // Rechter Bereich (leer)
         Pane rightPane = new Pane();
-        rightPane.setPrefWidth(768); // 2/3 von 1152
+        rightPane.setPrefWidth(778); // 2/3 von 1152
+        rightPane.getStyleClass().add("rightPane");
+
 
         // Layout zusammenbauen
         mainLayout.getChildren().addAll(leftMenu, rightPane);
 
+        //Trennlinie zeichnen
+        Line SeperationLine = new Line();
+        SeperationLine.setStartX(0);
+        SeperationLine.setStartY(0);
+        SeperationLine.setEndX(0);
+        SeperationLine.setEndY(648);
+        SeperationLine.setStrokeWidth(4);
+
+        rightPane.getChildren().addAll(SeperationLine);
+
         // Szene erstellen
         Scene scene = new Scene(mainLayout, 1152, 648, Color.WHITE);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("menue.css")).toExternalForm());
         menu.setScene(scene);
+
+
 
         menu.show();
     }
