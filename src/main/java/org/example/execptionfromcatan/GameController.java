@@ -83,7 +83,30 @@ public class GameController {
 
     }
 
-    public void mainGame() {}
+    public void mainGame() {
+        while (!checkVictory()){
+            for (Player player : this.orderedPlayers) {
+                /*---Roll dice---*/
+
+                /*
+                gui.activePlayer(this.players[i]);
+                gui.startRollDiceAnimation();
+                */
+                this.rollDice();
+                //gui.showDice(dice1, dice2)
+
+                //TODO: Clarify bandit handling
+
+                catanBoard.triggerBoard(dice1+dice2);
+
+                //TODO: Clarify how gui will be notified of what player has now how may resources
+
+                /*---Trade, build and play special cards---*/
+
+                //TODO: Clarify handling of that part as well
+            }
+        }
+    }
 
     public void gameEnd() {}
 
@@ -98,7 +121,6 @@ public class GameController {
             if (player.getVictoryPoints() >= this.victoryPoints) {
                 return true;
             }
-
         }
         return false;
     }
