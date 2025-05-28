@@ -1,26 +1,49 @@
 ```mermaid
+
 classDiagram
-
-%% === Benutzer & Rollen ===
-
-    class Init {
+    class Menu {
         +static main(string args[])
     }
 
-    class GUI {
+    class Application {
+        <<abstract>>
+        -static methods()----------------------------------------------------------------------
+        +launch(var0: Class<? extends Application>, var1: String...): void
+        +launch(var0: String...): void
+        +getUserAgentStylesheet(): String
+        +setUserAgentStylesheet(var0: String): void
+        -instance methods()--------------------------------------------------------------------
+        +init(): void
+        +start(var1: Stage): void
+        <<abstract>>
+        +stop(): void
+        +getHostServices(): HostServices
+        +getParameters(): Parameters
+        +notifyPreloader(var1: Preloader.PreloaderNotification): void
+        -center abstract classes()---------------------------------------------------------------
+        +getRaw(): List<String>(abstract)
+        +getUnnamed(): List<String>(abstract)
+        +getNamed(): Map<String, String>(abstract)
+    }
 
+    class GUI {
+        +start(stage): void
+        +handle(Event): void
+    }
+
+    GUI <.. Eventhandler_ActionEvent: implements
+
+    class Eventhandler_ActionEvent {
     }
 
     class GameController {
-        -list~Player~ players
-        -list~Player~ sequence
+        -array~Player~ players
         -Bank bank
         -CatanBoard catanboard
         -int gameRound
         -int dice1
         -int dice2
-        -int victoryPoints
-
+        -const int victoryPoints
         +GameController()
         +gameStart()
         +mainGame()
@@ -36,7 +59,6 @@ classDiagram
 
     class CatanBoard {
         <<abstract>>
-
         +triggerBoard(diceNumber)
     }
 
@@ -64,7 +86,6 @@ classDiagram
         +list Vertex
         +list Edges
         +NumberPieces diceNumber
-
         +getCoord()
     }
 
@@ -101,7 +122,6 @@ classDiagram
     class Harbor {
         +id
         +resource
-
         +trade()
     }
 
@@ -110,23 +130,18 @@ classDiagram
     }
 
     class Wood {
-
     }
 
     class Sheep {
-
     }
 
     class Wheat {
-
     }
 
     class Bricks {
-
     }
 
     class Stone {
-
     }
 
     class Development {
@@ -135,27 +150,21 @@ classDiagram
     }
 
     class Knight {
-
     }
 
     class Progress {
-
     }
 
     class Monopoly {
-
     }
 
     class StreetConstructing {
-
     }
 
     class Invention {
-
     }
 
     class VictoryPoints {
-
     }
 
     class Special {
@@ -164,11 +173,9 @@ classDiagram
     }
 
     class LongestStreet {
-
     }
 
     class LargestKnightPower {
-
     }
 
     class GamePieces {
@@ -180,21 +187,17 @@ classDiagram
     }
 
     class City {
-
     }
 
     class Settelment {
-
     }
 
     class Street {
-
     }
 
     class Bandit {
         -HexTile location
         -discardTrigger
-
         moveBandit(player)
     }
 
@@ -202,7 +205,6 @@ classDiagram
         <<abstract>>
         -list~Resource~ resources
         -list~Development~ cards
-
         +buySettelment()
         +buyCity()
         +buyStreet()
@@ -212,11 +214,9 @@ classDiagram
     }
 
     class Human {
-
     }
 
     class Bot {
-
     }
 
     class Bank {
@@ -226,7 +226,6 @@ classDiagram
         -int bricks
         -int stone
         -list~Development~ cards
-
         +buyDevelopmentCard() card
         +spendResources(player, resource, amount)
     }
@@ -252,14 +251,10 @@ classDiagram
         +receiveFromHost() data
     }
 
-    GameController --> NetworkManager
-    NetworkManager <|-- HostServer
-    NetworkManager <|-- ClientConnection
-
-
 %% Relationshis
 
 %% Inheritance
+    Application <|-- GUI
     HexTile <|-- Desert
     HexTile <|-- Forest
     HexTile <|-- SheepField
@@ -267,58 +262,47 @@ classDiagram
     HexTile <|-- BricksField
     HexTile <|-- StoneField
     HexTile <|-- Harbor
-
     CatanBoard <|-- HexTile
     CatanBoard <|-- Edge
     CatanBoard <|-- Vertex
-
     Player <|-- Human
     Player <|-- Bot
-
     GamePieces <|-- Buildings
     GamePieces <|-- Bandit
-
     Buildings <|-- City
     Buildings <|-- Settelment
     Buildings <|-- Street
-
     Special <|-- LongestStreet
     Special <|-- LargestKnightPower
-
     Resources <|-- Wood
     Resources <|-- Sheep
     Resources <|-- Wheat
     Resources <|-- Bricks
     Resources <|-- Stone
-
     Development <|-- Knight
     Development <|-- Progress
     Development <|-- Monopoly
     Development <|-- StreetConstructing
     Development <|-- Invention
     Development <|-- VictoryPoints
-
 %% Association
-    Init --> GameController
-    Init --> GUI
-
+    Menu --> GUI
+    Menu --> GameController
+    GameController --> NetworkManager
+    NetworkManager <|-- HostServer
+    NetworkManager <|-- ClientConnection
     GUI <--> GameController
-
     GameController --> CatanBoard
     GameController --> Special
     GameController --> GamePieces
     GameController --> Player
     GameController --> Bank
-
     CatanBoard --> Bank
-
     Bank <--> Player
     Bank --> Development
     Bank --> Resources
-
     Player --> Buildings
     Player --> CatanBoard
-
 %%Priority
     style Init fill: red
     style GUI fill: red
@@ -364,5 +348,7 @@ classDiagram
     style NetworkManager fill: green
     style HostServer fill: green
     style ClientConnection fill: green
+
+```
 
 ```
