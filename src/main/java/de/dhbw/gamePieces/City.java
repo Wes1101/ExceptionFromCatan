@@ -1,4 +1,4 @@
-package org.example.execptionfromcatan;
+package de.dhbw.gamePieces;
 
 import java.util.Map;
 import java.util.HashMap;
