@@ -1,5 +1,9 @@
 <component name="ProjectRunConfigurationManager">
+<<<<<<<< HEAD:.idea/runConfigurations/ExecptionFromCatan__run_.xml
   <configuration default="false" name="ExecptionFromCatan (run)" type="MavenRunConfiguration" factoryName="Maven">
+========
+  <configuration default="false" name="ExecptionFromCatan [javafx:run]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+>>>>>>>> feature/29-scene-menü-erstellen:.idea/runConfigurations/ExecptionFromCatan__javafx_run_.xml
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings" />
