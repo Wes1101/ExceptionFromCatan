@@ -1,8 +1,9 @@
 module de.dhbw {
   requires javafx.controls;
   requires javafx.fxml;
+  requires static lombok;
 
-  opens de.dhbw.app to javafx.fxml;
+    opens de.dhbw.app to javafx.fxml;
   exports de.dhbw.app ;
 
   opens de.dhbw.frontEnd.board to javafx.fxml;

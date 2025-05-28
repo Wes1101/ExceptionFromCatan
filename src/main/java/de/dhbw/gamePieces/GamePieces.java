@@ -1,8 +1,8 @@
 package de.dhbw.gamePieces;
 
+import de.dhbw.frontEnd.board.HexTile;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.execptionfromcatan.tiles.HexTile;
 
 /**
  * This Class is administrating all the game pieces.
