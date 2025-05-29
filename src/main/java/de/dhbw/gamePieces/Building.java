@@ -1,6 +1,10 @@
 package de.dhbw.gamePieces;
+import de.dhbw.frontEnd.board.HexTile;
+import de.dhbw.player.Player;
+import de.dhbw.resources.Resource;
 
 import java.util.Map;
+
 
 /**
  This abstract class manages all core functions of buildings in the game.
@@ -11,6 +15,7 @@ import java.util.Map;
  *
  */
 
+@lombok.Getter
 public abstract class Building extends GamePieces {
     protected Player owner;
 
@@ -18,19 +23,11 @@ public abstract class Building extends GamePieces {
         super(location);
         this.owner = owner;
     }
-    public Player getOwner() {
-        return owner;
-    }
 
     /**
      * Returns the resource cost required to build this building.
      * @return Map of ResourceType to quantity
      */
-    public abstract Map<ResourceType, Integer> getBuildCost();
+    public abstract Map<Class<? extends Resource>, Integer> getBuildCost();
 
-    /**
-     * Returns the type of the building (e.g., "City", "Street").
-     * @return the building type as a String
-     */
-    public abstract String getType();
 }
