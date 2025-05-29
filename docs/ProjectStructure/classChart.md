@@ -246,7 +246,6 @@ classDiagram
         +sendToHost(data)
         +receiveFromHost() data
     }
-
 %% Relationshis
 
 %% Inheritance
@@ -289,7 +288,8 @@ classDiagram
     GameController --> Client
     Client --> NetworkMessage
     Server --> NetworkMessage
-    GUI <--> GameController
+    
+GUI <--> GameController
     GameController --> CatanBoard
     GameController --> Special
     GameController --> GamePieces
