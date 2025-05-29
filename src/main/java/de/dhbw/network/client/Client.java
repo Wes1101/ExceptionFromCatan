@@ -16,9 +16,19 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class Client {
+    /**
+     * The socket used for client-server communication.
+     */
     private Socket clientSocket = null;
+
+    /**
+     * Writer for sending messages to the server.
+     */
     private PrintWriter out = null;
 
+    /**
+     * Constructs a new Client instance.
+     */
     public Client() {
     }
 
