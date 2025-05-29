@@ -1,6 +1,8 @@
-package org.example.execptionfromcatan;
+package de.dhbw.player;
 
 import lombok.Getter;
+import de.dhbw.resources.Resource;
+import de.dhbw.bank.Bank;
 
 import java.util.ArrayList;
 import java.util.List;

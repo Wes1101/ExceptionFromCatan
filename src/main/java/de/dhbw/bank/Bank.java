@@ -1,10 +1,10 @@
-package org.example.execptionfromcatan;
+package de.dhbw.bank;
 
+import de.dhbw.player.Player;
 import lombok.Getter;
-import org.example.execptionfromcatan.resources.*;
+import de.dhbw.resources.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 public class Bank {

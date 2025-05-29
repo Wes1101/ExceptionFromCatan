@@ -1,4 +1,4 @@
-package org.example.execptionfromcatan;
+package de.dhbw.resources;
 
 import lombok.Getter;
 

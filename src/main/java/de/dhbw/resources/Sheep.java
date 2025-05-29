@@ -1,6 +1,4 @@
-package org.example.execptionfromcatan.resources;
-
-import org.example.execptionfromcatan.Resource;
+package de.dhbw.resources;
 
 public class Sheep extends Resource {
     public Sheep(int amount) {

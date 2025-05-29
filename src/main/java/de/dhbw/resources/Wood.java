@@ -1,6 +1,4 @@
-package org.example.execptionfromcatan.resources;
-
-import org.example.execptionfromcatan.Resource;
+package de.dhbw.resources;
 
 public class Wood extends Resource {
     public Wood(int amount) {
