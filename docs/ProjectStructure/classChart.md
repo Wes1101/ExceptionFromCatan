@@ -35,9 +35,15 @@ classDiagram
 
     class Eventhandler_ActionEvent {
     }
+    
+    class GameStates{
+        <<enumeration>>
+        +WAITING_FOR_GAME_START
+    }
 
     class GameController {
         -array~Player~ players
+        -int playerAmount
         -Bank bank
         -CatanBoard catanboard
         -int gameRound
@@ -45,6 +51,7 @@ classDiagram
         -int dice2
         -const int victoryPoints
         +GameController()
+        +getPlayerAmount()
         +gameStart()
         +mainGame()
         +gameEnd()
