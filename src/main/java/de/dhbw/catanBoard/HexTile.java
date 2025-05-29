@@ -20,8 +20,8 @@ public class HexTile {
     private String resourceType;
     private Node[] HexTileNodes = new Node[6];
 
-    private final int q;
-    private final int r;
+    final int q;
+    final int r;
 
     public HexTile(int q, int r, int diceNumber, String resourceType, Node[] nodes)
     {
