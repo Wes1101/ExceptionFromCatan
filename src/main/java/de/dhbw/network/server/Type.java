@@ -9,8 +9,5 @@ package de.dhbw.network.server;
  * @since 2024-06-09
  */
 public enum Type {
-  CONNECT,
-  DISCONNECT,
-  MESSAGE,
-  ERROR
+  GAME_START,   // Indicates the start of a game
 }
