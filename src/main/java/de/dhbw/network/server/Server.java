@@ -2,6 +2,8 @@ package de.dhbw.network.server;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
 import de.dhbw.gameController.GameController;
@@ -32,10 +34,11 @@ public class Server {
      */
     private static final String HOST = "localhost";
 
+
     /**
-     * Writer for sending messages to the client (if needed).
+     * List of writers for all connected clients for broadcasting messages.
      */
-    private PrintWriter out = null;
+    private final List<PrintWriter> clientWriters = new CopyOnWriteArrayList<>();
 
     private final GameController gameController;
 
@@ -61,7 +64,7 @@ public class Server {
      *
      * @throws IOException if an I/O error occurs when accepting connections
      */
-    private void initConnections() throws IOException {
+    private void initConnections() throws IOException, InterruptedException {
         int currentConnections = 0;
         while (currentConnections < gameController.getPlayerAmount()) {
             try {
@@ -69,11 +72,10 @@ public class Server {
                 log.info("Client connected: {}", clientSocket.getInetAddress());
                 currentConnections++;
 
-                // Initialize BufferedReader and PrintWriter for this connection
                 try {
-                    out = new PrintWriter(
+                    clientWriters.add(new PrintWriter(
                             new OutputStreamWriter(clientSocket.getOutputStream(), java.nio.charset.StandardCharsets.UTF_8), true
-                    );
+                    ));
                 } catch (IOException e) {
                     log.error("Error initializing streams: {}", e.getMessage());
                 }
@@ -94,13 +96,28 @@ public class Server {
     }
 
     /**
+     * Broadcasts a message to all connected clients.
+     *
+     * @param message the message to broadcast
+     */
+    public void broadcast(String message) {
+        for (PrintWriter writer : clientWriters) {
+            writer.println(message);
+        }
+        log.info("Broadcasted message to all clients: {}", message);
+    }
+
+    /**
      * Closes the server socket if it is open.
      * Logs a message indicating the socket has been closed.
      * If an error occurs during closure, it logs the error message.
      */
     private void close() {
         try {
-            if (out != null) out.close();
+            for (PrintWriter writer : clientWriters) {
+                writer.close();
+            }
+            clientWriters.clear();
             if (serverSocket != null && !serverSocket.isClosed()) {
                 serverSocket.close();
                 log.info("Server socket closed.");
@@ -111,7 +128,8 @@ public class Server {
     }
 
 
-    public static void main(String[] args) throws IOException {
-        new Server(new GameController(3, 0)).initConnections();
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Server server = new Server(new GameController(3, 0));
+        server.initConnections();
     }
 }

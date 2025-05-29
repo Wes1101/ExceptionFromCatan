@@ -76,7 +76,8 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-            new Client().connect("localhost", 8080);
+            Client client = new Client();
+            client.connect("localhost", 8080);
         } catch (IOException e) {
             log.error("Error connecting to server: {}", e.getMessage());
         }
