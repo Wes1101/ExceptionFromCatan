@@ -1,4 +1,3 @@
-module de.dhbw {
   requires javafx.controls;
   requires javafx.fxml;
   requires static lombok;
