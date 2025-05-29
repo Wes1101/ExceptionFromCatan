@@ -9,5 +9,5 @@ package de.dhbw.network.server;
  * @since 2024-06-09
  */
 public enum Type {
-  GAME_START,   // Indicates the start of a game
+  GAME_START // Indicates the start of a game
 }

@@ -12,23 +12,18 @@ import lombok.Setter;
  *
  */
 
-
 @Getter
 @Setter
 public abstract class GamePieces {
-    protected HexTile location;
+  protected HexTile location;
 
-    public GamePieces(HexTile location) {
-        this.location = location;
-    }
+  public GamePieces(HexTile location) {
+    this.location = location;
+  }
 
-    public HexTile getLocation() {
-        return location;
-    }
+  public HexTile getLocation() {
+    return location;
+  }
 
-    public abstract String getType();
+  public abstract String getType();
 }
-
-
-
-
