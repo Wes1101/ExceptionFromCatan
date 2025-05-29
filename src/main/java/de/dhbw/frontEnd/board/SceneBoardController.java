@@ -86,7 +86,7 @@ public class SceneBoardController implements Initializable {
         return;
       }
 
-      double zoomFactor = 0.9;
+      double zoomFactor = 1.1;
       if (dy > 0) {
         // Reinzoomen
         board_stack.setScaleX(board_stack.getScaleX() * zoomFactor);
