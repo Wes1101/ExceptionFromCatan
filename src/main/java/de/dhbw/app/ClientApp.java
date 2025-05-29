@@ -1,5 +1,6 @@
 package de.dhbw.app;
 
+import de.dhbw.frontEnd.board.SceneBoard;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,5 +34,7 @@ public class ClientApp extends Application {
   public static void main(String[] args) {
     log.info("Client Application is starting...");
     launch();
+    //    SceneBoard scene = new SceneBoard();
+    //    scene.start(new Stage());
   }
 }
