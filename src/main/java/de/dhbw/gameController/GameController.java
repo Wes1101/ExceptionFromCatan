@@ -13,8 +13,7 @@ import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.bank.Bank;
 
 public class GameController {
-  private final Player[] players;
-  private Player[] orderedPlayers;
+  private Player[] players;
   private Bank bank;
   private CatanBoard catanBoard;
   private int gameRound;
@@ -27,7 +26,6 @@ public class GameController {
     for (int i = 0; i < playerAmount; i++) {
         players[i] = new Player();
     }
-    this.orderedPlayers = new Player[playerAmount];
     this.bank = new Bank(19);       // Sind eig immer 19 -> Konstroktor
     //this.catanBoard = new CatanBoard();          //Macht sinn abstrakt zu haben??
     this.gameRound = 0;
@@ -59,6 +57,7 @@ public class GameController {
 
     //place first settlement
     int currentIndex = highestNumberIndex;
+    Player[] orderedPlayers = this.players;
     for (int i = 0; i < this.players.length; i++) {
         /*
         gui.activePlayer(this.players[currentIndex]);
@@ -66,15 +65,16 @@ public class GameController {
 
         //TODO: Build settlement and street
 
-        this.orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
+        orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
         currentIndex = currentIndex - 1;
         if (currentIndex < 0) {
             currentIndex = this.players.length - 1;
         }
     }
+    this.players = orderedPlayers;
 
-    //place second settlement and get according resources
-    for (Player player : this.orderedPlayers) {
+      //place second settlement and get according resources
+    for (Player player : this.players) {
       /*
       gui.activePlayer(this.players[currentIndex]);
       */
@@ -87,7 +87,7 @@ public class GameController {
 
   public void mainGame() {
     while (!checkVictory()){
-        for (Player player : this.orderedPlayers) {
+        for (Player player : this.players) {
               /*---Roll dice---*/
           /*
           gui.activePlayer(this.players[i]);
@@ -120,7 +120,7 @@ public class GameController {
   }
 
   private boolean checkVictory() {
-    for (Player player : this.orderedPlayers) {
+    for (Player player : this.players) {
         /*if (player.getVictoryPoints() >= this.victoryPoints) {
             return true;
         }*/
