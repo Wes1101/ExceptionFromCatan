@@ -17,23 +17,23 @@ import java.util.ArrayList;
     @Getter
 public class HexTile {
     private int diceNumber;
-    private Resource resourceType;
-    private HexTile[] adjacentTiles = new HexTile[6];
+    private String resourceType;
+    private Node[] HexTileNodes = new Node[6];
 
-    public final int q;
-    public final int r;
+    private final int q;
+    private final int r;
 
-    public HexTile(int q, int r, int diceNumber, Resource resourceType, HexTile[] nodes)
+    public HexTile(int q, int r, int diceNumber, String resourceType, Node[] nodes)
     {
         this.q = q;
         this.r = r;
         this.diceNumber = diceNumber;
         this.resourceType = resourceType;
-        this.adjacentTiles = nodes;
+        this.HexTileNodes = nodes;
     }
 
-    public void triggerBoard(int amount, Bank bank, Player player) {
-        bank.removeResources(resourceType.getName(), amount, player);
+    public void triggerHexTile(int amount, Bank bank, Player player) {
+        //bank.removeResources(resourceType.getName(), amount, player);
     }
 
 }
