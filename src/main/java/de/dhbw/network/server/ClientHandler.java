@@ -1,55 +1,65 @@
 package de.dhbw.network.server;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Handels the client connection to the Server
+ * Handles the communication and connection management for a single client
+ * connected to the server.
  *
+ * @author David Willig
+ * @version 1.0
+ * @since 2024-06-09
  */
-
 @Slf4j
-public class ClientHandler {
-  private Socket clientSocket = null;
-  private DataInputStream dataInputStream = null;
+public class ClientHandler implements Runnable {
+    private Socket clientSocket = null;
+    private BufferedReader in = null;
 
-  public ClientHandler(Socket clientSocket) {
-    this.clientSocket = clientSocket;
-    try {
-      this.dataInputStream =
-        new DataInputStream(
-          new BufferedInputStream(clientSocket.getInputStream())
-        );
-    } catch (IOException e) {
-      log.error("Error initializing DataInputStream", e);
+    public ClientHandler(Socket clientSocket) {
+        this.clientSocket = clientSocket;
+        try {
+            this.in = new BufferedReader(
+                new InputStreamReader(clientSocket.getInputStream(), java.nio.charset.StandardCharsets.UTF_8)
+            );
+        } catch (IOException e) {
+            log.error("Error initializing streams", e);
+        }
     }
-  }
 
-  public String readMessage() {
-    String message = null;
-    try {
-      message = dataInputStream.readUTF();
-      log.info("Received message: {}", message);
-    } catch (IOException e) {
-      log.error("Error reading message from client", e);
+    /**
+     * Runs this operation.
+     */
+    @Override
+    public void run() {
+        try {
+            String message;
+            while ((message = in.readLine()) != null) {
+                log.info("Received from client: {}", message);
+            }
+        } catch (IOException e) {
+            log.warn("Client disconnected.", e);
+        } finally {
+            try {
+                clientSocket.close();
+                log.info("Client socket closed in finally block.");
+            } catch (IOException e) {
+                log.error("Error closing client socket in finally block.", e);
+            }
+        }
     }
-    return message;
-  }
 
-  public void close() {
-    try {
-      if (dataInputStream != null) {
-        dataInputStream.close();
-      }
-      if (clientSocket != null && !clientSocket.isClosed()) {
-        clientSocket.close();
-        log.info("Client socket closed successfully.");
-      }
-    } catch (IOException e) {
-      log.error("Error closing client handler", e);
+    public void close() {
+        try {
+            if (in != null) in.close();
+            if (clientSocket != null && !clientSocket.isClosed()) {
+                clientSocket.close();
+                log.info("Client socket closed successfully.");
+            }
+        } catch (IOException e) {
+            log.error("Error closing client handler", e);
+        }
     }
-  }
 }
