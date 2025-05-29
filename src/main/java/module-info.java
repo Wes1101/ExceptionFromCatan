@@ -1,9 +1,18 @@
-module org.example.execptionfromcatan {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires static lombok;
+  requires javafx.controls;
+  requires javafx.fxml;
+  requires static lombok;
+  requires org.slf4j;
 
+    opens de.dhbw.app to javafx.fxml;
+  exports de.dhbw.app ;
 
-    opens org.example.execptionfromcatan to javafx.fxml;
-    exports org.example.execptionfromcatan;
+  opens de.dhbw.frontEnd.board to javafx.fxml;
+  exports de.dhbw.frontEnd.board ;
+
+  opens de.dhbw.frontEnd.menu to javafx.fxml;
+  exports de.dhbw.frontEnd.menu ;
+
+  exports de.dhbw.gameController ;
+  exports  de.dhbw.network.client;
+  exports  de.dhbw.network.server;
 }
