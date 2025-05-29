@@ -2,6 +2,7 @@ package de.dhbw.network.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.CountDownLatch;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,14 +16,29 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ClientHandler implements Runnable {
+    /**
+     * The socket for the connected client.
+     */
     private Socket clientSocket = null;
+
+    /**
+     * Reader for incoming messages from the client.
+     */
     private BufferedReader in = null;
 
-    public ClientHandler(Socket clientSocket) {
+    private CountDownLatch startLatch = null;
+
+    /**
+     * Constructs a new ClientHandler for the given client socket.
+     *
+     * @param clientSocket the socket connected to the client
+     */
+    public ClientHandler(Socket clientSocket, CountDownLatch startLatch) {
         this.clientSocket = clientSocket;
+        this.startLatch = startLatch;
         try {
             this.in = new BufferedReader(
-                new InputStreamReader(clientSocket.getInputStream(), java.nio.charset.StandardCharsets.UTF_8)
+                    new InputStreamReader(clientSocket.getInputStream(), java.nio.charset.StandardCharsets.UTF_8)
             );
         } catch (IOException e) {
             log.error("Error initializing streams", e);
@@ -30,27 +46,34 @@ public class ClientHandler implements Runnable {
     }
 
     /**
-     * Runs this operation.
+     * Listens for messages from the client and logs them.
+     * Closes resources when the client disconnects.
      */
     @Override
     public void run() {
+        log.info("Client waits for start signal...");
         try {
-            String message;
-            while ((message = in.readLine()) != null) {
+            startLatch.await();
+        } catch (InterruptedException e) {
+            log.error("Client handler interrupted while waiting for start signal", e);
+        }
+        log.info("Client handler started.");
+
+        String message;
+        try {
+            while (!clientSocket.isClosed() && (message = in.readLine()) != null) {
                 log.info("Received from client: {}", message);
             }
         } catch (IOException e) {
             log.warn("Client disconnected.", e);
         } finally {
-            try {
-                clientSocket.close();
-                log.info("Client socket closed in finally block.");
-            } catch (IOException e) {
-                log.error("Error closing client socket in finally block.", e);
-            }
+            close();
         }
     }
 
+    /**
+     * Closes the client handler's resources.
+     */
     public void close() {
         try {
             if (in != null) in.close();

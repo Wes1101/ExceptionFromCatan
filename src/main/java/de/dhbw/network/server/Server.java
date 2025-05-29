@@ -2,7 +2,9 @@ package de.dhbw.network.server;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.CountDownLatch;
 
+import de.dhbw.gameController.GameController;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -24,16 +26,28 @@ public class Server {
      * The port number the server listens on.
      */
     private static final int PORT = 8080;
+
+    /**
+     * The host address the server binds to.
+     */
     private static final String HOST = "localhost";
 
-    // PrintWriter for server-side communication
+    /**
+     * Writer for sending messages to the client (if needed).
+     */
     private PrintWriter out = null;
+
+    private final GameController gameController;
+
+    private static final CountDownLatch startLatch = new CountDownLatch(1);
 
     /**
      * Constructs a new Server and starts it on the specified port.
      * Initializes the ServerSocket and logs the server start.
      */
-    public Server() {
+    public Server(GameController gameController) {
+        this.gameController = gameController;
+
         try {
             serverSocket = new ServerSocket(PORT, 15, InetAddress.getByName(HOST));
             log.info("Server started on port {} and host {}", PORT, HOST);
@@ -42,11 +56,18 @@ public class Server {
         }
     }
 
+    /**
+     * Accepts incoming client connections and starts a handler for each client.
+     *
+     * @throws IOException if an I/O error occurs when accepting connections
+     */
     private void initConnections() throws IOException {
-        while (true) {
+        int currentConnections = 0;
+        while (currentConnections < gameController.getPlayerAmount()) {
             try {
                 Socket clientSocket = serverSocket.accept();
                 log.info("Client connected: {}", clientSocket.getInetAddress());
+                currentConnections++;
 
                 // Initialize BufferedReader and PrintWriter for this connection
                 try {
@@ -59,7 +80,7 @@ public class Server {
 
                 if (clientSocket.isConnected()) {
                     new Thread(
-                            new ClientHandler(clientSocket)
+                            new ClientHandler(clientSocket, startLatch)
                     ).start();
                 }
             } catch (IOException e) {
@@ -67,6 +88,9 @@ public class Server {
                 break;
             }
         }
+
+        log.info("All clients connected. Starting game...");
+        startLatch.countDown();
     }
 
     /**
@@ -86,13 +110,8 @@ public class Server {
         }
     }
 
-    /**
-     * Creates the Server Instanze.
-     *
-     * @param args Argument String for the main method
-     * @throws IOException if an I/O error occurs when creating the server socket
-     */
+
     public static void main(String[] args) throws IOException {
-        new Server().initConnections();
+        new Server(new GameController(3, 0)).initConnections();
     }
 }
