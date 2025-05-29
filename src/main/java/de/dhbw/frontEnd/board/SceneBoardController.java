@@ -15,6 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
+import javafx.scene.input.ScrollEvent;
+
 public class SceneBoardController implements Initializable {
   @FXML
   private StackPane grain_group;
@@ -73,16 +75,29 @@ public class SceneBoardController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // Map scroll effect
-    board_stack.setOnScroll(
-      e -> {
-        double zoomFactor = 1.1;
-        double delta = e.getDeltaY() > 0 ? zoomFactor : 1 / zoomFactor;
-        board_stack.setScaleX(board_stack.getScaleX() * delta);
-        board_stack.setScaleY(board_stack.getScaleY() * delta);
-        e.consume();
+
+    scroll_pane.setPannable(false);
+
+    scroll_pane.addEventFilter(ScrollEvent.SCROLL, e -> {
+      double dy = e.getDeltaY();
+      //ignore null events
+      if (dy == 0) {
+        e.consume();   // Event schlucken, aber keinen Zoom
+        return;
       }
-    );
+
+      double zoomFactor = 0.9;
+      if (dy > 0) {
+        // Reinzoomen
+        board_stack.setScaleX(board_stack.getScaleX() * zoomFactor);
+        board_stack.setScaleY(board_stack.getScaleY() * zoomFactor);
+      } else {
+        // Rauszoomen
+        board_stack.setScaleX(board_stack.getScaleX() / zoomFactor);
+        board_stack.setScaleY(board_stack.getScaleY() / zoomFactor);
+      }
+      e.consume();
+    });
 
     initBoard();
 
