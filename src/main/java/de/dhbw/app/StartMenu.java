@@ -59,21 +59,8 @@ public class StartMenu extends Application {
       "-fx-border-color: #ff99ff; -fx-border-width: 2; -fx-background-radius: 10;"
     );
 
-    // Grüner Bereich: Einstellungen Button
-    Button btnSettings = new Button("Einstellungen");
-    btnSettings.setPrefWidth(200);
-    btnSettings.setStyle(
-      "-fx-font-size: 16px; -fx-background-color: #55ff55; -fx-text-fill: #222;"
-    );
-
-    StackPane greenPane = new StackPane(btnSettings);
-    greenPane.setPadding(new Insets(10));
-    greenPane.setStyle(
-      "-fx-border-color: #55ff55; -fx-border-width: 2; -fx-background-radius: 10;"
-    );
-
     // Alles ins Haupt-Layout einfügen
-    StartMenu.getChildren().addAll(redPane, pinkPane1, pinkPane2, greenPane);
+    StartMenu.getChildren().addAll(redPane, pinkPane1, pinkPane2);
     StartMenu.setAlignment(Pos.CENTER);
 
     Scene startScene = new Scene(StartMenu, 600, 400);
@@ -87,10 +74,14 @@ public class StartMenu extends Application {
 
     // Rot: Titel
     Label titleSingleplayer = new Label("Catan Singleplayer");
-    titleSingleplayer.setStyle("-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;");
+    titleSingleplayer.setStyle(
+      "-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;"
+    );
     StackPane SingleplayerTitlePane = new StackPane(titleSingleplayer);
     SingleplayerTitlePane.setPadding(new Insets(15));
-    SingleplayerTitlePane.setStyle("-fx-border-color: #ff4444; -fx-border-width: 2;");
+    SingleplayerTitlePane.setStyle(
+      "-fx-border-color: #ff4444; -fx-border-width: 2;"
+    );
 
     // Grün: Spieleranzahl Slider
     VBox greenBox = new VBox(8);
@@ -106,7 +97,9 @@ public class StartMenu extends Application {
     greenBox.getChildren().addAll(greenLabel, spielerSlider);
     StackPane SpielerSliderPane = new StackPane(greenBox);
     SpielerSliderPane.setPadding(new Insets(15));
-    SpielerSliderPane.setStyle("-fx-border-color: #44ff44; -fx-border-width: 2;");
+    SpielerSliderPane.setStyle(
+      "-fx-border-color: #44ff44; -fx-border-width: 2;"
+    );
 
     // Pink: Siegpunktanzahl Slider
     VBox pinkBox = new VBox(8);
@@ -141,23 +134,33 @@ public class StartMenu extends Application {
 
     // Start Game Button
     Button startButton = new Button("Start Game");
-    startButton.setStyle("-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;");
+    startButton.setStyle(
+      "-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;"
+    );
     startButton.setPrefWidth(220);
 
     // Komponenten ins Layout
-    Singleplayer.getChildren().addAll(SingleplayerTitlePane, SpielerSliderPane, pinkPane, brownPane, startButton);
+    Singleplayer
+      .getChildren()
+      .addAll(
+        SingleplayerTitlePane,
+        SpielerSliderPane,
+        pinkPane,
+        brownPane,
+        startButton
+      );
 
     Scene SinglePlayerScene = new Scene(Singleplayer, 700, 500);
 
-
     //----------------------------------------------------------------------------------------
     //MultiplayerStage
-    //-----------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
 
-
+    //----------------------------------------------------------------------------------------
+    //Settings
+    //----------------------------------------------------------------------------------------
 
     // Scene und Stage
-
     primaryStage.setScene(startScene);
     primaryStage.setTitle("Catan Launcher");
     primaryStage.show();
