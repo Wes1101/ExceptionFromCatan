@@ -38,16 +38,32 @@ public class GameController {
     }
 
     public void gameStart() {
+        switch (gameControllerType) {
+            case LOCAL:
+                this.startLocal();
+                break;
+            case SERVER:
+                this.startServer();
+                break;
+            case CLIENT:
+                this.startClient();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void startLocal(){
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
         int[] playerDiceNumber = new int[this.players.length];
 
         for (int i = 0; i < this.players.length; i++) {
-        /*
-        gui.activePlayer(this.players[i]);
-        gui.startRollDiceAnimation();
-         */
+            /*
+            gui.activePlayer(this.players[i]);
+            gui.startRollDiceAnimation();
+             */
             this.rollDice();
             //gui.showDice(dice1, dice2)
             playerDiceNumber[i] = (this.dice1 + this.dice2);
@@ -94,7 +110,84 @@ public class GameController {
         minorGameState = MinorGameStates.NO_STATE;
     }
 
+    private void startServer(){
+        majorGameState = MajorGameStates.BEGINNING;
+        minorGameState = MinorGameStates.NO_STATE;
+
+        int[] playerDiceNumber = new int[this.players.length];
+
+        for (int i = 0; i < this.players.length; i++) {
+            /*
+            server.activePlayer(this.players[i]);
+            server.startRollDiceAnimation();
+             */
+            this.rollDice();
+            //server.showDice(dice1, dice2)
+            playerDiceNumber[i] = (this.dice1 + this.dice2);
+        }
+
+        //check highest number
+        int highestNumber = 0;
+        int highestNumberIndex = 0;
+        for (int i = 0; i < playerDiceNumber.length; i++) {
+            if (playerDiceNumber[i] > highestNumber) {
+                highestNumber = playerDiceNumber[i];
+                highestNumberIndex = i;
+            }
+        }
+
+        //place first settlement
+        int currentIndex = highestNumberIndex;
+        Player[] orderedPlayers = this.players;
+        for (int i = 0; i < this.players.length; i++) {
+        /*
+        server.activePlayer(this.players[currentIndex]);
+         */
+            minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
+            //TODO: Build settlement and street
+
+            orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
+            currentIndex = currentIndex - 1;
+            if (currentIndex < 0) {
+                currentIndex = this.players.length - 1;
+            }
+        }
+        this.players = orderedPlayers;
+        minorGameState = MinorGameStates.NO_STATE;
+
+        //place second settlement and get according resources
+        for (Player player : this.players) {
+            /*
+            server.activePlayer(this.players[currentIndex]);
+            */
+            minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
+            //TODO: Build settlement and street
+            //TODO: recieve according ressources
+        }
+        minorGameState = MinorGameStates.NO_STATE;
+    }
+
+    private void startClient(){
+
+    }
+
     public void mainGame() {
+        switch (gameControllerType) {
+            case LOCAL:
+                this.mainLocal();
+                break;
+            case SERVER:
+                this.mainServer();
+                break;
+            case CLIENT:
+                this.mainClient();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void mainLocal(){
         majorGameState = MajorGameStates.MAIN;
         while (!checkVictory()) {
             for (Player player : this.players) {
@@ -120,6 +213,38 @@ public class GameController {
                 //TODO: Clarify handling of that part as well
             }
         }
+    }
+
+    private void mainServer(){
+        majorGameState = MajorGameStates.MAIN;
+        while (!checkVictory()) {
+            for (Player player : this.players) {
+                /*---Roll dice---*/
+                minorGameState = MinorGameStates.DICE;
+                /*
+                server.activePlayer(this.players[i]);
+                server.startRollDiceAnimation();
+                */
+                this.rollDice();
+                //server.showDice(dice1, dice2)
+
+                //TODO: Clarify bandit handling
+
+                minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
+                catanBoard.triggerBoard(dice1 + dice2);
+
+                //TODO: Clarify how gui will be notified of what player has now how may resources
+
+                /*---Trade, build and play special cards---*/
+                minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
+
+                //TODO: Clarify handling of that part as well
+            }
+        }
+    }
+
+    private void mainClient(){
+
     }
 
     public void gameEnd() {
