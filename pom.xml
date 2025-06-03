@@ -139,29 +139,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Spotless (Prettier) -->
-            <plugin>
-                <groupId>com.diffplug.spotless</groupId>
-                <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.43.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>  <!-- Prüft auf Formatierungsfehler -->
-                            <goal>apply</goal>  <!-- Formatiert den Code automatisch -->
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <java>
-                        <googleJavaFormat>
-                            <version>1.17.0</version> <!-- Aktuelle Version für Java 17+ -->
-                        </googleJavaFormat>
-                        <!-- Optional: unbenutzte Imports automatisch entfernen -->
-                        <removeUnusedImports />
-                    </java>
-                </configuration>
-            </plugin>
             <!-- SpotBugs -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
