@@ -20,6 +20,8 @@ public class GameController {
   private int dice1;
   private int dice2;
   private int victoryPoints;
+  private MajorGameStates majorGameState;
+  private MinorGameStates minorGameState;
 
   public GameController(int playerAmount, int victoryPoints) {
     this.players = new Player[playerAmount];
@@ -33,7 +35,8 @@ public class GameController {
   }
 
   public void gameStart() {
-    int[] playerDiceNumber = new int[this.players.length];
+      majorGameState = MajorGameStates.BEGINNING;
+      int[] playerDiceNumber = new int[this.players.length];
 
     for (int i = 0; i < this.players.length; i++) {
         /*
