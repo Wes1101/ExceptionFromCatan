@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
 
 
 
@@ -63,7 +63,7 @@
          <children>
             <StackPane fx:id="setting_map_container" VBox.vgrow="ALWAYS">
                <children>
-                  <ScrollPane fx:id="scroll_pane" pannable="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@main_style.css">
+                  <ScrollPane fx:id="scroll_pane" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@main_style.css" vbarPolicy="NEVER">
                      <content>
                         <StackPane fx:id="board_stack" prefHeight="552.0" prefWidth="806.0">
                            <children>

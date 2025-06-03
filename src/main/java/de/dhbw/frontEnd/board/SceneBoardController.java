@@ -1,5 +1,12 @@
 package de.dhbw.frontEnd.board;
 
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundSize;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -11,11 +18,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+
+import de.dhbw.catanBoard.CatanBoard;
+import de.dhbw.catanBoard.hexGrid.IntTupel;
+import de.dhbw.catanBoard.hexGrid.HexTile;
+import java.util.Map;
+
 public class SceneBoardController implements Initializable {
+
+  @FXML
+  private HBox root;
+
   @FXML
   private StackPane grain_group;
 
@@ -73,15 +89,27 @@ public class SceneBoardController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    // Hintergrundbild laden und setzen:
+    Image img = new Image(getClass().getResource("scene_background.png").toExternalForm());
+    BackgroundImage bgImg = new BackgroundImage(
+            img,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+    );
+    root.setBackground(new Background(bgImg));
+
     // Map scroll effect
     board_stack.setOnScroll(
-      e -> {
-        double zoomFactor = 1.1;
-        double delta = e.getDeltaY() > 0 ? zoomFactor : 1 / zoomFactor;
-        board_stack.setScaleX(board_stack.getScaleX() * delta);
-        board_stack.setScaleY(board_stack.getScaleY() * delta);
-        e.consume();
-      }
+            e -> {
+              double zoomFactor = 1.1;
+              double delta = e.getDeltaY() > 0 ? zoomFactor : 1 / zoomFactor;
+              board_stack.setScaleX(board_stack.getScaleX() * delta);
+              board_stack.setScaleY(board_stack.getScaleY() * delta);
+              e.consume();
+            }
     );
 
     initBoard();
@@ -106,24 +134,26 @@ public class SceneBoardController implements Initializable {
 
     setting_button.setOnMouseClicked(this::onOpenSetting);
     close_option_menue.setOnAction(this::onCloseSetting);
+
+
   }
 
   private void addHover(StackPane pane) {
     // Card Hover up
     pane.setOnMouseEntered(
-      e -> {
-        TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
-        tt.setToY(-10);
-        tt.play();
-      }
+            e -> {
+              TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
+              tt.setToY(-10);
+              tt.play();
+            }
     );
     // Card Hover down
     pane.setOnMouseExited(
-      e -> {
-        TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
-        tt.setToY(0);
-        tt.play();
-      }
+            e -> {
+              TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
+              tt.setToY(0);
+              tt.play();
+            }
     );
   }
 
@@ -164,21 +194,37 @@ public class SceneBoardController implements Initializable {
   }
 
   private void initBoard() {
-    double size = 50;
-    double width = Math.sqrt(3) * size;
-    double height = 1.5 * size;
+    int radius = 3;
+    CatanBoard catanBoard = new CatanBoard(radius);
+
+    Map<IntTupel, de.dhbw.catanBoard.hexGrid.HexTile> hexes = catanBoard.getHexTiles();
+
+    System.out.println("Anzahl HexTiles: " + hexes.size());
+    for (IntTupel tupel : hexes.keySet()) {
+      System.out.println("Hex bei q=" + tupel.q() + ", r=" + tupel.r());
+    }
+
+    double size    = 50;
+    double width   = Math.sqrt(3) * size;
+    double height  = 1.5  * size;
     double offsetX = 400;
     double offsetY = 300;
 
-    for (int q = -2; q <= 2; q++) {
-      for (int r = Math.max(-2, -q - 2); r <= Math.min(2, -q + 2); r++) {
-        double x = offsetX + (q * width) + (r * width / 2);
-        double y = offsetY - (r * height);
+    for (IntTupel coords : hexes.keySet()) {
+      int q = coords.q();
+      int r = coords.r();
 
-        // jetzt die q/r-Werte an den HexTile-Konstruktor weitergeben:
-        HexTile hex = new HexTile(q, r, x, y, size);
-        tile_layer.getChildren().add(hex);
-      }
+      double x = offsetX + (q * width) + (r * (width / 2));
+      double y = offsetY - (r * height);
+
+      // Ressource vom Backend
+      String resourceName = hexes.get(coords).getResourceType().name();
+
+
+      de.dhbw.frontEnd.board.HexTile frontendHex =
+              new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+
+      tile_layer.getChildren().add(frontendHex);
     }
   }
 }
