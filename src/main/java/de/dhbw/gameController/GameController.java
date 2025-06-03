@@ -37,6 +37,8 @@ public class GameController {
 
     public void gameStart() {
         majorGameState = MajorGameStates.BEGINNING;
+        minorGameState = MinorGameStates.NO_STATE;
+
         int[] playerDiceNumber = new int[this.players.length];
 
         for (int i = 0; i < this.players.length; i++) {
@@ -66,7 +68,7 @@ public class GameController {
         /*
         gui.activePlayer(this.players[currentIndex]);
          */
-
+            minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
             //TODO: Build settlement and street
 
             orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
@@ -76,37 +78,42 @@ public class GameController {
             }
         }
         this.players = orderedPlayers;
+        minorGameState = MinorGameStates.NO_STATE;
 
         //place second settlement and get according resources
         for (Player player : this.players) {
-      /*
-      gui.activePlayer(this.players[currentIndex]);
-      */
-
+            /*
+            gui.activePlayer(this.players[currentIndex]);
+            */
+            minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
             //TODO: Build settlement and street
             //TODO: recieve according ressources
         }
-
+        minorGameState = MinorGameStates.NO_STATE;
     }
 
     public void mainGame() {
+        majorGameState = MajorGameStates.MAIN;
         while (!checkVictory()) {
             for (Player player : this.players) {
                 /*---Roll dice---*/
-          /*
-          gui.activePlayer(this.players[i]);
-          gui.startRollDiceAnimation();
-          */
+                minorGameState = MinorGameStates.DICE;
+                /*
+                gui.activePlayer(this.players[i]);
+                gui.startRollDiceAnimation();
+                */
                 this.rollDice();
                 //gui.showDice(dice1, dice2)
 
                 //TODO: Clarify bandit handling
 
+                minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
                 catanBoard.triggerBoard(dice1 + dice2);
 
                 //TODO: Clarify how gui will be notified of what player has now how may resources
 
                 /*---Trade, build and play special cards---*/
+                minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
                 //TODO: Clarify handling of that part as well
             }
