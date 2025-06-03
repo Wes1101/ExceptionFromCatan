@@ -23,8 +23,9 @@ public class GameController {
     private int victoryPoints;
     private MajorGameStates majorGameState;
     private MinorGameStates minorGameState;
+    private final GameControllerTypes gameControllerType;
 
-    public GameController(int playerAmount, int victoryPoints) {
+    public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
             players[i] = new Player();
@@ -33,6 +34,7 @@ public class GameController {
         //this.catanBoard = new CatanBoard();          //Macht sinn abstrakt zu haben??
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
+        this.gameControllerType = gameControllerType;
     }
 
     public void gameStart() {
