@@ -8,126 +8,127 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+
 import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.bank.Bank;
 
 public class GameController {
-  private Player[] players;
-  private Bank bank;
-  private CatanBoard catanBoard;
-  private int gameRound;
-  private int dice1;
-  private int dice2;
-  private int victoryPoints;
-  private MajorGameStates majorGameState;
-  private MinorGameStates minorGameState;
+    private Player[] players;
+    private Bank bank;
+    private CatanBoard catanBoard;
+    private int gameRound;
+    private int dice1;
+    private int dice2;
+    private int victoryPoints;
+    private MajorGameStates majorGameState;
+    private MinorGameStates minorGameState;
 
-  public GameController(int playerAmount, int victoryPoints) {
-    this.players = new Player[playerAmount];
-    for (int i = 0; i < playerAmount; i++) {
-        players[i] = new Player();
+    public GameController(int playerAmount, int victoryPoints) {
+        this.players = new Player[playerAmount];
+        for (int i = 0; i < playerAmount; i++) {
+            players[i] = new Player();
+        }
+        this.bank = new Bank(19);       // Sind eig immer 19 -> Konstroktor
+        //this.catanBoard = new CatanBoard();          //Macht sinn abstrakt zu haben??
+        this.gameRound = 0;
+        this.victoryPoints = victoryPoints;
     }
-    this.bank = new Bank(19);       // Sind eig immer 19 -> Konstroktor
-    //this.catanBoard = new CatanBoard();          //Macht sinn abstrakt zu haben??
-    this.gameRound = 0;
-    this.victoryPoints = victoryPoints;
-  }
 
-  public void gameStart() {
-      majorGameState = MajorGameStates.BEGINNING;
-      int[] playerDiceNumber = new int[this.players.length];
+    public void gameStart() {
+        majorGameState = MajorGameStates.BEGINNING;
+        int[] playerDiceNumber = new int[this.players.length];
 
-    for (int i = 0; i < this.players.length; i++) {
+        for (int i = 0; i < this.players.length; i++) {
         /*
         gui.activePlayer(this.players[i]);
         gui.startRollDiceAnimation();
          */
-        this.rollDice();
-        //gui.showDice(dice1, dice2)
-        playerDiceNumber[i] = (this.dice1 + this.dice2);
-    }
-
-    //check highest number
-    int highestNumber = 0;
-    int highestNumberIndex = 0;
-    for (int i = 0; i < playerDiceNumber.length; i++) {
-        if (playerDiceNumber[i] > highestNumber) {
-            highestNumber = playerDiceNumber[i];
-            highestNumberIndex = i;
+            this.rollDice();
+            //gui.showDice(dice1, dice2)
+            playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
-    }
 
-    //place first settlement
-    int currentIndex = highestNumberIndex;
-    Player[] orderedPlayers = this.players;
-    for (int i = 0; i < this.players.length; i++) {
+        //check highest number
+        int highestNumber = 0;
+        int highestNumberIndex = 0;
+        for (int i = 0; i < playerDiceNumber.length; i++) {
+            if (playerDiceNumber[i] > highestNumber) {
+                highestNumber = playerDiceNumber[i];
+                highestNumberIndex = i;
+            }
+        }
+
+        //place first settlement
+        int currentIndex = highestNumberIndex;
+        Player[] orderedPlayers = this.players;
+        for (int i = 0; i < this.players.length; i++) {
         /*
         gui.activePlayer(this.players[currentIndex]);
          */
 
-        //TODO: Build settlement and street
+            //TODO: Build settlement and street
 
-        orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
-        currentIndex = currentIndex - 1;
-        if (currentIndex < 0) {
-            currentIndex = this.players.length - 1;
+            orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
+            currentIndex = currentIndex - 1;
+            if (currentIndex < 0) {
+                currentIndex = this.players.length - 1;
+            }
         }
-    }
-    this.players = orderedPlayers;
+        this.players = orderedPlayers;
 
-      //place second settlement and get according resources
-    for (Player player : this.players) {
+        //place second settlement and get according resources
+        for (Player player : this.players) {
       /*
       gui.activePlayer(this.players[currentIndex]);
       */
 
-      //TODO: Build settlement and street
-      //TODO: recieve according ressources
+            //TODO: Build settlement and street
+            //TODO: recieve according ressources
+        }
+
     }
 
-  }
-
-  public void mainGame() {
-    while (!checkVictory()){
-        for (Player player : this.players) {
-              /*---Roll dice---*/
+    public void mainGame() {
+        while (!checkVictory()) {
+            for (Player player : this.players) {
+                /*---Roll dice---*/
           /*
           gui.activePlayer(this.players[i]);
           gui.startRollDiceAnimation();
           */
-          this.rollDice();
-          //gui.showDice(dice1, dice2)
+                this.rollDice();
+                //gui.showDice(dice1, dice2)
 
-          //TODO: Clarify bandit handling
+                //TODO: Clarify bandit handling
 
-          catanBoard.triggerBoard(dice1+dice2);
+                catanBoard.triggerBoard(dice1 + dice2);
 
-          //TODO: Clarify how gui will be notified of what player has now how may resources
+                //TODO: Clarify how gui will be notified of what player has now how may resources
 
-              /*---Trade, build and play special cards---*/
+                /*---Trade, build and play special cards---*/
 
-          //TODO: Clarify handling of that part as well
+                //TODO: Clarify handling of that part as well
+            }
         }
     }
-  }
 
-  public void gameEnd() {
-    //TODO: Clarify what this method should do
-  }
+    public void gameEnd() {
+        //TODO: Clarify what this method should do
+    }
 
-  private void rollDice() {
-    Random rand = new Random();
-    dice1 = rand.nextInt(6) + 1;
-    dice2 = rand.nextInt(6) + 1;
-  }
+    private void rollDice() {
+        Random rand = new Random();
+        dice1 = rand.nextInt(6) + 1;
+        dice2 = rand.nextInt(6) + 1;
+    }
 
-  private boolean checkVictory() {
-    for (Player player : this.players) {
+    private boolean checkVictory() {
+        for (Player player : this.players) {
         /*if (player.getVictoryPoints() >= this.victoryPoints) {
             return true;
         }*/
+        }
+        return false;
     }
-    return false;
-  }
 }
