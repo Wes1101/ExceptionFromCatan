@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -15,6 +16,7 @@ public class StartMenu extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    primaryStage.setResizable(false);
     //----------------------------------------------------------------------------------------
     //StartMenu
     //----------------------------------------------------------------------------------------
@@ -63,7 +65,7 @@ public class StartMenu extends Application {
     StartMenu.getChildren().addAll(redPane, pinkPane1, pinkPane2);
     StartMenu.setAlignment(Pos.CENTER);
 
-    Scene startScene = new Scene(StartMenu, 600, 400);
+    Scene startScene = new Scene(StartMenu, 1152, 648);
     //----------------------------------------------------------------------------------------
     //SinglePlayerMenu
     //----------------------------------------------------------------------------------------
@@ -140,6 +142,12 @@ public class StartMenu extends Application {
     );
     startButton.setPrefWidth(220);
 
+    // BackButton
+    Button SinglePlayerbackButton = new Button("Back");
+    SinglePlayerbackButton.setStyle(
+      "-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;"
+    );
+
     // Komponenten ins Layout
     Singleplayer
       .getChildren()
@@ -148,15 +156,76 @@ public class StartMenu extends Application {
         SpielerSliderPane,
         pinkPane,
         brownPane,
-        startButton
+        startButton,
+        SinglePlayerbackButton
       );
 
-    Scene SinglePlayerScene = new Scene(Singleplayer, 700, 500);
+    Scene SinglePlayerScene = new Scene(Singleplayer, 1152, 648);
 
     //----------------------------------------------------------------------------------------
     //MultiplayerStage
     //----------------------------------------------------------------------------------------
+    VBox Multiplayer = new VBox(25);
+    Multiplayer.setPadding(new Insets(40));
+    Multiplayer.setAlignment(Pos.CENTER);
+    Multiplayer.setStyle("-fx-background-color: #222;");
 
+    // Rot: MultiPlayer Text
+    Label multiplayerLabel = new Label("MultiPlayer");
+    multiplayerLabel.setStyle(
+      "-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;"
+    );
+    StackPane MultiPlayerLabelPane = new StackPane(multiplayerLabel);
+    MultiPlayerLabelPane.setPadding(new Insets(15));
+    MultiPlayerLabelPane.setStyle(
+      "-fx-border-color: #ff4444; -fx-border-width: 2;"
+    );
+
+    // Pink: Host Game Button
+    Button hostButton = new Button("Host Game");
+    hostButton.setStyle(
+      "-fx-font-size: 18px; -fx-background-color: #ff99ff; -fx-text-fill: #222;"
+    );
+    StackPane HostButtonPane = new StackPane(hostButton);
+    HostButtonPane.setPadding(new Insets(15));
+    HostButtonPane.setStyle("-fx-border-color: #ff99ff; -fx-border-width: 2;");
+
+    // Grün: Join Game Button
+    Button joinButton = new Button("Join Game");
+    joinButton.setStyle(
+      "-fx-font-size: 18px; -fx-background-color: #44ff44; -fx-text-fill: #222;"
+    );
+    StackPane greenPane = new StackPane(joinButton);
+    greenPane.setPadding(new Insets(15));
+    greenPane.setStyle("-fx-border-color: #44ff44; -fx-border-width: 2;");
+
+    // Blau: Eingabefeld für IP-Adresse
+    TextField ipField = new TextField();
+    ipField.setPromptText("IP-Adresse eingeben");
+    ipField.setStyle(
+      "-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;"
+    );
+    StackPane bluePane = new StackPane(ipField);
+    bluePane.setPadding(new Insets(15));
+    bluePane.setStyle("-fx-border-color: #66ccff; -fx-border-width: 2;");
+
+    Button MultiPlayerBackButton = new Button("Back");
+    MultiPlayerBackButton.setStyle(
+      "-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;"
+    );
+
+    // Alle Bereiche ins Layout einfügen
+    Multiplayer
+      .getChildren()
+      .addAll(
+        MultiPlayerLabelPane,
+        HostButtonPane,
+        greenPane,
+        bluePane,
+        MultiPlayerBackButton
+      );
+
+    Scene MultiPlayerScene = new Scene(Multiplayer, 1152, 648);
     //----------------------------------------------------------------------------------------
     //Settings
     //----------------------------------------------------------------------------------------
@@ -164,16 +233,37 @@ public class StartMenu extends Application {
     //----------------------------------------------------------------------------------------
     //Buttons
     //----------------------------------------------------------------------------------------
-    //start -> *
+    /*Eventhandler for Singleplayer Button*/
     btnEinzel.setOnAction(
       pressedEvent -> {
         primaryStage.setScene(SinglePlayerScene);
       }
     );
+    /*BackButtonSingleplayer*/
+    SinglePlayerbackButton.setOnAction(
+      pressedEvent -> {
+        primaryStage.setScene(startScene);
+      }
+    );
 
+    /*Eventhandler for Multiplayer Button*/
     btnMehr.setOnAction(
       pressedEvent -> {
-        //primaryStage.setScene(MultiPlayerScene)
+        primaryStage.setScene(MultiPlayerScene);
+      }
+    );
+    /*BackButtonSingleplayer*/
+    MultiPlayerBackButton.setOnAction(
+      pressedEvent -> {
+        primaryStage.setScene(startScene);
+      }
+    );
+    /*Eventhandler for Multiplayer Join Game Button saving the IP adress and giving it to ?*/
+    joinButton.setOnAction(
+      pressedEvent -> {
+        String ip = ipField.getText();
+        //@TODO Methoden aufruf bzw übergabe an Server/Client
+
       }
     );
 
