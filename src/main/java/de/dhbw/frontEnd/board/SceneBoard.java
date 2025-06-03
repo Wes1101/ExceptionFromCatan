@@ -12,7 +12,7 @@ public class SceneBoard extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     Parent root = FXMLLoader.load(
-            getClass().getResource("/de/dhbw/frontEnd/board/card-bar.fxml")
+      getClass().getResource("/de/dhbw/frontEnd/board/card-bar.fxml")
     );
 
     // Start propertys
