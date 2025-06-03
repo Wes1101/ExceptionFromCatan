@@ -18,9 +18,11 @@ public class GameController {
   private int dice1;
   private int dice2;
   private int victoryPoints;
+  private int playerAmount;
 
   public GameController(int playerAmount, int victoryPoints) {
     // this.players = new Player[playerAmount];
+    this.playerAmount = playerAmount;
     // for (int i = 0; i < playerAmount; i++) {
     //     players[i] = new Player();
     // }
@@ -29,6 +31,15 @@ public class GameController {
     // this.catanBoard = new CatanBoard();
     this.gameRound = 0;
     this.victoryPoints = victoryPoints;
+  }
+
+  /**
+   * Returns the number of players in the game.
+   *
+   * @return the player amount
+   */
+  public int getPlayerAmount() {
+    return playerAmount;
   }
 
   public void gameStart() {

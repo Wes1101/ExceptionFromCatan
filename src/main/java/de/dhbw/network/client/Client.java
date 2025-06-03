@@ -2,17 +2,32 @@ package de.dhbw.network.client;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * A simple socket client for connecting, sending, receiving, and closing a connection to a server.
+ * This class represents a simple socket client for connecting to a server,
+ * sending and receiving messages, and managing the connection lifecycle.
+ *
+ * @author David Willig
+ * @version 1.0
+ * @since 2024-06-09
  */
 @Slf4j
 public class Client {
-  private Socket socket;
-  private DataOutputStream out;
-  private DataInputStream in;
+  /**
+   * The socket used for client-server communication.
+   */
+  private Socket clientSocket = null;
 
+  /**
+   * Writer for sending messages to the server.
+   */
+  private PrintWriter out = null;
+
+  /**
+   * Constructs a new Client instance.
+   */
   public Client() {}
 
   /**
@@ -23,13 +38,24 @@ public class Client {
    * @throws IOException if an I/O error occurs when creating the socket
    */
   public void connect(final String host, final int port) throws IOException {
-    socket = new Socket(host, port);
-    socket.connect(new InetSocketAddress(host, port));
+    clientSocket = new Socket();
+    clientSocket.connect(new InetSocketAddress(host, port));
     log.info("Connected to {}:{}", host, port);
 
-    out =
-      new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-    in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+    try {
+      this.out =
+        new PrintWriter(
+          new OutputStreamWriter(
+            clientSocket.getOutputStream(),
+            StandardCharsets.UTF_8
+          ),
+          true
+        );
+    } catch (IOException e) {
+      log.error("Error initializing streams: {}", e.getMessage());
+    }
+
+    new Thread(new ServerHandler(clientSocket)).start();
   }
 
   /**
@@ -39,20 +65,20 @@ public class Client {
    */
   public void close() throws IOException {
     if (out != null) out.close();
-    if (in != null) in.close();
-    if (socket != null && !socket.isClosed()) {
-      socket.close();
+    if (clientSocket != null && !clientSocket.isClosed()) {
+      clientSocket.close();
       log.info(
         "Disconnected from {}:{}",
-        socket.getInetAddress(),
-        socket.getPort()
+        clientSocket.getInetAddress(),
+        clientSocket.getPort()
       );
     }
   }
 
   public static void main(String[] args) {
     try {
-      new Client().connect("localhost", 8080);
+      Client client = new Client();
+      client.connect("localhost", 8080);
     } catch (IOException e) {
       log.error("Error connecting to server: {}", e.getMessage());
     }
