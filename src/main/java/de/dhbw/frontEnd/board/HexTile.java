@@ -32,9 +32,9 @@ public class HexTile extends Group {
 
     // Klick Handler hextile
     this.setOnMouseClicked(
-        evt -> {
-          System.out.println("HexTile: q=" + q + ", r=" + r);
-        }
-      );
+            evt -> {
+              System.out.println("HexTile: q=" + q + ", r=" + r);
+            }
+    );
   }
 }

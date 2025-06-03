@@ -111,19 +111,19 @@ public class SceneBoardController implements Initializable {
   private void addHover(StackPane pane) {
     // Card Hover up
     pane.setOnMouseEntered(
-      e -> {
-        TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
-        tt.setToY(-10);
-        tt.play();
-      }
+            e -> {
+              TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
+              tt.setToY(-10);
+              tt.play();
+            }
     );
     // Card Hover down
     pane.setOnMouseExited(
-      e -> {
-        TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
-        tt.setToY(0);
-        tt.play();
-      }
+            e -> {
+              TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
+              tt.setToY(0);
+              tt.play();
+            }
     );
   }
 
