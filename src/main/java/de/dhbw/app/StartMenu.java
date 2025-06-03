@@ -242,6 +242,7 @@ public class StartMenu extends Application {
     /*BackButtonSingleplayer*/
     SinglePlayerbackButton.setOnAction(
       pressedEvent -> {
+        boolean ServerClient = false;
         primaryStage.setScene(startScene);
       }
     );
@@ -252,18 +253,26 @@ public class StartMenu extends Application {
         primaryStage.setScene(MultiPlayerScene);
       }
     );
-    /*BackButtonSingleplayer*/
+    /*BackButtonMultiplayer*/
     MultiPlayerBackButton.setOnAction(
       pressedEvent -> {
+        boolean ServerClient = false;
         primaryStage.setScene(startScene);
       }
     );
     /*Eventhandler for Multiplayer Join Game Button saving the IP adress and giving it to ?*/
     joinButton.setOnAction(
       pressedEvent -> {
+        boolean ServerClient = false;
         String ip = ipField.getText();
         //@TODO Methoden aufruf bzw übergabe an Server/Client
 
+      }
+    );
+    hostButton.setOnAction(
+      pressedEvent -> {
+        boolean ServerClient = true;
+        primaryStage.setScene(SinglePlayerScene);
       }
     );
 
