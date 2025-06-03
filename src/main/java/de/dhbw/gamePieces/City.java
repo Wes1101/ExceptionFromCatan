@@ -1,5 +1,11 @@
 package de.dhbw.gamePieces;
 
+import de.dhbw.player.Player;
+import de.dhbw.frontEnd.board.HexTile;
+import de.dhbw.resources.Resource;
+import de.dhbw.resources.Stone;
+import de.dhbw.resources.Wheat;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -17,10 +23,10 @@ public class City extends Building {
     }
 
     @Override
-    public Map<ResourceType, Integer> getBuildCost() {
-        Map<ResourceType, Integer> cost = new HashMap<>();
-        cost.put(ResourceType.STONE, 3);
-        cost.put(ResourceType.WHEAT, 2);
+    public Map<Class<? extends Resource>, Integer> getBuildCost() {
+        Map<Class<? extends Resource>, Integer> cost = new HashMap<>();
+        cost.put(Stone.class, 3);
+        cost.put(Wheat.class, 2);
         return cost;
     }
 

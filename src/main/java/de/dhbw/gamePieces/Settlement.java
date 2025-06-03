@@ -1,5 +1,9 @@
 package de.dhbw.gamePieces;
 
+import de.dhbw.frontEnd.board.HexTile;
+import de.dhbw.player.Player;
+import de.dhbw.resources.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,18 +16,17 @@ import java.util.Map;
  */
 
 public class Settlement extends Building {
-
     public Settlement(Player owner, HexTile location) {
         super(owner, location);
     }
 
     @Override
-    public Map<ResourceType, Integer> getBuildCost() {
-        Map<ResourceType, Integer> cost = new HashMap<>();
-        cost.put(ResourceType.WOOD, 1);
-        cost.put(ResourceType.BRICK, 1);
-        cost.put(ResourceType.SHEEP, 1);
-        cost.put(ResourceType.WHEAT, 1);
+    public Map<Class<? extends Resource>, Integer> getBuildCost() {
+        Map<Class<? extends Resource>, Integer> cost = new HashMap<>();
+        cost.put(Wood.class, 1);
+        cost.put(Brick.class, 1);
+        cost.put(Sheep.class, 1);
+        cost.put(Wheat.class, 1);
         return cost;
     }
 
