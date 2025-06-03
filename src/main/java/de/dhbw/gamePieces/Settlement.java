@@ -21,12 +21,12 @@ public class Settlement extends Building {
     }
 
     @Override
-    public Map<Class<? extends Resource>, Integer> getBuildCost() {
-        Map<Class<? extends Resource>, Integer> cost = new HashMap<>();
-        cost.put(Wood.class, 1);
-        cost.put(Brick.class, 1);
-        cost.put(Sheep.class, 1);
-        cost.put(Wheat.class, 1);
+    public Map<Resources, Integer> getBuildCost() {
+        Map<Resources, Integer> cost = new HashMap<>();
+        cost.put(Resources.WOOD, 1);
+        cost.put(Resources.BRICK, 1);
+        cost.put(Resources.SHEEP, 1);
+        cost.put(Resources.WHEAT, 1);
         return cost;
     }
 

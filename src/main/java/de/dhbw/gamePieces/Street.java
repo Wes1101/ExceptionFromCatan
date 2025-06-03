@@ -2,10 +2,8 @@ package de.dhbw.gamePieces;
 
 import de.dhbw.frontEnd.board.HexTile;
 import de.dhbw.player.Player;
+import de.dhbw.resources.Resources;
 
-import de.dhbw.resources.Brick;
-import de.dhbw.resources.Resource;
-import de.dhbw.resources.Wood;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +22,10 @@ public class Street extends Building {
     }
 
     @Override
-    public Map<Class<? extends Resource>, Integer> getBuildCost() {
-        Map<Class<? extends Resource>, Integer> cost = new HashMap<>();
-        cost.put(Wood.class, 1);
-        cost.put(Brick.class, 1);
+    public Map<Resources, Integer> getBuildCost() {
+        Map<Resources, Integer> cost = new HashMap<>();
+        cost.put(Resources.WOOD, 1);
+        cost.put(Resources.BRICK, 1);
         return cost;
     }
 
