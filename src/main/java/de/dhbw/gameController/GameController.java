@@ -83,11 +83,13 @@ public class GameController {
         int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
         for (int i = 0; i < this.players.length; i++) {
-        /*
-        gui.activePlayer(this.players[currentIndex]);
-         */
+            /*
+            gui.activePlayer(this.players[currentIndex]);
+            */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
-            //TODO: Build settlement and street
+
+            this.players[currentIndex].buyFirstSettlement();
+            this.players[currentIndex].buyFirstStreet();
 
             orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
             currentIndex = currentIndex - 1;
@@ -104,7 +106,10 @@ public class GameController {
             gui.activePlayer(this.players[currentIndex]);
             */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
-            //TODO: Build settlement and street
+
+            player.buyFirstSettlement();
+            player.buyFirstStreet();
+
             //TODO: recieve according ressources
         }
         minorGameState = MinorGameStates.NO_STATE;
@@ -144,7 +149,9 @@ public class GameController {
         server.activePlayer(this.players[currentIndex]);
          */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
-            //TODO: Build settlement and street
+
+            this.players[currentIndex].buyFirstSettlement();
+            this.players[currentIndex].buyFirstStreet();
 
             orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
             currentIndex = currentIndex - 1;
@@ -161,7 +168,8 @@ public class GameController {
             server.activePlayer(this.players[currentIndex]);
             */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
-            //TODO: Build settlement and street
+            player.buyFirstSettlement();
+            player.buyFirstStreet();
             //TODO: recieve according ressources
         }
         minorGameState = MinorGameStates.NO_STATE;
