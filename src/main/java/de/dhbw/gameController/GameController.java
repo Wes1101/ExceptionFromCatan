@@ -1,9 +1,9 @@
 /**
- * @Author: Fabian Weller
- * @Date: 22.05.2025
- * @Version: 0.1
  * GameController Class
  * Handles all logic/interaction between objects for playing the game.
+ *
+ * @author: Fabian Weller
+ * @version: 0.1
  */
 package de.dhbw.gameController;
 
