@@ -75,11 +75,11 @@ public class StartMenu extends Application {
     Singleplayer.setAlignment(Pos.CENTER);
 
     // Rot: Titel
-    Label titleSingleplayer = new Label("Catan Singleplayer");
-    titleSingleplayer.setStyle(
+    Label titlemodi = new Label("Catan Singleplayer");
+    titlemodi.setStyle(
       "-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;"
     );
-    StackPane SingleplayerTitlePane = new StackPane(titleSingleplayer);
+    StackPane SingleplayerTitlePane = new StackPane(titlemodi);
     SingleplayerTitlePane.setPadding(new Insets(15));
     SingleplayerTitlePane.setStyle(
       "-fx-border-color: #ff4444; -fx-border-width: 2;"
@@ -242,6 +242,7 @@ public class StartMenu extends Application {
     /*BackButtonSingleplayer*/
     SinglePlayerbackButton.setOnAction(
       pressedEvent -> {
+        titlemodi.setText("SinglePlayer Catan");
         boolean ServerClient = false;
         primaryStage.setScene(startScene);
       }
@@ -271,6 +272,7 @@ public class StartMenu extends Application {
     );
     hostButton.setOnAction(
       pressedEvent -> {
+        titlemodi.setText("Multiplayer Catan");
         boolean ServerClient = true;
         primaryStage.setScene(SinglePlayerScene);
       }
