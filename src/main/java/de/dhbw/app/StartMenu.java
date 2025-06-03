@@ -88,7 +88,7 @@ public class StartMenu extends Application {
     greenBox.setAlignment(Pos.CENTER_LEFT);
     Label greenLabel = new Label("Spieleranzahl");
     greenLabel.setStyle("-fx-text-fill: #44ff44; -fx-font-size: 16px;");
-    Slider spielerSlider = new Slider(2, 6, 4);
+    Slider spielerSlider = new Slider(3, 6, 1);
     spielerSlider.setMajorTickUnit(1);
     spielerSlider.setMinorTickCount(0);
     spielerSlider.setSnapToTicks(true);
@@ -106,11 +106,12 @@ public class StartMenu extends Application {
     pinkBox.setAlignment(Pos.CENTER_LEFT);
     Label pinkLabel = new Label("Siegpunktanzahl");
     pinkLabel.setStyle("-fx-text-fill: #ff88ff; -fx-font-size: 16px;");
-    Slider siegpunktSlider = new Slider(5, 20, 10);
-    siegpunktSlider.setMajorTickUnit(5);
-    siegpunktSlider.setMinorTickCount(4);
+    Slider siegpunktSlider = new Slider(6, 20, 1);
+    siegpunktSlider.setMajorTickUnit(2);
+    siegpunktSlider.setMinorTickCount(1);
     siegpunktSlider.setShowTickLabels(true);
     siegpunktSlider.setShowTickMarks(true);
+    siegpunktSlider.setSnapToTicks(true);
     pinkBox.getChildren().addAll(pinkLabel, siegpunktSlider);
     StackPane pinkPane = new StackPane(pinkBox);
     pinkPane.setPadding(new Insets(15));
@@ -121,9 +122,9 @@ public class StartMenu extends Application {
     brownBox.setAlignment(Pos.CENTER_LEFT);
     Label brownLabel = new Label("Max. abwerfbare Karten");
     brownLabel.setStyle("-fx-text-fill: #ffbb66; -fx-font-size: 16px;");
-    Slider abwerfenSlider = new Slider(1, 7, 4);
-    abwerfenSlider.setMajorTickUnit(1);
-    abwerfenSlider.setMinorTickCount(0);
+    Slider abwerfenSlider = new Slider(4, 10, 1);
+    abwerfenSlider.setMajorTickUnit(2);
+    abwerfenSlider.setMinorTickCount(1);
     abwerfenSlider.setSnapToTicks(true);
     abwerfenSlider.setShowTickLabels(true);
     abwerfenSlider.setShowTickMarks(true);
@@ -160,20 +161,21 @@ public class StartMenu extends Application {
     //Settings
     //----------------------------------------------------------------------------------------
 
-
     //----------------------------------------------------------------------------------------
     //Buttons
     //----------------------------------------------------------------------------------------
     //start -> *
-    btnEinzel.setOnAction(pressedEvent -> {
-    primaryStage.setScene(SinglePlayerScene);
-    });
+    btnEinzel.setOnAction(
+      pressedEvent -> {
+        primaryStage.setScene(SinglePlayerScene);
+      }
+    );
 
-    btnMehr.setOnAction(pressedEvent -> {
-    //primaryStage.setScene(MultiPlayerScene)
-    });
-
-
+    btnMehr.setOnAction(
+      pressedEvent -> {
+        //primaryStage.setScene(MultiPlayerScene)
+      }
+    );
 
     // Scene und Stage
     primaryStage.setScene(startScene);
