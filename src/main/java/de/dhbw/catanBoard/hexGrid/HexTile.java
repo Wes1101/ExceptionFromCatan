@@ -16,16 +16,11 @@ import java.util.Arrays;
 public class HexTile {
     private int diceNumber;
     private Resources resourceType;
-    private Node[] HexTileNodes = new Node[6];
+    private Node[] HexTileNodes;
     private boolean blocked;
-
-    //final int q;
-    //final int r;
 
     public HexTile(int diceNumber, Resources resourceType, Node[] nodes)
     {
-        //this.q = q;
-        //this.r = r;
         this.diceNumber = diceNumber;
         this.resourceType = resourceType;
         this.HexTileNodes = nodes;
