@@ -126,19 +126,19 @@ public class SceneBoardController implements Initializable {
   private void addHover(StackPane pane) {
     // Card Hover up
     pane.setOnMouseEntered(
-      e -> {
-        TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
-        tt.setToY(-10);
-        tt.play();
-      }
+            e -> {
+              TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
+              tt.setToY(-10);
+              tt.play();
+            }
     );
     // Card Hover down
     pane.setOnMouseExited(
-      e -> {
-        TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
-        tt.setToY(0);
-        tt.play();
-      }
+            e -> {
+              TranslateTransition tt = new TranslateTransition(HOVER_DURATION, pane);
+              tt.setToY(0);
+              tt.play();
+            }
     );
   }
 
@@ -178,23 +178,20 @@ public class SceneBoardController implements Initializable {
     fadeOut.play();
   }
 
-  // Map Tiles Board
   private void initBoard() {
-    // parameter
-    double size = 50; // Radius der Hex-Kachel
+    double size = 50;
     double width = Math.sqrt(3) * size;
     double height = 1.5 * size;
-    double offsetX = 400; // Mitten-Position in deinem Pane
+    double offsetX = 400;
     double offsetY = 300;
 
-    // Catan tile layout
     for (int q = -2; q <= 2; q++) {
       for (int r = Math.max(-2, -q - 2); r <= Math.min(2, -q + 2); r++) {
         double x = offsetX + (q * width) + (r * width / 2);
-        double y = offsetY + (r * height);
+        double y = offsetY - (r * height);
 
-        int token = 2 + (int) (Math.random() * 11); // 2–12
-        HexTile hex = new HexTile(x, y, size, token);
+        // jetzt die q/r-Werte an den HexTile-Konstruktor weitergeben:
+        HexTile hex = new HexTile(q, r, x, y, size);
         tile_layer.getChildren().add(hex);
       }
     }
