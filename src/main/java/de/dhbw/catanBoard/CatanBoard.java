@@ -245,4 +245,12 @@ public class CatanBoard {
         }
         return allResources;
     }
+
+    public Map<IntTupel, HexTile> getHexTiles() {
+      return this.board;
+    }
+
+    public int[][][] getGraph() {
+      return this.graph;
+    }
 }
