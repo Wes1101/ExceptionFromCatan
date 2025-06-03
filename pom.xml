@@ -139,19 +139,28 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Prettier -->
+            <!-- Spotless (Prettier) -->
             <plugin>
-                <groupId>com.hubspot.maven.plugins</groupId>
-                <artifactId>prettier-maven-plugin</artifactId>
-                <version>0.22</version>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>2.43.0</version>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
                         <goals>
-                            <goal>write</goal>
+                            <goal>check</goal>  <!-- Prüft auf Formatierungsfehler -->
+                            <goal>apply</goal>  <!-- Formatiert den Code automatisch -->
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <java>
+                        <googleJavaFormat>
+                            <version>1.17.0</version> <!-- Aktuelle Version für Java 17+ -->
+                        </googleJavaFormat>
+                        <!-- Optional: unbenutzte Imports automatisch entfernen -->
+                        <removeUnusedImports />
+                    </java>
+                </configuration>
             </plugin>
             <!-- SpotBugs -->
             <plugin>
