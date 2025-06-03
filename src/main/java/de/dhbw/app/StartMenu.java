@@ -160,6 +160,21 @@ public class StartMenu extends Application {
     //Settings
     //----------------------------------------------------------------------------------------
 
+
+    //----------------------------------------------------------------------------------------
+    //Buttons
+    //----------------------------------------------------------------------------------------
+    //start -> *
+    btnEinzel.setOnAction(pressedEvent -> {
+    primaryStage.setScene(SinglePlayerScene);
+    });
+
+    btnMehr.setOnAction(pressedEvent -> {
+    //primaryStage.setScene(MultiPlayerScene)
+    });
+
+
+
     // Scene und Stage
     primaryStage.setScene(startScene);
     primaryStage.setTitle("Catan Launcher");
