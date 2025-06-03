@@ -245,4 +245,7 @@ public class CatanBoard {
         }
         return allResources;
     }
+
+    public void triggerBoard(int i) {
+    }
 }
