@@ -26,12 +26,12 @@ public class Server {
   /**
    * The port number the server listens on.
    */
-  private static final int PORT = 8080;
+  public static final int DISCOVERY_PORT = 54321;
 
   /**
-   * The host address the server binds to.
+   * The port number the server listens on.
    */
-  private static final String HOST = "localhost";
+  private static int TCP_PORT = 0;
 
   /**
    * List of writers for all connected clients for broadcasting messages.
@@ -49,11 +49,44 @@ public class Server {
   public Server(GameController gameController) {
     this.gameController = gameController;
 
+    this.initServer();
+
+    // UDP-Thread für Discovery
+    new Thread(() -> {
+      try (DatagramSocket udpDiscSocket = new DatagramSocket(DISCOVERY_PORT)) {
+        log.info("Discovery UDP Socket started on port {}", DISCOVERY_PORT);
+
+        byte[] buf = new byte[256];
+        while (true) {
+          DatagramPacket packet = new DatagramPacket(buf, buf.length);
+          udpDiscSocket.receive(packet);
+          String received = new String(packet.getData(), 0, packet.getLength());
+          if ("DISCOVER_SERVER".equals(received)) {
+            String response = "SERVER_HERE:" + TCP_PORT;
+            byte[] responseBytes = response.getBytes();
+            DatagramPacket responsePacket = new DatagramPacket(
+              responseBytes, responseBytes.length, packet.getAddress(), packet.getPort()
+            );
+            udpDiscSocket.send(responsePacket);
+          }
+        }
+      } catch (IOException e) {
+        log.error("UDP Discovery Thread error: {}", e.getMessage());
+      }
+    }).start();
+  }
+
+  private static String getHostIP() throws UnknownHostException {
+    return InetAddress.getLocalHost().getHostAddress();
+  }
+
+  private void initServer() {
     try {
-      serverSocket = new ServerSocket(PORT, 15, InetAddress.getByName(HOST));
-      log.info("Server started on port {} and host {}", PORT, HOST);
+      serverSocket = new ServerSocket(0);
+      TCP_PORT = serverSocket.getLocalPort();
+      log.info("Server started on port ({}) and host ({})", TCP_PORT, getHostIP());
     } catch (IOException e) {
-      log.error("Error starting server on port {}: {}", PORT, e.getMessage());
+      log.error("Error starting server on port ({}): {}", TCP_PORT, e.getMessage());
     }
   }
 
