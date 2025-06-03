@@ -25,6 +25,15 @@ public class GameController {
     private MinorGameStates minorGameState;
     private final GameControllerTypes gameControllerType;
 
+    /**
+     * Creates new GameController
+     * Initializes all players, creates a Bank object and CatanBoard. Additionally, sets variables gameRound to 0 and
+     * victoryPoints and gameControllerType accordingly
+     *
+     * @param playerAmount Amount of players in game
+     * @param victoryPoints Victory points necessary to win a game
+     * @param gameControllerType Type, of how the game is played -> How the application should react to interaction
+     */
     public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
