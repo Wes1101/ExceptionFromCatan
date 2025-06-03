@@ -7,12 +7,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class HexTile extends Group {
-  private final int numberToken;
+  private final int q, r;
 
-  public HexTile(double centerX, double centerY, double size, int numberToken) {
-    this.numberToken = numberToken;
+  public HexTile(int q, int r, double centerX, double centerY, double size) {
+    this.q = q;
+    this.r = r;
 
-    // Creating polygon
+    // Polygon
     Polygon hex = new Polygon();
     for (int i = 0; i < 6; i++) {
       double angle = Math.toRadians(60 * i - 30);
@@ -20,21 +21,20 @@ public class HexTile extends Group {
       double y = centerY + size * Math.sin(angle);
       hex.getPoints().addAll(x, y);
     }
-
-    hex.setFill(Color.WHITE); // weißer Hintergrund
-    hex.setStroke(Color.GRAY); // grauer Rand
+    hex.setFill(Color.WHITE);
+    hex.setStroke(Color.GRAY);
     hex.setStrokeWidth(1);
 
-    Text label = new Text(String.valueOf(numberToken));
-    label.setFont(Font.font(18));
-    label.setX(centerX - label.getLayoutBounds().getWidth() / 2);
-    label.setY(centerY + label.getLayoutBounds().getHeight() / 4);
+    // q/r als UserData ans Polygon hängen (oder alternativ: an diese Group)
+    hex.setUserData(new int[] { q, r });
 
-    // fill group
-    getChildren().addAll(hex, label);
-  }
+    getChildren().add(hex);
 
-  public int getNumberToken() {
-    return numberToken;
+    // Klick Handler hextile
+    this.setOnMouseClicked(
+        evt -> {
+          System.out.println("HexTile: q=" + q + ", r=" + r);
+        }
+      );
   }
 }

@@ -68,8 +68,6 @@
                         <StackPane fx:id="board_stack" prefHeight="552.0" prefWidth="806.0">
                            <children>
                               <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0" />
-                              <Pane fx:id="road_layer" prefHeight="200.0" prefWidth="200.0" />
-                              <Pane fx:id="building_layer" prefHeight="200.0" prefWidth="200.0" />
                            </children>
                         </StackPane>
                      </content>

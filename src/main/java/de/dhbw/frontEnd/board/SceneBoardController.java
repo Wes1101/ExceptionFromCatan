@@ -15,8 +15,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import javafx.scene.input.ScrollEvent;
-
 public class SceneBoardController implements Initializable {
   @FXML
   private StackPane grain_group;
@@ -75,29 +73,16 @@ public class SceneBoardController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
-    scroll_pane.setPannable(false);
-
-    scroll_pane.addEventFilter(ScrollEvent.SCROLL, e -> {
-      double dy = e.getDeltaY();
-      //ignore null events
-      if (dy == 0) {
-        e.consume();   // Event schlucken, aber keinen Zoom
-        return;
+    // Map scroll effect
+    board_stack.setOnScroll(
+      e -> {
+        double zoomFactor = 1.1;
+        double delta = e.getDeltaY() > 0 ? zoomFactor : 1 / zoomFactor;
+        board_stack.setScaleX(board_stack.getScaleX() * delta);
+        board_stack.setScaleY(board_stack.getScaleY() * delta);
+        e.consume();
       }
-
-      double zoomFactor = 1.1;
-      if (dy > 0) {
-        // Reinzoomen
-        board_stack.setScaleX(board_stack.getScaleX() * zoomFactor);
-        board_stack.setScaleY(board_stack.getScaleY() * zoomFactor);
-      } else {
-        // Rauszoomen
-        board_stack.setScaleX(board_stack.getScaleX() / zoomFactor);
-        board_stack.setScaleY(board_stack.getScaleY() / zoomFactor);
-      }
-      e.consume();
-    });
+    );
 
     initBoard();
 
@@ -178,23 +163,20 @@ public class SceneBoardController implements Initializable {
     fadeOut.play();
   }
 
-  // Map Tiles Board
   private void initBoard() {
-    // parameter
-    double size = 50; // Radius der Hex-Kachel
+    double size = 50;
     double width = Math.sqrt(3) * size;
     double height = 1.5 * size;
-    double offsetX = 400; // Mitten-Position in deinem Pane
+    double offsetX = 400;
     double offsetY = 300;
 
-    // Catan tile layout
     for (int q = -2; q <= 2; q++) {
       for (int r = Math.max(-2, -q - 2); r <= Math.min(2, -q + 2); r++) {
         double x = offsetX + (q * width) + (r * width / 2);
-        double y = offsetY + (r * height);
+        double y = offsetY - (r * height);
 
-        int token = 2 + (int) (Math.random() * 11); // 2–12
-        HexTile hex = new HexTile(x, y, size, token);
+        // jetzt die q/r-Werte an den HexTile-Konstruktor weitergeben:
+        HexTile hex = new HexTile(q, r, x, y, size);
         tile_layer.getChildren().add(hex);
       }
     }
