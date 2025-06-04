@@ -20,7 +20,7 @@ public class SinglePlayerScene {
     root.setStyle("-fx-background-color: #222;");
     root.setAlignment(Pos.CENTER);
 
-    Label title = new Label("Catan Singleplayer");
+    Label title = new Label("Catan Settings");
     title.setStyle(
       "-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;"
     );

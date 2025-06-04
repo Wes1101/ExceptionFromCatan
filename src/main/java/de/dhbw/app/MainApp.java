@@ -17,6 +17,7 @@ public class MainApp extends Application {
     startMenu.setMultiPlayerScene(multiPlayer);
     singlePlayer.setStartMenuScene(startMenu);
     multiPlayer.setStartMenuScene(startMenu);
+    multiPlayer.setGameSettingsScene(singlePlayer);
 
     // Startszene anzeigen
     primaryStage.setScene(startMenu.getScene());

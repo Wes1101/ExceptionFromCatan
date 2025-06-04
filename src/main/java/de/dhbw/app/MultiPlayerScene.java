@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 public class MultiPlayerScene {
   private final Scene scene;
   private StartMenuScene startMenuScene;
+  private SinglePlayerScene singlePlayerScene;
 
   public MultiPlayerScene(Stage primaryStage) {
     VBox root = new VBox(25);
@@ -66,7 +67,9 @@ public class MultiPlayerScene {
     backButton.setOnAction(
       e -> primaryStage.setScene(startMenuScene.getScene())
     );
-    // Weitere Eventhandler nach Bedarf
+    hostButton.setOnAction(
+      e -> primaryStage.setScene(singlePlayerScene.getScene())
+    );
 
     this.scene = new Scene(root, 1152, 648);
   }
@@ -77,5 +80,9 @@ public class MultiPlayerScene {
 
   public void setStartMenuScene(StartMenuScene scene) {
     this.startMenuScene = scene;
+  }
+
+  public void setGameSettingsScene(SinglePlayerScene scene) {
+    this.singlePlayerScene = scene;
   }
 }
