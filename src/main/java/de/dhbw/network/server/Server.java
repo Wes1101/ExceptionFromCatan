@@ -54,20 +54,22 @@ public class Server {
     // UDP-Thread für Discovery
     new Thread(() -> {
       try (DatagramSocket udpDiscSocket = new DatagramSocket(DISCOVERY_PORT)) {
-        log.info("Discovery UDP Socket started on port {}", DISCOVERY_PORT);
+        log.info("Discovery UDP Socket started on UDB-Port {}", DISCOVERY_PORT);
 
         byte[] buf = new byte[256];
-        while (true) {
+        while (startLatch.getCount() > 0) {
           DatagramPacket packet = new DatagramPacket(buf, buf.length);
           udpDiscSocket.receive(packet);
+          log.info("Received UDP packet from {}", packet.getAddress().getHostAddress());
           String received = new String(packet.getData(), 0, packet.getLength());
           if ("DISCOVER_SERVER".equals(received)) {
-            String response = "SERVER_HERE:" + TCP_PORT;
+            String response = "GAME_SERVER:" + TCP_PORT;
             byte[] responseBytes = response.getBytes();
             DatagramPacket responsePacket = new DatagramPacket(
               responseBytes, responseBytes.length, packet.getAddress(), packet.getPort()
             );
             udpDiscSocket.send(responsePacket);
+            log.info("Discovery-Antwort an {} : {}", packet.getAddress(), packet.getPort());
           }
         }
       } catch (IOException e) {
@@ -118,7 +120,9 @@ public class Server {
         }
 
         if (clientSocket.isConnected()) {
-          new Thread(new ClientHandler(clientSocket, startLatch)).start();
+          new Thread(
+                  new ClientHandler(clientSocket, startLatch)
+          ).start();
         }
       } catch (IOException e) {
         log.error(e.getMessage());

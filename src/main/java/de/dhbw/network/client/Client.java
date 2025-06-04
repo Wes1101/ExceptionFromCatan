@@ -25,10 +25,13 @@ public class Client {
    */
   private PrintWriter out = null;
 
+  public static final int DISCOVERY_PORT = 54321;
+
   /**
    * Constructs a new Client instance.
    */
-  public Client() {}
+  public Client() {
+  }
 
   /**
    * Connects to a server at the specified host and port.
@@ -55,7 +58,10 @@ public class Client {
       log.error("Error initializing streams: {}", e.getMessage());
     }
 
-    new Thread(new ServerHandler(clientSocket)).start();
+    new Thread(
+            new ServerHandler(clientSocket)
+    ).start();
+    log.info("Server Handler started.");
   }
 
   /**
@@ -77,6 +83,10 @@ public class Client {
 
   public static void main(String[] args) {
     try {
+      new Thread(
+              new DiscoveryClient()
+      ).start();
+
       Client client = new Client();
       client.connect("localhost", 8080);
     } catch (IOException e) {
