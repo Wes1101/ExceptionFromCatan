@@ -30,8 +30,8 @@ public class GameController {
      * Initializes all players, creates a Bank object and CatanBoard. Additionally, sets variables gameRound to 0 and
      * victoryPoints and gameControllerType accordingly
      *
-     * @param playerAmount Amount of players in game
-     * @param victoryPoints Victory points necessary to win a game
+     * @param playerAmount       Amount of players in game
+     * @param victoryPoints      Victory points necessary to win a game
      * @param gameControllerType Type, of how the game is played -> How the application should react to interaction
      */
     public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
@@ -62,7 +62,7 @@ public class GameController {
         }
     }
 
-    private void startLocal(){
+    private void startLocal() {
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
@@ -124,7 +124,7 @@ public class GameController {
         minorGameState = MinorGameStates.NO_STATE;
     }
 
-    private void startServer(){
+    private void startServer() {
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
@@ -184,7 +184,7 @@ public class GameController {
         minorGameState = MinorGameStates.NO_STATE;
     }
 
-    private void startClient(){
+    private void startClient() {
 
     }
 
@@ -204,7 +204,7 @@ public class GameController {
         }
     }
 
-    private void mainLocal(){
+    private void mainLocal() {
         majorGameState = MajorGameStates.MAIN;
         while (!checkVictory()) {
             for (Player player : this.players) {
@@ -232,7 +232,7 @@ public class GameController {
         }
     }
 
-    private void mainServer(){
+    private void mainServer() {
         majorGameState = MajorGameStates.MAIN;
         while (!checkVictory()) {
             for (Player player : this.players) {
@@ -260,7 +260,7 @@ public class GameController {
         }
     }
 
-    private void mainClient(){
+    private void mainClient() {
 
     }
 
