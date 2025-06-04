@@ -1,5 +1,7 @@
 package de.dhbw.network.server;
 
+import lombok.Getter;
+
 /**
  * Represents a message exchanged between client and server,
  * containing a message type and associated data.
@@ -8,16 +10,18 @@ package de.dhbw.network.server;
  * @version 1.0
  * @since 2024-06-09
  */
+
+@Getter
 public class NetworkMessage {
   /**
    * The type of the network message.
    */
-  private Type type;
+  public NetMsgType type = NetMsgType.NO_TYPE;
 
   /**
    * The data payload of the message.
    */
-  private Object data;
+  public Object data;
 
   /**
    * Constructs a new NetworkMessage with the given type and data.
@@ -25,7 +29,7 @@ public class NetworkMessage {
    * @param type the type of the message
    * @param data the data payload
    */
-  public NetworkMessage(Type type, Object data) {
+  public NetworkMessage(NetMsgType type, Object data ) {
     this.type = type;
     this.data = data;
   }

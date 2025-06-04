@@ -1,8 +1,10 @@
 package de.dhbw.network.server;
 
+import com.google.gson.Gson;
 import de.dhbw.gameController.GameController;
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -50,32 +52,7 @@ public class Server {
     this.gameController = gameController;
 
     this.initServer();
-
-    // UDP-Thread für Discovery
-    new Thread(() -> {
-      try (DatagramSocket udpDiscSocket = new DatagramSocket(DISCOVERY_PORT)) {
-        log.info("Discovery UDP Socket started on UDB-Port {}", DISCOVERY_PORT);
-
-        byte[] buf = new byte[256];
-        while (startLatch.getCount() > 0) {
-          DatagramPacket packet = new DatagramPacket(buf, buf.length);
-          udpDiscSocket.receive(packet);
-          log.info("Received UDP packet from {}", packet.getAddress().getHostAddress());
-          String received = new String(packet.getData(), 0, packet.getLength());
-          if ("DISCOVER_SERVER".equals(received)) {
-            String response = "GAME_SERVER:" + TCP_PORT;
-            byte[] responseBytes = response.getBytes();
-            DatagramPacket responsePacket = new DatagramPacket(
-              responseBytes, responseBytes.length, packet.getAddress(), packet.getPort()
-            );
-            udpDiscSocket.send(responsePacket);
-            log.info("Discovery-Antwort an {} : {}", packet.getAddress(), packet.getPort());
-          }
-        }
-      } catch (IOException e) {
-        log.error("UDP Discovery Thread error: {}", e.getMessage());
-      }
-    }).start();
+    this.startDiscoveryThread();
   }
 
   private static String getHostIP() throws UnknownHostException {
@@ -90,6 +67,36 @@ public class Server {
     } catch (IOException e) {
       log.error("Error starting server on port ({}): {}", TCP_PORT, e.getMessage());
     }
+  }
+
+  private void startDiscoveryThread() {
+    new Thread(() -> {
+      try (DatagramSocket udpDiscSocket = new DatagramSocket(DISCOVERY_PORT)) {
+        log.info("Discovery UDP Socket started on UDB-Port {}", DISCOVERY_PORT);
+
+        byte[] buf = new byte[256];
+        while (startLatch.getCount() > 0) {
+          DatagramPacket packet = new DatagramPacket(buf, buf.length);
+          udpDiscSocket.receive(packet);
+          log.info("Received UDP packet from {}", packet.getAddress().getHostAddress());
+          String json = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
+          NetworkMessage received = new Gson().fromJson(json, NetworkMessage.class);
+          if (received.getType() == NetMsgType.DISCOVER_SERVER) {
+            NetworkMessage serverAddress = new NetworkMessage(NetMsgType.IS_SERVER, new InetSocketAddress(getHostIP(), TCP_PORT));
+            String response = new Gson().toJson(serverAddress);
+            log.info("NetworkMessage prepared: {}", response);
+            byte[] responseBytes = response.getBytes();
+            DatagramPacket responsePacket = new DatagramPacket(
+                    responseBytes, responseBytes.length, packet.getAddress(), packet.getPort()
+            );
+            udpDiscSocket.send(responsePacket);
+            log.info("Discovery-Antwort an {} : {}", packet.getAddress(), packet.getPort());
+          }
+        }
+      } catch (IOException e) {
+        log.error("UDP Discovery Thread error: {}", e.getMessage());
+      }
+    }).start();
   }
 
   /**
@@ -132,6 +139,7 @@ public class Server {
 
     log.info("All clients connected. Starting game...");
     startLatch.countDown();
+    log.info("Game started with {} players.", gameController.getPlayerAmount());
   }
 
   /**
@@ -166,8 +174,7 @@ public class Server {
     }
   }
 
-  public static void main(String[] args)
-    throws IOException, InterruptedException {
+  public static void main(String[] args) throws IOException, InterruptedException {
     Server server = new Server(new GameController(3, 0));
     server.initConnections();
   }

@@ -1,11 +1,13 @@
 package de.dhbw.network.client;
 
+import com.google.gson.Gson;
+import de.dhbw.network.server.NetMsgType;
+import de.dhbw.network.server.NetworkMessage;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Handles the discovery of servers in the local network using UDP broadcast.
@@ -34,31 +36,34 @@ public class DiscoveryClient implements Runnable {
             socket = new DatagramSocket();
             socket.setBroadcast(true);
 
-            String request = "DISCOVER_SERVER";
-            byte[] sendData = request.getBytes();
+            NetworkMessage request = new NetworkMessage(NetMsgType.DISCOVER_SERVER, null);
+            String jsonSend = new Gson().toJson(request);
+            log.info("NetworkMessage prepared:{} ", jsonSend);
+            byte[] sendData = jsonSend.getBytes();
+            DatagramPacket sendPacket;
 
             try {
-                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
+                sendPacket = new DatagramPacket(sendData, sendData.length,
                         InetAddress.getByName("255.255.255.255"), DISCOVERY_PORT);
                 socket.send(sendPacket);
-                log.info("Broadcast sent.");
+                log.info("Broadcast sent to 255.255.255.255");
             } catch (IOException e) {
                 log.error("Error sending broadcast: {}", e.getMessage());
                 return;
             }
 
-//            socket.setSoTimeout(2000);
+            socket.setSoTimeout(2000);
             try {
                 while (true) {
                     byte[] recvBuf = new byte[256];
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
                     socket.receive(receivePacket);
-                    String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
-                    if (message.startsWith("GAME_SERVER:")) {
-//                        String[] parts = message.split(":");
-//                        String serverIp = parts[1];
-//                        String serverPort = parts[2];
-                        log.info("Found game server at {}:{}");
+                    String jsonReceive = new String(receivePacket.getData(), 0, receivePacket.getLength(), StandardCharsets.UTF_8);
+                    NetworkMessage response = new Gson().fromJson(jsonReceive, NetworkMessage.class);
+                    if (response.getType() == NetMsgType.IS_SERVER) {
+                        InetSocketAddress serverAddress = (InetSocketAddress) response.getData();
+                        // TODO: Übergabe an Client class
+                        log.info("Found game server at {}:{}", serverAddress.getHostString(), serverAddress.getPort());
                     }
                 }
             } catch (SocketTimeoutException e) {
