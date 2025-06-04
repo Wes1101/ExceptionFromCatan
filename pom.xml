@@ -89,7 +89,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>de.dhbw/de.dhbw.app.StartMenu</mainClass>
+                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -105,7 +105,7 @@
                             <options>
                                 <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8001</option>
                             </options>
-                            <mainClass>de.dhbw/de.dhbw.app.StartMenu</mainClass>
+                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -187,7 +187,7 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.example.execptionfromcatan/de.dhbw.app.StartMenu</mainClass>
+                                    <mainClass>org.example.execptionfromcatan/de.dhbw.app.MainApp</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
