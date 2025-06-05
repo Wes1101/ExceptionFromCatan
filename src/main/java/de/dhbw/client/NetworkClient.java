@@ -1,4 +1,4 @@
-package de.dhbw.network.client;
+package de.dhbw.client;
 
 import java.io.*;
 import java.net.*;
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2024-06-09
  */
 @Slf4j
-public class Client {
+public class NetworkClient {
   /**
    * The socket used for client-server communication.
    */
@@ -30,7 +30,7 @@ public class Client {
   /**
    * Constructs a new Client instance.
    */
-  public Client() {
+  public NetworkClient() {
   }
 
   /**
@@ -87,7 +87,7 @@ public class Client {
               new DiscoveryClient()
       ).start();
 
-      Client client = new Client();
+      NetworkClient client = new NetworkClient();
       client.connect("localhost", 8080);
     } catch (IOException e) {
       log.error("Error connecting to server: {}", e.getMessage());

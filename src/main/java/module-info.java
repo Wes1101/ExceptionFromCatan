@@ -15,7 +15,9 @@ module de.dhbw {
   exports de.dhbw.frontEnd.menu ;
 
   exports de.dhbw.gameController ;
-  exports de.dhbw.network.client;
-  exports de.dhbw.network.server;
+  exports de.dhbw.client;
+  exports de.dhbw.server;
   exports de.dhbw.gamePieces;
+  exports de.dhbw.dto;
+  exports de.dhbw.network;
 }

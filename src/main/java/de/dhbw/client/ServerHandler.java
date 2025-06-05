@@ -1,4 +1,4 @@
-package de.dhbw.network.client;
+package de.dhbw.client;
 
 import java.io.BufferedReader;
 import java.io.IOException;

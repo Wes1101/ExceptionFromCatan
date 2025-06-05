@@ -1,4 +1,4 @@
-package de.dhbw.network.server;
+package de.dhbw.server;
 
 import com.google.gson.Gson;
 import de.dhbw.gameController.GameController;
@@ -8,6 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
+
+import de.dhbw.dto.NetMsgType;
+import de.dhbw.network.NetworkMessage;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -19,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2024-06-09
  */
 @Slf4j
-public class Server {
+public class NetworkServer {
   /**
    * The server socket used to accept client connections.
    */
@@ -48,7 +51,7 @@ public class Server {
    * Constructs a new Server and starts it on the specified port.
    * Initializes the ServerSocket and logs the server start.
    */
-  public Server(GameController gameController) {
+  public NetworkServer(GameController gameController) {
     this.gameController = gameController;
 
     this.initServer();
@@ -175,7 +178,7 @@ public class Server {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    Server server = new Server(new GameController(3, 0));
+    NetworkServer server = new NetworkServer(new GameController(3, 0));
     server.initConnections();
   }
 }

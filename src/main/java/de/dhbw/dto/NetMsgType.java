@@ -1,4 +1,4 @@
-package de.dhbw.network.server;
+package de.dhbw.dto;
 
 /**
  * Enumerates the possible types of network messages exchanged

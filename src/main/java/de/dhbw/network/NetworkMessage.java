@@ -1,5 +1,6 @@
-package de.dhbw.network.server;
+package de.dhbw.network;
 
+import de.dhbw.dto.NetMsgType;
 import lombok.Getter;
 
 /**

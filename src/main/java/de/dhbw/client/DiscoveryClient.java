@@ -1,8 +1,8 @@
-package de.dhbw.network.client;
+package de.dhbw.client;
 
 import com.google.gson.Gson;
-import de.dhbw.network.server.NetMsgType;
-import de.dhbw.network.server.NetworkMessage;
+import de.dhbw.dto.NetMsgType;
+import de.dhbw.network.NetworkMessage;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

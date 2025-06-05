@@ -1,4 +1,4 @@
-package de.dhbw.network.server;
+package de.dhbw.server;
 
 import java.io.*;
 import java.net.Socket;
