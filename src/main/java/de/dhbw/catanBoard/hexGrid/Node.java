@@ -1,4 +1,5 @@
 package de.dhbw.catanBoard.hexGrid;
+
 //import de.dhbw.gamePieces.Building;
 //import de.dhbw.player.Player;
 import lombok.Getter;
@@ -10,20 +11,18 @@ import lombok.Getter;
 
 @Getter
 public class Node {
-    //private Building building;
-    //private Player player;
-    public final int id;
+  //private Building building;
+  //private Player player;
+  public final int id;
 
-    public Node(int id)
-    {
-        this.id = id;
-        //this.building = null;
-        //this.player = null;
-    }
-
-//    public void setBuilding(/*Building building,*/ Player player)
-//    {
-//        //this.building = building;
-//        this.player = player;
-//    }
+  public Node(int id) {
+    this.id = id;
+    //this.building = null;
+    //this.player = null;
+  }
+  //    public void setBuilding(/*Building building,*/ Player player)
+  //    {
+  //        //this.building = building;
+  //        this.player = player;
+  //    }
 }

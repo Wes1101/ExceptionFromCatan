@@ -1,4 +1,3 @@
 package de.dhbw.catanBoard.Tiles;
 
-public class BrickTile {
-}
+public class BrickTile {}
