@@ -102,6 +102,15 @@ public class SinglePlayerScene {
       e -> primaryStage.setScene(startMenuScene.getScene())
     );
 
+    startButton.setOnAction(e ->{
+    boolean isServergame = startMenuScene.getServerGame();
+    int playerCount = (int) spielerSlider.getValue();
+    int winPoints = (int) siegpunktSlider.getValue();
+    int maxCardThrow = (int) abwerfenSlider.getValue();
+    System.out.println(isServergame + " " + playerCount + " " + winPoints + " " + maxCardThrow);
+/*@TODO Server bzw Lokales Game erstellen*/
+            });
+
     this.scene = new Scene(root, 1152, 648);
   }
 

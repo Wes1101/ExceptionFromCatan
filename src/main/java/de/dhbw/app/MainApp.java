@@ -7,6 +7,7 @@ public class MainApp extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+
     // Szenen-Objekte anlegen und mit Stage referenzieren
     StartMenuScene startMenu = new StartMenuScene(primaryStage);
     SinglePlayerScene singlePlayer = new SinglePlayerScene(primaryStage);
