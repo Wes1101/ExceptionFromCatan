@@ -1,7 +1,7 @@
- package de.dhbw.gamePieces;
+package de.dhbw.gamePieces;
 
-import de.dhbw.catanBoard.HexTile;
-
+import de.dhbw.frontEnd.board.HexTile;
+import lombok.Getter;
  /**
   * This Class is administrating the Bandit, which is a subclass of GamePieces.
   *
@@ -15,6 +15,8 @@ import de.dhbw.catanBoard.HexTile;
      public Bandit(HexTile location) {
          super(location);
      }
+
+     public void triggerBandit
 
      @Override
      public String getType () {
