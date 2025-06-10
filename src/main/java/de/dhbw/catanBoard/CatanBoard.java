@@ -4,6 +4,9 @@ import de.dhbw.catanBoard.hexGrid.Directions;
 import de.dhbw.catanBoard.hexGrid.HexTile;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
+import de.dhbw.gamePieces.Building;
+import de.dhbw.player.Bank;
+import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
 
 import java.util.*;
@@ -252,14 +255,6 @@ public class CatanBoard {
         return allResources;
     }
 
-    public Map<IntTupel, HexTile> getHexTiles() {
-      return this.board;
-    }
-
-    public int[][][] getGraph() {
-      return this.graph;
-    }
-
     public ArrayList<Integer> generateChipNumbers() {
       ArrayList<Integer> chips = new ArrayList<Integer>();
 
@@ -283,6 +278,29 @@ public class CatanBoard {
       }
 
       return chips;
+    }
+
+
+
+    public Map<IntTupel, HexTile> getHexTiles() {
+        return this.board;
+    }
+
+    public int[][][] getGraph() {
+        return this.graph;
+    }
+
+    public void triggerBoard(int diceNumber, Bank bank) {
+
+        for (IntTupel coords : hex_coords) {
+            if (diceNumber == board.get(coords).getDiceNumber()) {
+                board.get(coords).trigger(bank);
+            }
+        }
+    }
+
+    public void buildSettlement(Player player, int node, Building building) {
+        nodes[node].setBuilding(building);
     }
 
 }
