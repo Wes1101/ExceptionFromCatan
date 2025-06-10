@@ -6,15 +6,11 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.resources.Resources;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
+import java.util.*;
 
 
 //resourcen zuordnen - check
-//zahlen chips
+//zahlen chips - check
 
 //trigger board funktion um erwürfeltes hexfeld auszuführen
 // map: würfelzahl -> arrayList<hexagon> shoutout an LL
@@ -24,6 +20,8 @@ import java.util.Random;
 //methoden um zu bauen (siedlung, stadt, straße)
 
 //attribut für hexagons blocked - boolean - check
+
+//wasser tiles, Häfen
 
 
 
@@ -164,10 +162,18 @@ public class CatanBoard {
                 Directions.WEST
         };
 
+        ArrayList<Integer> numChips = generateChipNumbers();
+        Collections.shuffle(numChips);
+
         ArrayList<Resources> allResources = generateResourceTypes(hex_coords.length - 1);
         allResources.add(Resources.NONE);
-        Random rand = new Random();
-        System.out.println("Alle Ressourcen: " + allResources);
+        Collections.shuffle(allResources);
+
+        for (int i = 1; i < allResources.size(); i++) {
+            if (allResources.get(i) == Resources.NONE) {
+                numChips.add(i, 0);
+            }
+        }
 
         for (IntTupel coords : hex_coords) {
             Node[] HexNodes = new Node[6];
@@ -207,15 +213,15 @@ public class CatanBoard {
                 }
             }
 
-            int randomIndex = rand.nextInt(allResources.size());
-            board.put(coords, new HexTile(0, allResources.get(randomIndex), HexNodes));
-            allResources.remove(randomIndex);
+            board.put(coords, new HexTile(numChips.getFirst(), allResources.getFirst(), HexNodes));
+            numChips.removeFirst();
+            allResources.removeFirst();
         }
 
         System.out.println("Graph created");
         System.out.println("Anzahl Knoten: " + index);
         for (IntTupel coords : hex_coords) {
-            System.out.println("Hexagon " + coords.q() + "," + coords.r() + ": " + board.get(coords).getAllHexTileNodes());
+            System.out.println("Hexagon " + coords.q() + "," + coords.r() + ": " + board.get(coords).getDiceNumber() + ": " + board.get(coords).getResourceType());
         }
         for (int i = 0; i < graph.length; i++) {
             for (int j = 0; j < graph[i].length; j++) {
@@ -253,4 +259,30 @@ public class CatanBoard {
     public int[][][] getGraph() {
       return this.graph;
     }
+
+    public ArrayList<Integer> generateChipNumbers() {
+      ArrayList<Integer> chips = new ArrayList<Integer>();
+
+      Map<Integer, Integer> weights = new HashMap<>();
+      weights.put(2, 1);
+      weights.put(3, 2);
+      weights.put(4, 3);
+      weights.put(5, 4);
+      weights.put(6, 5);
+      weights.put(8, 5);
+      weights.put(9, 4);
+      weights.put(10, 3);
+      weights.put(11, 2);
+      weights.put(12, 1);
+
+      for (int key : weights.keySet()) {
+        int numChips = Math.toIntExact(Math.round(weights.get(key) * (hex_coords.length - 1) / 30.0));
+        for (int j = 0; j < numChips; j++) {
+          chips.add(key);
+        }
+      }
+
+      return chips;
+    }
+
 }
