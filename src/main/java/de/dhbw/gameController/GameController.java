@@ -23,10 +23,18 @@ public class GameController {
     private int gameRound;
     private int dice1;
     private int dice2;
+
+    @Getter
     private int victoryPoints;
-    private MajorGameStates majorGameState;
-    private MinorGameStates minorGameState;
+
+    @Getter
     private final GameControllerTypes gameControllerType;
+
+    @Getter
+    private MajorGameStates majorGameState;
+
+    @Getter
+    private MinorGameStates minorGameState;
 
     @Setter
     private SceneBoard gui;
