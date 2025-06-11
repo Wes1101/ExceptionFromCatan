@@ -53,8 +53,14 @@ public class GameController {
         for (int i = 0; i < playerAmount; i++) {
             players[i] = new Player();
         }
+
+        if (playerAmount > 4) {
+            this.catanBoard = new CatanBoard(4);
+        } else {
+            this.catanBoard = new CatanBoard(3);
+        }
+
         this.bank = new Bank(19);       // Sind eig immer 19 -> Konstroktor
-        //this.catanBoard = new CatanBoard();          //Macht sinn abstrakt zu haben??
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
