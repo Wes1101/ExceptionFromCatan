@@ -8,9 +8,10 @@ public class Human extends Player {
 
     private String name;
 
-    public Human(String name) {
+    public Human(String name, int id) {
         super(0);
         this.name = name;
+        this.id = id;
     }
 
     public void buyStreet() {
@@ -18,7 +19,7 @@ public class Human extends Player {
     }
 
     public void buySettlement() {
-
+        return;
     }
 
     public void buyCity() {

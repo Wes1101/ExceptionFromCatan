@@ -19,6 +19,7 @@ public class Settlement extends Building {
 
     public Settlement(Player owner) {
         super(owner);
+        buildingType = Buildings.SETTLEMENT;
     }
 
 //    @Override

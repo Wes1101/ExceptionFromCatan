@@ -1,7 +1,7 @@
 package de.dhbw.catanBoard;
 
 import de.dhbw.catanBoard.hexGrid.Directions;
-import de.dhbw.catanBoard.hexGrid.HexTile;
+import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.gamePieces.Building;
@@ -15,12 +15,12 @@ import java.util.*;
 //resourcen zuordnen - check
 //zahlen chips - check
 
-//trigger board funktion um erwürfeltes hexfeld auszuführen
-// map: würfelzahl -> arrayList<hexagon> shoutout an LL
+//trigger board funktion um erwürfeltes hexfeld auszuführen - check
+// map: würfelzahl -> arrayList<hexagon> shoutout an LL - check
 
 //alg für längste handelsstraße
 
-//methoden um zu bauen (siedlung, stadt, straße)
+//methoden um zu bauen (siedlung, stadt, straße) - check
 
 //attribut für hexagons blocked - boolean - check
 
@@ -30,7 +30,8 @@ import java.util.*;
 
 public class CatanBoard {
     IntTupel[] hex_coords;
-    Map<IntTupel, HexTile> board = new HashMap<>();
+    Map<IntTupel, Tile> board = new HashMap<>();
+    Map<Integer, List<Tile>> diceBoard = new HashMap<>();
     static Node[] nodes;
     int[][][] graph;
 
@@ -105,7 +106,7 @@ public class CatanBoard {
      * @param existenz 1 = Straße vorhanden, 0 = keine Straße
      * @param spieler  Index des Spielers, dem die Straße gehört, oder -1, wenn frei
      */
-    public void updateGraph(int i, int j, int existenz, int spieler) {
+    private void updateGraph(int i, int j, int existenz, int spieler) {
         graph[i][j][STREET] = existenz;
         graph[i][j][PLAYER] = spieler;
         graph[j][i][STREET] = existenz;
@@ -216,15 +217,20 @@ public class CatanBoard {
                 }
             }
 
-            board.put(coords, new HexTile(numChips.getFirst(), allResources.getFirst(), HexNodes));
-            numChips.removeFirst();
+            board.put(coords, new Tile(allResources.getFirst(), HexNodes));
             allResources.removeFirst();
+
+            if (!diceBoard.containsKey(numChips.getFirst())) {
+                diceBoard.put(numChips.getFirst(), new ArrayList<>());
+            }
+            diceBoard.get(numChips.getFirst()).add(board.get(coords));
+            numChips.removeFirst();
         }
 
         System.out.println("Graph created");
         System.out.println("Anzahl Knoten: " + index);
         for (IntTupel coords : hex_coords) {
-            System.out.println("Hexagon " + coords.q() + "," + coords.r() + ": " + board.get(coords).getDiceNumber() + ": " + board.get(coords).getResourceType());
+            System.out.println("Hexagon " + coords.q() + "," + coords.r() + ": " + board.get(coords).getResourceType());
         }
         for (int i = 0; i < graph.length; i++) {
             for (int j = 0; j < graph[i].length; j++) {
@@ -282,7 +288,7 @@ public class CatanBoard {
 
 
 
-    public Map<IntTupel, HexTile> getHexTiles() {
+    public Map<IntTupel, Tile> getHexTiles() {
         return this.board;
     }
 
@@ -292,15 +298,26 @@ public class CatanBoard {
 
     public void triggerBoard(int diceNumber, Bank bank) {
 
-        for (IntTupel coords : hex_coords) {
-            if (diceNumber == board.get(coords).getDiceNumber()) {
-                board.get(coords).trigger(bank);
-            }
+        List<Tile> tiles = diceBoard.get(diceNumber);
+        System.out.println(tiles);
+
+        for (Tile tile : tiles) {
+            tile.trigger(bank);
         }
     }
 
     public void buildSettlement(Player player, int node, Building building) {
         nodes[node].setBuilding(building);
+        nodes[node].setPlayer(player);
+    }
+
+    public void buildCity(Player player, int node, Building building) {
+        nodes[node].setBuilding(building);
+        nodes[node].setPlayer(player);
+    }
+
+    public void buildStreet(Player player, int node1, int node2) {
+        updateGraph(node1, node2, 1, player.getId());
     }
 
 }

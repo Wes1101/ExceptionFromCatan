@@ -9,6 +9,7 @@ import java.util.EnumMap;
 public abstract class Player {
 
     EnumMap<Resources, Integer> resources;
+    int id;
 
     public Player(int amountResources) {
         resources = new EnumMap<>(Resources.class);
