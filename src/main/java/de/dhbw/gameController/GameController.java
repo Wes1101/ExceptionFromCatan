@@ -8,6 +8,8 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+import lombok.Getter;
+import lombok.Setter;
 
 import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
