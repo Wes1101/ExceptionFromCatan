@@ -90,6 +90,7 @@ public class MultiPlayerScene {
     joinButton.setOnAction(e ->{
      String Ip = ipField.getText();
      String Name = nameField.getText();
+     /*@TODO Hier übergabe an Client bzw Serverlogin*/
     }
     );
 
