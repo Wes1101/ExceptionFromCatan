@@ -1,6 +1,5 @@
 package de.dhbw.gamePieces;
 
-import de.dhbw.frontEnd.board.HexTile;
 import de.dhbw.player.Player;
 import de.dhbw.resources.*;
 
@@ -15,9 +14,9 @@ import java.util.Map;
  *
  */
 
-public class Settlement extends Building {
-    public Settlement(Player owner, HexTile location) {
-        super(owner, location);
+public class Settlement extends Buildings {
+    public Settlement(Player owner) {
+        super(owner);
     }
     /**
      * Returns the resource costs required to build a settlement.
@@ -51,7 +50,7 @@ public class Settlement extends Building {
      */
     @Override
     public String toString() {
-        return "Settlement by " + owner.getName() + " at " + location;
+        return "Settlement by " + owner.getName();
     }
 
 }

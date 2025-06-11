@@ -10,11 +10,11 @@ import lombok.Getter;
   *
   */
 
- public class Bandit extends GamePieces{
+ public class Bandit {
      private HexTile location;
      private int [] coords;
 
-     @Override
+    
      public String getType () {
          return "Bandit";
      }

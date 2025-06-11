@@ -1,8 +1,9 @@
 package de.dhbw.gamePieces;
 
-import de.dhbw.frontEnd.board.HexTile;
 import lombok.Getter;
 import lombok.Setter;
+
+import de.dhbw.player.Player;
 
 /**
  * This Class is administrating all the game pieces.
@@ -15,12 +16,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public abstract class GamePieces {
-    protected HexTile location;
+public abstract class Buildings {
+    protected Player owner;
 
-    public GamePieces(HexTile location) {
-        this.location = location;
+    public Buildings(Player owner) {
+        this.owner = owner;
     }
+
+    //costBuilding
 
     public abstract String getType();
 }
