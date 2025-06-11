@@ -19,7 +19,11 @@ public class Settlement extends Building {
     public Settlement(Player owner, HexTile location) {
         super(owner, location);
     }
-
+    /**
+     * Returns the resource costs required to build a settlement.
+     *
+     * @return a map containing the number of each resource needed for settlement construction
+     */
     @Override
     public Map<Resources, Integer> getBuildCost() {
         Map<Resources, Integer> cost = new HashMap<>();
@@ -30,11 +34,21 @@ public class Settlement extends Building {
         return cost;
     }
 
+    /**
+     * Returns the type of this buildable object.
+     *
+     * @return the string "Settlement"
+     */
     @Override
     public String getType() {
         return "Settlement";
     }
 
+    /**
+     * Returns a string representation of the settlement, including the owner and location. For testing.
+     *
+     * @return a string describing who owns the settlement and where it is located
+     */
     @Override
     public String toString() {
         return "Settlement by " + owner.getName() + " at " + location;

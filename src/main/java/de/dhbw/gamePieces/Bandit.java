@@ -11,12 +11,8 @@ import lombok.Getter;
   */
 
  public class Bandit extends GamePieces{
-
-     public Bandit(HexTile location) {
-         super(location);
-     }
-
-     public void triggerBandit
+     private HexTile location;
+     private int [] coords;
 
      @Override
      public String getType () {
