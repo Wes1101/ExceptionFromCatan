@@ -1,5 +1,6 @@
 package de.dhbw.frontEnd.board;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -8,6 +9,8 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -19,6 +22,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polygon;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
@@ -135,7 +142,12 @@ public class SceneBoardController implements Initializable {
     setting_button.setOnMouseClicked(this::onOpenSetting);
     close_option_menue.setOnAction(this::onCloseSetting);
 
+    root.getChildrenUnmodifiable().stream()
+            .filter(n -> n instanceof Button)
+            .forEach(n -> n.toFront());
 
+// falls Buttons tiefer verschachtelt sind, oder in board_stack:
+    board_stack.lookupAll(".button").forEach(n -> ((javafx.scene.Node)n).toFront());
   }
 
   private void addHover(StackPane pane) {
@@ -199,14 +211,15 @@ public class SceneBoardController implements Initializable {
 
     Map<IntTupel, de.dhbw.catanBoard.hexGrid.HexTile> hexes = catanBoard.getHexTiles();
 
+
     System.out.println("Anzahl HexTiles: " + hexes.size());
     for (IntTupel tupel : hexes.keySet()) {
       System.out.println("Hex bei q=" + tupel.q() + ", r=" + tupel.r());
     }
 
-    double size    = 50;
-    double width   = Math.sqrt(3) * size;
-    double height  = 1.5  * size;
+    double size = 50;
+    double width = Math.sqrt(3) * size;
+    double height = 1.5 * size;
     double offsetX = 400;
     double offsetY = 300;
 
@@ -226,5 +239,19 @@ public class SceneBoardController implements Initializable {
 
       tile_layer.getChildren().add(frontendHex);
     }
+
+
+    int[][] nodeGrid = {
+            {52, 53, 24, 25, 26, 27, 28},   // Zeile 1
+            {50, 51, 22, 23, 6, 7, 8, 29, 30},  // Zeile 2
+            {48, 49, 20, 21, 5, 0, 1, 9, 10, 31, 32}, // Zeile 3
+            {47, 46, 19, 18, 4, 3, 2, 12, 11, 34, 33},  // Zeile 4
+            {45, 44, 17, 16, 15, 14, 13, 36, 35}, //Zeile 5
+            {43, 42, 41, 40, 39, 38, 37}, //Zeile 6
+    };
+
+
+
+
   }
 }

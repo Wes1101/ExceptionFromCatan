@@ -45,4 +45,5 @@ public class HexTile extends Group {
             System.out.println("HexTile: q=" + q + ", r=" + r + ", Res=" + resourceName)
     );
   }
+
 }
