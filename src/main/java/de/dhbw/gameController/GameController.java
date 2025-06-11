@@ -133,7 +133,7 @@ public class GameController {
             player.buyFirstSettlement();
             player.buyFirstStreet();
 
-            //TODO: recieve according ressources
+            //TODO: recieve according ressources: @Johann
         }
         minorGameState = MinorGameStates.NO_STATE;
     }
