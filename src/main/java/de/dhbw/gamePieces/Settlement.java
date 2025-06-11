@@ -18,7 +18,7 @@ public class Settlement extends Building {
 
     public Settlement(Player owner) {
         super(owner);
-        buildingType = Buildings.SETTLEMENT;
+        buildingType = BuildingTypes.SETTLEMENT;
     }
     /**
      * Returns the resource costs required to build a settlement.
@@ -34,16 +34,4 @@ public class Settlement extends Building {
         cost.put(Resources.WHEAT, 1);
         return cost;
     }
-
-
-    /**
-     * Returns a string representation of the settlement, including the owner and location. For testing.
-     *
-     * @return a string describing who owns the settlement and where it is located
-     */
-    @Override
-    public String toString() {
-        return "Settlement by " + owner.getName();
-    }
-
 }

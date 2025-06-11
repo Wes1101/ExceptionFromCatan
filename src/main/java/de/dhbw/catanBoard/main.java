@@ -33,6 +33,11 @@ public class main {
             }
             System.out.println();
         }
+
+        Settlement settlement = new Settlement(player1);
+        System.out.println(settlement.getBuildCost());
+
+
     }
 }
 

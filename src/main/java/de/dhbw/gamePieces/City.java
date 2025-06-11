@@ -1,7 +1,6 @@
 package de.dhbw.gamePieces;
 
 import de.dhbw.player.Player;
-import de.dhbw.frontEnd.board.HexTile;
 import de.dhbw.resources.Resources;
 
 import java.util.Map;
@@ -16,8 +15,9 @@ import java.util.HashMap;
  */
 
 public class City extends Building {
-    public City(Player owner, HexTile location) {
-        super(owner, location);
+    public City(Player owner) {
+        super(owner);
+        buildingType = BuildingTypes.CITY;
     }
 
     @Override
@@ -26,10 +26,5 @@ public class City extends Building {
         cost.put(Resources.STONE, 3);
         cost.put(Resources.WHEAT, 2);
         return cost;
-    }
-
-    @Override
-    public String getType() {
-        return "City";
     }
 }

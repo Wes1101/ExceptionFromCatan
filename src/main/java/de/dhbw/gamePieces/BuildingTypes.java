@@ -1,6 +1,6 @@
 package de.dhbw.gamePieces;
 
-public enum Buildings {
+public enum BuildingTypes {
     SETTLEMENT,
     CITY,
     STREET

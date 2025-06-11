@@ -1,6 +1,5 @@
 package de.dhbw.gamePieces;
 
-import de.dhbw.frontEnd.board.HexTile;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
 
@@ -18,8 +17,9 @@ import java.util.Map;
 
 
 public class Street extends Building {
-    public Street(Player owner, HexTile location) {
-        super(owner, location);
+    public Street(Player owner) {
+        super(owner);
+        buildingType = BuildingTypes.STREET;
     }
     /**
      * Returns the resource costs required to build a street.
@@ -33,24 +33,4 @@ public class Street extends Building {
         cost.put(Resources.BRICK, 1);
         return cost;
     }
-    /**
-     * Returns the type of this buildable object.
-     *
-     * @return the string "Street"
-     */
-    @Override
-    public String getType() {
-        return "Street";
-    }
-
-    /**
-     * Returns a string representation of the street, including the owner and location. For testing.
-     *
-     * @return a string describing who owns the street and where it is located
-     */
-    @Override
-    public String toString() {
-        return "Street owned by " + owner.getName() + " at " + location;
-    }
-
 }
