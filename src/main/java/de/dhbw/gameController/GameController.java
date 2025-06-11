@@ -11,6 +11,7 @@ import java.util.Random;
 import lombok.Getter;
 import lombok.Setter;
 
+import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.bank.Bank;
@@ -26,6 +27,9 @@ public class GameController {
     private MajorGameStates majorGameState;
     private MinorGameStates minorGameState;
     private final GameControllerTypes gameControllerType;
+
+    @Setter
+    private SceneBoard gui;
 
     /**
      * Creates new GameController
@@ -71,12 +75,10 @@ public class GameController {
         int[] playerDiceNumber = new int[this.players.length];
 
         for (int i = 0; i < this.players.length; i++) {
-            /*
-            gui.activePlayer(this.players[i]);
+            gui.activePlayer(this.players[i].getName());
             gui.startRollDiceAnimation();
-             */
             this.rollDice();
-            //gui.showDice(dice1, dice2)
+            gui.showDice(dice1, dice2);
             playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
 
@@ -94,9 +96,7 @@ public class GameController {
         int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
         for (int i = 0; i < this.players.length; i++) {
-            /*
             gui.activePlayer(this.players[currentIndex]);
-            */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             this.players[currentIndex].buyFirstSettlement();
@@ -113,9 +113,7 @@ public class GameController {
 
         //place second settlement and get according resources
         for (Player player : this.players) {
-            /*
             gui.activePlayer(this.players[currentIndex]);
-            */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             player.buyFirstSettlement();
@@ -212,12 +210,10 @@ public class GameController {
             for (Player player : this.players) {
                 /*---Roll dice---*/
                 minorGameState = MinorGameStates.DICE;
-                /*
                 gui.activePlayer(this.players[i]);
                 gui.startRollDiceAnimation();
-                */
                 this.rollDice();
-                //gui.showDice(dice1, dice2)
+                gui.showDice(dice1, dice2)
 
                 //TODO: Clarify bandit handling
 
