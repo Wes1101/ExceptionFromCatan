@@ -1,176 +1,323 @@
 package de.dhbw.catanBoard;
 
-import de.dhbw.resources.Wood;
+import de.dhbw.catanBoard.hexGrid.Directions;
+import de.dhbw.catanBoard.hexGrid.Tile;
+import de.dhbw.catanBoard.hexGrid.IntTupel;
+import de.dhbw.catanBoard.hexGrid.Node;
+import de.dhbw.gamePieces.Building;
+import de.dhbw.player.Bank;
+import de.dhbw.player.Player;
+import de.dhbw.resources.Resources;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+
+//resourcen zuordnen - check
+//zahlen chips - check
+
+//trigger board funktion um erwürfeltes hexfeld auszuführen - check
+// map: würfelzahl -> arrayList<hexagon> shoutout an LL - check
+
+//alg für längste handelsstraße
+
+//methoden um zu bauen (siedlung, stadt, straße) - check
+
+//attribut für hexagons blocked - boolean - check
+
+//wasser tiles, Häfen
+
+
 
 public class CatanBoard {
-    private final int[][][] graph;
-    private final Node[] nodes;
-    private final HexTile[] hexTiles;
+    IntTupel[] hex_coords;
+    Map<IntTupel, Tile> board = new HashMap<>();
+    Map<Integer, List<Tile>> diceBoard = new HashMap<>();
+    static Node[] nodes;
+    int[][][] graph;
 
-    // Statische Map mit Richtungen
-    static Map<String, int[]> directionMap = new HashMap<>();
+    private static final int STREET = 0;
+    private static final int PLAYER = 1;
 
-    // Statischer Initialisierungsblock, um die Map zu füllen
-    static {
-        directionMap.put("E",  new int[]{1, 0});
-        directionMap.put("NE", new int[]{1, -1});
-        directionMap.put("NW", new int[]{0, -1});
-        directionMap.put("W",  new int[]{-1, 0});
-        directionMap.put("SW", new int[]{-1, 1});
-        directionMap.put("SE", new int[]{0, 1});
+    /**
+     * Konstruktor: Initialisiert das CatanBoard mit dem gegebenen Radius.
+     * Ruft dabei die Methoden initNodes, initGraph, initHexCoords und createGraph auf.
+     *
+     * @param radius Radius des Spielfelds in Hex-Ringen
+     */
+    public CatanBoard(int radius) {
+        initNodes(radius);
+        initGraph();
+        initHexCoords(radius);
+        createGraph(radius);
     }
 
-    private static final int EXISTENZ = 0;
-    private static final int SPIELER = 1;
-
-    public CatanBoard(int dimension) {
-        int numNodes = (int) (6 * dimension + 6 * (Math.pow(2, dimension) - 2));
-        System.out.println("Ecken: " + numNodes);
-        this.nodes = new Node[numNodes];
-        initializeNodes(numNodes);
-
-        this.graph = new int[numNodes][numNodes][2];
-        initializeGraph();
-
-        int numHexTiles = 1 + 3 * dimension * (dimension + 1);
-        System.out.println("Hexecken: " + numHexTiles);
-        this.hexTiles = new HexTile[numHexTiles];
-        generateHexSpiral(numHexTiles, this.nodes);
+    /**
+     * Rekursive Berechnung der Gesamtzahl der benötigten Knoten (Nodes)
+     * für einen gegebenen Radius n.
+     *
+     * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
+     * @return Gesamtzahl der Nodes für diesen Radius
+     */
+    private static int calcNumNodes(int n) {
+        if (n <= 0) {
+            return 0;
+        }
+        return calcNumNodes(n - 1) + (2 * n - 1) * 6;
     }
 
-    public void generateHexSpiral(int n, Node[] nodes) {
-        String[] directions = {"E", "NE", "NW", "W", "SW", "SE"};
-
-        // Zentrum
-        this.hexTiles[0] = new HexTile(0, 0, 0, "wood", getNodesForHex(0, 0, nodes));
-        this.hexTiles[1] = new HexTile(directionMap.get("SW")[0], directionMap.get("SW")[1], 0, "wood",
-                getNodesForHex(directionMap.get("SW")[0], directionMap.get("SW")[1], nodes));
-        this.hexTiles[2] = new HexTile(directionMap.get("SE")[0], directionMap.get("SE")[1], 0, "wood",
-                getNodesForHex(directionMap.get("SE")[0], directionMap.get("SE")[1], nodes));
-        this.hexTiles[3] = new HexTile(directionMap.get("E")[0], directionMap.get("E")[1], 0, "wood",
-                getNodesForHex(directionMap.get("E")[0], directionMap.get("E")[1], nodes));
-        this.hexTiles[4] = new HexTile(directionMap.get("NE")[0], directionMap.get("NE")[1], 0, "wood",
-                getNodesForHex(directionMap.get("NE")[0], directionMap.get("NE")[1], nodes));
-        this.hexTiles[5] = new HexTile(directionMap.get("NW")[0], directionMap.get("NW")[1], 0, "wood",
-                getNodesForHex(directionMap.get("NW")[0], directionMap.get("NW")[1], nodes));
-        this.hexTiles[6] = new HexTile(directionMap.get("W")[0], directionMap.get("W")[1], 0, "wood",
-                getNodesForHex(directionMap.get("W")[0], directionMap.get("W")[1], nodes));
-
-        int index = 7;
-        int layer = 1;
-
-        while (index < n) {
-            int q = -1;
-            int r = 1;
-            for (int i = 0; i < layer; i++) {
-                q += directionMap.get("SW")[0];
-                r += directionMap.get("SW")[1];
-            }
-
-            for (String dir : directions) {
-                for (int step = 0; step <= layer; step++) {
-                    if (index >= n) break;
-
-                    this.hexTiles[index] = new HexTile(q, r, 0, "wood", getNodesForHex(q, r, nodes));
-                    index++;
-
-                    q += directionMap.get(dir)[0];
-                    r += directionMap.get(dir)[1];
-                }
-            }
-
-            layer++;
-        }
-
-        for (int i = 0; i < this.hexTiles.length; i++) {
-            HexTile h = this.hexTiles[i];
-            System.out.println("Hex " + i + ": (" + h.q + ", " + h.r + ")");
-        }
-    }
-
-    public static Node[] getNodesForHex(int q, int r, Node[] nodes) {
-        Node[] hexNodes = new Node[6];
-
-        for (int i = 0; i < 6; i++) {
-            int nodeId = calculateNodeId(q, r, i);  // Du musst dies passend zur ID-Logik implementieren
-            hexNodes[i] = nodes[nodeId];
-        }
-
-        return hexNodes;
-    }
-
-    public static int calculateNodeId(int q, int r, int i) {
-        // 1) Ring-Index d
-        int z = -q - r;
-        int d = (Math.abs(q) + Math.abs(r) + Math.abs(z)) / 2;
-
-        // 2) Position im Spiral-Durchlauf
-        int firstInRing = d == 0 ? 0 : 1 + 3 * (d - 1) * d;
-        int offsetInRing;
-        if      (r ==  d)          offsetInRing =  d - q;
-        else if (q + r ==  d)      offsetInRing = 2 * d + q;
-        else if (q ==  d)          offsetInRing = 4 * d - r;
-        else if (r == -d)          offsetInRing = 5 * d - q;
-        else                       offsetInRing = 3 * d - r;
-        int tileIndex = firstInRing + offsetInRing;
-
-        // 3a) Zentrum
-        if (tileIndex == 0) {
-            return i;  // (0,0): 0..5
-        }
-
-        // 3b) Geteilte Ecken i=0,1 → Nachbar-Rekursion
-        int[][] neigh = {{ 1,-1},{ 0,-1},{-1, 0},{-1, 1},{ 0, 1},{ 1, 0}};
-        if (i < 2) {
-            int nq = q + neigh[i][0], nr = r + neigh[i][1];
-            int ni = (i == 0 ? 3 : 4);  // teilt Ecke 3 oder 4 im Nachbar
-            return calculateNodeId(nq, nr, ni);
-        }
-
-        // 3c) Neue Ecken i=2..5
-        int baseNode = 6 + 4 * (tileIndex - 1);
-        return baseNode + (i - 2);
-    }
-
-
-
-
-    private void initializeNodes(int numNodes) {
+    /**
+     * Initialisiert das statische Node-Array mit der Anzahl aller Nodes für den
+     * angegebenen Radius. Jeder Node erhält eine eindeutige ID.
+     *
+     * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
+     */
+    public static void initNodes(int n) {
+        int numNodes = calcNumNodes(n);
+        nodes = new Node[numNodes];
         for (int i = 0; i < numNodes; i++) {
-            this.nodes[i] = new Node(i);
+            nodes[i] = new Node(i);
+            System.out.println("Node " + i + " created");
         }
     }
 
-    private void initializeGraph() {
-        for (int i = 0; i < this.nodes.length; i++) {
-            for (int j = 0; j < this.nodes.length; j++) {
-                graph[i][j][EXISTENZ] = 0; // keine Straße
-                graph[i][j][SPIELER] = -1; // kein Besitzer
-            }
-        }
-    }
-
-    public void addRoad(int from, int to, int playerId) {
-        graph[from][to][EXISTENZ] = 1;
-        graph[to][from][EXISTENZ] = 1;
-        graph[from][to][SPIELER] = playerId;
-        graph[to][from][SPIELER] = playerId;
-    }
-
-    public void printGraph() {
+    /**
+     * Initialisiert den Straßen-Graphen ohne vorhandene Straßen.
+     * Setzt für jedes Paar (i,j):
+     *   graph[i][j][STREET]  = 0 (keine Straße)
+     *   graph[i][j][PLAYER]  = -1 (kein Besitzer)
+     */
+    private void initGraph() {
+        graph = new int[nodes.length][nodes.length][2];
         for (int i = 0; i < nodes.length; i++) {
             for (int j = 0; j < nodes.length; j++) {
-                if (graph[i][j][EXISTENZ] == 1) {
-                    System.out.println("Straße zwischen " + i + " und " + j +
-                            " gehört Spieler " + graph[i][j][SPIELER]);
+                graph[i][j][STREET] = 0;
+                graph[i][j][PLAYER] = -1;
+            }
+        }
+    }
+
+    /**
+     * Aktualisiert den Graphen, um das Vorhandensein einer Straße und die Spielerzugehörigkeit
+     * zwischen zwei Knoten (i und j) zu setzen oder zu entfernen. Die Operation wird in beide
+     * Richtungen durchgeführt, da der Graph ungerichtet ist.
+     *
+     * @param i        ID des ersten Knotens
+     * @param j        ID des zweiten Knotens
+     * @param existenz 1 = Straße vorhanden, 0 = keine Straße
+     * @param spieler  Index des Spielers, dem die Straße gehört, oder -1, wenn frei
+     */
+    private void updateGraph(int i, int j, int existenz, int spieler) {
+        graph[i][j][STREET] = existenz;
+        graph[i][j][PLAYER] = spieler;
+        graph[j][i][STREET] = existenz;
+        graph[j][i][PLAYER] = spieler;
+    }
+
+    /**
+     * Berechnet alle axialen Koordinaten (q,r) für HexTiles innerhalb des gegebenen Radius
+     * und füllt das Array hex_coords. Gültige Koordinaten erfüllen |q + r| < radius.
+     *
+     * @param radius Radius des Spielfelds in Hex-Ringen
+     */
+    private void initHexCoords(int radius) {
+        hex_coords = new IntTupel[calcNumHexTiles(radius)];
+        int index = 0;
+        for (int i = -radius + 1; i < radius; i++) {
+            for (int j = -radius + 1; j < radius; j++) {
+                if (Math.abs(i + j) < radius) {
+                    hex_coords[index] = new IntTupel(j, i);
+                    index++;
                 }
             }
         }
+    }
+
+    /**
+     * Rekursive Berechnung der Gesamtzahl der HexTiles für einen gegebenen Radius.
+     *
+     * @param n Radius des Spielfelds (Anzahl der Hex-Ringe)
+     * @return Anzahl aller HexTiles
+     */
+    private static int calcNumHexTiles(int n) {
+        if (n == 1) {
+            return 1;
+        }
+        return calcNumHexTiles(n - 1) + 6 * (n - 1);
+    }
+
+    /**
+     * Erzeugt alle HexTiles auf dem Spielfeld und verteilt dabei zufällig die Ressourcentypen.
+     * Verbindet außerdem die zugehörigen Knoten (Nodes) im Straßen-Graphen.
+     *
+     * Vorgehen:
+     * 1. Erzeuge eine Liste aller benötigten Ressourcen (ohne Wüste) und füge dann eine Wüste hinzu.
+     * 2. Für jede Koordinate in hex_coords:
+     *    a) Lege vorhandene Eckknoten anhand von Nachbar-HexTiles fest.
+     *    b) Weise allen noch leeren Eckknoten einen freien Node zu und verbinde benachbarte Knoten im Graphen.
+     *    c) Wähle zufällig eine Ressource aus und erstelle das HexTile.
+     *
+     * @param radius Radius des Spielfelds (wird nicht aktiv in dieser Methode verwendet)
+     */
+    private void createGraph(int radius) {
+        int index = 0;
+        Directions[] DIR = {
+                Directions.NORTH_WEST,
+                Directions.NORTH_EAST,
+                Directions.WEST
+        };
+
+        ArrayList<Integer> numChips = generateChipNumbers();
+        Collections.shuffle(numChips);
+
+        ArrayList<Resources> allResources = generateResourceTypes(hex_coords.length - 1);
+        allResources.add(Resources.NONE);
+        Collections.shuffle(allResources);
+
+        for (int i = 1; i < allResources.size(); i++) {
+            if (allResources.get(i) == Resources.NONE) {
+                numChips.add(i, 0);
+            }
+        }
+
+        for (IntTupel coords : hex_coords) {
+            Node[] HexNodes = new Node[6];
+
+            for (Directions dir : DIR) {
+                IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
+                if (board.containsKey(neighbor)) {
+                    switch (dir) {
+                        case NORTH_WEST:
+                            HexNodes[5] = board.get(neighbor).getHexTileNodes()[3];
+                            HexNodes[0] = board.get(neighbor).getHexTileNodes()[2];
+                            break;
+                        case NORTH_EAST:
+                            HexNodes[0] = board.get(neighbor).getHexTileNodes()[4];
+                            HexNodes[1] = board.get(neighbor).getHexTileNodes()[3];
+                            break;
+                        case WEST:
+                            HexNodes[4] = board.get(neighbor).getHexTileNodes()[2];
+                            HexNodes[5] = board.get(neighbor).getHexTileNodes()[1];
+                            break;
+                    }
+                }
+            }
+
+            for (int i = 0; i < HexNodes.length; i++) {
+                if (HexNodes[i] == null) {
+                    HexNodes[i] = nodes[index];
+                    int nextIndex = (i + 1 + HexNodes.length) % HexNodes.length;
+                    if (HexNodes[nextIndex] != null) {
+                        updateGraph(index, HexNodes[nextIndex].id, 1, -1);
+                    }
+                    int prevIndex = (i - 1 + HexNodes.length) % HexNodes.length;
+                    if (HexNodes[prevIndex] != null) {
+                        updateGraph(index, HexNodes[prevIndex].id, 1, -1);
+                    }
+                    index++;
+                }
+            }
+
+            board.put(coords, new Tile(allResources.getFirst(), HexNodes));
+            allResources.removeFirst();
+
+            if (!diceBoard.containsKey(numChips.getFirst())) {
+                diceBoard.put(numChips.getFirst(), new ArrayList<>());
+            }
+            diceBoard.get(numChips.getFirst()).add(board.get(coords));
+            numChips.removeFirst();
+        }
+
+        System.out.println("Graph created");
+        System.out.println("Anzahl Knoten: " + index);
+        for (IntTupel coords : hex_coords) {
+            System.out.println("Hexagon " + coords.q() + "," + coords.r() + ": " + board.get(coords).getResourceType());
+        }
+        for (int i = 0; i < graph.length; i++) {
+            for (int j = 0; j < graph[i].length; j++) {
+                System.out.print(graph[i][j][STREET] + ", ");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Generiert eine Liste aller benötigten Ressourcen (ohne Wüste) für numTiles HexTiles.
+     * Überspringt dabei den Wert Resources.NONE und sorgt für eine gleichmäßige Verteilung.
+     *
+     * @param numTiles Anzahl der HexTiles (ohne Wüste), die eine Ressource benötigen
+     * @return ArrayList mit Ressourcen-Typen
+     */
+    private static ArrayList<Resources> generateResourceTypes(int numTiles) {
+        ArrayList<Resources> allResources = new ArrayList<>();
+        Resources[] values = Resources.values();
+
+        for (int i = 0; i < numTiles; i++) {
+            if (values[i % values.length] != Resources.NONE) {
+                allResources.add(values[i % values.length]);
+            } else {
+                numTiles++;
+            }
+        }
+        return allResources;
+    }
+
+    public ArrayList<Integer> generateChipNumbers() {
+      ArrayList<Integer> chips = new ArrayList<Integer>();
+
+      Map<Integer, Integer> weights = new HashMap<>();
+      weights.put(2, 1);
+      weights.put(3, 2);
+      weights.put(4, 3);
+      weights.put(5, 4);
+      weights.put(6, 5);
+      weights.put(8, 5);
+      weights.put(9, 4);
+      weights.put(10, 3);
+      weights.put(11, 2);
+      weights.put(12, 1);
+
+      for (int key : weights.keySet()) {
+        int numChips = Math.toIntExact(Math.round(weights.get(key) * (hex_coords.length - 1) / 30.0));
+        for (int j = 0; j < numChips; j++) {
+          chips.add(key);
+        }
+      }
+
+      return chips;
+    }
+
+
+
+    public Map<IntTupel, Tile> getHexTiles() {
+        return this.board;
+    }
+
+    public int[][][] getGraph() {
+        return this.graph;
+    }
+
+    public void triggerBoard(int diceNumber, Bank bank) {
+
+        List<Tile> tiles = diceBoard.get(diceNumber);
+        System.out.println(tiles);
+
+        for (Tile tile : tiles) {
+            tile.trigger(bank);
+        }
+    }
+
+    public void buildSettlement(Player player, int node, Building building) {
+        nodes[node].setBuilding(building);
+        nodes[node].setPlayer(player);
+    }
+
+    public void buildCity(Player player, int node, Building building) {
+        nodes[node].setBuilding(building);
+        nodes[node].setPlayer(player);
+    }
+
+    public void buildStreet(Player player, int node1, int node2) {
+        updateGraph(node1, node2, 1, player.getId());
     }
 
 }

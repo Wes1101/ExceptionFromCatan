@@ -14,9 +14,11 @@ import java.util.Map;
  *
  */
 
-public class Settlement extends Buildings {
+public class Settlement extends Building {
+
     public Settlement(Player owner) {
         super(owner);
+        buildingType = Buildings.SETTLEMENT;
     }
     /**
      * Returns the resource costs required to build a settlement.
@@ -33,15 +35,6 @@ public class Settlement extends Buildings {
         return cost;
     }
 
-    /**
-     * Returns the type of this buildable object.
-     *
-     * @return the string "Settlement"
-     */
-    @Override
-    public String getType() {
-        return "Settlement";
-    }
 
     /**
      * Returns a string representation of the settlement, including the owner and location. For testing.
