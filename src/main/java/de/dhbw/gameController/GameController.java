@@ -239,7 +239,8 @@ public class GameController {
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
                 catanBoard.triggerBoard(dice1 + dice2);
 
-                //TODO: Clarify how gui will be notified of what player has now how may resources
+                //SEMITODO: Clarify how gui will be notified of what player has now how may resources
+                gui.updatePlayerResources(players);
 
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
