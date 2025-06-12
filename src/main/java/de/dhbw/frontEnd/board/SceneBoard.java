@@ -26,5 +26,6 @@ public class SceneBoard extends Application {
     stage.setScene(scene);
 
     stage.show();
+
   }
 }
