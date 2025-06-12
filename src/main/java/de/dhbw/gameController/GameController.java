@@ -15,6 +15,8 @@ import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.bank.Bank;
+import de.dhbw.gamePieces.Bandit;
+import de.dhbw.catanBoard.hexGrid.IntTupel;
 
 public class GameController {
     private Player[] players;
@@ -23,6 +25,7 @@ public class GameController {
     private int gameRound;
     private int dice1;
     private int dice2;
+    private Bandit bandit;
 
     @Getter
     private int victoryPoints;
@@ -64,6 +67,7 @@ public class GameController {
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
+        this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
     }
 
     public void gameStart() {
@@ -225,7 +229,12 @@ public class GameController {
                 this.rollDice();
                 gui.showDice(dice1, dice2);
 
-                //TODO: Clarify bandit handling
+                if (dice1 + dice2 == 7) {
+                    minorGameState = MinorGameStates.BANDIT_ACTIVE;
+
+                    IntTupel selectedNewLocation = gui.activateBandit();
+                    bandit.trigger(selectedNewLocation);
+                }
 
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
                 catanBoard.triggerBoard(dice1 + dice2);
