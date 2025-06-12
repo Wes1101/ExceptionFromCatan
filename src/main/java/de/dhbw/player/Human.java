@@ -9,7 +9,7 @@ public class Human extends Player {
     private String name;
 
     public Human(String name, int id) {
-        super(0);
+        super(0, 0, 0, 0);
         this.name = name;
         this.id = id;
     }
