@@ -89,7 +89,7 @@ public class GameController {
         int[] playerDiceNumber = new int[this.players.length];
 
         for (int i = 0; i < this.players.length; i++) {
-            gui.activePlayer(this.players[i].getName());
+            gui.activePlayer(this.players[i]);
             gui.startRollDiceAnimation();
             this.rollDice();
             gui.showDice(dice1, dice2);
@@ -193,7 +193,7 @@ public class GameController {
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
             player.buyFirstSettlement();
             player.buyFirstStreet();
-            //TODO: recieve according ressources
+            //TODO: recieve according ressources: @Johann
         }
         minorGameState = MinorGameStates.NO_STATE;
     }
@@ -220,10 +220,10 @@ public class GameController {
             for (Player player : this.players) {
                 /*---Roll dice---*/
                 minorGameState = MinorGameStates.DICE;
-                gui.activePlayer(this.players[i]);
+                gui.activePlayer(player);
                 gui.startRollDiceAnimation();
                 this.rollDice();
-                gui.showDice(dice1, dice2)
+                gui.showDice(dice1, dice2);
 
                 //TODO: Clarify bandit handling
 
@@ -267,7 +267,7 @@ public class GameController {
             }
         }
     }
-    
+
     private void rollDice() {
         Random rand = new Random();
         dice1 = rand.nextInt(6) + 1;
