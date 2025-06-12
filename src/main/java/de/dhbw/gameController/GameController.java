@@ -8,10 +8,15 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+import lombok.Getter;
+import lombok.Setter;
 
+import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.bank.Bank;
+import de.dhbw.gamePieces.Bandit;
+import de.dhbw.catanBoard.hexGrid.IntTupel;
 
 public class GameController {
     private Player[] players;
@@ -20,10 +25,22 @@ public class GameController {
     private int gameRound;
     private int dice1;
     private int dice2;
+    private Bandit bandit;
+
+    @Getter
     private int victoryPoints;
-    private MajorGameStates majorGameState;
-    private MinorGameStates minorGameState;
+
+    @Getter
     private final GameControllerTypes gameControllerType;
+
+    @Getter
+    private MajorGameStates majorGameState;
+
+    @Getter
+    private MinorGameStates minorGameState;
+
+    @Setter
+    private SceneBoard gui;
 
     /**
      * Creates new GameController
@@ -39,11 +56,18 @@ public class GameController {
         for (int i = 0; i < playerAmount; i++) {
             players[i] = new Player();
         }
+
+        if (playerAmount > 4) {
+            this.catanBoard = new CatanBoard(4);
+        } else {
+            this.catanBoard = new CatanBoard(3);
+        }
+
         this.bank = new Bank(19);       // Sind eig immer 19 -> Konstroktor
-        //this.catanBoard = new CatanBoard();          //Macht sinn abstrakt zu haben??
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
+        this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
     }
 
     public void gameStart() {
@@ -55,7 +79,7 @@ public class GameController {
                 this.startServer();
                 break;
             case CLIENT:
-                this.startClient();
+                /* Server calls methods in GameController */
                 break;
             default:
                 break;
@@ -69,12 +93,10 @@ public class GameController {
         int[] playerDiceNumber = new int[this.players.length];
 
         for (int i = 0; i < this.players.length; i++) {
-            /*
             gui.activePlayer(this.players[i]);
             gui.startRollDiceAnimation();
-             */
             this.rollDice();
-            //gui.showDice(dice1, dice2)
+            gui.showDice(dice1, dice2);
             playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
 
@@ -92,9 +114,7 @@ public class GameController {
         int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
         for (int i = 0; i < this.players.length; i++) {
-            /*
             gui.activePlayer(this.players[currentIndex]);
-            */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             this.players[currentIndex].buyFirstSettlement();
@@ -111,15 +131,13 @@ public class GameController {
 
         //place second settlement and get according resources
         for (Player player : this.players) {
-            /*
             gui.activePlayer(this.players[currentIndex]);
-            */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             player.buyFirstSettlement();
             player.buyFirstStreet();
 
-            //TODO: recieve according ressources
+            //TODO: recieve according ressources: @Johann
         }
         minorGameState = MinorGameStates.NO_STATE;
     }
@@ -179,13 +197,9 @@ public class GameController {
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
             player.buyFirstSettlement();
             player.buyFirstStreet();
-            //TODO: recieve according ressources
+            //TODO: recieve according ressources: @Johann
         }
         minorGameState = MinorGameStates.NO_STATE;
-    }
-
-    private void startClient() {
-
     }
 
     public void mainGame() {
@@ -197,7 +211,7 @@ public class GameController {
                 this.mainServer();
                 break;
             case CLIENT:
-                this.mainClient();
+                /* Server calls methods in GameController */
                 break;
             default:
                 break;
@@ -210,19 +224,23 @@ public class GameController {
             for (Player player : this.players) {
                 /*---Roll dice---*/
                 minorGameState = MinorGameStates.DICE;
-                /*
-                gui.activePlayer(this.players[i]);
+                gui.activePlayer(player);
                 gui.startRollDiceAnimation();
-                */
                 this.rollDice();
-                //gui.showDice(dice1, dice2)
+                gui.showDice(dice1, dice2);
 
-                //TODO: Clarify bandit handling
+                if (dice1 + dice2 == 7) {
+                    minorGameState = MinorGameStates.BANDIT_ACTIVE;
+
+                    IntTupel selectedNewLocation = gui.activateBandit();
+                    bandit.trigger(selectedNewLocation);
+                }
 
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
                 catanBoard.triggerBoard(dice1 + dice2);
 
-                //TODO: Clarify how gui will be notified of what player has now how may resources
+                //SEMITODO: Clarify how gui will be notified of what player has now how may resources
+                gui.updatePlayerResources(players);
 
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
@@ -258,14 +276,6 @@ public class GameController {
                 //TODO: Clarify handling of that part as well
             }
         }
-    }
-
-    private void mainClient() {
-
-    }
-
-    public void gameEnd() {
-        //TODO: Clarify what this method should do
     }
 
     private void rollDice() {

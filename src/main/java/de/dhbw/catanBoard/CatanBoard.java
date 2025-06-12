@@ -248,4 +248,8 @@ public class CatanBoard {
 
     public void triggerBoard(int i) {
     }
+
+    public IntTupel getDesertCoords() {
+        return null;
+    }
 }

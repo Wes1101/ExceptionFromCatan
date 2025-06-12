@@ -1,6 +1,9 @@
 package de.dhbw.frontEnd.board;
 
 import java.io.IOException;
+
+import de.dhbw.catanBoard.hexGrid.IntTupel;
+import de.dhbw.player.Player;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +29,24 @@ public class SceneBoard extends Application {
     stage.setScene(scene);
 
     stage.show();
+
+  }
+
+  public void activePlayer(Player player) {
+  }
+
+  public void startRollDiceAnimation() {
+  }
+
+  public void showDice(int dice1, int dice2) {
+
+  }
+
+  public IntTupel activateBandit() {
+    return null;
+  }
+
+  public void updatePlayerResources(Player[] players) {
 
   }
 }
