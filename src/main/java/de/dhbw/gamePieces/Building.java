@@ -1,7 +1,6 @@
 package de.dhbw.gamePieces;
-import de.dhbw.frontEnd.board.HexTile;
 import de.dhbw.player.Player;
-import de.dhbw.resources.Resource;
+import de.dhbw.resources.Resources;
 
 import java.util.Map;
 
@@ -16,18 +15,13 @@ import java.util.Map;
  */
 
 @lombok.Getter
-public abstract class Building extends GamePieces {
+public abstract class Building {
     protected Player owner;
+    BuildingTypes buildingType;
 
-    public Building(Player owner, HexTile location) {
-        super(location);
+    public Building(Player owner) {
         this.owner = owner;
     }
 
-    /**
-     * Returns the resource cost required to build this building.
-     * @return Map of ResourceType to quantity
-     */
-    public abstract Map<Class<? extends Resource>, Integer> getBuildCost();
-
+    public abstract Map<Resources, Integer> getBuildCost ();
 }

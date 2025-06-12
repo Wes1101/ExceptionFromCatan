@@ -1,10 +1,7 @@
 package de.dhbw.gamePieces;
 
 import de.dhbw.player.Player;
-import de.dhbw.frontEnd.board.HexTile;
-import de.dhbw.resources.Resource;
-import de.dhbw.resources.Stone;
-import de.dhbw.resources.Wheat;
+import de.dhbw.resources.Resources;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -18,20 +15,16 @@ import java.util.HashMap;
  */
 
 public class City extends Building {
-    public City(Player owner, HexTile location) {
-        super(owner, location);
+    public City(Player owner) {
+        super(owner);
+        buildingType = BuildingTypes.CITY;
     }
 
     @Override
-    public Map<Class<? extends Resource>, Integer> getBuildCost() {
-        Map<Class<? extends Resource>, Integer> cost = new HashMap<>();
-        cost.put(Stone.class, 3);
-        cost.put(Wheat.class, 2);
+    public Map<Resources, Integer> getBuildCost() {
+        Map<Resources, Integer> cost = new HashMap<>();
+        cost.put(Resources.STONE, 3);
+        cost.put(Resources.WHEAT, 2);
         return cost;
-    }
-
-    @Override
-    public String getType() {
-        return "City";
     }
 }
