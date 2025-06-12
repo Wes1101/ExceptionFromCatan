@@ -5,6 +5,7 @@ import de.dhbw.gamePieces.Building;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
+import lombok.Getter;
 
 import java.util.*;
 
@@ -314,10 +315,9 @@ public class CatanBoard {
     }
 
     public void buildStreet(Player player, int node1, int node2) {
+
         updateGraph(node1, node2, 1, player.getId());
     }
-
-}
 
     /**
      *Führt die Suche durch (DFS) zur Ermittlung der Längsten durchgehenden Straße eines Spielers.
