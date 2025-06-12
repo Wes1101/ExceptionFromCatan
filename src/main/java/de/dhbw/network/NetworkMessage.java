@@ -1,7 +1,10 @@
 package de.dhbw.network;
 
 import de.dhbw.dto.NetMsgType;
+import de.dhbw.dto.NetworkPayload;
 import lombok.Getter;
+
+import java.io.Serializable;
 
 /**
  * Represents a message exchanged between client and server,
@@ -13,7 +16,7 @@ import lombok.Getter;
  */
 
 @Getter
-public class NetworkMessage {
+public class NetworkMessage<T extends NetworkPayload> {
   /**
    * The type of the network message.
    */
@@ -22,7 +25,7 @@ public class NetworkMessage {
   /**
    * The data payload of the message.
    */
-  public Object data;
+  public T data;
 
   /**
    * Constructs a new NetworkMessage with the given type and data.
@@ -30,7 +33,7 @@ public class NetworkMessage {
    * @param type the type of the message
    * @param data the data payload
    */
-  public NetworkMessage(NetMsgType type, Object data ) {
+  public NetworkMessage(NetMsgType type, T data ) {
     this.type = type;
     this.data = data;
   }

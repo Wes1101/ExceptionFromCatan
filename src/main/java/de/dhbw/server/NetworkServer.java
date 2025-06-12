@@ -1,6 +1,7 @@
 package de.dhbw.server;
 
 import com.google.gson.Gson;
+import de.dhbw.dto.INetServerAddressPayload;
 import de.dhbw.gameController.GameController;
 import java.io.*;
 import java.net.*;
@@ -10,6 +11,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
 import de.dhbw.dto.NetMsgType;
+import de.dhbw.mapping.INetServerAddressMapper;
+import de.dhbw.network.MessageFactory;
 import de.dhbw.network.NetworkMessage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,8 +88,9 @@ public class NetworkServer {
           String json = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
           NetworkMessage received = new Gson().fromJson(json, NetworkMessage.class);
           if (received.getType() == NetMsgType.DISCOVER_SERVER) {
-            NetworkMessage serverAddress = new NetworkMessage(NetMsgType.IS_SERVER, new InetSocketAddress(getHostIP(), TCP_PORT));
-            String response = new Gson().toJson(serverAddress);
+            INetServerAddressPayload payload = new INetServerAddressMapper().toPayload(new InetSocketAddress(getHostIP(), TCP_PORT));
+            NetworkMessage<INetServerAddressPayload> serverAddress = new NetworkMessage<>(NetMsgType.IS_SERVER, payload);
+            String response = MessageFactory.toJson(serverAddress);
             log.info("NetworkMessage prepared: {}", response);
             byte[] responseBytes = response.getBytes();
             DatagramPacket responsePacket = new DatagramPacket(

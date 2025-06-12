@@ -2,7 +2,7 @@ package de.dhbw.network;
 
 
 import com.google.gson.Gson;
-import de.dhbw.dto.INetSocketAddressPayload;
+import de.dhbw.dto.INetServerAddressPayload;
 import de.dhbw.dto.NetMsgType;
 import de.dhbw.dto.NetworkPayload;
 import com.google.gson.reflect.TypeToken;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MessageFactory {
     private static final Gson gson = new Gson();
     private static final Map<NetMsgType, Type> typeMap = Map.of(
-            NetMsgType.IS_SERVER, new TypeToken<NetworkMessage<INetSocketAddressPayload>>(){}.getType()
+            NetMsgType.IS_SERVER, new TypeToken<NetworkMessage<INetServerAddressPayload>>(){}.getType()
     );
 
     /**

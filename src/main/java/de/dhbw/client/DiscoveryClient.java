@@ -1,7 +1,11 @@
 package de.dhbw.client;
 
 import com.google.gson.Gson;
+import de.dhbw.dto.INetServerAddressPayload;
 import de.dhbw.dto.NetMsgType;
+import de.dhbw.dto.NetworkPayload;
+import de.dhbw.mapping.INetServerAddressMapper;
+import de.dhbw.network.MessageFactory;
 import de.dhbw.network.NetworkMessage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +41,7 @@ public class DiscoveryClient implements Runnable {
             socket.setBroadcast(true);
 
             NetworkMessage request = new NetworkMessage(NetMsgType.DISCOVER_SERVER, null);
-            String jsonSend = new Gson().toJson(request);
+            String jsonSend = MessageFactory.toJson(request);
             log.info("NetworkMessage prepared:{} ", jsonSend);
             byte[] sendData = jsonSend.getBytes();
             DatagramPacket sendPacket;
@@ -59,11 +63,13 @@ public class DiscoveryClient implements Runnable {
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
                     socket.receive(receivePacket);
                     String jsonReceive = new String(receivePacket.getData(), 0, receivePacket.getLength(), StandardCharsets.UTF_8);
-                    NetworkMessage response = new Gson().fromJson(jsonReceive, NetworkMessage.class);
+                    NetworkMessage<? extends NetworkPayload> response = MessageFactory.fromJson(jsonReceive);
                     if (response.getType() == NetMsgType.IS_SERVER) {
-                        InetSocketAddress serverAddress = (InetSocketAddress) response.getData();
-                        // TODO: Übergabe an Client class
+                        if(response.data instanceof INetServerAddressPayload inetServerAddress) {
+                        InetSocketAddress serverAddress = new INetServerAddressMapper().fromPayload(inetServerAddress);
                         log.info("Found game server at {}:{}", serverAddress.getHostString(), serverAddress.getPort());
+                        // TODO: Übergabe an Client class
+                        }
                     }
                 }
             } catch (SocketTimeoutException e) {
