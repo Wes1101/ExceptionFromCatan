@@ -29,14 +29,13 @@ import java.util.*;
 //wasser tiles, Häfen
 
 
-
+@Getter
 public class CatanBoard {
     IntTupel[] hex_coords;
     Map<IntTupel, Tile> board = new HashMap<>();
     Map<Integer, List<Tile>> diceBoard = new HashMap<>();
     static Node[] nodes;
 
-    @Getter
     int[][][] graph;
 
     private static final int STREET = 0;
@@ -326,7 +325,6 @@ public class CatanBoard {
         updateGraph(node1, node2, 1, player.getId());
     }
 
-}
     /**
      *Dies ist der Algorithmus, welcher die längste Handel-Strecke heraussucht.
      *Es wird als Algorithms Depth-First Search genutzt,
