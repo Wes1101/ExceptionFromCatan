@@ -5,6 +5,11 @@ import de.dhbw.gamePieces.Building;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import lombok.Getter;
 
 import java.util.*;
 
@@ -24,12 +29,13 @@ import java.util.*;
 //wasser tiles, Häfen
 
 
-
+@Getter
 public class CatanBoard {
     IntTupel[] hex_coords;
     Map<IntTupel, Tile> board = new HashMap<>();
     Map<Integer, List<Tile>> diceBoard = new HashMap<>();
     static Node[] nodes;
+
     int[][][] graph;
 
     private static final int STREET = 0;
@@ -319,4 +325,89 @@ public class CatanBoard {
         updateGraph(node1, node2, 1, player.getId());
     }
 
+    /**
+     *Dies ist der Algorithmus, welcher die längste Handel-Strecke heraussucht.
+     *Es wird als Algorithms Depth-First Search genutzt,
+     *es wird erst geschaut, sobald ein Spieler 3 Gebäude aneinander hat.
+     * @param playerId dies ist die ID des spielers
+     * @return Gibt die Länge des shits raus.
+     */
+
+    public int findLongestTradeRoutes(int playerId) {
+        int maxLength = 0;
+        for (int startNode = 0; startNode < hex_coords.length; startNode++) {
+            boolean[] searched = new boolean[nodes.length];
+            maxLength =
+                    Math.max(maxLength, dfsLength(startNode, -1, searched, playerId));
+        }
+        System.out.println("Winner: Player" + maxLength);
+        return maxLength >= 3 ? maxLength : 0;
+    }
+
+    /**
+     *Führt die Suche durch (DFS) zur Ermittlung der Längsten durchgehenden Straße eines Spielers.
+     * @param current Aktueller Knoten
+     * @param from Vorheriger Knoten (Vermeidung von Rücklaufen)
+     * @param playerId ID des Spielers, dessen Straße aktuell geprüft wird.
+     * @param searched Merkt sich, welche Knoten schon durchsucht wurden.
+     * @return Länge des längsten Pfades.
+     */
+
+    private int dfsLength(int current, int from, boolean[] searched, int playerId)
+    {
+        searched[current] = true;
+        int maxTiefe = 1;
+
+        for (int nachbar = 0; nachbar < nodes.length; nachbar++)
+        {
+            if (graph[current][nachbar][STREET] == 1 && graph[current][nachbar][PLAYER] == playerId)
+            {
+                if (nachbar != from && !searched[nachbar])
+                {
+                    maxTiefe = Math.max(maxTiefe, 1 + dfsLength(nachbar, current, searched, playerId));
+                }
+            }
+        }
+        searched[current] = false;
+        System.out.println("DFS von node:" + current + "ergibt die Tiefe:" + maxTiefe);
+        return maxTiefe;
+    }
+
+    /**
+     *Dies hier findet den Spieler mit der längsten Handelsstraße.
+     * @param playerCount Anzahl aller Spieler.
+     * @return Spieler ID mit der längsten Straße oder gibt halt -1 aus, falls keiner derzeit die längste Straße hat.
+     */
+
+    public int findPlayerLongestStreet(int playerCount)
+    {
+        int maxLength = 0;
+        int winner = -1;
+
+        for (int playerId = 0; playerId < playerCount; playerId++)
+        {
+            int length = findLongestTradeRoutes(playerId);
+            if (length > maxLength)
+            {
+                maxLength = length;
+                winner = playerId;
+            }
+            logRouteDetails(playerId,length,winner,maxLength);
+        }
+        return winner;
+    }
+
+    /**
+     *Helfer Methode zur Protokollierung von den Routeninformationen
+     * @param playerId spieler id
+     * @param length Länge des in Führung liegenden Spielers
+     * @param winner Spieler Id mi der bislang längsten Straße
+     * @param maxLength Länge der bislang längsten Straße
+     */
+
+    private void logRouteDetails(int playerId,int length, int winner,int maxLength)
+    {
+        System.out.println("Spieler" + playerId + "Hat eine Straßen länge" + length);
+        System.out.println("Aktueller Sieger ist Spieler" + winner + "mit der Straßenlänge:" + maxLength);
+    }
 }
