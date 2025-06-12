@@ -334,3 +334,5 @@ public class CatanBoard {
     return winner;
   }
 }
+
+// brauch ich, vallah
