@@ -1,6 +1,7 @@
 package de.dhbw.catanBoard.hexGrid;
 //import de.dhbw.bank.Bank;
 //import de.dhbw.player.Player;
+import de.dhbw.player.Bank;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
 
@@ -13,15 +14,13 @@ import java.util.Arrays;
      * */
 
     @Getter
-public class HexTile {
-    private int diceNumber;
+public class Tile {
     private Resources resourceType;
     private Node[] HexTileNodes;
     private boolean blocked;
 
-    public HexTile(int diceNumber, Resources resourceType, Node[] nodes)
+    public Tile(Resources resourceType, Node[] nodes)
     {
-        this.diceNumber = diceNumber;
         this.resourceType = resourceType;
         this.HexTileNodes = nodes;
         this.blocked = false;
@@ -35,8 +34,16 @@ public class HexTile {
         return Arrays.toString(nodeIDs);
     }
 
-//    public void triggerHexTile(int amount, Bank bank, Player player) {
-//        //bank.removeResources(resourceType.getName(), amount, player);
-//    }
+    public void trigger(Bank bank) {
+        for (Node node : HexTileNodes) {
+            if (node.getPlayer() != null) {
+                if (node.getBuilding().getBuildingType() == node.getBuilding().getBuildingType()) {
+                    bank.removeResources(resourceType, 1, node.getPlayer());
+                } else if (node.getBuilding().getBuildingType() == node.getBuilding().getBuildingType()) {
+                    bank.removeResources(resourceType, 2, node.getPlayer());
+                }
+            }
+        }
+    }
 
 }

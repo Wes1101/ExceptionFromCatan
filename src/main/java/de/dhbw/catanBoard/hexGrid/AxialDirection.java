@@ -4,7 +4,7 @@ package de.dhbw.catanBoard.hexGrid;
  * Enum für die sechs Nachbarrichtungen im axialen Hex-Koordinatensystem.
  * Jeder Eintrag enthält die Verschiebung in den Koordinaten (dq, dr).
  */
-public enum Directions {
+public enum AxialDirection {
     /** Nordost-Richtung: Verschiebung (1, -1). */
     NORTH_EAST ( 1, -1 ),
 
@@ -35,7 +35,7 @@ public enum Directions {
      * @param dq Veränderung auf der q-Achse
      * @param dr Veränderung auf der r-Achse
      */
-    private Directions(int dq, int dr) {
+    private AxialDirection(int dq, int dr) {
         this.dq = dq;
         this.dr = dr;
     }

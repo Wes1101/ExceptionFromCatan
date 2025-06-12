@@ -2,52 +2,40 @@ package de.dhbw.player;
 
 import de.dhbw.resources.Resources;
 import lombok.Getter;
-import de.dhbw.bank.Bank;
+import java.util.EnumMap;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-public class Player extends Bank {
+public abstract class Player {
 
-    private final List<Resources> resources = new ArrayList<>();
-    private String name;
+    EnumMap<Resources, Integer> resources;
+    int id;
 
-    public Player() {
-        super(0);
+    public Player(int amountResources) {
+        resources = new EnumMap<>(Resources.class);
+        for (Resources res : Resources.values()) {
+            resources.put(res, amountResources);
+        }
     }
 
-    public void buyStreet() {
-
+    public void addResources(Resources type, int amount) {
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) + amount);
+                return;
+            }
+        }
     }
 
-    public void buySettlement() {
-
+    public void removeResources(Resources type, int amount, Player target) {
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) - amount);
+                target.addResources(type, amount);
+                return;
+            }
+        }
     }
 
-    public void buyCity() {
 
-    }
-
-    public void buyDevelopmentCard() {
-
-    }
-
-    public void trade() {
-
-    }
-
-    public void rollDice() {
-
-    }
-
-    public void endTurn() {
-
-    }
-
-    public void buyFirstSettlement() {
-    }
-
-    public void buyFirstStreet() {
-    }
 }
