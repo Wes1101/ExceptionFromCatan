@@ -1,9 +1,6 @@
 package de.dhbw.catanBoard;
 
-import de.dhbw.catanBoard.hexGrid.Directions;
-import de.dhbw.catanBoard.hexGrid.Tile;
-import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.catanBoard.hexGrid.Node;
+import de.dhbw.catanBoard.hexGrid.*;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
@@ -58,7 +55,7 @@ public class CatanBoard {
      * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
      * @return Gesamtzahl der Nodes für diesen Radius
      */
-    private static int calcNumNodes(int n) {
+    private int calcNumNodes(int n) {
         if (n <= 0) {
             return 0;
         }
@@ -71,7 +68,7 @@ public class CatanBoard {
      *
      * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
      */
-    public static void initNodes(int n) {
+    private void initNodes(int n) {
         int numNodes = calcNumNodes(n);
         nodes = new Node[numNodes];
         for (int i = 0; i < numNodes; i++) {
@@ -138,7 +135,7 @@ public class CatanBoard {
      * @param n Radius des Spielfelds (Anzahl der Hex-Ringe)
      * @return Anzahl aller HexTiles
      */
-    private static int calcNumHexTiles(int n) {
+    private int calcNumHexTiles(int n) {
         if (n == 1) {
             return 1;
         }
@@ -160,10 +157,10 @@ public class CatanBoard {
      */
     private void createGraph(int radius) {
         int index = 0;
-        Directions[] DIR = {
-                Directions.NORTH_WEST,
-                Directions.NORTH_EAST,
-                Directions.WEST
+        AxialDirection[] DIR = {
+                AxialDirection.NORTH_WEST,
+                AxialDirection.NORTH_EAST,
+                AxialDirection.WEST
         };
 
         ArrayList<Integer> numChips = generateChipNumbers();
@@ -182,7 +179,7 @@ public class CatanBoard {
         for (IntTupel coords : hex_coords) {
             Node[] HexNodes = new Node[6];
 
-            for (Directions dir : DIR) {
+            for (AxialDirection dir : DIR) {
                 IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
                 if (board.containsKey(neighbor)) {
                     switch (dir) {
@@ -220,6 +217,10 @@ public class CatanBoard {
             board.put(coords, new Tile(allResources.getFirst(), HexNodes));
             allResources.removeFirst();
 
+            for (Node HexNode : HexNodes) {
+                HexNode.addHexTile(board.get(coords));
+            }
+
             if (!diceBoard.containsKey(numChips.getFirst())) {
                 diceBoard.put(numChips.getFirst(), new ArrayList<>());
             }
@@ -247,7 +248,7 @@ public class CatanBoard {
      * @param numTiles Anzahl der HexTiles (ohne Wüste), die eine Ressource benötigen
      * @return ArrayList mit Ressourcen-Typen
      */
-    private static ArrayList<Resources> generateResourceTypes(int numTiles) {
+    private ArrayList<Resources> generateResourceTypes(int numTiles) {
         ArrayList<Resources> allResources = new ArrayList<>();
         Resources[] values = Resources.values();
 
@@ -285,8 +286,6 @@ public class CatanBoard {
 
       return chips;
     }
-
-
 
     public Map<IntTupel, Tile> getHexTiles() {
         return this.board;
