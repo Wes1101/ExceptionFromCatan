@@ -75,7 +75,7 @@ public class GameController {
                 this.startServer();
                 break;
             case CLIENT:
-                this.startClient();
+                /* Server calls methods in GameController */
                 break;
             default:
                 break;
@@ -198,10 +198,6 @@ public class GameController {
         minorGameState = MinorGameStates.NO_STATE;
     }
 
-    private void startClient() {
-
-    }
-
     public void mainGame() {
         switch (gameControllerType) {
             case LOCAL:
@@ -211,7 +207,7 @@ public class GameController {
                 this.mainServer();
                 break;
             case CLIENT:
-                this.mainClient();
+                /* Server calls methods in GameController */
                 break;
             default:
                 break;
@@ -271,15 +267,7 @@ public class GameController {
             }
         }
     }
-
-    private void mainClient() {
-
-    }
-
-    public void gameEnd() {
-        //TODO: Clarify what this method should do
-    }
-
+    
     private void rollDice() {
         Random rand = new Random();
         dice1 = rand.nextInt(6) + 1;
