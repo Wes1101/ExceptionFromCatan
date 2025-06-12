@@ -104,6 +104,7 @@ public class NetworkServer {
         log.error("UDP Discovery Thread error: {}", e.getMessage());
       }
     }).start();
+    log.info("Starting Discovery Thread...");
   }
 
   /**

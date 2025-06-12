@@ -3,6 +3,7 @@ package de.dhbw.network;
 
 import com.google.gson.Gson;
 import de.dhbw.dto.INetServerAddressPayload;
+import de.dhbw.dto.MessageTypeDto;
 import de.dhbw.dto.NetMsgType;
 import de.dhbw.dto.NetworkPayload;
 import com.google.gson.reflect.TypeToken;
@@ -41,7 +42,7 @@ public class MessageFactory {
      */
     public static NetworkMessage<? extends NetworkPayload> fromJson(String json) {
         log.debug("Deserializing message from JSON: {}", json);
-        NetworkMessage<?> meta = gson.fromJson(json, NetworkMessage.class);
+        NetworkMessage<MessageTypeDto> meta = gson.fromJson(json, new TypeToken<NetworkMessage<INetServerAddressPayload>>(){}.getType());
         Type t = typeMap.get(meta.type);
         if (t == null) {
             log.error("Unknown message type: {}", meta.type);

@@ -180,7 +180,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- JavaDoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
