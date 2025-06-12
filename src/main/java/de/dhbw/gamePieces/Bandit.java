@@ -1,23 +1,32 @@
-// package de.dhbw.gamePieces;
+ package de.dhbw.gamePieces;
 
-// import org.example.execptionfromcatan.tiles.HexTile;
+ import de.dhbw.catanBoard.hexGrid.IntTupel;
 
-// /**
-//  * This Class is administrating the Bandit, which is a subclass of GamePieces.
-//  *
-//  * @author Atussa Mehrawari
-//  * @version 0.1
-//  *
-//  */
+ /**
+  * This Class is administrating the Bandit, which is a subclass of GamePieces.
+  *
+  * @author Atussa Mehrawari
+  * @version 0.1
+  *
+  */
 
-// public class Bandit extends GamePieces{
+ public class Bandit{
+     private IntTupel coords;
+     public Bandit(IntTupel location) {
+         this.coords = location;
+     }
 
-//     public Bandit(HexTile location) {
-//         super(location);
-//     }
+     public String getType () {
+         return "Bandit";
+     }
 
-//     @Override
-//     public String getType () {
-//         return "Bandit";
-//     }
-// }
+     /**
+      * Triggers the Bandit.
+      * Changes the location, blocks the new location and the new coordinates.
+      *
+      * @param newCoords is the new coordinates where the bandit stands.
+      */
+     public void trigger(IntTupel newCoords) {
+         this.coords = newCoords;
+     }
+ }
