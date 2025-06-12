@@ -25,6 +25,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -146,8 +147,7 @@ public class SceneBoardController implements Initializable {
             .filter(n -> n instanceof Button)
             .forEach(n -> n.toFront());
 
-// falls Buttons tiefer verschachtelt sind, oder in board_stack:
-    board_stack.lookupAll(".button").forEach(n -> ((javafx.scene.Node)n).toFront());
+
   }
 
   private void addHover(StackPane pane) {
@@ -238,6 +238,7 @@ public class SceneBoardController implements Initializable {
               new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
 
       tile_layer.getChildren().add(frontendHex);
+      frontendHex.toBack();
     }
 
 
@@ -249,9 +250,6 @@ public class SceneBoardController implements Initializable {
             {45, 44, 17, 16, 15, 14, 13, 36, 35}, //Zeile 5
             {43, 42, 41, 40, 39, 38, 37}, //Zeile 6
     };
-
-
-
 
   }
 }

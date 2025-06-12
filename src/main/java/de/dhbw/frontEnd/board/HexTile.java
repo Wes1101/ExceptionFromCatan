@@ -28,7 +28,6 @@ public class HexTile extends Group {
     try {
       img = new Image(getClass().getResourceAsStream( resourceName + ".png"));
     } catch (Exception e) {
-      // falls Bild fehlt, img bleibt null
     }
     if (img != null) {
       hex.setFill(new ImagePattern(img));
