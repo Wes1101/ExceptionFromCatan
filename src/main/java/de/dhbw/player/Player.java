@@ -2,7 +2,10 @@ package de.dhbw.player;
 
 import de.dhbw.resources.Resources;
 import lombok.Getter;
+
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 
 
 @Getter
@@ -33,6 +36,15 @@ public abstract class Player {
                 resources.put(res, resources.get(res) - amount);
                 target.addResources(type, amount);
                 return;
+            }
+        }
+    }
+    public void banditRemovesResources() {
+//        List<Resources> resources = new ArrayList<>();
+//        for (Resources res : Resources.values()) {
+//            Integer count = from.getResources().getOrDefault(res, <= 7);
+//            if (count <= 7) {
+
             }
         }
     }

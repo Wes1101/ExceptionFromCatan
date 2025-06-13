@@ -4,6 +4,7 @@ package de.dhbw.catanBoard.hexGrid;
 import de.dhbw.player.Bank;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Arrays;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
      * */
 
     @Getter
+    @Setter
 public class Tile {
     private Resources resourceType;
     private Node[] HexTileNodes;
