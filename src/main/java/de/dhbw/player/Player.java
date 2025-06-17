@@ -76,16 +76,16 @@ public abstract class Player {
     }
 
 
-    public void banditRemovesResources() {
-        for (Player player : allPLayer) {
+    public void banditRemovesResources(int amount) {
+        for (Resources res : Resources.values()) {
             int total = this.getTotalResources();
             if (total > 7) {
                 int toDiscard = total / 2;
             }
             // Gui Platzhalter
-            Map<Resources, Integer> selected = gui.askPlayerWhichCardsToDiscard(player, toDiscard);
-            for (Map.Entry<Resources, Integer> entry : selected.entrySet()) {
-                player.removeResources(entry.getKey(), entry.getValue());
+//            Map<Resources, Integer> selected = gui.askPlayerWhichCardsToDiscard(player, toDiscard);
+//            for (Map.Entry<Resources, Integer> entry : selected.entrySet()) {
+//                player.removeResources(entry.getKey(), entry.getValue());
             }
         }
     }
