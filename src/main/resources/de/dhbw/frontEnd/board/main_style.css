@@ -90,3 +90,28 @@
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
+
+.node {
+    -fx-background-color: F3E99C;
+    -fx-border-color: grey;
+     -fx-opacity: 0.5;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-text-fill: white;
+
+    /* Neu: feste Größe */
+    -fx-pref-width: 10px;
+    -fx-pref-height: 5px;
+
+    /* Neu: Innenabstand reduzieren */
+    -fx-padding: 4px 4px;
+
+}
+
+/* Hover-Effekt: leicht weiße Hintergrundtönung */
+.node:hover {
+    -fx-background-color: white;
+    -fx-border-color: white;
+     -fx-opacity: 1;
+}

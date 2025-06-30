@@ -24,7 +24,7 @@ public class SceneBoard extends Application {
     // Minimum/maximum height/width
     stage.setMinHeight(720);
     stage.setMinWidth(1280);
-    stage.setTitle("Exception von Catan - SiedlungsOverflow");
+    stage.setTitle("Exception from Catan - SiedlungsOverflow");
 
     stage.setScene(scene);
 

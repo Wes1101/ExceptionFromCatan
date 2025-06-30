@@ -3,7 +3,8 @@ module de.dhbw {
   requires javafx.fxml;
   requires org.slf4j;
   requires static lombok;
-    requires com.google.gson;
+  requires java.desktop;
+  requires com.google.gson;
 
     opens de.dhbw.app to javafx.fxml;
   exports de.dhbw.app ;

@@ -13,9 +13,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #87CEEB;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
 
 
 
@@ -63,13 +64,306 @@
          <children>
             <StackPane fx:id="setting_map_container" VBox.vgrow="ALWAYS">
                <children>
-                  <ScrollPane fx:id="scroll_pane" prefHeight="200.0" prefWidth="200.0" stylesheets="@main_style.css">
+                  <ScrollPane fx:id="scroll_pane" hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@main_style.css" vbarPolicy="NEVER">
                      <content>
-                        <StackPane fx:id="board_stack" alignment="BOTTOM_RIGHT" prefHeight="552.0" prefWidth="806.0">
+                        <StackPane fx:id="board_stack" prefHeight="552.0" prefWidth="806.0">
                            <children>
-                              <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0" />
-                              <Pane fx:id="road_layer" prefHeight="200.0" prefWidth="200.0" />
-                              <Pane fx:id="building_layer" prefHeight="200.0" prefWidth="200.0" />
+                              <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <ImageView fitHeight="467.0" fitWidth="677.0" layoutX="65.0" layoutY="52.0" visible="false">
+                                       <image>
+                                          <Image url="@Spielfeld.PNG" />
+                                       </image>
+                                    </ImageView>
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="179.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="265.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="353.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="441.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="527.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="616.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="265.0" layoutY="427.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="353.0" layoutY="427.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="441.0" layoutY="427.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="527.0" layoutY="427.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="265.0" layoutY="133.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="353.0" layoutY="133.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="441.0" layoutY="133.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="527.0" layoutY="133.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="221.0" layoutY="207.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="310.0" layoutY="207.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="397.0" layoutY="207.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="484.0" layoutY="207.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="573.0" layoutY="207.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="221.0" layoutY="354.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="310.0" layoutY="354.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="397.0" layoutY="354.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="484.0" layoutY="354.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="573.0" layoutY="354.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="286.0" layoutY="467.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="374.0" layoutY="467.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="461.0" layoutY="467.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="286.0" layoutY="319.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="374.0" layoutY="319.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="461.0" layoutY="319.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="199.0" layoutY="320.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="550.0" layoutY="319.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="286.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="374.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="461.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="331.0" layoutY="393.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="419.0" layoutY="393.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="506.0" layoutY="391.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="287.0" layoutY="392.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="287.0" layoutY="245.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="287.0" layoutY="96.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="331.0" layoutY="246.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="332.0" layoutY="97.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="375.0" layoutY="96.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="461.0" layoutY="96.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="375.0" layoutY="245.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="375.0" layoutY="392.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="463.0" layoutY="392.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="550.0" layoutY="392.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="332.0" layoutY="466.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="332.0" layoutY="318.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="507.0" layoutY="466.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="418.0" layoutY="246.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="200.0" layoutY="245.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="419.0" layoutY="318.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="506.0" layoutY="318.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="243.0" layoutY="318.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="243.0" layoutY="393.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="419.0" layoutY="466.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="595.0" layoutY="320.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="594.0" layoutY="246.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="504.0" layoutY="246.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="463.0" layoutY="245.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="332.0" layoutY="172.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="243.0" layoutY="172.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="242.0" layoutY="246.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="551.0" layoutY="245.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="549.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="505.0" layoutY="97.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="419.0" layoutY="172.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="418.0" layoutY="96.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="506.0" layoutY="172.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
+                                    <Button layoutX="264.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="309.0" layoutY="95.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="352.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="396.0" layoutY="95.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="440.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="483.0" layoutY="95.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="526.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="264.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="352.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="440.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="526.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="309.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="396.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="483.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="220.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="572.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="220.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="309.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="396.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="483.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="572.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="309.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="396.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="483.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="220.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="572.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="220.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="309.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="396.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="483.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="572.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="264.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="352.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="440.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="526.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="264.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="352.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="440.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="309.0" layoutY="488.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="396.0" layoutY="488.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="264.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="352.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="440.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="178.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="526.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="178.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="264.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="352.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="440.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="526.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="614.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="614.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="483.0" layoutY="488.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                    <Button layoutX="526.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                       <font>
+                                          <Font size="1.0" />
+                                       </font></Button>
+                                 </children></Pane>
                            </children>
                         </StackPane>
                      </content>

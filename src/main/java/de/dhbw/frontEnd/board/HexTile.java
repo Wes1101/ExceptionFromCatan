@@ -1,18 +1,20 @@
 package de.dhbw.frontEnd.board;
 
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 public class HexTile extends Group {
-  private final int numberToken;
+  private final int q, r;
+  private final String resourceName;
 
-  public HexTile(double centerX, double centerY, double size, int numberToken) {
-    this.numberToken = numberToken;
+  public HexTile(int q, int r, double centerX, double centerY, double size, String resourceName) {
+    this.q = q;
+    this.r = r;
+    this.resourceName = resourceName;
 
-    // Creating polygon
     Polygon hex = new Polygon();
     for (int i = 0; i < 6; i++) {
       double angle = Math.toRadians(60 * i - 30);
@@ -21,20 +23,26 @@ public class HexTile extends Group {
       hex.getPoints().addAll(x, y);
     }
 
-    hex.setFill(Color.WHITE); // weißer Hintergrund
-    hex.setStroke(Color.GRAY); // grauer Rand
+    // Hex Bilder
+    Image img = null;
+    try {
+      img = new Image(getClass().getResourceAsStream( resourceName + ".png"));
+    } catch (Exception e) {
+    }
+    if (img != null) {
+      hex.setFill(new ImagePattern(img));
+    } else {
+      hex.setFill(Color.WHITE);
+    }
+
+    hex.setStroke(Color.GRAY);
     hex.setStrokeWidth(1);
+    hex.setUserData(new int[]{ q, r });
+    getChildren().add(hex);
 
-    Text label = new Text(String.valueOf(numberToken));
-    label.setFont(Font.font(18));
-    label.setX(centerX - label.getLayoutBounds().getWidth() / 2);
-    label.setY(centerY + label.getLayoutBounds().getHeight() / 4);
-
-    // fill group
-    getChildren().addAll(hex, label);
+    this.setOnMouseClicked(evt ->
+            System.out.println("HexTile: q=" + q + ", r=" + r + ", Res=" + resourceName)
+    );
   }
 
-  public int getNumberToken() {
-    return numberToken;
-  }
 }
