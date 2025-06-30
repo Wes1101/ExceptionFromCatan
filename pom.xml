@@ -144,20 +144,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Prettier -->
-            <plugin>
-                <groupId>com.hubspot.maven.plugins</groupId>
-                <artifactId>prettier-maven-plugin</artifactId>
-                <version>0.22</version>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>write</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- SpotBugs -->
             <plugin>
                 <groupId>com.github.spotbugs</groupId>
