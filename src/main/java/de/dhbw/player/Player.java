@@ -1,48 +1,31 @@
-//package de.dhbw.player;
-//
-//import de.dhbw.resources.Resources;
-//import lombok.Getter;
-//import de.dhbw.bank.Bank;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//@Getter
-//public class Player extends Bank {
-//
-//    private final List<Resources> resources = new ArrayList<>();
-//    private String name;
-//
-//    public Player() {
-//        super(0);
-//    }
-//
-//    public void buyStreet() {
-//
-//    }
-//
-//    public void buySettlement() {
-//
-//    }
-//
-//    public void buyCity() {
-//
-//    }
-//
-//    public void buyDevelopmentCard() {
-//
-//    }
-//
-//    public void trade() {
-//
-//    }
-//
-//    public void rollDice() {
-//
-//    }
-//
-//    public void endTurn() {
-//
-//    }
-//
-//}
+package de.dhbw.player;
+
+import de.dhbw.bank.Bank;
+import de.dhbw.resources.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.Getter;
+
+@Getter
+public class Player extends Bank {
+  private final List<Resource> resources = new ArrayList<>();
+  private String name;
+
+  public Player() {
+    super(0);
+  }
+
+  public void buyStreet() {}
+
+  public void buySettlement() {}
+
+  public void buyCity() {}
+
+  public void buyDevelopmentCard() {}
+
+  public void trade() {}
+
+  public void rollDice() {}
+
+  public void endTurn() {}
+}
