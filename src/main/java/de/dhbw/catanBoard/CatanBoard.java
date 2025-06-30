@@ -1,13 +1,15 @@
 package de.dhbw.catanBoard;
 
-import de.dhbw.catanBoard.hexGrid.Directions;
-import de.dhbw.catanBoard.hexGrid.Tile;
-import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.catanBoard.hexGrid.Node;
+import de.dhbw.catanBoard.hexGrid.*;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import lombok.Getter;
 
 import java.util.*;
 
@@ -27,12 +29,13 @@ import java.util.*;
 //wasser tiles, Häfen
 
 
-
+@Getter
 public class CatanBoard {
     IntTupel[] hex_coords;
     Map<IntTupel, Tile> board = new HashMap<>();
     Map<Integer, List<Tile>> diceBoard = new HashMap<>();
     static Node[] nodes;
+
     int[][][] graph;
 
     private static final int STREET = 0;
@@ -58,7 +61,7 @@ public class CatanBoard {
      * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
      * @return Gesamtzahl der Nodes für diesen Radius
      */
-    private static int calcNumNodes(int n) {
+    private int calcNumNodes(int n) {
         if (n <= 0) {
             return 0;
         }
@@ -71,7 +74,7 @@ public class CatanBoard {
      *
      * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
      */
-    public static void initNodes(int n) {
+    private void initNodes(int n) {
         int numNodes = calcNumNodes(n);
         nodes = new Node[numNodes];
         for (int i = 0; i < numNodes; i++) {
@@ -138,7 +141,7 @@ public class CatanBoard {
      * @param n Radius des Spielfelds (Anzahl der Hex-Ringe)
      * @return Anzahl aller HexTiles
      */
-    private static int calcNumHexTiles(int n) {
+    private int calcNumHexTiles(int n) {
         if (n == 1) {
             return 1;
         }
@@ -160,10 +163,10 @@ public class CatanBoard {
      */
     private void createGraph(int radius) {
         int index = 0;
-        Directions[] DIR = {
-                Directions.NORTH_WEST,
-                Directions.NORTH_EAST,
-                Directions.WEST
+        AxialDirection[] DIR = {
+                AxialDirection.NORTH_WEST,
+                AxialDirection.NORTH_EAST,
+                AxialDirection.WEST
         };
 
         ArrayList<Integer> numChips = generateChipNumbers();
@@ -182,7 +185,7 @@ public class CatanBoard {
         for (IntTupel coords : hex_coords) {
             Node[] HexNodes = new Node[6];
 
-            for (Directions dir : DIR) {
+            for (AxialDirection dir : DIR) {
                 IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
                 if (board.containsKey(neighbor)) {
                     switch (dir) {
@@ -220,6 +223,10 @@ public class CatanBoard {
             board.put(coords, new Tile(allResources.getFirst(), HexNodes));
             allResources.removeFirst();
 
+            for (Node HexNode : HexNodes) {
+                HexNode.addHexTile(board.get(coords));
+            }
+
             if (!diceBoard.containsKey(numChips.getFirst())) {
                 diceBoard.put(numChips.getFirst(), new ArrayList<>());
             }
@@ -247,7 +254,7 @@ public class CatanBoard {
      * @param numTiles Anzahl der HexTiles (ohne Wüste), die eine Ressource benötigen
      * @return ArrayList mit Ressourcen-Typen
      */
-    private static ArrayList<Resources> generateResourceTypes(int numTiles) {
+    private ArrayList<Resources> generateResourceTypes(int numTiles) {
         ArrayList<Resources> allResources = new ArrayList<>();
         Resources[] values = Resources.values();
 
@@ -286,8 +293,6 @@ public class CatanBoard {
       return chips;
     }
 
-
-
     public Map<IntTupel, Tile> getHexTiles() {
         return this.board;
     }
@@ -321,11 +326,97 @@ public class CatanBoard {
     }
 
     public void blockHex(IntTupel coords) {
-       if (board.get(coords).isBlocked() == true) {
-           board.get(coords).setBlocked(false);
-       }
-       else if (board.get(coords).isBlocked() == false) {
-           board.get(coords).setBlocked(true);
-       }
+        if (board.get(coords).isBlocked() == true) {
+            board.get(coords).setBlocked(false);
+        }
+        else if (board.get(coords).isBlocked() == false) {
+            board.get(coords).setBlocked(true);
+        }
+    }
+
+    /**
+     *Dies ist der Algorithmus, welcher die längste Handel-Strecke heraussucht.
+     *Es wird als Algorithms Depth-First Search genutzt,
+     *es wird erst geschaut, sobald ein Spieler 3 Gebäude aneinander hat.
+     * @param playerId dies ist die ID des spielers
+     * @return Gibt die Länge des shits raus.
+     */
+
+    public int findLongestTradeRoutes(int playerId) {
+        int maxLength = 0;
+        for (int startNode = 0; startNode < hex_coords.length; startNode++) {
+            boolean[] searched = new boolean[nodes.length];
+            maxLength =
+                    Math.max(maxLength, dfsLength(startNode, -1, searched, playerId));
+        }
+        System.out.println("Winner: Player" + maxLength);
+        return maxLength >= 3 ? maxLength : 0;
+    }
+
+    /**
+     *Führt die Suche durch (DFS) zur Ermittlung der Längsten durchgehenden Straße eines Spielers.
+     * @param current Aktueller Knoten
+     * @param from Vorheriger Knoten (Vermeidung von Rücklaufen)
+     * @param playerId ID des Spielers, dessen Straße aktuell geprüft wird.
+     * @param searched Merkt sich, welche Knoten schon durchsucht wurden.
+     * @return Länge des längsten Pfades.
+     */
+
+    private int dfsLength(int current, int from, boolean[] searched, int playerId)
+    {
+        searched[current] = true;
+        int maxTiefe = 1;
+
+        for (int nachbar = 0; nachbar < nodes.length; nachbar++)
+        {
+            if (graph[current][nachbar][STREET] == 1 && graph[current][nachbar][PLAYER] == playerId)
+            {
+                if (nachbar != from && !searched[nachbar])
+                {
+                    maxTiefe = Math.max(maxTiefe, 1 + dfsLength(nachbar, current, searched, playerId));
+                }
+            }
+        }
+        searched[current] = false;
+        System.out.println("DFS von node:" + current + "ergibt die Tiefe:" + maxTiefe);
+        return maxTiefe;
+    }
+
+    /**
+     *Dies hier findet den Spieler mit der längsten Handelsstraße.
+     * @param playerCount Anzahl aller Spieler.
+     * @return Spieler ID mit der längsten Straße oder gibt halt -1 aus, falls keiner derzeit die längste Straße hat.
+     */
+
+    public int findPlayerLongestStreet(int playerCount)
+    {
+        int maxLength = 0;
+        int winner = -1;
+
+        for (int playerId = 0; playerId < playerCount; playerId++)
+        {
+            int length = findLongestTradeRoutes(playerId);
+            if (length > maxLength)
+            {
+                maxLength = length;
+                winner = playerId;
+            }
+            logRouteDetails(playerId,length,winner,maxLength);
+        }
+        return winner;
+    }
+
+    /**
+     *Helfer Methode zur Protokollierung von den Routeninformationen
+     * @param playerId spieler id
+     * @param length Länge des in Führung liegenden Spielers
+     * @param winner Spieler Id mi der bislang längsten Straße
+     * @param maxLength Länge der bislang längsten Straße
+     */
+
+    private void logRouteDetails(int playerId,int length, int winner,int maxLength)
+    {
+        System.out.println("Spieler" + playerId + "Hat eine Straßen länge" + length);
+        System.out.println("Aktueller Sieger ist Spieler" + winner + "mit der Straßenlänge:" + maxLength);
     }
 }

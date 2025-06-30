@@ -9,7 +9,7 @@ import java.util.*;
 @Getter
 public abstract class Player {
 
-    EnumMap<Resources, Integer> resources;
+    Storage storage;
     int id;
 
     public Player(int amountResources) {

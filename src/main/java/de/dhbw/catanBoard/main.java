@@ -1,10 +1,13 @@
 package de.dhbw.catanBoard;
 
+import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.gamePieces.Settlement;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Human;
 import de.dhbw.player.Player;
+
+import java.util.List;
 
 public class main {
     public static void main(String[] args) {
@@ -36,7 +39,6 @@ public class main {
 
         Settlement settlement = new Settlement(player1);
         System.out.println(settlement.getBuildCost());
-
 
     }
 }
