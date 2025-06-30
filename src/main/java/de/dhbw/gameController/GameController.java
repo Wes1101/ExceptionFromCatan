@@ -70,6 +70,15 @@ public class GameController {
         this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
     }
 
+    /**
+     * Returns the number of players in the game.
+     *
+     * @return the player amount
+     */
+    public int getPlayerAmount() {
+        return this.players.length;
+    }
+
     public void gameStart() {
         switch (gameControllerType) {
             case LOCAL:
