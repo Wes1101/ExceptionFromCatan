@@ -88,6 +88,5 @@ public abstract class Player {
 //                player.removeResources(entry.getKey(), entry.getValue());
             }
         }
-    }
 }
 
