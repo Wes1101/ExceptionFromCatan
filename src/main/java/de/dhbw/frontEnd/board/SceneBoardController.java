@@ -32,7 +32,7 @@ import javafx.util.Duration;
 
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.catanBoard.hexGrid.HexTile;
+import de.dhbw.catanBoard.hexGrid.Tile;
 import java.util.Map;
 
 public class SceneBoardController implements Initializable {
@@ -209,7 +209,7 @@ public class SceneBoardController implements Initializable {
     int radius = 3;
     CatanBoard catanBoard = new CatanBoard(radius);
 
-    Map<IntTupel, de.dhbw.catanBoard.hexGrid.HexTile> hexes = catanBoard.getHexTiles();
+    Map<IntTupel, Tile> hexes = catanBoard.getHexTiles();
 
 
     System.out.println("Anzahl HexTiles: " + hexes.size());

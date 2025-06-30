@@ -32,27 +32,27 @@ public class Storage {
 
     private void initBuildings(Player player, EnumMap<BuildingTypes, Integer> buildings) {
 
-            for (int i = 0; i < buildings.get(BuildingTypes.SETTLEMENT); i++) {
-                this.settlements.add(new Settlement(player));
-            }
-            for (int i = 0; i < buildings.get(BuildingTypes.CITY); i++) {
-                this.settlements.add(new City(player));
-            }
-            for (int i = 0; i < buildings.get(BuildingTypes.STREET); i++) {
-                this.settlements.add(new Street(player));
-            }
+//            for (int i = 0; i < buildings.get(BuildingTypes.SETTLEMENT); i++) {
+//                this.settlements.add(new Settlement(player));
+//            }
+//            for (int i = 0; i < buildings.get(BuildingTypes.CITY); i++) {
+//                this.settlements.add(new City(player));
+//            }
+//            for (int i = 0; i < buildings.get(BuildingTypes.STREET); i++) {
+//                this.settlements.add(new Street(player));
+//            }
     }
 
     private void initResources(EnumMap<Resources, Integer> resources) {
 
-        for (int i = 0; i < resources.get(BuildingTypes.SETTLEMENT); i++) {
-            this.settlements.add(new Settlement(player));
-        }
-        for (int i = 0; i < resources.get(BuildingTypes.CITY); i++) {
-            this.settlements.add(new Settlement(player));
-        }
-        for (int i = 0; i < resources.get(BuildingTypes.STREET); i++) {
-            this.settlements.add(new Settlement(player));
-        }
+//        for (int i = 0; i < resources.get(BuildingTypes.SETTLEMENT); i++) {
+//            this.settlements.add(new Settlement(player));
+//        }
+//        for (int i = 0; i < resources.get(BuildingTypes.CITY); i++) {
+//            this.settlements.add(new Settlement(player));
+//        }
+//        for (int i = 0; i < resources.get(BuildingTypes.STREET); i++) {
+//            this.settlements.add(new Settlement(player));
+//        }
     }
 }

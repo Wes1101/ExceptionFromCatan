@@ -8,13 +8,15 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+
+import de.dhbw.player.Human;
 import lombok.Getter;
 import lombok.Setter;
 
 import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
-import de.dhbw.bank.Bank;
+import de.dhbw.player.Bank;
 import de.dhbw.gamePieces.Bandit;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 
@@ -54,7 +56,7 @@ public class GameController {
     public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
-            players[i] = new Player();
+            players[i] = new Human("", i);
         }
 
         if (playerAmount > 4) {
@@ -63,11 +65,11 @@ public class GameController {
             this.catanBoard = new CatanBoard(3);
         }
 
-        this.bank = new Bank(19);       // Sind eig immer 19 -> Konstroktor
+        this.bank = new Bank(19, players);       // Sind eig immer 19 -> Konstroktor
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
-        this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
+        //this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
     }
 
     /**
@@ -126,8 +128,8 @@ public class GameController {
             gui.activePlayer(this.players[currentIndex]);
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            this.players[currentIndex].buyFirstSettlement();
-            this.players[currentIndex].buyFirstStreet();
+//            this.players[currentIndex].buyFirstSettlement();
+//            this.players[currentIndex].buyFirstStreet(); TODO: @Johann
 
             orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
             currentIndex = currentIndex - 1;
@@ -143,8 +145,8 @@ public class GameController {
             gui.activePlayer(this.players[currentIndex]);
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            player.buyFirstSettlement();
-            player.buyFirstStreet();
+//            player.buyFirstSettlement();
+//            player.buyFirstStreet();
 
             //TODO: recieve according ressources: @Johann
         }
@@ -186,8 +188,8 @@ public class GameController {
          */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            this.players[currentIndex].buyFirstSettlement();
-            this.players[currentIndex].buyFirstStreet();
+//            this.players[currentIndex].buyFirstSettlement();
+//            this.players[currentIndex].buyFirstStreet(); TODO: @Johann
 
             orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
             currentIndex = currentIndex - 1;
@@ -204,8 +206,8 @@ public class GameController {
             server.activePlayer(this.players[currentIndex]);
             */
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
-            player.buyFirstSettlement();
-            player.buyFirstStreet();
+//            player.buyFirstSettlement();
+//            player.buyFirstStreet();
             //TODO: recieve according ressources: @Johann
         }
         minorGameState = MinorGameStates.NO_STATE;
@@ -242,13 +244,13 @@ public class GameController {
                     minorGameState = MinorGameStates.BANDIT_ACTIVE;
 
                     IntTupel selectedNewLocation = gui.activateBandit();
-                    bandit.trigger(selectedNewLocation);
+                    //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
                 }
 
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
-                catanBoard.triggerBoard(dice1 + dice2);
+                catanBoard.triggerBoard(dice1 + dice2, bank);
 
-                //SEMITODO: Clarify how gui will be notified of what player has now how may resources
+                //TODO: Clarify how gui will be notified of what player has now how may resources
                 gui.updatePlayerResources(players);
 
                 /*---Trade, build and play special cards---*/
@@ -275,7 +277,7 @@ public class GameController {
                 //TODO: Clarify bandit handling
 
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
-                catanBoard.triggerBoard(dice1 + dice2);
+                catanBoard.triggerBoard(dice1 + dice2, bank);
 
                 //TODO: Clarify how gui will be notified of what player has now how may resources
 

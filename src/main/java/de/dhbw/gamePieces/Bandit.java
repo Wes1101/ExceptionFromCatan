@@ -49,7 +49,7 @@ public class Bandit {
          activePlayer.stealRandomResources(targetPlayer, activePlayer); //überprüfen ob richtig
 
          for (Player player : allPlayers) {
-             player.banditRemovesResources();
+             //player.banditRemovesResources(); TODO: @Atussa
          }
      }
 

@@ -23,10 +23,10 @@ public class Bank  extends Player {
         int numCity = 5;
         int numStreet = 6;
 
-        for (Player player : players) {
-            storeBuildings.put(player, new Storage());
-            storeBuildings.get(player).fillStorage(player);
-        }
+//        for (Player player : players) {
+//            storeBuildings.put(player, new Storage());
+//            storeBuildings.get(player).fillStorage(player);
+//        }
     }
 
 

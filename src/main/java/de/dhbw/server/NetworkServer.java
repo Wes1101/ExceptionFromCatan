@@ -11,6 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
 import de.dhbw.dto.NetMsgType;
+import de.dhbw.gameController.GameControllerTypes;
 import de.dhbw.mapping.INetServerAddressMapper;
 import de.dhbw.network.MessageFactory;
 import de.dhbw.network.NetworkMessage;
@@ -183,7 +184,7 @@ public class NetworkServer {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    NetworkServer server = new NetworkServer(new GameController(3, 0));
+    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER)); //TODO @David
     server.initConnections();
   }
 }
