@@ -325,6 +325,15 @@ public class CatanBoard {
         updateGraph(node1, node2, 1, player.getId());
     }
 
+    public void blockHex(IntTupel coords) {
+        if (board.get(coords).isBlocked() == true) {
+            board.get(coords).setBlocked(false);
+        }
+        else if (board.get(coords).isBlocked() == false) {
+            board.get(coords).setBlocked(true);
+        }
+    }
+
     /**
      *Dies ist der Algorithmus, welcher die längste Handel-Strecke heraussucht.
      *Es wird als Algorithms Depth-First Search genutzt,
