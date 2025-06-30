@@ -1,0 +1,117 @@
+.big_button {
+  /* transparenter Hintergrund, brauner Rand */
+  -fx-background-color: transparent;
+  -fx-border-color: #412515;
+  -fx-border-width: 2px;
+
+
+  /* runde Form */
+  -fx-background-radius: 50px;
+  -fx-border-radius: 50px;
+
+
+  /* Text in deiner Wunschfarbe */
+  -fx-text-fill: #412515;
+
+  /* Mauszeiger zum Zeiger ändern */
+  -fx-cursor: hand;
+
+  /* zentrieren */
+  -fx-alignment: center;
+}
+
+.big_button:hover {
+  /* leicht getönter Hintergrund in deiner Wunschfarbe */
+  -fx-background-color: #41251533;
+  /* Rand minimal dunkler für Kontrast */
+  -fx-border-color: #351e15;
+}
+
+
+.round-button {
+  /* transparenter Hintergrund, brauner Rand */
+  -fx-background-color: transparent;
+  -fx-border-color: #412515;
+  -fx-border-width: 1.5px;
+
+  /* runde Form */
+  -fx-background-radius: 999px;
+  -fx-border-radius: 999px;
+
+  /* Größe 24×24px */
+  -fx-pref-width: 24px;
+  -fx-pref-height: 24px;
+
+  /* Text in deiner Wunschfarbe */
+  -fx-text-fill: #412515;
+  -fx-font-size: 14px;
+
+  /* kein Innen­abstand, damit das „+“ Platz hat */
+  -fx-padding: 0;
+
+  /* Mauszeiger zum Zeiger ändern */
+  -fx-cursor: hand;
+
+  /* zentrieren */
+  -fx-alignment: center;
+}
+
+.round-button:hover {
+  /* leicht getönter Hintergrund in deiner Wunschfarbe */
+  -fx-background-color: #41251533;
+  /* Rand minimal dunkler für Kontrast */
+  -fx-border-color: #351e15;
+}
+
+.scroll-pane-transparent {
+    /* gesamte ScrollPane transparent */
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+
+
+
+.scroll-pane-transparent .viewport {
+    /* der innere Bereich (Inhalt) transparent */
+    -fx-background-color: transparent;
+}
+
+.scroll-pane-transparent .corner {
+    /* die Ecken (bei Überlapp) transparent */
+    -fx-background-color: transparent;
+}
+
+.transparent-pane {
+    /* keine Hintergrundfarbe */
+    -fx-background-color: transparent;
+    /* keine Insets, keine Ränder */
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.node {
+    -fx-background-color: F3E99C;
+    -fx-border-color: grey;
+     -fx-opacity: 0.5;
+    -fx-border-width: 1;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-text-fill: white;
+
+    /* Neu: feste Größe */
+    -fx-pref-width: 10px;
+    -fx-pref-height: 5px;
+
+    /* Neu: Innenabstand reduzieren */
+    -fx-padding: 4px 4px;
+
+}
+
+/* Hover-Effekt: leicht weiße Hintergrundtönung */
+.node:hover {
+    -fx-background-color: white;
+    -fx-border-color: white;
+     -fx-opacity: 1;
+}
