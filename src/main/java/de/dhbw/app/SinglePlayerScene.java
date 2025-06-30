@@ -120,7 +120,7 @@ public class SinglePlayerScene {
 
             if (isServergame) {
                 /*@TODO Server(David) erstellen mit Übergabe der parameter*/
-            } else if (!isServergame) {
+            } else{
                 /*@TODO Spielsteureung(Fabian) erstellen mit Übergabe parameter*/
             }
 
