@@ -51,7 +51,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.32</version>
+            <version>1.18.38</version>
         </dependency>
         <!-- SLF4J-API -->
         <dependency>
@@ -106,7 +106,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>de.dhbw/de.dhbw.frontEnd.menu.Menu</mainClass>
+                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -122,7 +122,7 @@
                             <options>
                                 <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8001</option>
                             </options>
-                            <mainClass>de.dhbw/de.dhbw.frontEnd.menu.Menu</mainClass>
+                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -218,7 +218,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>de.dhbw/de.dhbw.frontEnd.menu.Menu</mainClass>
+                                    <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
