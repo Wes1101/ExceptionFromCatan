@@ -82,32 +82,36 @@ public class GameController {
     }
 
     public void gameStart() {
-        switch (gameControllerType) {
-            case LOCAL:
-                this.startLocal();
-                break;
-            case SERVER:
-                this.startServer();
-                break;
-            case CLIENT:
-                /* Server calls methods in GameController */
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void startLocal() {
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
         int[] playerDiceNumber = new int[this.players.length];
 
         for (int i = 0; i < this.players.length; i++) {
-            gui.activePlayer(this.players[i]);
-            gui.startRollDiceAnimation();
+            switch (gameControllerType) {
+                case LOCAL:
+                    gui.activePlayer(this.players[i]);
+                    gui.startRollDiceAnimation();
+                    break;
+                case SERVER:
+                    /*   TODO: @David   */
+                    break;
+                case CLIENT:
+                    /* Server calls methods in GameController */
+                    break;
+            }
             this.rollDice();
-            gui.showDice(dice1, dice2);
+            switch (gameControllerType) {
+                case LOCAL:
+                    gui.showDice(dice1, dice2);
+                    break;
+                case SERVER:
+                    /*   TODO: @David   */
+                    break;
+                case CLIENT:
+                    /* Server calls methods in GameController */
+                    break;
+            }
             playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
 
@@ -125,8 +129,33 @@ public class GameController {
         int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
         for (int i = 0; i < this.players.length; i++) {
-            gui.activePlayer(this.players[currentIndex]);
+            switch (gameControllerType) {
+                case LOCAL:
+                    gui.activePlayer(this.players[currentIndex]);
+                    break;
+                case SERVER:
+                    /*   TODO: @David   */
+                    break;
+                case CLIENT:
+                    /* Server calls methods in GameController */
+                    break;
+            }
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
+
+            IntTupel coordinatesFirstSettlement;
+            IntTupel coordinatesFirstStreet;
+            switch (gameControllerType) {
+                case LOCAL:
+                    //coordinatesFirstSettlement = gui.buildSettlement();
+                    //coordinatesFirstStreet = gui.buildStreet();
+                    break;
+                case SERVER:
+                    /*   TODO: @David   */
+                    break;
+                case CLIENT:
+                    /* Server calls methods in GameController */
+                    break;
+            }
 
 //            this.players[currentIndex].buyFirstSettlement();
 //            this.players[currentIndex].buyFirstStreet(); TODO: @Johann
@@ -142,8 +171,33 @@ public class GameController {
 
         //place second settlement and get according resources
         for (Player player : this.players) {
-            gui.activePlayer(this.players[currentIndex]);
+            switch (gameControllerType) {
+                case LOCAL:
+                    gui.activePlayer(this.players[currentIndex]);
+                    break;
+                case SERVER:
+                    /*   TODO: @David   */
+                    break;
+                case CLIENT:
+                    /* Server calls methods in GameController */
+                    break;
+            }
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
+
+            IntTupel coordinatesSecondSettlement;
+            IntTupel coordinatesSecondStreet;
+            switch (gameControllerType) {
+                case LOCAL:
+                    //coordinatesSecondSettlement = gui.buildSettlement();
+                    //coordinatesSecondStreet = gui.buildStreet();
+                    break;
+                case SERVER:
+                    /*   TODO: @David   */
+                    break;
+                case CLIENT:
+                    /* Server calls methods in GameController */
+                    break;
+            }
 
 //            player.buyFirstSettlement();
 //            player.buyFirstStreet();
@@ -151,6 +205,7 @@ public class GameController {
             //TODO: recieve according ressources: @Johann
         }
         minorGameState = MinorGameStates.NO_STATE;
+
     }
 
     private void startServer() {
