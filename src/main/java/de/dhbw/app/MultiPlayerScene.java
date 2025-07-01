@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -13,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 /**
  * Diese Klasse stellt die Benutzeroberfläche für den Mehrspielermodus dar.
@@ -66,9 +68,45 @@ public class MultiPlayerScene {
         // IP-Feld (linke Hälfte)
         TextField ipField = new TextField();
         ipField.setPromptText("IP-Adresse eingeben");
+
+// Hier IP-Filter einfügen:
+        UnaryOperator<TextFormatter.Change> ipFilter = change -> {
+            String newText = change.getControlNewText();
+
+            // Erlaube nur Ziffern und Punkte
+            if (!newText.matches("[0-9.]*")) {
+                return null;
+            }
+
+            // Prüfe grob: maximal 3 Punkte und maximal 4 Blöcke
+            String[] parts = newText.split("\\.");
+            if (parts.length > 4) {
+                return null;
+            }
+
+            // Prüfe, ob jeder Block maximal 3 Ziffern hat und zwischen 0 und 255 liegt
+            for (String part : parts) {
+                if (part.length() > 0) {
+                    try {
+                        int num = Integer.parseInt(part);
+                        if (num < 0 || num > 255) {
+                            return null;
+                        }
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
+                }
+            }
+
+            return change;
+        };
+        ipField.setTextFormatter(new TextFormatter<>(ipFilter));
+
+// Styling
         ipField.setStyle(
                 "-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;"
         );
+
         StackPane ipPane = new StackPane(ipField);
         ipPane.setPadding(new Insets(15));
         ipPane.setStyle("-fx-border-color: #66ccff; -fx-border-width: 2;");
