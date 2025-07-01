@@ -9,16 +9,17 @@ package de.dhbw.gameController;
 
 import java.util.Random;
 
-import de.dhbw.player.Human;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
-import de.dhbw.frontEnd.board.SceneBoard;
-import de.dhbw.player.Player;
 import de.dhbw.catanBoard.CatanBoard;
-import de.dhbw.player.Bank;
-import de.dhbw.gamePieces.Bandit;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
+import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.gamePieces.Bandit;
+import de.dhbw.player.Bank;
+import de.dhbw.player.Human;
+import de.dhbw.player.Player;
 
 public class GameController {
     private Player[] players;
