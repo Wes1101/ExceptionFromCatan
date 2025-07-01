@@ -7,8 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -28,32 +30,43 @@ public class StartMenuScene {
      * @param primaryStage Die Stage, auf der die Szene angezeigt wird.
      */
     public StartMenuScene(Stage primaryStage) {  // Aufbau des GUI-Layouts mit Buttons und Eventhandlern
+        URL fontUrl = getClass().getResource("/de/dhbw/frontEnd/menu/GotischeInitialien.ttf");
+        System.out.println(">>> FONT URL = " + fontUrl);
+
+        Font.loadFont(
+                Objects.requireNonNull(getClass().getResource("/fonts/GrusskartenGotisch.ttf")).toExternalForm(), 36);
+
+
+
 
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #222;");
         root.setAlignment(Pos.CENTER);
 
-        Label title = new Label("Exception von Catan Launcher");
-        title.setStyle("-fx-font-size: 26px; -fx-text-fill: #ff4444; -fx-font-weight: bold;");
+        Label title = new Label("Exception von Catan");
+        title.setId("launcher-title");
         StackPane redPane = new StackPane(title);
         redPane.setPadding(new Insets(15));
-        redPane.setStyle("-fx-border-color: #ff4444; -fx-border-width: 2; -fx-background-radius: 10;");
+
 
         Button btnEinzel = new Button("Einzelspieler");
-        btnEinzel.setPrefWidth(200);
-        btnEinzel.setStyle("-fx-font-size: 18px; -fx-background-color: #ff99ff; -fx-text-fill: #222;");
+        btnEinzel.setId("buttonEinzelMulti");
+
+
 
         Button btnMehr = new Button("Mehrspieler");
-        btnMehr.setPrefWidth(200);
-        btnMehr.setStyle("-fx-font-size: 18px; -fx-background-color: #ff99ff; -fx-text-fill: #222;");
+        btnMehr.setId("buttonEinzelMulti");
+
+
 
         StackPane pinkPane1 = new StackPane(btnEinzel);
         pinkPane1.setPadding(new Insets(10));
-        pinkPane1.setStyle("-fx-border-color: #ff99ff; -fx-border-width: 2; -fx-background-radius: 10;");
+
+
         StackPane pinkPane2 = new StackPane(btnMehr);
         pinkPane2.setPadding(new Insets(10));
-        pinkPane2.setStyle("-fx-border-color: #ff99ff; -fx-border-width: 2; -fx-background-radius: 10;");
+
 
         root.getChildren().addAll(redPane, pinkPane1, pinkPane2);
 
