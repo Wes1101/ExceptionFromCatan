@@ -13,59 +13,60 @@ import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
 
-
 /**
-  * This Class is administrating the Bandit, which is a subclass of GamePieces.
-  *
-  * @author Atussa Mehrawari
-  * @version 0.1
-  *
-  */
+ * This class manages the Bandit, which is a game piece in Catan.
+ * The Bandit can move across the board, steal resources, and force players to discard cards.
+ *
+ * @author Atussa Mehrawari
+ * @version 0.1
+ *
+ */
 public class Bandit {
-     private IntTupel coords;
+    // Current coordinates of the Bandit (on a hex tile)
+    private IntTupel coords;
 
-      /**
-       * Creates a new Bandit at the given location and coordinates.
-       * The corresponding field is marked as blocked.
-       *
-       * @param coords the coordinates of the hex tile
-       */
-     public Bandit(IntTupel coords) {
-         this.coords = coords;
-     }
-     /**
-      * Triggers the Bandit.
-      * Changes the location, blocks the new location and the new coordinates.
-      *
-      * @param newCoords is the new coordinates where the bandit stands.
-      * @param board the new location of the Bandit
-      * @param activePlayer
-      * @param allPlayers
-      */
-     public void trigger(CatanBoard board, IntTupel newCoords, Player targetPlayer, Player activePlayer, Player[] allPlayers, Bank bank) {
-         board.blockHex(this.coords); // alte location wird entblockt
-         this.coords = newCoords;
-         board.blockHex(this.coords); //neue location wird geblockt
+    /**
+     * Creates a new Bandit at the given coordinates.
+     * The corresponding tile is marked as blocked (no resource production).
+     *
+     * @param coords the coordinates of the hex tile where the Bandit is initially placed
+     */
+    public Bandit(IntTupel coords) {
+        this.coords = coords;
+    }
 
-         activePlayer.stealRandomResources(targetPlayer, activePlayer); //überprüfen ob richtig
+    /**
+     * Triggers the Bandit's action:
+     * - Moves the Bandit to a new tile
+     * - Unblocks the previous tile and blocks the new one
+     * - The active player steals one random resource from the target player
+     * - All players with more than 7 cards must discard half of them
+     *
+     * @param newCoords the new coordinates where the Bandit is moved
+     * @param board reference to the game board
+     * @param targetPlayer the player from whom a resource is stolen
+     * @param activePlayer the current player performing the action
+     * @param allPlayers array of all players in the game
+     * @param bank the bank to which discarded resources are returned
+     */
+    public void trigger(CatanBoard board, IntTupel newCoords, Player targetPlayer, Player activePlayer, Player[] allPlayers, Bank bank) {
+        board.blockHex(this.coords); // unblock old location
+        this.coords = newCoords;
+        board.blockHex(this.coords); // block new location
 
-         for (Player player : allPlayers) {
-             player.banditRemovesResources(7, bank);
-         }
-     }
+        activePlayer.stealRandomResources(targetPlayer, activePlayer); // steal one resource from the target player
 
-     public String getType () {
-         return "Bandit";
-     }
+        for (Player player : allPlayers) {
+            player.banditRemovesResources(7, bank); // players with >7 resources discard half
+        }
+    }
+
+    /**
+     * Returns the type of this game piece.
+     *
+     * @return the string "Bandit"
+     */
+    public String getType () {
+        return "Bandit";
+    }
 }
-
-//TODO: tragetSpieler muss als parameter angegeben werden,
-// zielfeld muss angebeen werden und welchen spieler du etwas klauen willst.
-
-//TODO: Funktion: inventar des spielers aufrufen,
-// random resource aufrufen und an den jetztigen spieler weiterschieben.
-
-
-//TODO: Depo von allen spielern kontrollieren
-// wenn spieler mehr <= 7 karten hat, dann häfte der karten abgeben
-// Spieler kann aussuchen welche Karten zurück gegeben werden
