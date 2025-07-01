@@ -9,6 +9,7 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.frontEnd.board.HexTile;
 import de.dhbw.gameController.GameController;
+import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
 
@@ -41,7 +42,7 @@ public class Bandit {
       * @param activePlayer
       * @param allPlayers
       */
-     public void trigger(CatanBoard board, IntTupel newCoords, Player targetPlayer, Player activePlayer, Player[] allPlayers) {
+     public void trigger(CatanBoard board, IntTupel newCoords, Player targetPlayer, Player activePlayer, Player[] allPlayers, Bank bank) {
          board.blockHex(this.coords); // alte location wird entblockt
          this.coords = newCoords;
          board.blockHex(this.coords); //neue location wird geblockt
@@ -49,7 +50,7 @@ public class Bandit {
          activePlayer.stealRandomResources(targetPlayer, activePlayer); //überprüfen ob richtig
 
          for (Player player : allPlayers) {
-             player.banditRemovesResources(7);
+             player.banditRemovesResources(7, bank);
          }
      }
 

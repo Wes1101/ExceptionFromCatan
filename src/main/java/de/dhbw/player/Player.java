@@ -1,7 +1,9 @@
 package de.dhbw.player;
 
+
 import de.dhbw.gamePieces.Street;
 import de.dhbw.resources.Resources;
+import de.dhbw.player.Bank;
 import lombok.Getter;
 
 import java.util.*;
@@ -39,6 +41,15 @@ public abstract class Player {
         }
     }
 
+    //Überladung, um in Zeile 93 Rescourcen dem Spieler, der mehr als x Karten hat Karten abzunehmen
+    public void removeResources(Resources type, int amount) {
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) - amount);
+                return;
+            }
+        }
+    }
     public int getTotalResources() {
         int sum = 0;
         for (int count : resources.values()) {
@@ -67,7 +78,7 @@ public abstract class Player {
 //            return;
 //        }
 //
-//        // Zufäälige Ressource wählen
+//        // Zufällige Ressource wählen
 //        Random r = new Random();
 //        Resources chosen = resources.get(r.nextInt(resources.size()));
 //
@@ -76,14 +87,19 @@ public abstract class Player {
     }
 
 
-    public void banditRemovesResources(int threshold) {
+    public void banditRemovesResources(int threshold, Bank bank) {
             int total = this.getTotalResources();
-            if (total > 7) { //TODO atussa: dynmische abwurfmenge threshold
+            if (total > threshold) {
                 int toDiscard = total / 2;
-                //methode in gui mit toDiscard als parameter aufrufen
-                //Resources[] resToRemove = gui.removeResources(toDiscard);
-                Resources[] resToRemove = {Resources.WOOD, Resources.STONE};
+
+                // TODO: GUI soll resToRemove liefern
+                Resources[] resToRemove = {Resources.WOOD, Resources.STONE}; //dummy placeholder
+
                 //for schleife um die ressourcen zu entfernen und der bank wieder hinzuzufügen
+                for (Resources res : resToRemove) {
+                    this.removeResources(res, 1);
+                    bank.addResources(res, 1);
+                }
             }
 
 
