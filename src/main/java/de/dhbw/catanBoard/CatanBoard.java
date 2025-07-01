@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -28,7 +29,7 @@ import java.util.*;
 
 //wasser tiles, Häfen
 
-
+@Slf4j
 @Getter
 public class CatanBoard {
     IntTupel[] hex_coords;
@@ -52,6 +53,7 @@ public class CatanBoard {
         initGraph();
         initHexCoords(radius);
         createGraph(radius);
+        log.info("Board created");
     }
 
     /**
@@ -332,6 +334,15 @@ public class CatanBoard {
         else if (board.get(coords).isBlocked() == false) {
             board.get(coords).setBlocked(true);
         }
+    }
+
+    public IntTupel getDesertCoords() {
+        for (IntTupel coords : board.keySet()) {
+            if (board.get(coords).getResourceType() == Resources.NONE) {
+                return coords;
+            }
+        }
+        return null;
     }
 
     /**

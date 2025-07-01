@@ -60,7 +60,7 @@
 //        if (!vertices.contains(vertex))
 //        {
 //            vertices.add(vertex);
-//            verteces.addHexTile(this);
+//            vertices.addHexTile(this);
 //        }
 //    }
 //
