@@ -10,6 +10,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
  * Diese Klasse stellt die Benutzeroberfläche für den Einzelspielermodus dar.
  * Der Spieler kann Parameter wie Spieleranzahl, Siegpunktziel und Kartenabwurfgrenze einstellen.
@@ -110,6 +112,7 @@ public class SinglePlayerScene {
         });
 
         this.scene = new Scene(root, 1152, 648);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/SinglePlayer.css")).toExternalForm());
     }
 
     /**
