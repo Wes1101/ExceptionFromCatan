@@ -87,9 +87,6 @@ public class GameController {
                 case SERVER:
                     /*   TODO: @David   */
                     break;
-                case CLIENT:
-                    /* Server calls methods in GameController */
-                    break;
             }
             this.rollDice();
             switch (gameControllerType) {
@@ -98,9 +95,6 @@ public class GameController {
                     break;
                 case SERVER:
                     /*   TODO: @David   */
-                    break;
-                case CLIENT:
-                    /* Server calls methods in GameController */
                     break;
             }
             playerDiceNumber[i] = (this.dice1 + this.dice2);
@@ -127,9 +121,6 @@ public class GameController {
                 case SERVER:
                     /*   TODO: @David   */
                     break;
-                case CLIENT:
-                    /* Server calls methods in GameController */
-                    break;
             }
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
@@ -142,9 +133,6 @@ public class GameController {
                     break;
                 case SERVER:
                     /*   TODO: @David   */
-                    break;
-                case CLIENT:
-                    /* Server calls methods in GameController */
                     break;
             }
 
@@ -169,9 +157,6 @@ public class GameController {
                 case SERVER:
                     /*   TODO: @David   */
                     break;
-                case CLIENT:
-                    /* Server calls methods in GameController */
-                    break;
             }
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
@@ -184,9 +169,6 @@ public class GameController {
                     break;
                 case SERVER:
                     /*   TODO: @David   */
-                    break;
-                case CLIENT:
-                    /* Server calls methods in GameController */
                     break;
             }
 
@@ -214,11 +196,6 @@ public class GameController {
                     case SERVER:
                         /*   TODO: @David   */
                         break;
-                    case CLIENT:
-                        /* Server calls methods in GameController */
-                        break;
-                    default:
-                        break;
                 }
 
                 this.rollDice();
@@ -230,28 +207,20 @@ public class GameController {
                     case SERVER:
                         /*   TODO: @David   */
                         break;
-                    case CLIENT:
-                        /* Server calls methods in GameController */
-                        break;
-                    default:
-                        break;
                 }
 
                 if (dice1 + dice2 == 7) {
                     minorGameState = MinorGameStates.BANDIT_ACTIVE;
 
                     IntTupel selectedNewLocation;
-                    int playerStolenFromId;
+                    Player robbedPlayer;
                     switch (gameControllerType) {
                         case LOCAL:
                             selectedNewLocation = gui.activateBandit();
-                            //playerStolenFromId = gui.getStolenFromId();
+                            //robbedPlayer = gui.getRobbedPlayer(this.players);
                             break;
                         case SERVER:
                             /*   TODO: @David   */
-                            break;
-                        case CLIENT:
-                            /* Server calls methods in GameController */
                             break;
                     }
                     //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
@@ -266,9 +235,6 @@ public class GameController {
                         break;
                     case SERVER:
                         /*   TODO: @David   */
-                        break;
-                    case CLIENT:
-                        /* Server calls methods in GameController */
                         break;
                 }
 
@@ -302,5 +268,44 @@ public class GameController {
      */
     public int getPlayerAmount() {
         return this.players.length;
+    }
+
+    public void activePlayer(Player player) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            gui.activePlayer(player);
+        }
+    }
+
+    public void rollDiceAnimation() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            gui.startRollDiceAnimation();
+        }
+    }
+
+    public void showDice(int dice1, int dice2) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            gui.showDice(dice1, dice2);
+        }
+    }
+
+    public IntTupel[] getCoordinatesFirstSettlementStreet() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            //coordinatesFirstSettlement = gui.buildSettlement();
+            //coordinatesFirstStreet = gui.buildStreet();
+        }
+        return null;
+    }
+
+    public void updatePlayerResources(Player[] players) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            gui.updatePlayerResources(players);
+        }
+    }
+
+    public PlayerTupelVar activateBandit (){
+        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            IntTupel selectedNewLocation = gui.activateBandit();
+            //PlayerTupelVar robbedPlayer = gui.getRobbedPlayer(this.players);
+        }
     }
 }
