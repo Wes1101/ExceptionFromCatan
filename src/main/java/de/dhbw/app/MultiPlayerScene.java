@@ -11,20 +11,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-/**
- * Diese Klasse stellt die Benutzeroberfläche für den Mehrspielermodus dar.
- * Der Benutzer kann ein Spiel hosten oder einem bestehenden Spiel beitreten.
- */
+
 public class MultiPlayerScene {
     private final Scene scene;
     private StartMenuScene startMenuScene;
     private SinglePlayerScene singlePlayerScene;
 
-    /**
-     * Erstellt das Layout für die Mehrspieler-Szene mit Buttons, IP- und Namensfeld.
-     *
-     * @param primaryStage Die Hauptbühne der Anwendung.
-     */
+
     public MultiPlayerScene(Stage primaryStage) { // Aufbau der Mehrspieler-GUI
         VBox root = new VBox(25);
         root.setPadding(new Insets(40));
@@ -106,29 +99,17 @@ public class MultiPlayerScene {
         this.scene = new Scene(root, 1152, 648);
     }
 
-    /**
-     * Gibt die aktuelle Szene zurück.
-     *
-     * @return Die JavaFX-Szene für den Mehrspielermodus.
-     */
+
     public Scene getScene() {
         return scene;
     }
 
-    /**
-     * Setzt die Referenz zur Startmenü-Szene.
-     *
-     * @param scene Die Startmenü-Szene.
-     */
+
     public void setStartMenuScene(StartMenuScene scene) {
         this.startMenuScene = scene;
     }
 
-    /**
-     * Setzt die Referenz zur Spielkonfigurations-Szene.
-     *
-     * @param scene Die Einzelspieler-Szene (für spätere Konfiguration).
-     */
+
     public void setGameSettingsScene(SinglePlayerScene scene) {
         this.singlePlayerScene = scene;
     }

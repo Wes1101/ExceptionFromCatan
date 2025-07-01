@@ -3,16 +3,8 @@ package de.dhbw.app;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-/**
- * Hauptklasse der Anwendung. Startet die JavaFX-Applikation
- * und initialisiert die Szenen (Startmenü, Einzelspieler, Mehrspieler).
- */
 public class MainApp extends Application {
-    /**
-     * Startpunkt der JavaFX-Anwendung.
-     *
-     * @param primaryStage Die primäre Stage (Fenster) der Anwendung.
-     */
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -35,11 +27,7 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
-    /**
-     * Einstiegspunkt der Anwendung.
-     *
-     * @param args Kommandozeilenargumente (werden nicht verwendet).
-     */
+
     public static void main(String[] args) {
         launch(args);
     }
