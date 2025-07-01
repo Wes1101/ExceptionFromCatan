@@ -209,72 +209,77 @@ public class GameController {
     }
 
     public void mainGame() {
-        switch (gameControllerType) {
-            case LOCAL:
-                this.mainLocal();
-                break;
-            case SERVER:
-                this.mainServer();
-                break;
-            case CLIENT:
-                /* Server calls methods in GameController */
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void mainLocal() {
         majorGameState = MajorGameStates.MAIN;
         while (!checkVictory()) {
             for (Player player : this.players) {
                 /*---Roll dice---*/
                 minorGameState = MinorGameStates.DICE;
-                gui.activePlayer(player);
-                gui.startRollDiceAnimation();
+
+                switch (gameControllerType) {
+                    case LOCAL:
+                        gui.activePlayer(player);
+                        gui.startRollDiceAnimation();
+                        break;
+                    case SERVER:
+                        /*   TODO: @David   */
+                        break;
+                    case CLIENT:
+                        /* Server calls methods in GameController */
+                        break;
+                    default:
+                        break;
+                }
+
                 this.rollDice();
-                gui.showDice(dice1, dice2);
+
+                switch (gameControllerType) {
+                    case LOCAL:
+                        gui.showDice(dice1, dice2);
+                        break;
+                    case SERVER:
+                        /*   TODO: @David   */
+                        break;
+                    case CLIENT:
+                        /* Server calls methods in GameController */
+                        break;
+                    default:
+                        break;
+                }
 
                 if (dice1 + dice2 == 7) {
                     minorGameState = MinorGameStates.BANDIT_ACTIVE;
 
-                    IntTupel selectedNewLocation = gui.activateBandit();
+                    IntTupel selectedNewLocation;
+                    int playerStolenFromId;
+                    switch (gameControllerType) {
+                        case LOCAL:
+                            selectedNewLocation = gui.activateBandit();
+                            //playerStolenFromId = gui.getStolenFromId();
+                            break;
+                        case SERVER:
+                            /*   TODO: @David   */
+                            break;
+                        case CLIENT:
+                            /* Server calls methods in GameController */
+                            break;
+                    }
                     //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
                 }
 
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
                 catanBoard.triggerBoard(dice1 + dice2, bank);
 
-                //TODO: Clarify how gui will be notified of what player has now how may resources
-                gui.updatePlayerResources(players);
-
-                /*---Trade, build and play special cards---*/
-                minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
-
-                //TODO: Clarify handling of that part as well
-            }
-        }
-    }
-
-    private void mainServer() {
-        majorGameState = MajorGameStates.MAIN;
-        while (!checkVictory()) {
-            for (Player player : this.players) {
-                /*---Roll dice---*/
-                minorGameState = MinorGameStates.DICE;
-                /*
-                server.activePlayer(this.players[i]);
-                server.startRollDiceAnimation();
-                */
-                this.rollDice();
-                //server.showDice(dice1, dice2)
-
-                //TODO: Clarify bandit handling
-
-                minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
-                catanBoard.triggerBoard(dice1 + dice2, bank);
-
-                //TODO: Clarify how gui will be notified of what player has now how may resources
+                switch (gameControllerType) {
+                    case LOCAL:
+                        gui.updatePlayerResources(players);
+                        break;
+                    case SERVER:
+                        /*   TODO: @David   */
+                        break;
+                    case CLIENT:
+                        /* Server calls methods in GameController */
+                        break;
+                }
 
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
