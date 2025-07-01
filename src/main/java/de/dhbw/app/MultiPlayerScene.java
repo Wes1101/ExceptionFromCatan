@@ -9,7 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 /**
  * Diese Klasse stellt die Benutzeroberfläche für den Mehrspielermodus dar.
@@ -28,6 +31,9 @@ public class MultiPlayerScene {
      */
 
     public MultiPlayerScene(Stage primaryStage) {  // Aufbau der Mehrspieler-GUI
+        Font.loadFont(
+                Objects.requireNonNull(getClass().getResource("/fonts/GrusskartenGotisch.ttf")).toExternalForm(), 36);
+
         VBox root = new VBox(25);
         root.setPadding(new Insets(40));
         root.setAlignment(Pos.CENTER);
@@ -106,6 +112,7 @@ public class MultiPlayerScene {
         );
 
         this.scene = new Scene(root, 1152, 648);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/MultiPlayer.css")).toExternalForm());
     }
 
     /**
