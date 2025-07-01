@@ -10,11 +10,20 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Diese Klasse stellt die Benutzeroberfläche für den Einzelspielermodus dar.
+ * Der Spieler kann Parameter wie Spieleranzahl, Siegpunktziel und Kartenabwurfgrenze einstellen.
+ */
 public class SinglePlayerScene {
     private final Scene scene;
     private StartMenuScene startMenuScene;
 
-    public SinglePlayerScene(Stage primaryStage) {
+    /**
+     * Erstellt die Benutzeroberfläche mit Konfigurations-Slidern und Buttons.
+     *
+     * @param primaryStage Die Hauptbühne der Anwendung.
+     */
+    public SinglePlayerScene(Stage primaryStage) {  // Aufbau der Konfigurations-UI für den Einzelspieler-Modus
         VBox root = new VBox(25);
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: #222;");
@@ -120,10 +129,20 @@ public class SinglePlayerScene {
         this.scene = new Scene(root, 1152, 648);
     }
 
+    /**
+     * Gibt die Szene dieser Klasse zurück.
+     *
+     * @return Die konfigurierte JavaFX-Szene.
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Setzt die Referenz auf die Startmenü-Szene.
+     *
+     * @param scene Die Startmenü-Szene.
+     */
     public void setStartMenuScene(StartMenuScene scene) {
         this.startMenuScene = scene;
     }

@@ -9,13 +9,22 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Diese Klasse repräsentiert das Startmenü des Spiels.
+ * Von hier aus kann der Benutzer zwischen Einzelspieler- und Mehrspielermodus wählen.
+ */
 public class StartMenuScene {
     boolean ServerGame;
     private final Scene scene;
     private SinglePlayerScene singlePlayerScene;
     private MultiPlayerScene multiPlayerScene;
 
-    public StartMenuScene(Stage primaryStage) {
+    /**
+     * Konstruktor, der das Layout und die Buttons des Startmenüs erstellt.
+     *
+     * @param primaryStage Die Stage, auf der die Szene angezeigt wird.
+     */
+    public StartMenuScene(Stage primaryStage) { // Aufbau des GUI-Layouts mit Buttons und Eventhandlern
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #222;");
@@ -75,19 +84,40 @@ public class StartMenuScene {
         this.scene = new Scene(root, 1152, 648);
     }
 
+    /**
+     * Gibt die JavaFX-Szene zurück.
+     *
+     * @return Die Szene des Startmenüs.
+     */
     public Scene getScene() {
         return scene;
     }
 
+    /**
+     * Setzt die Szene für den Einzelspielermodus.
+     *
+     * @param scene Die Einzelspieler-Szene.
+     */
     public void setSinglePlayerScene(SinglePlayerScene scene) {
         this.singlePlayerScene = scene;
     }
 
+    /**
+     * Setzt die Szene für den Mehrspielermodus.
+     *
+     * @param scene Die Mehrspieler-Szene.
+     */
     public void setMultiPlayerScene(MultiPlayerScene scene) {
         this.multiPlayerScene = scene;
     }
+
+    /**
+     * Gibt zurück, ob der Mehrspielermodus (ServerGame) aktiviert wurde.
+     *
+     * @return true, wenn Mehrspielermodus aktiviert ist, sonst false.
+     */
     public boolean getServerGame() {
-      return ServerGame;
+        return ServerGame;
     }
 }
 //
