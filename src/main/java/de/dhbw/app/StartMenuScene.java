@@ -83,7 +83,7 @@ public class StartMenuScene {
         });
 
         this.scene = new Scene(root, 1152, 648);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/menu.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/StartMenu.css")).toExternalForm());
     }
 
     /**
