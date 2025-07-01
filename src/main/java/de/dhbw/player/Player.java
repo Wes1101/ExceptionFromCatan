@@ -1,5 +1,6 @@
 package de.dhbw.player;
 
+import de.dhbw.gamePieces.Street;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
 
@@ -9,44 +10,42 @@ import java.util.*;
 @Getter
 public abstract class Player {
 
-    Storage storage;
     int id;
+    EnumMap<Resources, Integer> resources;
 
     public Player(int amountResources) {
-//        Map<>(Resources) resources = new EnumMap<>(Resources.class);
-//        for (Resources res : Resources.values()) {
-//            resources.put(res, amountResources);
-//        }
+        resources = new EnumMap<>(Resources.class);
+        for (Resources res : Resources.values()) {
+            addResources(res, amountResources);
+        }
     }
 
     public void addResources(Resources type, int amount) {
-//        for (Resources res : resources.keySet()) {
-//            if (res == type) {
-//                resources.put(res, resources.get(res) + amount);
-//                return;
-//            }
-//        }
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) + amount);
+                return;
+            }
+        }
     }
 
     public void removeResources(Resources type, int amount, Player target) {
-//        for (Resources res : resources.keySet()) {
-//            if (res == type) {
-//                resources.put(res, resources.get(res) - amount);
-//                target.addResources(type, amount);
-//                return;
-//            }
-//        }
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) - amount);
+                target.addResources(type, amount);
+                return;
+            }
+        }
     }
 
     public int getTotalResources() {
-//        int sum = 0;
-//        for (int count : resources.values()) {
-//            sum += count;
-//        }
-//        return sum;
-        return 0; //TODO
+        int sum = 0;
+        for (int count : resources.values()) {
+            sum += count;
+        }
+        return sum;
     }
-
 
     public void stealRandomResources(Player from, Player to) {
 //        List<Resources> resources = new ArrayList<>();
@@ -77,14 +76,14 @@ public abstract class Player {
     }
 
 
-    public void banditRemovesResources() {
+    public void banditRemovesResources(int threshold) {
             int total = this.getTotalResources();
-            if (total > 7) {
+            if (total > 7) { //TODO atussa: dynmische abwurfmenge threshold
                 int toDiscard = total / 2;
                 //methode in gui mit toDiscard als parameter aufrufen
                 //Resources[] resToRemove = gui.removeResources(toDiscard);
                 Resources[] resToRemove = {Resources.WOOD, Resources.STONE};
-                //for schleife um die ressourcen zu entfernen
+                //for schleife um die ressourcen zu entfernen und der bank wieder hinzuzufügen
             }
 
 
