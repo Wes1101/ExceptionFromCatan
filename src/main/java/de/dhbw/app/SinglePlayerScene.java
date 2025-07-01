@@ -10,20 +10,29 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Diese Klasse stellt die Benutzeroberfläche für den Einzelspielermodus dar.
+ * Der Spieler kann Parameter wie Spieleranzahl, Siegpunktziel und Kartenabwurfgrenze einstellen.
+ */
+
 public class SinglePlayerScene {
     private final Scene scene;
     private StartMenuScene startMenuScene;
 
-    public SinglePlayerScene(Stage primaryStage) {
+    /**
+     * Erstellt die Benutzeroberfläche mit Konfigurations-Slidern und Buttons.
+     *
+     * @param primaryStage Die Hauptbühne der Anwendung.
+     */
+
+    public SinglePlayerScene(Stage primaryStage) {  // Aufbau der Konfigurations-UI für den Einzelspieler-Modus
         VBox root = new VBox(25);
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: #222;");
         root.setAlignment(Pos.CENTER);
 
         Label title = new Label("Catan Settings");
-        title.setStyle(
-                "-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;"
-        );
+        title.setStyle("-fx-font-size: 22px; -fx-text-fill: #ff4444; -fx-font-weight: bold;");
         StackPane titlePane = new StackPane(title);
         titlePane.setPadding(new Insets(15));
         titlePane.setStyle("-fx-border-color: #ff4444; -fx-border-width: 2;");
@@ -41,9 +50,7 @@ public class SinglePlayerScene {
         greenBox.getChildren().addAll(greenLabel, spielerSlider);
         StackPane spielerSliderPane = new StackPane(greenBox);
         spielerSliderPane.setPadding(new Insets(15));
-        spielerSliderPane.setStyle(
-                "-fx-border-color: #44ff44; -fx-border-width: 2;"
-        );
+        spielerSliderPane.setStyle("-fx-border-color: #44ff44; -fx-border-width: 2;");
 
         VBox pinkBox = new VBox(8);
         pinkBox.setAlignment(Pos.CENTER_LEFT);
@@ -76,31 +83,16 @@ public class SinglePlayerScene {
         brownPane.setStyle("-fx-border-color: #ffbb66; -fx-border-width: 2;");
 
         Button startButton = new Button("Start Game");
-        startButton.setStyle(
-                "-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;"
-        );
+        startButton.setStyle("-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;");
         startButton.setPrefWidth(220);
 
         Button backButton = new Button("Back");
-        backButton.setStyle(
-                "-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;"
-        );
+        backButton.setStyle("-fx-font-size: 18px; -fx-background-color: #fff200; -fx-text-fill: #222; -fx-font-weight: bold;");
 
-        root
-                .getChildren()
-                .addAll(
-                        titlePane,
-                        spielerSliderPane,
-                        pinkPane,
-                        brownPane,
-                        startButton,
-                        backButton
-                );
+        root.getChildren().addAll(titlePane, spielerSliderPane, pinkPane, brownPane, startButton, backButton);
 
         // Eventhandler
-        backButton.setOnAction(
-                e -> primaryStage.setScene(startMenuScene.getScene())
-        );
+        backButton.setOnAction(e -> primaryStage.setScene(startMenuScene.getScene()));
 
         startButton.setOnAction(e -> {
             boolean isServergame = startMenuScene.getServerGame();
@@ -120,9 +112,21 @@ public class SinglePlayerScene {
         this.scene = new Scene(root, 1152, 648);
     }
 
+    /**
+     * Gibt die Szene dieser Klasse zurück.
+     *
+     * @return Die konfigurierte JavaFX-Szene.
+     */
+
     public Scene getScene() {
         return scene;
     }
+
+    /**
+     * Setzt die Referenz auf die Startmenü-Szene.
+     *
+     * @param scene Die Startmenü-Szene.
+     */
 
     public void setStartMenuScene(StartMenuScene scene) {
         this.startMenuScene = scene;
