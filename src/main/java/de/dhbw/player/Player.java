@@ -77,17 +77,22 @@ public abstract class Player {
     }
 
 
-    public void banditRemovesResources(int amount) {
-        for (Resources res : Resources.values()) {
+    public void banditRemovesResources() {
             int total = this.getTotalResources();
             if (total > 7) {
                 int toDiscard = total / 2;
+                //methode in gui mit toDiscard als parameter aufrufen
+                //Resources[] resToRemove = gui.removeResources(toDiscard);
+                Resources[] resToRemove = {Resources.WOOD, Resources.STONE};
+                //for schleife um die ressourcen zu entfernen
             }
+
+
             // Gui Platzhalter
 //            Map<Resources, Integer> selected = gui.askPlayerWhichCardsToDiscard(player, toDiscard);
 //            for (Map.Entry<Resources, Integer> entry : selected.entrySet()) {
 //                player.removeResources(entry.getKey(), entry.getValue());
             }
-        }
+
 }
 
