@@ -21,6 +21,7 @@ import de.dhbw.player.Bank;
 import de.dhbw.player.Human;
 import de.dhbw.player.Player;
 
+@Slf4j
 public class GameController {
     private Player[] players;
     private Bank bank;
@@ -55,6 +56,7 @@ public class GameController {
      * @param gameControllerType Type, of how the game is played -> How the application should react to interaction
      */
     public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
+        log.debug("GameController created with type {}", gameControllerType);
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
             players[i] = new Human("", i);
@@ -74,11 +76,12 @@ public class GameController {
     }
 
     public void gameStart() {
+        log.info("Starting game...");
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
         int[] playerDiceNumber = new int[this.players.length];
-
+        log.info("Creating all players...");
         for (int i = 0; i < this.players.length; i++) {
             switch (gameControllerType) {
                 case LOCAL:
@@ -101,6 +104,8 @@ public class GameController {
             playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
 
+        log.info("...done. Sorting players...");
+
         //check highest number
         int highestNumber = 0;
         int highestNumberIndex = 0;
@@ -111,6 +116,7 @@ public class GameController {
             }
         }
 
+        log.info("...done. Placing first settlements and streets");
         //place first settlement
         int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
@@ -149,6 +155,8 @@ public class GameController {
         this.players = orderedPlayers;
         minorGameState = MinorGameStates.NO_STATE;
 
+        log.info("...done. Placing second settlements and streets...");
+
         //place second settlement and get according resources
         for (Player player : this.players) {
             switch (gameControllerType) {
@@ -180,9 +188,12 @@ public class GameController {
         }
         minorGameState = MinorGameStates.NO_STATE;
 
+        log.info("...done!");
+
     }
 
     public void mainGame() {
+        log.info("Starting main game...");
         majorGameState = MajorGameStates.MAIN;
         while (!checkVictory()) {
             for (Player player : this.players) {
@@ -211,6 +222,7 @@ public class GameController {
                 }
 
                 if (dice1 + dice2 == 7) {
+                    log.info("7 was rolled! Activating bandit...");
                     minorGameState = MinorGameStates.BANDIT_ACTIVE;
 
                     IntTupel selectedNewLocation;
@@ -227,6 +239,7 @@ public class GameController {
                     //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
                 }
 
+                log.info("Distributing all resources...");
                 minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
                 catanBoard.triggerBoard(dice1 + dice2, bank);
 
@@ -239,6 +252,7 @@ public class GameController {
                         break;
                 }
 
+                log.info("Entering building, trading, special cards phase");
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
@@ -248,17 +262,21 @@ public class GameController {
     }
 
     private void rollDice() {
+        log.debug("rolling the dice:");
         Random rand = new Random();
         dice1 = rand.nextInt(6) + 1;
         dice2 = rand.nextInt(6) + 1;
+        log.debug(dice1 + " " + dice2);
     }
 
     private boolean checkVictory() {
+        log.debug("checking victory");
         for (Player player : this.players) {
         /*if (player.getVictoryPoints() >= this.victoryPoints) {
             return true;
         }*/
         }
+        log.debug("no one was good enough so far");
         return false;
     }
 
@@ -268,47 +286,64 @@ public class GameController {
      * @return the player amount
      */
     public int getPlayerAmount() {
+        log.debug("ahhh, someone wants to know how many players are currently playing...");
         return this.players.length;
     }
 
     public void activePlayer(Player player) {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            log.debug("im just a client and was told to tell the gui the active player");
             gui.activePlayer(player);
+        } else {
+            log.warn("activePlayer() was called but GameControllerType is {}", this.gameControllerType);
         }
     }
 
     public void rollDiceAnimation() {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
             gui.startRollDiceAnimation();
+        } else {
+            log.warn("rollDiceAnimation() was called but GameControllerType is {}", this.gameControllerType);
         }
     }
 
     public void showDice(int dice1, int dice2) {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            log.debug("Who wants to see the dice? You want to see the dice: {} {}", dice1, dice2);
             gui.showDice(dice1, dice2);
+        } else {
+            log.warn("showDice() was called but GameControllerType is "  + this.gameControllerType);
         }
     }
 
     public IntTupel[] getCoordinatesFirstSettlementStreet() {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            log.debug("What, you want the location of the first settlement and street?");
             //coordinatesFirstSettlement = gui.buildSettlement();
             //coordinatesFirstStreet = gui.buildStreet();
         }
+        log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+                this.gameControllerType);
         return null;
     }
 
     public void updatePlayerResources(Player[] players) {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            log.debug("Another update for the players resources, seriously?");
             gui.updatePlayerResources(players);
         }
+        log.warn("updatePlayerResources() was called but GameControllerType is {}", this.gameControllerType);
     }
 
     public PlayerTupelVar activateBandit (){
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
+            log.debug("Grrrr... Grrrr... the bandit was activated");
             IntTupel selectedNewLocation = gui.activateBandit();
             Player robbedPlayer = null;// gui.getRobbedPlayer(this.players);
             return new PlayerTupelVar(selectedNewLocation, robbedPlayer);
         }
+        log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
         return null;
     }
 }
