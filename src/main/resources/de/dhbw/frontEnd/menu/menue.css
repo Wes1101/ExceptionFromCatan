@@ -1,0 +1,33 @@
+/* style.css */
+
+.root {
+    -fx-background-image: url("scene_background.png"); /* Pfad anpassen */
+    -fx-background-size: cover;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-font-size: 18px;
+    -fx-text-fill: black;
+    -fx-padding: 10px 20px;
+}
+
+.button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+    -fx-cursor: hand;
+}
+.rightPane {
+    -fx-background-image: url("launcherright.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
+
+.leftPane {
+    -fx-background-image: url("leftLauncher.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+}
