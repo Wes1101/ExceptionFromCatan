@@ -84,7 +84,8 @@ public class NetworkClient {
   public static void main(String[] args) {
     try {
       new Thread(
-              new DiscoveryClient()
+              new DiscoveryClient(),
+              "DiscoveryClient"
       ).start();
 
       NetworkClient client = new NetworkClient();
