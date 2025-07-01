@@ -9,6 +9,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
  * Diese Klasse repräsentiert das Startmenü des Spiels.
  * Von hier aus kann der Benutzer zwischen Einzelspieler- und Mehrspielermodus wählen.
@@ -26,6 +28,7 @@ public class StartMenuScene {
      * @param primaryStage Die Stage, auf der die Szene angezeigt wird.
      */
     public StartMenuScene(Stage primaryStage) {  // Aufbau des GUI-Layouts mit Buttons und Eventhandlern
+
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #222;");
@@ -67,6 +70,7 @@ public class StartMenuScene {
         });
 
         this.scene = new Scene(root, 1152, 648);
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("menu.css")).toExternalForm());
     }
 
     /**
