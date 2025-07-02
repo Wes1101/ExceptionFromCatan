@@ -1,6 +1,7 @@
 /**
  * GameController Class
- * Handles all logic/interaction between objects for playing the game.
+ * Handles all logic/interaction between objects for playing the game. According to the gameControllerType, the required
+ * actions are either send to the gui or the server.
  *
  * @author: Fabian Weller
  * @version: 0.1
@@ -53,7 +54,7 @@ public class GameController {
      *
      * @param playerAmount       Amount of players in game
      * @param victoryPoints      Victory points necessary to win a game
-     * @param gameControllerType Type, of how the game is played -> How the application should react to interaction
+     * @param gameControllerType Type, of how the game is played -> How the class should react to interaction
      */
     public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
         log.debug("GameController created with type {}", gameControllerType);
@@ -75,6 +76,13 @@ public class GameController {
         //this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
     }
 
+    /**
+     * Starts a new game
+     * Starting a new game by creating all players, rolling the dices for all players and reordering the player array
+     * based on the highest number. Then, all players (in order) can place their first two settlements and streets.
+     * Also, they receive the according resources based on their second settlement. The current states are stored in
+     * majorGameState and minorGameState and accessible via getters.
+     */
     public void gameStart() {
         log.info("Starting game...");
         majorGameState = MajorGameStates.BEGINNING;
@@ -192,6 +200,13 @@ public class GameController {
 
     }
 
+    /**
+     * Starts the main game logic
+     * Every loop starts with a check if someone already has enough victory points to win the game. Then the dice are
+     * rolled and if a seven was rolled the bandit is activated. After that the resources are distributed. Then the
+     * player gets the option to build, trade or use special cards. This repeats for all players and the loop starts
+     * again.
+     */
     public void mainGame() {
         log.info("Starting main game...");
         majorGameState = MajorGameStates.MAIN;
@@ -259,8 +274,13 @@ public class GameController {
                 //TODO: Clarify handling of that part as well
             }
         }
+        log.info("Someone won the game. Terminating gameController...");
     }
 
+    /**
+     * Rolls the dice
+     * Rolling the dice by getting new random ints and storing them in the local variables dice1 and dice 2
+     */
     private void rollDice() {
         log.debug("rolling the dice:");
         Random rand = new Random();
@@ -269,6 +289,11 @@ public class GameController {
         log.debug(dice1 + " " + dice2);
     }
 
+    /**
+     * Checks for a victory
+     * Checks victory by iterating through the whole players array and if one player has enough victory points true is
+     * returned. If no one has enough points false is returned.
+     */
     private boolean checkVictory() {
         log.debug("checking victory");
         for (Player player : this.players) {
@@ -290,6 +315,11 @@ public class GameController {
         return this.players.length;
     }
 
+    /**
+     * Tells the gui the active player
+     *
+     * @param player Player to be sent to gui
+     */
     public void activePlayer(Player player) {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
             log.debug("im just a client and was told to tell the gui the active player");
@@ -299,6 +329,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Starts the roll dice animation in the gui
+     */
     public void rollDiceAnimation() {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
             log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
@@ -308,6 +341,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Shows the transferred dice values in the gui
+     *
+     * @param dice1 Value of dice 1
+     * @param dice2 Value of dice 2
+     */
     public void showDice(int dice1, int dice2) {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
             log.debug("Who wants to see the dice? You want to see the dice: {} {}", dice1, dice2);
@@ -317,6 +356,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Gets the coordinates for the first (two) settlements and streets
+     *
+     * @return Returns the coordinates of the settlement and street
+     */
     public IntTupel[] getCoordinatesFirstSettlementStreet() {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
             log.debug("What, you want the location of the first settlement and street?");
@@ -328,6 +372,11 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Updates the players in the gui
+     *
+     * @param players Array of players to be updated
+     */
     public void updatePlayerResources(Player[] players) {
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
             log.debug("Another update for the players resources, seriously?");
@@ -336,6 +385,11 @@ public class GameController {
         log.warn("updatePlayerResources() was called but GameControllerType is {}", this.gameControllerType);
     }
 
+    /**
+     * Activates the Bandit and returns the new location of the bandit and the player wo is robbed
+     *
+     * @return A Tuple and Player. The tuple is the new bandit location and Player is the robbed player
+     */
     public PlayerTupelVar activateBandit (){
         if (this.gameControllerType == GameControllerTypes.CLIENT) {
             log.debug("Grrrr... Grrrr... the bandit was activated");
