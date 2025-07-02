@@ -1,6 +1,9 @@
 package de.dhbw.catanBoard;
 
 import de.dhbw.catanBoard.hexGrid.*;
+import de.dhbw.catanBoard.hexGrid.Tiles.Habour;
+import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
+import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
@@ -8,9 +11,8 @@ import de.dhbw.resources.Resources;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -29,12 +31,11 @@ import java.util.*;
 
 //wasser tiles, Häfen
 
-@Slf4j
 @Getter
 public class CatanBoard {
     IntTupel[] hex_coords;
     Map<IntTupel, Tile> board = new HashMap<>();
-    Map<Integer, List<Tile>> diceBoard = new HashMap<>();
+    Map<Integer, List<Ressource>> diceBoard = new HashMap<>();
     static Node[] nodes;
 
     int[][][] graph;
@@ -53,7 +54,6 @@ public class CatanBoard {
         initGraph();
         initHexCoords(radius);
         createGraph(radius);
-        log.info("Board created");
     }
 
     /**
@@ -222,7 +222,7 @@ public class CatanBoard {
                 }
             }
 
-            board.put(coords, new Tile(allResources.getFirst(), HexNodes));
+            board.put(coords, new Ressource(allResources.getFirst(), HexNodes));
             allResources.removeFirst();
 
             for (Node HexNode : HexNodes) {
@@ -232,20 +232,62 @@ public class CatanBoard {
             if (!diceBoard.containsKey(numChips.getFirst())) {
                 diceBoard.put(numChips.getFirst(), new ArrayList<>());
             }
-            diceBoard.get(numChips.getFirst()).add(board.get(coords));
+            diceBoard.get(numChips.getFirst()).add((Ressource) board.get(coords));
             numChips.removeFirst();
         }
 
-        System.out.println("Graph created");
-        System.out.println("Anzahl Knoten: " + index);
-        for (IntTupel coords : hex_coords) {
-            System.out.println("Hexagon " + coords.q() + "," + coords.r() + ": " + board.get(coords).getResourceType());
-        }
-        for (int i = 0; i < graph.length; i++) {
-            for (int j = 0; j < graph[i].length; j++) {
-                System.out.print(graph[i][j][STREET] + ", ");
+        //create habour coords
+        IntTupel[] habour = new IntTupel[calcNumHexTiles(radius + 1)-calcNumHexTiles(radius)];
+        int q = AxialDirection.SOUTH_WEST.getDq() * (radius);
+        int r = AxialDirection.SOUTH_WEST.getDr() * (radius);
+        System.out.println("q = " + q + ", r = " + r);
+        int i = 0;
+
+        for (AxialDirection dir : AxialDirection.values()) {
+            System.out.println(dir.toString());
+            for (int j = 0; j < radius; j++) {
+                q = q + dir.getDq();
+                r = r + dir.getDr();
+
+                habour[i] = new IntTupel(q, r);
+                System.out.println(habour[i]);
+                i++;
             }
-            System.out.println();
+        }
+
+        //create habour tiles
+        /**
+         * 2:1 resources
+         * 3:1 any
+         */
+        List<Resources> habourTypes = new ArrayList<>();
+
+        for (Resources resources : Resources.values()) {
+            habourTypes.add(resources);
+        }
+        for (i = habourTypes.size(); i < habour.length / 2; i++) {
+            habourTypes.add(Resources.NONE);
+        }
+
+        Collections.shuffle(habourTypes);
+        System.out.println("habourTypes = " + habourTypes);
+
+        for (i = 0; i < habour.length; i++) {
+            if (i%2 == 1) {
+                board.put(habour[i], new Habour(habourTypes.getFirst()));
+                habourTypes.remove(habourTypes.getFirst());
+            }
+            else {
+                board.put(habour[i], new Water());
+            }
+        }
+
+        for (IntTupel coord : board.keySet()) {
+            if (board.get(coord) instanceof Habour) {
+                Habour habourTile = (Habour) board.get(coord);
+                System.out.println("coords = " + coord + " = " + habourTile.getResourceType());
+            }
+
         }
     }
 
@@ -305,10 +347,10 @@ public class CatanBoard {
 
     public void triggerBoard(int diceNumber, Bank bank) {
 
-        List<Tile> tiles = diceBoard.get(diceNumber);
+        List<Ressource> tiles = diceBoard.get(diceNumber);
         System.out.println(tiles);
 
-        for (Tile tile : tiles) {
+        for (Ressource tile : tiles) {
             tile.trigger(bank);
         }
     }
@@ -328,18 +370,26 @@ public class CatanBoard {
     }
 
     public void blockHex(IntTupel coords) {
-        if (board.get(coords).isBlocked() == true) {
-            board.get(coords).setBlocked(false);
-        }
-        else if (board.get(coords).isBlocked() == false) {
-            board.get(coords).setBlocked(true);
+        Tile tile = board.get(coords);
+
+        if (tile instanceof Ressource) {
+            Ressource resTile = (Ressource) tile;
+
+            if (resTile.isBlocked()) {
+                resTile.setBlocked(false);
+            } else {
+                resTile.setBlocked(true);
+            }
         }
     }
 
     public IntTupel getDesertCoords() {
         for (IntTupel coords : board.keySet()) {
-            if (board.get(coords).getResourceType() == Resources.NONE) {
-                return coords;
+            if (board.get(coords) instanceof Ressource) {
+                Ressource resTile = (Ressource) board.get(coords);
+                if (resTile.getResourceType() == Resources.NONE) {
+                    return coords;
+                }
             }
         }
         return null;

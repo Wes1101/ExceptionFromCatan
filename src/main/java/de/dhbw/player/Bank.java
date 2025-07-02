@@ -1,13 +1,9 @@
 package de.dhbw.player;
 
-import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.gamePieces.City;
 import de.dhbw.gamePieces.Settlement;
 import de.dhbw.gamePieces.Street;
-import de.dhbw.player.Player;
 import lombok.Getter;
-import de.dhbw.resources.*;
 
 import java.util.*;
 
