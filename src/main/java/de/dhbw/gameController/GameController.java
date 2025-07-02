@@ -361,8 +361,9 @@ public class GameController {
      *
      * @return Returns the coordinates of the settlement and street
      */
-    public IntTupel[] getCoordinatesFirstSettlementStreet() {
-        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+    public TwoTuples getCoordinatesFirstSettlementStreet() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement and street?");
             //coordinatesFirstSettlement = gui.buildSettlement();
             //coordinatesFirstStreet = gui.buildStreet();
