@@ -93,8 +93,8 @@ public class GameController {
         for (int i = 0; i < this.players.length; i++) {
             switch (gameControllerType) {
                 case LOCAL:
-                    gui.activePlayer(this.players[i]);
-                    gui.startRollDiceAnimation();
+                    this.activePlayer(this.players[i]);
+                    this.rollDiceAnimation();
                     break;
                 case SERVER:
                     /*   TODO: @David   */
@@ -103,7 +103,7 @@ public class GameController {
             this.rollDice();
             switch (gameControllerType) {
                 case LOCAL:
-                    gui.showDice(dice1, dice2);
+                    this.showDice(dice1, dice2);
                     break;
                 case SERVER:
                     /*   TODO: @David   */
@@ -131,7 +131,7 @@ public class GameController {
         for (int i = 0; i < this.players.length; i++) {
             switch (gameControllerType) {
                 case LOCAL:
-                    gui.activePlayer(this.players[currentIndex]);
+                    this.activePlayer(this.players[currentIndex]);
                     break;
                 case SERVER:
                     /*   TODO: @David   */
@@ -143,8 +143,9 @@ public class GameController {
             IntTupel coordinatesFirstStreet;
             switch (gameControllerType) {
                 case LOCAL:
-                    //coordinatesFirstSettlement = gui.buildSettlement();
-                    //coordinatesFirstStreet = gui.buildStreet();
+                    TwoTuples coordinatesFirstSettlementStreet = this.getCoordinatesFirstSettlementStreet();
+                    coordinatesFirstSettlement = coordinatesFirstSettlementStreet.t1();
+                    coordinatesFirstStreet = coordinatesFirstSettlementStreet.t2();
                     break;
                 case SERVER:
                     /*   TODO: @David   */
@@ -169,7 +170,7 @@ public class GameController {
         for (Player player : this.players) {
             switch (gameControllerType) {
                 case LOCAL:
-                    gui.activePlayer(this.players[currentIndex]);
+                    this.activePlayer(this.players[currentIndex]);
                     break;
                 case SERVER:
                     /*   TODO: @David   */
@@ -181,16 +182,17 @@ public class GameController {
             IntTupel coordinatesSecondStreet;
             switch (gameControllerType) {
                 case LOCAL:
-                    //coordinatesSecondSettlement = gui.buildSettlement();
-                    //coordinatesSecondStreet = gui.buildStreet();
+                    TwoTuples coordinatesSecondSettlementStreet = this.getCoordinatesFirstSettlementStreet();
+                    coordinatesSecondSettlement = coordinatesSecondSettlementStreet.t1();
+                    coordinatesSecondStreet = coordinatesSecondSettlementStreet.t2();
                     break;
                 case SERVER:
                     /*   TODO: @David   */
                     break;
             }
 
-//            player.buyFirstSettlement();
-//            player.buyFirstStreet();
+//            player.buySecondSettlement();
+//            player.buySecondStreet();
 
             //TODO: recieve according ressources: @Johann
         }
@@ -321,7 +323,8 @@ public class GameController {
      * @param player Player to be sent to gui
      */
     public void activePlayer(Player player) {
-        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
             gui.activePlayer(player);
         } else {
@@ -333,7 +336,8 @@ public class GameController {
      * Starts the roll dice animation in the gui
      */
     public void rollDiceAnimation() {
-        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
             gui.startRollDiceAnimation();
         } else {
@@ -348,7 +352,8 @@ public class GameController {
      * @param dice2 Value of dice 2
      */
     public void showDice(int dice1, int dice2) {
-        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Who wants to see the dice? You want to see the dice: {} {}", dice1, dice2);
             gui.showDice(dice1, dice2);
         } else {
@@ -379,7 +384,8 @@ public class GameController {
      * @param players Array of players to be updated
      */
     public void updatePlayerResources(Player[] players) {
-        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Another update for the players resources, seriously?");
             gui.updatePlayerResources(players);
         }
@@ -392,7 +398,8 @@ public class GameController {
      * @return A Tuple and Player. The tuple is the new bandit location and Player is the robbed player
      */
     public PlayerTupelVar activateBandit (){
-        if (this.gameControllerType == GameControllerTypes.CLIENT) {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Grrrr... Grrrr... the bandit was activated");
             IntTupel selectedNewLocation = gui.activateBandit();
             Player robbedPlayer = null;// gui.getRobbedPlayer(this.players);
