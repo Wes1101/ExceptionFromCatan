@@ -8,13 +8,28 @@ import lombok.Getter;
 
 import java.util.*;
 
-
+/**
+ * This abstract class represents a Player in the game.
+ * A player can own, gain, and lose resources during gameplay.
+ */
 @Getter
 public abstract class Player {
 
+    /**
+     * The unique ID of the player.
+     */
     int id;
+
+    /**
+     * Stores the player's resources using an EnumMap for efficiency.
+     */
     EnumMap<Resources, Integer> resources;
 
+    /**
+     * Constructor initializes each resource type with a given starting amount.
+     *
+     * @param amountResources the starting amount of each resource type
+     */
     public Player(int amountResources) {
         resources = new EnumMap<>(Resources.class);
         for (Resources res : Resources.values()) {
@@ -22,6 +37,12 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Adds a specific amount of a resource type to the player.
+     *
+     * @param type   the type of resource
+     * @param amount the amount to add
+     */
     public void addResources(Resources type, int amount) {
         for (Resources res : resources.keySet()) {
             if (res == type) {
@@ -30,7 +51,13 @@ public abstract class Player {
             }
         }
     }
-
+    /**
+     * Transfers a specific amount of a resource from this player to another player.
+     *
+     * @param type   the type of resource
+     * @param amount the amount to transfer
+     * @param target the player receiving the resource
+     */
     public void removeResources(Resources type, int amount, Player target) {
         for (Resources res : resources.keySet()) {
             if (res == type) {
@@ -41,7 +68,14 @@ public abstract class Player {
         }
     }
 
-    //Überladung, um in Zeile 93 Rescourcen dem Spieler, der mehr als x Karten hat Karten abzunehmen
+    /**
+     * Removes a specific amount of a resource type from the player.
+     * Used when no target is involved (e.g., discarding).
+     *
+     * @param type   the type of resource
+     * @param amount the amount to remove
+     */
+    //Überladung, um in Zeile 93 Rescourcen dem Spieler, der mehr als x Karten hat Karten abzunehmen (Bandit)
     public void removeResources(Resources type, int amount) {
         for (Resources res : resources.keySet()) {
             if (res == type) {
@@ -50,6 +84,12 @@ public abstract class Player {
             }
         }
     }
+
+    /**
+     * Calculates the total number of resource cards the player currently has.
+     *
+     * @return the total resource count
+     */
     public int getTotalResources() {
         int sum = 0;
         for (int count : resources.values()) {
@@ -58,6 +98,13 @@ public abstract class Player {
         return sum;
     }
 
+    /**
+     * Randomly steals one resource from another player and transfers it to a second player.
+     * Currently commented out and may be used later for game mechanics
+     *
+     * @param from the player to steal from
+     * @param to   the player to receive the stolen resource
+     */
     public void stealRandomResources(Player from, Player to) {
 //        List<Resources> resources = new ArrayList<>();
 //
@@ -86,7 +133,14 @@ public abstract class Player {
 //        from.removeResources(chosen, 1, to);
     }
 
-
+    /**
+     * If a player has more resources than the threshold, this method forces them
+     * to discard half of their resources (rounded down). The discarded resources
+     * are returned to the bank.
+     *
+     * @param threshold the maximum allowed resources before discarding is required
+     * @param bank      the bank to return discarded resources to
+     */
     public void banditRemovesResources(int threshold, Bank bank) {
             int total = this.getTotalResources();
             if (total > threshold) {
@@ -95,7 +149,7 @@ public abstract class Player {
                 // TODO: GUI soll resToRemove liefern
                 Resources[] resToRemove = {Resources.WOOD, Resources.STONE}; //dummy placeholder
 
-                //for schleife um die ressourcen zu entfernen und der bank wieder hinzuzufügen
+                // Discard each resource and return it to the bank
                 for (Resources res : resToRemove) {
                     this.removeResources(res, 1);
                     bank.addResources(res, 1);
