@@ -25,8 +25,8 @@ import de.dhbw.player.Player;
 @Slf4j
 public class GameController {
     private Player[] players;
-    private Bank bank;
-    private CatanBoard catanBoard;
+    private final Bank bank;
+    private final CatanBoard catanBoard;
     private int gameRound;
     private int dice1;
     private int dice2;
@@ -170,7 +170,7 @@ public class GameController {
         for (Player player : this.players) {
             switch (gameControllerType) {
                 case LOCAL:
-                    this.activePlayer(this.players[currentIndex]);
+                    this.activePlayer(player);
                     break;
                 case SERVER:
                     /*   TODO: @David   */
@@ -198,6 +198,8 @@ public class GameController {
         }
         minorGameState = MinorGameStates.NO_STATE;
 
+        gameRound += 2;
+
         log.info("...done!");
 
     }
@@ -219,8 +221,8 @@ public class GameController {
 
                 switch (gameControllerType) {
                     case LOCAL:
-                        gui.activePlayer(player);
-                        gui.startRollDiceAnimation();
+                        this.activePlayer(player);
+                        this.rollDiceAnimation();
                         break;
                     case SERVER:
                         /*   TODO: @David   */
@@ -231,7 +233,7 @@ public class GameController {
 
                 switch (gameControllerType) {
                     case LOCAL:
-                        gui.showDice(dice1, dice2);
+                        this.showDice(dice1, dice2);
                         break;
                     case SERVER:
                         /*   TODO: @David   */
@@ -246,8 +248,9 @@ public class GameController {
                     Player robbedPlayer;
                     switch (gameControllerType) {
                         case LOCAL:
-                            selectedNewLocation = gui.activateBandit();
-                            //robbedPlayer = gui.getRobbedPlayer(this.players);
+                            PlayerTupelVar robbedPlayerLocation = this.activateBandit();
+                            selectedNewLocation = robbedPlayerLocation.intTupel();
+                            robbedPlayer = robbedPlayerLocation.player();
                             break;
                         case SERVER:
                             /*   TODO: @David   */
@@ -262,7 +265,7 @@ public class GameController {
 
                 switch (gameControllerType) {
                     case LOCAL:
-                        gui.updatePlayerResources(players);
+                        this.updatePlayerResources(players);
                         break;
                     case SERVER:
                         /*   TODO: @David   */
@@ -275,8 +278,9 @@ public class GameController {
 
                 //TODO: Clarify handling of that part as well
             }
+            gameRound++;
         }
-        log.info("Someone won the game. Terminating gameController...");
+        log.info("Someone won the game after {} Rounds. Terminating gameController...", gameRound);
     }
 
     /**
