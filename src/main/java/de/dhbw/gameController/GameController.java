@@ -265,11 +265,11 @@ public class GameController {
                             break;
                     }
                     //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
+                } else {
+                    log.info("Distributing all resources...");
+                    minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
+                    catanBoard.triggerBoard(dice1 + dice2, bank);
                 }
-
-                log.info("Distributing all resources...");
-                minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
-                catanBoard.triggerBoard(dice1 + dice2, bank);
 
                 switch (gameControllerType) {
                     case LOCAL:
