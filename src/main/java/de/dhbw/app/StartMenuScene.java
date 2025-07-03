@@ -82,7 +82,7 @@ public class StartMenuScene {
             primaryStage.setScene(multiPlayerScene.getScene());
         });
 
-        this.scene = new Scene(root, 1152, 648);
+        this.scene = new Scene(root, 1344, 756);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/StartMenu.css")).toExternalForm());
     }
 
