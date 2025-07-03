@@ -376,9 +376,10 @@ public class GameController {
             log.debug("What, you want the location of the first settlement and street?");
             //coordinatesFirstSettlement = gui.buildSettlement();
             //coordinatesFirstStreet = gui.buildStreet();
+        } else {
+            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+                    this.gameControllerType);
         }
-        log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
-                this.gameControllerType);
         return null;
     }
 
@@ -392,8 +393,9 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Another update for the players resources, seriously?");
             gui.updatePlayerResources(players);
+        } else {
+            log.warn("updatePlayerResources() was called but GameControllerType is {}", this.gameControllerType);
         }
-        log.warn("updatePlayerResources() was called but GameControllerType is {}", this.gameControllerType);
     }
 
     /**
@@ -408,8 +410,9 @@ public class GameController {
             IntTupel selectedNewLocation = gui.activateBandit();
             Player robbedPlayer = null;// gui.getRobbedPlayer(this.players);
             return new PlayerTupelVar(selectedNewLocation, robbedPlayer);
+        } else {
+            log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
         }
-        log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
         return null;
     }
 }
