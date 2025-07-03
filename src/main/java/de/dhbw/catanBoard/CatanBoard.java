@@ -36,12 +36,8 @@ public class CatanBoard {
     IntTupel[] hex_coords;
     Map<IntTupel, Tile> board = new HashMap<>();
     Map<Integer, List<Ressource>> diceBoard = new HashMap<>();
-    static Node[] nodes;
 
-    int[][][] graph;
-
-    private static final int STREET = 0;
-    private static final int PLAYER = 1;
+    Graph graph;
 
     /**
      * Konstruktor: Initialisiert das CatanBoard mit dem gegebenen Radius.
@@ -50,8 +46,7 @@ public class CatanBoard {
      * @param radius Radius des Spielfelds in Hex-Ringen
      */
     public CatanBoard(int radius) {
-        initNodes(radius);
-        initGraph();
+        graph = new Graph(calcNumNodes(radius));
         initHexCoords(radius);
         createGraph(radius);
     }
@@ -68,54 +63,6 @@ public class CatanBoard {
             return 0;
         }
         return calcNumNodes(n - 1) + (2 * n - 1) * 6;
-    }
-
-    /**
-     * Initialisiert das statische Node-Array mit der Anzahl aller Nodes für den
-     * angegebenen Radius. Jeder Node erhält eine eindeutige ID.
-     *
-     * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
-     */
-    private void initNodes(int n) {
-        int numNodes = calcNumNodes(n);
-        nodes = new Node[numNodes];
-        for (int i = 0; i < numNodes; i++) {
-            nodes[i] = new Node(i);
-            System.out.println("Node " + i + " created");
-        }
-    }
-
-    /**
-     * Initialisiert den Straßen-Graphen ohne vorhandene Straßen.
-     * Setzt für jedes Paar (i,j):
-     *   graph[i][j][STREET]  = 0 (keine Straße)
-     *   graph[i][j][PLAYER]  = -1 (kein Besitzer)
-     */
-    private void initGraph() {
-        graph = new int[nodes.length][nodes.length][2];
-        for (int i = 0; i < nodes.length; i++) {
-            for (int j = 0; j < nodes.length; j++) {
-                graph[i][j][STREET] = 0;
-                graph[i][j][PLAYER] = -1;
-            }
-        }
-    }
-
-    /**
-     * Aktualisiert den Graphen, um das Vorhandensein einer Straße und die Spielerzugehörigkeit
-     * zwischen zwei Knoten (i und j) zu setzen oder zu entfernen. Die Operation wird in beide
-     * Richtungen durchgeführt, da der Graph ungerichtet ist.
-     *
-     * @param i        ID des ersten Knotens
-     * @param j        ID des zweiten Knotens
-     * @param existenz 1 = Straße vorhanden, 0 = keine Straße
-     * @param spieler  Index des Spielers, dem die Straße gehört, oder -1, wenn frei
-     */
-    private void updateGraph(int i, int j, int existenz, int spieler) {
-        graph[i][j][STREET] = existenz;
-        graph[i][j][PLAYER] = spieler;
-        graph[j][i][STREET] = existenz;
-        graph[j][i][PLAYER] = spieler;
     }
 
     /**
@@ -186,14 +133,14 @@ public class CatanBoard {
 
             for (int i = 0; i < HexNodes.length; i++) {
                 if (HexNodes[i] == null) {
-                    HexNodes[i] = nodes[index];
+                    HexNodes[i] = graph.getNodes()[index];
                     int nextIndex = (i + 1 + HexNodes.length) % HexNodes.length;
                     if (HexNodes[nextIndex] != null) {
-                        updateGraph(index, HexNodes[nextIndex].id, 1, -1);
+                        graph.createEdge(index, HexNodes[nextIndex].id);
                     }
                     int prevIndex = (i - 1 + HexNodes.length) % HexNodes.length;
                     if (HexNodes[prevIndex] != null) {
-                        updateGraph(index, HexNodes[prevIndex].id, 1, -1);
+                        graph.createEdge(index, HexNodes[prevIndex].id);
                     }
                     index++;
                 }
@@ -351,7 +298,7 @@ public class CatanBoard {
         return this.board;
     }
 
-    public int[][][] getGraph() {
+    public Graph getGraph() {
         return this.graph;
     }
 
@@ -365,19 +312,17 @@ public class CatanBoard {
         }
     }
 
-    public void buildSettlement(Player player, int node, Building building) {
-        nodes[node].setBuilding(building);
-        nodes[node].setPlayer(player);
+    public void buildSettlement(int node, Building building) {
+        graph.getNodes()[node].setBuilding(building);
     }
 
-    public void buildCity(Player player, int node, Building building) {
-        nodes[node].setBuilding(building);
-        nodes[node].setPlayer(player);
+    public void buildCity(int node, Building building) {
+        graph.getNodes()[node].setBuilding(building);
     }
 
-    public void buildStreet(Player player, int node1, int node2) {
-        updateGraph(node1, node2, 1, player.getId());
-    }
+//    public void buildStreet(Player player, int node1, int node2) {
+//        updateGraph(node1, node2, 1, player.getId());
+//    }
 
     public void blockHex(IntTupel coords) {
         Tile tile = board.get(coords);
@@ -405,89 +350,4 @@ public class CatanBoard {
         return null;
     }
 
-    /**
-     *Dies ist der Algorithmus, welcher die längste Handel-Strecke heraussucht.
-     *Es wird als Algorithms Depth-First Search genutzt,
-     *es wird erst geschaut, sobald ein Spieler 3 Gebäude aneinander hat.
-     * @param playerId dies ist die ID des spielers
-     * @return Gibt die Länge des shits raus.
-     */
-
-    public int findLongestTradeRoutes(int playerId) {
-        int maxLength = 0;
-        for (int startNode = 0; startNode < hex_coords.length; startNode++) {
-            boolean[] searched = new boolean[nodes.length];
-            maxLength =
-                    Math.max(maxLength, dfsLength(startNode, -1, searched, playerId));
-        }
-        System.out.println("Winner: Player" + maxLength);
-        return maxLength >= 3 ? maxLength : 0;
-    }
-
-    /**
-     *Führt die Suche durch (DFS) zur Ermittlung der Längsten durchgehenden Straße eines Spielers.
-     * @param current Aktueller Knoten
-     * @param from Vorheriger Knoten (Vermeidung von Rücklaufen)
-     * @param playerId ID des Spielers, dessen Straße aktuell geprüft wird.
-     * @param searched Merkt sich, welche Knoten schon durchsucht wurden.
-     * @return Länge des längsten Pfades.
-     */
-
-    private int dfsLength(int current, int from, boolean[] searched, int playerId)
-    {
-        searched[current] = true;
-        int maxTiefe = 1;
-
-        for (int nachbar = 0; nachbar < nodes.length; nachbar++)
-        {
-            if (graph[current][nachbar][STREET] == 1 && graph[current][nachbar][PLAYER] == playerId)
-            {
-                if (nachbar != from && !searched[nachbar])
-                {
-                    maxTiefe = Math.max(maxTiefe, 1 + dfsLength(nachbar, current, searched, playerId));
-                }
-            }
-        }
-        searched[current] = false;
-        System.out.println("DFS von node:" + current + "ergibt die Tiefe:" + maxTiefe);
-        return maxTiefe;
-    }
-
-    /**
-     *Dies hier findet den Spieler mit der längsten Handelsstraße.
-     * @param playerCount Anzahl aller Spieler.
-     * @return Spieler ID mit der längsten Straße oder gibt halt -1 aus, falls keiner derzeit die längste Straße hat.
-     */
-
-    public int findPlayerLongestStreet(int playerCount)
-    {
-        int maxLength = 0;
-        int winner = -1;
-
-        for (int playerId = 0; playerId < playerCount; playerId++)
-        {
-            int length = findLongestTradeRoutes(playerId);
-            if (length > maxLength)
-            {
-                maxLength = length;
-                winner = playerId;
-            }
-            logRouteDetails(playerId,length,winner,maxLength);
-        }
-        return winner;
-    }
-
-    /**
-     *Helfer Methode zur Protokollierung von den Routeninformationen
-     * @param playerId spieler id
-     * @param length Länge des in Führung liegenden Spielers
-     * @param winner Spieler Id mi der bislang längsten Straße
-     * @param maxLength Länge der bislang längsten Straße
-     */
-
-    private void logRouteDetails(int playerId,int length, int winner,int maxLength)
-    {
-        System.out.println("Spieler" + playerId + "Hat eine Straßen länge" + length);
-        System.out.println("Aktueller Sieger ist Spieler" + winner + "mit der Straßenlänge:" + maxLength);
-    }
 }

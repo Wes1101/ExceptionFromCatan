@@ -20,7 +20,6 @@ import java.util.List;
 public class Node {
     private List<Tile> hexNeighbors;
     private Building building;
-    private Player player;
     public final int id;
 
     public Node(int id)
@@ -28,13 +27,10 @@ public class Node {
         this.id = id;
         this.hexNeighbors = new ArrayList<>();
         this.building = null;
-        this.player = null;
     }
 
-    public void setBuilding(Building building, Player player)
-    {
+    public void setBuilding(Building building) {
         this.building = building;
-        this.player = player;
     }
 
     public void addHexTile(Tile tile) {

@@ -37,11 +37,11 @@ public class Ressource extends Tile {
 
     public void trigger(Bank bank) {
         for (Node node : HexTileNodes) {
-            if (node.getPlayer() != null) {
+            if (node.getBuilding().getOwner() != null) {
                 if (node.getBuilding().getBuildingType() == node.getBuilding().getBuildingType()) {
-                    bank.removeResources(resourceType, 1, node.getPlayer());
+                    bank.removeResources(resourceType, 1, node.getBuilding().getOwner());
                 } else if (node.getBuilding().getBuildingType() == node.getBuilding().getBuildingType()) {
-                    bank.removeResources(resourceType, 2, node.getPlayer());
+                    bank.removeResources(resourceType, 2, node.getBuilding().getOwner());
                 }
             }
         }

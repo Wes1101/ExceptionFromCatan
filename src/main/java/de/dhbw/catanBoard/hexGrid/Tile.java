@@ -22,15 +22,13 @@ public class Tile {
     public Tile(Resources resourceType, Node[] nodes)
     {
         this.resourceType = resourceType;
-        this.HexTileNodes = nodes;
-    }
-
-    public String getAllHexTileNodes() {
-        int[] nodeIDs = new int[HexTileNodes.length];
-        for (int i = 0; i < HexTileNodes.length; i++) {
-            nodeIDs[i] = HexTileNodes[i].id;
+        if (nodes != null) {
+            this.HexTileNodes = nodes;
         }
-        return Arrays.toString(nodeIDs);
+        else {
+            this.HexTileNodes = new Node[6];
+        }
+
     }
 
 }
