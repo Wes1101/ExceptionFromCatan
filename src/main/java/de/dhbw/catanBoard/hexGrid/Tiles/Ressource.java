@@ -19,16 +19,12 @@ import java.util.Arrays;
     @Getter
     @Setter
 public class Ressource extends Tile {
-    private Resources resourceType;
-    private Node[] HexTileNodes;
     private boolean blocked;
 
     public Ressource(Resources resourceType, Node[] nodes)
     {
-        this.resourceType = resourceType;
-        this.HexTileNodes = nodes;
+        super(resourceType, nodes);
         this.blocked = false;
-        setType("Ressource");
     }
 
     public String getAllHexTileNodes() {

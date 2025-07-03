@@ -1,6 +1,11 @@
 package de.dhbw.player;
 
+import de.dhbw.gamePieces.Building;
+import de.dhbw.gamePieces.BuildingTypes;
+import de.dhbw.resources.Resources;
 import lombok.Getter;
+
+import java.util.Map;
 
 
 @Getter
@@ -14,20 +19,12 @@ public class Human extends Player {
         this.id = id;
     }
 
-    public void buyStreet() {
+    public void build(BuildingTypes buildingType, int node, Bank bank, Player player) {
+        if (bank.containsBuilding(buildingType, player)) {
+            if (buildingType == BuildingTypes.SETTLEMENT) {
 
-    }
-
-    public void buySettlement() {
-        return;
-    }
-
-    public void buyCity() {
-
-    }
-
-    public void buyDevelopmentCard() {
-
+            }
+        }
     }
 
     public void trade() {

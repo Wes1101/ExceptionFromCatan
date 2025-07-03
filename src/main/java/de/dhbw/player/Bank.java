@@ -1,8 +1,6 @@
 package de.dhbw.player;
 
-import de.dhbw.gamePieces.City;
-import de.dhbw.gamePieces.Settlement;
-import de.dhbw.gamePieces.Street;
+import de.dhbw.gamePieces.*;
 import lombok.Getter;
 
 import java.util.*;
@@ -38,6 +36,31 @@ public class Bank  extends Player {
         for (int i = 0; i < street; i++) {
             this.streets.add(new Street(player));
         }
+    }
+
+    public boolean containsBuilding(BuildingTypes building, Player player) {
+        if (building == BuildingTypes.SETTLEMENT) {
+            for (Settlement settlement : settlements) {
+                if (settlement.getOwner() == player) {
+                    return true;
+                }
+            }
+        }
+        else if (building == BuildingTypes.CITY) {
+            for (City city : cities) {
+                if (city.getOwner() == player) {
+                    return true;
+                }
+            }
+        }
+        else if (building == BuildingTypes.STREET) {
+            for (Street street : streets) {
+                if (street.getOwner() == player) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

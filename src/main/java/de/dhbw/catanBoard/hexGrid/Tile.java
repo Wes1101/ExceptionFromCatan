@@ -16,15 +16,14 @@ import java.util.Arrays;
 @Getter
 @Setter
 public class Tile {
-    String type;
-    private Node[] HexTileNodes;
+    public Resources resourceType;
+    public Node[] HexTileNodes;
 
-//    public Tile(Resources resourceType, Node[] nodes)
-//    {
-//        this.resourceType = resourceType;
-//        this.HexTileNodes = nodes;
-//        this.blocked = false;
-//    }
+    public Tile(Resources resourceType, Node[] nodes)
+    {
+        this.resourceType = resourceType;
+        this.HexTileNodes = nodes;
+    }
 
     public String getAllHexTileNodes() {
         int[] nodeIDs = new int[HexTileNodes.length];

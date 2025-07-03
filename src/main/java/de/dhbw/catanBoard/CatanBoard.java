@@ -29,7 +29,7 @@ import java.util.*;
 
 //attribut für hexagons blocked - boolean - check
 
-//wasser tiles, Häfen
+//wasser tiles, Häfen - check
 
 @Getter
 public class CatanBoard {
@@ -165,11 +165,6 @@ public class CatanBoard {
      */
     private void createGraph(int radius) {
         int index = 0;
-        AxialDirection[] DIR = {
-                AxialDirection.NORTH_WEST,
-                AxialDirection.NORTH_EAST,
-                AxialDirection.WEST
-        };
 
         ArrayList<Integer> numChips = generateChipNumbers();
         Collections.shuffle(numChips);
@@ -185,27 +180,9 @@ public class CatanBoard {
         }
 
         for (IntTupel coords : hex_coords) {
-            Node[] HexNodes = new Node[6];
 
-            for (AxialDirection dir : DIR) {
-                IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
-                if (board.containsKey(neighbor)) {
-                    switch (dir) {
-                        case NORTH_WEST:
-                            HexNodes[5] = board.get(neighbor).getHexTileNodes()[3];
-                            HexNodes[0] = board.get(neighbor).getHexTileNodes()[2];
-                            break;
-                        case NORTH_EAST:
-                            HexNodes[0] = board.get(neighbor).getHexTileNodes()[4];
-                            HexNodes[1] = board.get(neighbor).getHexTileNodes()[3];
-                            break;
-                        case WEST:
-                            HexNodes[4] = board.get(neighbor).getHexTileNodes()[2];
-                            HexNodes[5] = board.get(neighbor).getHexTileNodes()[1];
-                            break;
-                    }
-                }
-            }
+
+            Node[] HexNodes = getExistingNodes(coords);
 
             for (int i = 0; i < HexNodes.length; i++) {
                 if (HexNodes[i] == null) {
@@ -274,7 +251,8 @@ public class CatanBoard {
 
         for (i = 0; i < habour.length; i++) {
             if (i%2 == 1) {
-                board.put(habour[i], new Habour(habourTypes.getFirst()));
+
+                board.put(habour[i], new Habour(habourTypes.getFirst(), getExistingNodes(habour[i])));
                 habourTypes.remove(habourTypes.getFirst());
             }
             else {
@@ -289,6 +267,38 @@ public class CatanBoard {
             }
 
         }
+    }
+
+    private Node[] getExistingNodes(IntTupel coords) {
+        AxialDirection[] DIR = {
+                AxialDirection.NORTH_WEST,
+                AxialDirection.NORTH_EAST,
+                AxialDirection.WEST
+        };
+
+        Node[] HexNodes = new Node[6];
+
+        for (AxialDirection dir : DIR) {
+            IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
+            if (board.containsKey(neighbor)) {
+                switch (dir) {
+                    case NORTH_WEST:
+                        HexNodes[5] = board.get(neighbor).getHexTileNodes()[3];
+                        HexNodes[0] = board.get(neighbor).getHexTileNodes()[2];
+                        break;
+                    case NORTH_EAST:
+                        HexNodes[0] = board.get(neighbor).getHexTileNodes()[4];
+                        HexNodes[1] = board.get(neighbor).getHexTileNodes()[3];
+                        break;
+                    case WEST:
+                        HexNodes[4] = board.get(neighbor).getHexTileNodes()[2];
+                        HexNodes[5] = board.get(neighbor).getHexTileNodes()[1];
+                        break;
+                }
+            }
+        }
+
+        return HexNodes;
     }
 
     /**

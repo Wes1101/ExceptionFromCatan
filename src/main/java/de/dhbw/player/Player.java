@@ -40,6 +40,10 @@ public abstract class Player {
         }
     }
 
+    public int getResources(Resources type) {
+        return resources.get(type);
+    }
+
     public int getTotalResources() {
         int sum = 0;
         for (int count : resources.values()) {
