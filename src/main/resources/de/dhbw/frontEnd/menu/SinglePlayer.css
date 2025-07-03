@@ -46,22 +46,42 @@
 
 }
 
-#start-button{
-
-    -fx-font-size: 18px;
-    -fx-text-fill: #222;
+#buttonsb {
+    -fx-font-size: 22px;
+    -fx-font-family: "Grusskarten Gotisch";
     -fx-font-weight: bold;
-    -fx-background-image: url("copper.png");
-    -fx-background-size: cover;
+
+    /* transparenter Hintergrund, brauner Rand */
+    -fx-background-color: transparent;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+
+    -fx-pref-height: 100px;
+    -fx-pref-width: 680px;
+
+
+    /* runde Form */
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+
+
+    /* Text in deiner Wunschfarbe */
+    -fx-text-fill: #ffffff;
+
+    /* Mauszeiger zum Zeiger ändern */
+    -fx-cursor: hand;
+
+    /* zentrieren */
+    -fx-alignment: center;
 }
 
-#back-button{
-    -fx-font-size: 18px;
-    -fx-text-fill: #222;
-    -fx-font-weight: bold;
-    -fx-background-image: url("iron.png");
-    -fx-background-size: cover;
+#buttonsb:hover {
+    /* leicht getönter Hintergrund in deiner Wunschfarbe */
+    -fx-background-color: #41251533;
+    /* Rand minimal dunkler für Kontrast */
+    -fx-border-color: #351e15;
 }
+
 
 
 

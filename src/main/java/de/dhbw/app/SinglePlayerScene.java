@@ -89,12 +89,12 @@ public class SinglePlayerScene {
 
 
         Button startButton = new Button("Start Game");
-        startButton.setId("start-button");
+        startButton.setId("buttonsb");
         startButton.setPrefWidth(220);
         startButton.setPrefHeight(50);
 
         Button backButton = new Button("Back");
-        backButton.setId("back-button");
+        backButton.setId("buttonsb");
 
         root.getChildren().addAll(titlePane, spielerSliderPane, pinkPane, brownPane, startButton, backButton);
 
@@ -116,7 +116,7 @@ public class SinglePlayerScene {
 
         });
 
-        this.scene = new Scene(root, 1344, 756);
+        this.scene = new Scene(root, 1344, 776);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/SinglePlayer.css")).toExternalForm());
     }
 

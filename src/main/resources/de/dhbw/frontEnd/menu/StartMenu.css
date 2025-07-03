@@ -9,7 +9,7 @@
 #launcher-title {
     -fx-font-family: "Grusskarten Gotisch";
     -fx-font-size: 90px;
-    -fx-text-fill: #cdb882;
+    -fx-text-fill: #ffffff;
     -fx-font-weight: normal;
     -fx-effect: dropshadow(gaussian, #00000099, 4, 0.5, 0, 2);
 }
@@ -21,7 +21,7 @@
 
     /* transparenter Hintergrund, brauner Rand */
     -fx-background-color: transparent;
-    -fx-border-color: #baa470;
+    -fx-border-color: #ffffff;
     -fx-border-width: 2px;
 
     -fx-pref-height: 100px;
@@ -34,7 +34,7 @@
 
 
     /* Text in deiner Wunschfarbe */
-    -fx-text-fill: #baa470;
+    -fx-text-fill: #ffffff;
 
     /* Mauszeiger zum Zeiger ändern */
     -fx-cursor: hand;
