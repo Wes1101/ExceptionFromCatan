@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.util.Objects;
+import java.util.Stack;
 import java.util.function.UnaryOperator;
 
 /**
@@ -31,8 +32,7 @@ public class MultiPlayerScene {
      */
 
     public MultiPlayerScene(Stage primaryStage) {  // Aufbau der Mehrspieler-GUI
-        Font.loadFont(
-                Objects.requireNonNull(getClass().getResource("/fonts/GrusskartenGotisch.ttf")).toExternalForm(), 36);
+        Font.loadFont(Objects.requireNonNull(getClass().getResource("/fonts/GrusskartenGotisch.ttf")).toExternalForm(), 36);
 
         VBox root = new VBox(25);
         root.setPadding(new Insets(40));
@@ -96,59 +96,54 @@ public class MultiPlayerScene {
         };
         ipField.setTextFormatter(new TextFormatter<>(ipFilter));
 
-        ipField.setTooltip(new Tooltip("IPv4 erwartet XXX.XXX.XXX.XXX"));
+        ipField.setTooltip(new Tooltip("IPv4 Format XXX.XXX.XXX.XXX"));
 // Styling
-        ipField.setStyle(
-                "-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;"
-        );
+        ipField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
 
         StackPane ipPane = new StackPane(ipField);
         ipPane.setPadding(new Insets(15));
 
 
+        // === Port-TextField definieren ===
         TextField portField = new TextField();
         portField.setPromptText("Port eingeben");
-        portField.setStyle(
-                "-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;"
-        );
-
-        // Nur Ganzzahlen erlauben:
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
-            // Erlaubt nur Zahlen zwischen 0–9 und max. 5 Stellen
-            if (newText.matches("\\d{0,5}")) {
-                return change;
-            }
-            return null;
-        };
-
-        String input = portField.getText();
-        try {
-            int port = Integer.parseInt(input);
-            if (port < 1 || port > 65535) {
-                throw new NumberFormatException("Port out of range");
-            }
-            // gültiger Port, weiterverarbeiten...
-        } catch (NumberFormatException e) {
-            // Ungültige Eingabe → Fehlermeldung anzeigen
-            System.out.println("Bitte einen gültigen Port (1–65535) eingeben.");
-        }
-
-        portField.setTooltip(new Tooltip("Nur Zahlen zwischen 1 und 65535 erlaubt"));
-
-
-        portField.setTextFormatter(new TextFormatter<>(filter));
+        portField.setStyle("-fx-font-size: 16px; " + "-fx-background-color: #222; " + "-fx-text-fill: #66ccff;");
 
         StackPane portPane = new StackPane(portField);
         portPane.setPadding(new Insets(15));
+
+// Eingabe-Filter: Nur Zahlen bis 5 Stellen erlauben
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+
+            if (newText.isEmpty()) return change; // Eingabe darf leer sein
+            if (newText.matches("\\d{0,5}")) return change; // Max. 5 Ziffern erlaubt
+
+            portField.setTooltip(new Tooltip("Port muss zwischen 49152 und 65535 liegen."));
+            return null; // Alles andere wird blockiert
+        };
+
+        portField.setTextFormatter(new TextFormatter<>(filter));
+
+// === Auslesen und prüfen (z. B. bei Buttonklick) ===
+        String input = portField.getText();
+        try {
+            int port = Integer.parseInt(input);
+            if (port >= 49152 && port <= 65535) {
+                System.out.println("Gültiger Port: " + port);
+                // → Hier kannst du den Port weiterverwenden
+            } else {
+                System.out.println("Port muss zwischen 49152 und 65535 liegen.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Bitte eine gültige Zahl eingeben.");
+        }
 
 
         // Namensfeld (rechte Hälfte)
         TextField nameField = new TextField();
         nameField.setPromptText("Spielername eingeben");
-        nameField.setStyle(
-                "-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;"
-        );
+        nameField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
         StackPane namePane = new StackPane(nameField);
         namePane.setPadding(new Insets(15));
 
@@ -163,24 +158,17 @@ public class MultiPlayerScene {
         backButton.setStyle("-fx-font-size: 24; -fx-pref-height: 50; -fx-pref-width: 150; -fx-text-fill: #FFFFFF ");
 
 
-        root
-                .getChildren()
-                .addAll(labelPane, hostPane, joinPane, inputBox, backButton);
+        root.getChildren().addAll(labelPane, hostPane, joinPane, inputBox, backButton);
 
         // Eventhandler
-        backButton.setOnAction(
-                e -> primaryStage.setScene(startMenuScene.getScene())
-        );
-        hostButton.setOnAction(
-                e -> primaryStage.setScene(singlePlayerScene.getScene())
-        );
+        backButton.setOnAction(e -> primaryStage.setScene(startMenuScene.getScene()));
+        hostButton.setOnAction(e -> primaryStage.setScene(singlePlayerScene.getScene()));
         joinButton.setOnAction(e -> {
-                    String Ip = ipField.getText();
-                    String Port = portField.getText();
-                    String Name = nameField.getText();
-                    /*@TODO Hier übergabe an Client bzw Serverlogin*/
-                }
-        );
+            String Ip = ipField.getText();
+            String Port = portField.getText();
+            String Name = nameField.getText();
+            /*@TODO Hier übergabe an Client bzw Serverlogin*/
+        });
 
         this.scene = new Scene(root, 1344, 776);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/menu/MultiPlayer.css")).toExternalForm());
