@@ -1,7 +1,9 @@
 /**
  * GameController Class
+ * <p>
  * Handles all logic/interaction between objects for playing the game. According to the gameControllerType, the required
  * actions are either send to the gui or the server.
+ * </p>
  *
  * @author: Fabian Weller
  * @version: 0.1
@@ -49,8 +51,10 @@ public class GameController {
 
     /**
      * Creates new GameController
+     * <p>
      * Initializes all players, creates a Bank object and CatanBoard. Additionally, sets variables gameRound to 0 and
      * victoryPoints and gameControllerType accordingly
+     * </p>
      *
      * @param playerAmount       Amount of players in game
      * @param victoryPoints      Victory points necessary to win a game
@@ -78,10 +82,12 @@ public class GameController {
 
     /**
      * Starts a new game
+     * <p>
      * Starting a new game by creating all players, rolling the dices for all players and reordering the player array
      * based on the highest number. Then, all players (in order) can place their first two settlements and streets.
      * Also, they receive the according resources based on their second settlement. The current states are stored in
      * majorGameState and minorGameState and accessible via getters.
+     * </p>
      */
     public void gameStart() {
         log.info("Starting game...");
@@ -206,10 +212,12 @@ public class GameController {
 
     /**
      * Starts the main game logic
+     * <p>
      * Every loop starts with a check if someone already has enough victory points to win the game. Then the dice are
      * rolled and if a seven was rolled the bandit is activated. After that the resources are distributed. Then the
      * player gets the option to build, trade or use special cards. This repeats for all players and the loop starts
      * again.
+     * </p>
      */
     public void mainGame() {
         log.info("Starting main game...");
@@ -285,7 +293,9 @@ public class GameController {
 
     /**
      * Rolls the dice
+     * <p>
      * Rolling the dice by getting new random ints and storing them in the local variables dice1 and dice 2
+     * </p>
      */
     private void rollDice() {
         log.debug("rolling the dice:");
@@ -297,8 +307,10 @@ public class GameController {
 
     /**
      * Checks for a victory
+     * <p>
      * Checks victory by iterating through the whole players array and if one player has enough victory points true is
      * returned. If no one has enough points false is returned.
+     * </p>
      */
     private boolean checkVictory() {
         log.debug("checking victory");
@@ -399,7 +411,7 @@ public class GameController {
     }
 
     /**
-     * Activates the Bandit and returns the new location of the bandit and the player wo is robbed
+     * Activates the Bandit and returns the new location of the bandit and the player who is robbed
      *
      * @return A Tuple and Player. The tuple is the new bandit location and Player is the robbed player
      */
