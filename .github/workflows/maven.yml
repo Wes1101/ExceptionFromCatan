@@ -1,38 +1,47 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: JavaFX Maven Build and Test
+name: Build JavaFX App for All Platforms
 
 on:
   push:
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
+    name: Build for ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-          os: [ubuntu-latest, windows-latest, macos-latest]
-          node-version: [12.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout repository
       uses: actions/checkout@v4
-    
+
     - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
         distribution: 'temurin'
-        architecture: x64
-        cache: maven
+        java-version: '21'
 
-    - name: Run JavaFX application
-      run: mvn --batch-mode --update-snapshots package
+    - name: Set platform classifier
+      id: set-classifier
+      run: |
+        case "${{ runner.os }}" in
+          Linux)   echo "classifier=linux-x64" >> $GITHUB_OUTPUT ;;
+          macOS)   echo "classifier=mac-aarch64" >> $GITHUB_OUTPUT ;;
+          Windows) echo "classifier=win-x64" >> $GITHUB_OUTPUT ;;
+        esac
+
+    - name: Inject platform-specific JavaFX dependency
+      run: |
+        sed -i.bak "s|<classifier>PLATFORM|<classifier>${{ steps.set-classifier.outputs.classifier }}|g" pom.xml
+
+    - name: Build project with Maven
+      run: mvn -B clean package
+
+    - name: Upload shaded JAR
+      uses: actions/upload-artifact@v4
+      with:
+        name: javafx-app-${{ runner.os }}
+        path: target/*-shaded.jar
