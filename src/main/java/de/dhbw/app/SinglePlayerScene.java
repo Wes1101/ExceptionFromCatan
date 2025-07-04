@@ -10,11 +10,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 public class SinglePlayerScene {
     private final Scene scene;
     private StartMenuScene startMenuScene;
 
-    public SinglePlayerScene(Stage primaryStage) {
+    public SinglePlayerScene(Stage primaryStage) {  // Aufbau der Konfigurations-UI für den Einzelspieler-Modus
         VBox root = new VBox(25);
         root.setPadding(new Insets(40));
         root.setStyle("-fx-background-color: #222;");
@@ -109,9 +110,9 @@ public class SinglePlayerScene {
             int maxCardThrow = (int) abwerfenSlider.getValue();
             System.out.println(isServergame + " " + playerCount + " " + winPoints + " " + maxCardThrow);
 
-            if (isServergame) {
+            if(isServergame) {
                 /*@TODO Server(David) erstellen mit Übergabe der parameter*/
-            } else if (!isServergame) {
+            } else{
                 /*@TODO Spielsteureung(Fabian) erstellen mit Übergabe parameter*/
             }
 
@@ -120,9 +121,11 @@ public class SinglePlayerScene {
         this.scene = new Scene(root, 1152, 648);
     }
 
+
     public Scene getScene() {
         return scene;
     }
+
 
     public void setStartMenuScene(StartMenuScene scene) {
         this.startMenuScene = scene;

@@ -9,13 +9,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 public class StartMenuScene {
     boolean ServerGame;
     private final Scene scene;
     private SinglePlayerScene singlePlayerScene;
     private MultiPlayerScene multiPlayerScene;
 
-    public StartMenuScene(Stage primaryStage) {
+
+    public StartMenuScene(Stage primaryStage) { // Aufbau des GUI-Layouts mit Buttons und Eventhandlern
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #222;");
@@ -75,18 +77,24 @@ public class StartMenuScene {
         this.scene = new Scene(root, 1152, 648);
     }
 
+
     public Scene getScene() {
         return scene;
     }
+
 
     public void setSinglePlayerScene(SinglePlayerScene scene) {
         this.singlePlayerScene = scene;
     }
 
+
     public void setMultiPlayerScene(MultiPlayerScene scene) {
         this.multiPlayerScene = scene;
     }
+
+
     public boolean getServerGame() {
-      return ServerGame;
+        return ServerGame;
     }
 }
+//
