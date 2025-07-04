@@ -22,15 +22,16 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
-
+        
     - name: Set platform classifier
       id: set-classifier
       run: |
         case "${{ runner.os }}" in
-          Linux)   echo "classifier=linux-x64" >> $GITHUB_OUTPUT ;;
+          Linux)   echo "classifier=linux" >> $GITHUB_OUTPUT ;;
           macOS)   echo "classifier=mac-aarch64" >> $GITHUB_OUTPUT ;;
-          Windows) echo "classifier=win-x64" >> $GITHUB_OUTPUT ;;
+          Windows) echo "classifier=win" >> $GITHUB_OUTPUT ;;
         esac
+
 
     - name: Inject platform-specific JavaFX dependency
       run: |
