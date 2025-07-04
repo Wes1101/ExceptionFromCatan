@@ -23,16 +23,18 @@
 
     <dependencies>
         <!-- JavaFX -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>21.0.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>21.0.7</version>
-        </dependency>
+             <dependency>
+                      <groupId>org.openjfx</groupId>
+                      <artifactId>javafx-controls</artifactId>
+                      <version>21.0.7</version>
+                      <classifier>PLATFORM</classifier>
+             </dependency>
+             <dependency>
+                      <groupId>org.openjfx</groupId>
+                      <artifactId>javafx-fxml</artifactId>
+                      <version>21.0.7</version>
+                      <classifier>PLATFORM</classifier>
+             </dependency>
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
