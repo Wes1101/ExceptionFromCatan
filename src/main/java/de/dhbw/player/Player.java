@@ -1,6 +1,5 @@
 package de.dhbw.player;
 
-
 import de.dhbw.gamePieces.Street;
 import de.dhbw.resources.Resources;
 import de.dhbw.player.Bank;
@@ -15,10 +14,8 @@ import java.util.*;
 @Getter
 public abstract class Player {
 
-    /**
-     * The unique ID of the player.
-     */
     int id;
+    List<Street> cards;
 
     /**
      * Stores the player's resources using an EnumMap for efficiency.
@@ -68,21 +65,9 @@ public abstract class Player {
         }
     }
 
-    /**
-     * Removes a specific amount of a resource type from the player.
-     * Used when no target is involved (e.g., discarding).
-     *
-     * @param type   the type of resource
-     * @param amount the amount to remove
-     */
-    //Überladung, um in Zeile 93 Rescourcen dem Spieler, der mehr als x Karten hat Karten abzunehmen (Bandit)
-    public void removeResources(Resources type, int amount) {
-        for (Resources res : resources.keySet()) {
-            if (res == type) {
-                resources.put(res, resources.get(res) - amount);
-                return;
-            }
-        }
+
+    public int getResources(Resources type) {
+        return resources.get(type);
     }
 
     /**
@@ -90,6 +75,7 @@ public abstract class Player {
      *
      * @return the total resource count
      */
+  
     public int getTotalResources() {
         int sum = 0;
         for (int count : resources.values()) {
@@ -151,7 +137,7 @@ public abstract class Player {
 
                 // Discard each resource and return it to the bank
                 for (Resources res : resToRemove) {
-                    this.removeResources(res, 1);
+                    this.removeResources(res, 1, bank);
                     bank.addResources(res, 1);
                 }
             }

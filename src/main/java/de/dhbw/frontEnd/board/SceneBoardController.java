@@ -1,5 +1,6 @@
 package de.dhbw.frontEnd.board;
 
+import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -231,14 +232,18 @@ public class SceneBoardController implements Initializable {
       double y = offsetY - (r * height);
 
       // Ressource vom Backend
-      String resourceName = hexes.get(coords).getResourceType().name();
+      if (hexes.get(coords) instanceof Ressource) {
+        Ressource resTile = (Ressource) hexes.get(coords);
+        String resourceName = resTile.getResourceType().name();
 
 
-      de.dhbw.frontEnd.board.HexTile frontendHex =
-              new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+        de.dhbw.frontEnd.board.HexTile frontendHex =
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
 
-      tile_layer.getChildren().add(frontendHex);
-      frontendHex.toBack();
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
     }
 
 
