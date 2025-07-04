@@ -5,6 +5,7 @@ import de.dhbw.catanBoard.hexGrid.Tiles.Habour;
 import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 import de.dhbw.gamePieces.Building;
+import de.dhbw.gamePieces.Street;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
@@ -316,13 +317,14 @@ public class CatanBoard {
         graph.getNodes()[node].setBuilding(building);
     }
 
-    public void buildCity(int node, Building building) {
+    public void buildCity(int node, Building building, Bank bank) {
+        bank.addBuilding(graph.getNodes()[node].getBuilding());
         graph.getNodes()[node].setBuilding(building);
     }
 
-//    public void buildStreet(Player player, int node1, int node2) {
-//        updateGraph(node1, node2, 1, player.getId());
-//    }
+    public void buildStreet(int node1, int node2, Building street) {
+        graph.updateEdge(node1, node2, (Street) street);
+    }
 
     public void blockHex(IntTupel coords) {
         Tile tile = board.get(coords);

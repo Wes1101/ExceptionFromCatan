@@ -8,16 +8,12 @@ import java.util.*;
 @Getter
 public class Bank  extends Player {
 
-    List<Settlement> settlements;
-    List<City> cities;
-    List<Street> streets;
+    List<Building> buildings;
 
     public Bank(int amountResources, Player[] players) {
         super(amountResources);
 
-        settlements = new ArrayList<>();
-        cities = new ArrayList<>();
-        streets = new ArrayList<>();
+        buildings = new ArrayList<>();
         //cards = new ArrayList<>();
 
         for (Player player : players) {
@@ -28,39 +24,32 @@ public class Bank  extends Player {
     private void initBuildings(Player player, int settlement, int city, int street) {
 
         for (int i = 0; i < settlement; i++) {
-            this.settlements.add(new Settlement(player));
+            this.buildings.add(new Settlement(player));
         }
         for (int i = 0; i < city; i++) {
-            this.cities.add(new City(player));
+            this.buildings.add(new City(player));
         }
         for (int i = 0; i < street; i++) {
-            this.streets.add(new Street(player));
+            this.buildings.add(new Street(player));
         }
     }
 
-    public boolean containsBuilding(BuildingTypes building, Player player) {
-        if (building == BuildingTypes.SETTLEMENT) {
-            for (Settlement settlement : settlements) {
-                if (settlement.getOwner() == player) {
-                    return true;
-                }
+    public Building getBuilding(BuildingTypes getBuilding, Player player) {
+        for (Building building : buildings) {
+            if (building.getBuildingType() == getBuilding && building.getOwner() == player) {
+                removeBuilding(building);
+                return building;
             }
         }
-        else if (building == BuildingTypes.CITY) {
-            for (City city : cities) {
-                if (city.getOwner() == player) {
-                    return true;
-                }
-            }
-        }
-        else if (building == BuildingTypes.STREET) {
-            for (Street street : streets) {
-                if (street.getOwner() == player) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return null;
+    }
+
+    public void removeBuilding(Building building) {
+        buildings.remove(building);
+    }
+
+    public void addBuilding(Building building) {
+        buildings.add(building);
     }
 
 }
