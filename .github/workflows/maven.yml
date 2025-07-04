@@ -25,12 +25,14 @@ jobs:
         
     - name: Set platform classifier
       id: set-classifier
+      shell: bash
       run: |
         case "${{ runner.os }}" in
           Linux)   echo "classifier=linux" >> $GITHUB_OUTPUT ;;
           macOS)   echo "classifier=mac-aarch64" >> $GITHUB_OUTPUT ;;
           Windows) echo "classifier=win" >> $GITHUB_OUTPUT ;;
         esac
+
 
 
     - name: Inject platform-specific JavaFX dependency
