@@ -1,49 +1,33 @@
-name: Build JavaFX App for All Platforms
+name: Build Cross-Platform JavaFX App
 
 on:
   push:
+    #branches: [main]
   pull_request:
-    branches: [main]
 
 jobs:
   build:
-    name: Build for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '21'
-        
-    - name: Set platform classifier
-      id: set-classifier
-      shell: bash
-      run: |
-        case "${{ runner.os }}" in
-          Linux)   echo "classifier=linux" >> $GITHUB_OUTPUT ;;
-          macOS)   echo "classifier=mac-aarch64" >> $GITHUB_OUTPUT ;;
-          Windows) echo "classifier=win" >> $GITHUB_OUTPUT ;;
-        esac
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
 
+      - name: Build project with Maven
+        run: mvn clean package
 
-
-    - name: Inject platform-specific JavaFX dependency
-      run: |
-        sed -i.bak "s|<classifier>PLATFORM|<classifier>${{ steps.set-classifier.outputs.classifier }}|g" pom.xml
-
-    - name: Build project with Maven
-      run: mvn -B clean package
-
-    - name: Upload shaded JAR
-      uses: actions/upload-artifact@v4
-      with:
-        name: javafx-app-${{ runner.os }}
-        path: target/*-shaded.jar
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ matrix.os }}
+          path: target/*.jar

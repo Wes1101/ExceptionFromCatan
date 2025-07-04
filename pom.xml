@@ -19,6 +19,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.version>5.10.2</junit.version>
+
+        <classifier>mac-aarch64</classifier> <!-- fallback default -->
+
     </properties>
          <repositories>
                   <repository>
@@ -30,18 +33,18 @@
 
     <dependencies>
         <!-- JavaFX -->
-             <dependency>
-                      <groupId>org.openjfx</groupId>
-                      <artifactId>javafx-controls</artifactId>
-                      <version>21.0.7</version>
-                      <classifier>PLATFORM</classifier>
-             </dependency>
-             <dependency>
-                      <groupId>org.openjfx</groupId>
-                      <artifactId>javafx-fxml</artifactId>
-                      <version>21.0.7</version>
-                      <classifier>PLATFORM</classifier>
-             </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.7</version>
+            <classifier>${classifier}</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.7</version>
+            <classifier>${classifier}</classifier>
+        </dependency>
         <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -82,6 +85,43 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <classifier>win</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                </os>
+            </activation>
+            <properties>
+                <classifier>linux</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>mac</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <classifier>mac-aarch64</classifier>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -115,7 +155,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
+                            <mainClass>de.dhbw.app.MainApp</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -131,7 +171,7 @@
                             <options>
                                 <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8001</option>
                             </options>
-                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
+                            <mainClass>de.dhbw.app.MainApp</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -228,7 +268,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
+                                    <mainClass>de.dhbw.app.MainApp</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
