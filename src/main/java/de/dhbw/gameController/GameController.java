@@ -99,24 +99,14 @@ public class GameController {
         int[] playerDiceNumber = new int[this.players.length];
         log.info("Creating all players...");
         for (int i = 0; i < this.players.length; i++) {
-            switch (gameControllerType) {
-                case LOCAL:
-                    this.activePlayer(this.players[i]);
-                    this.rollDiceAnimation();
-                    break;
-                case SERVER:
-                    /*   TODO: @David   */
-                    break;
-            }
+
+            this.activePlayer(this.players[i]);
+            this.rollDiceAnimation();
+
             this.rollDice();
-            switch (gameControllerType) {
-                case LOCAL:
-                    this.showDice(dice1, dice2);
-                    break;
-                case SERVER:
-                    /*   TODO: @David   */
-                    break;
-            }
+
+            this.showDice(dice1, dice2);
+
             playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
 
@@ -137,28 +127,13 @@ public class GameController {
         int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
         for (int i = 0; i < this.players.length; i++) {
-            switch (gameControllerType) {
-                case LOCAL:
-                    this.activePlayer(this.players[currentIndex]);
-                    break;
-                case SERVER:
-                    /*   TODO: @David   */
-                    break;
-            }
+            this.activePlayer(this.players[currentIndex]);
+
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            IntTupel coordinatesFirstSettlement;
-            IntTupel coordinatesFirstStreet;
-            switch (gameControllerType) {
-                case LOCAL:
-                    TwoTuples coordinatesFirstSettlementStreet = this.getCoordinatesFirstSettlementStreet();
-                    coordinatesFirstSettlement = coordinatesFirstSettlementStreet.t1();
-                    coordinatesFirstStreet = coordinatesFirstSettlementStreet.t2();
-                    break;
-                case SERVER:
-                    /*   TODO: @David   */
-                    break;
-            }
+            TwoTuples coordinatesFirstSettlementStreet = this.getCoordinatesFirstSettlementStreet();
+            IntTupel coordinatesFirstSettlement = coordinatesFirstSettlementStreet.t1();
+            IntTupel coordinatesFirstStreet = coordinatesFirstSettlementStreet.t2();
 
 //            this.players[currentIndex].buyFirstSettlement();
 //            this.players[currentIndex].buyFirstStreet(); TODO: @Johann
@@ -176,28 +151,13 @@ public class GameController {
 
         //place second settlement and get according resources
         for (Player player : this.players) {
-            switch (gameControllerType) {
-                case LOCAL:
-                    this.activePlayer(player);
-                    break;
-                case SERVER:
-                    /*   TODO: @David   */
-                    break;
-            }
+            this.activePlayer(player);
+
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            IntTupel coordinatesSecondSettlement;
-            IntTupel coordinatesSecondStreet;
-            switch (gameControllerType) {
-                case LOCAL:
-                    TwoTuples coordinatesSecondSettlementStreet = this.getCoordinatesFirstSettlementStreet();
-                    coordinatesSecondSettlement = coordinatesSecondSettlementStreet.t1();
-                    coordinatesSecondStreet = coordinatesSecondSettlementStreet.t2();
-                    break;
-                case SERVER:
-                    /*   TODO: @David   */
-                    break;
-            }
+            TwoTuples coordinatesSecondSettlementStreet = this.getCoordinatesFirstSettlementStreet();
+            IntTupel coordinatesSecondSettlement = coordinatesSecondSettlementStreet.t1();
+            IntTupel coordinatesSecondStreet = coordinatesSecondSettlementStreet.t2();
 
 //            player.buySecondSettlement();
 //            player.buySecondStreet();
@@ -229,43 +189,21 @@ public class GameController {
                 /*---Roll dice---*/
                 minorGameState = MinorGameStates.DICE;
 
-                switch (gameControllerType) {
-                    case LOCAL:
-                        this.activePlayer(player);
-                        this.rollDiceAnimation();
-                        break;
-                    case SERVER:
-                        /*   TODO: @David   */
-                        break;
-                }
+                this.activePlayer(player);
+                this.rollDiceAnimation();
 
                 this.rollDice();
 
-                switch (gameControllerType) {
-                    case LOCAL:
-                        this.showDice(dice1, dice2);
-                        break;
-                    case SERVER:
-                        /*   TODO: @David   */
-                        break;
-                }
+                this.showDice(dice1, dice2);
 
                 if (dice1 + dice2 == 7) {
                     log.info("7 was rolled! Activating bandit...");
                     minorGameState = MinorGameStates.BANDIT_ACTIVE;
 
-                    IntTupel selectedNewLocation;
-                    Player robbedPlayer;
-                    switch (gameControllerType) {
-                        case LOCAL:
-                            PlayerTupelVar robbedPlayerLocation = this.activateBandit();
-                            selectedNewLocation = robbedPlayerLocation.intTupel();
-                            robbedPlayer = robbedPlayerLocation.player();
-                            break;
-                        case SERVER:
-                            /*   TODO: @David   */
-                            break;
-                    }
+                    PlayerTupelVar robbedPlayerLocation = this.activateBandit();
+                    IntTupel selectedNewLocation = robbedPlayerLocation.intTupel();
+                    Player robbedPlayer = robbedPlayerLocation.player();
+
                     //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
                 } else {
                     log.info("Distributing all resources...");
@@ -273,14 +211,7 @@ public class GameController {
                     catanBoard.triggerBoard(dice1 + dice2, bank);
                 }
 
-                switch (gameControllerType) {
-                    case LOCAL:
-                        this.updatePlayerResources(players);
-                        break;
-                    case SERVER:
-                        /*   TODO: @David   */
-                        break;
-                }
+                this.updatePlayerResources(players);
 
                 log.info("Entering building, trading, special cards phase");
                 /*---Trade, build and play special cards---*/
@@ -347,6 +278,8 @@ public class GameController {
             if (!this.syso) {
                 gui.activePlayer(player);
             }
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
         } else {
             log.warn("activePlayer() was called but GameControllerType is {}", this.gameControllerType);
         }
@@ -362,6 +295,8 @@ public class GameController {
             if (!this.syso) {
                 gui.startRollDiceAnimation();
             }
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
         } else {
             log.warn("rollDiceAnimation() was called but GameControllerType is {}", this.gameControllerType);
         }
@@ -380,6 +315,8 @@ public class GameController {
             if (!this.syso) {
                 gui.showDice(dice1, dice2);
             }
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
         } else {
             log.warn("showDice() was called but GameControllerType is "  + this.gameControllerType);
         }
@@ -397,6 +334,8 @@ public class GameController {
             //coordinatesFirstSettlement = gui.buildSettlement(player);
             //coordinatesFirstStreet = gui.buildStreet(player);
             return new TwoTuples(new IntTupel(1,1), new IntTupel(1,1));
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
         } else {
             log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
                     this.gameControllerType);
@@ -416,6 +355,8 @@ public class GameController {
             if (!this.syso) {
                 gui.updatePlayerResources(players);
             }
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
         } else {
             log.warn("updatePlayerResources() was called but GameControllerType is {}", this.gameControllerType);
         }
@@ -440,6 +381,8 @@ public class GameController {
                 robbedPlayer = players[1];
             }
             return new PlayerTupelVar(selectedNewLocation, robbedPlayer);
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
         } else {
             log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
         }
