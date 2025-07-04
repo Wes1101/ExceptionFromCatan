@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
 
@@ -15,6 +16,7 @@ import de.dhbw.gameController.GameControllerTypes;
 import de.dhbw.mapping.INetServerAddressMapper;
 import de.dhbw.network.MessageFactory;
 import de.dhbw.network.NetworkMessage;
+import de.dhbw.player.Player;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,9 +45,9 @@ public class NetworkServer {
   private static int TCP_PORT = 0;
 
   /**
-   * List of writers for all connected clients for broadcasting messages.
+   * Map of client IDs to writers for all connected clients for broadcasting messages.
    */
-  private final List<PrintWriter> clientWriters = new CopyOnWriteArrayList<>(); //TODO: @David Map<PlayerID, PrintWriters>
+  private final ConcurrentHashMap<Integer, PrintWriter> clientWriterMap = new ConcurrentHashMap<>(); // clientId -> PrintWriter
 
   private final GameController gameController;
 
@@ -62,15 +64,44 @@ public class NetworkServer {
     //TODO: @FrontEnd this.startDiscoveryThread();
   }
 
-  private static String getHostIP() throws UnknownHostException {
-    return InetAddress.getLocalHost().getHostAddress();
+  /**
+   * Returns the IP address the server is bound to.
+   *
+   * @return the server's IP address as a String, or null if unavailable
+   */
+  public String getIp() {
+    try {
+      for (NetworkInterface ni : java.util.Collections.list(NetworkInterface.getNetworkInterfaces())) {
+        for (InetAddress addr : java.util.Collections.list(ni.getInetAddresses())) {
+          if (!addr.isLoopbackAddress() && addr instanceof Inet4Address) {
+            return addr.getHostAddress();
+          }
+        }
+      }
+    } catch (SocketException e) {
+      log.error("Error getting server IP: {}", e.getMessage());
+    }
+    return null;
   }
+
+  /**
+   * Returns the TCP port the server is listening on.
+   *
+   * @return the server's TCP port
+   */
+  public int getPort() {
+    if (serverSocket != null && serverSocket.isBound()) {
+      return serverSocket.getLocalPort();
+    }
+    return -1;
+  }
+
 
   private void initServer() {
     try {
       serverSocket = new ServerSocket(0);
       TCP_PORT = serverSocket.getLocalPort();
-      log.info("Server started on port ({}) and host ({})", TCP_PORT, getHostIP());
+      log.info("Server started on port ({}) and host ({})", TCP_PORT, getIp());
     } catch (IOException e) {
       log.error("Error starting server on port ({}): {}", TCP_PORT, e.getMessage());
     }
@@ -89,7 +120,7 @@ public class NetworkServer {
           String json = new String(packet.getData(), 0, packet.getLength(), StandardCharsets.UTF_8);
           NetworkMessage received = new Gson().fromJson(json, NetworkMessage.class);
           if (received.getType() == NetMsgType.DISCOVER_SERVER) {
-            INetServerAddressPayload payload = new INetServerAddressMapper().toPayload(new InetSocketAddress(getHostIP(), TCP_PORT));
+            INetServerAddressPayload payload = new INetServerAddressMapper().toPayload(new InetSocketAddress(getIp(), TCP_PORT));
             NetworkMessage<INetServerAddressPayload> serverAddress = new NetworkMessage<>(NetMsgType.IS_SERVER, payload);
             String response = MessageFactory.toJson(serverAddress);
             log.info("NetworkMessage prepared: {}", response);
@@ -113,7 +144,10 @@ public class NetworkServer {
    *
    * @throws IOException if an I/O error occurs when accepting connections
    */
-  private void initConnections() throws IOException, InterruptedException {
+  public void initConnections() throws IOException, InterruptedException {
+
+    Player[] players = gameController.getPlayers();
+
     int currentConnections = 0;
     while (currentConnections < gameController.getPlayerAmount()) {
       try {
@@ -122,15 +156,14 @@ public class NetworkServer {
         currentConnections++;
 
         try {
-          clientWriters.add(
-            new PrintWriter(
-              new OutputStreamWriter(
-                clientSocket.getOutputStream(),
-                java.nio.charset.StandardCharsets.UTF_8
-              ),
-              true
-            )
+          PrintWriter writer = new PrintWriter(
+            new OutputStreamWriter(
+              clientSocket.getOutputStream(),
+              java.nio.charset.StandardCharsets.UTF_8
+            ),
+            true
           );
+          clientWriterMap.put(players[currentConnections-1].getId(), writer);
         } catch (IOException e) {
           log.error("Error initializing streams: {}", e.getMessage());
         }
@@ -150,6 +183,7 @@ public class NetworkServer {
     log.info("All clients connected. Starting game...");
     startLatch.countDown();
     log.info("Game started with {} players.", gameController.getPlayerAmount());
+    //TODO: @David Game controller Game Start
   }
 
   /**
@@ -157,14 +191,28 @@ public class NetworkServer {
    *
    * @param message the message to broadcast
    */
-  public void broadcast(String message) {
-    for (PrintWriter writer : clientWriters) {
+  public void broadcast(String message) { //TODO: @David Payload interface
+    for (PrintWriter writer : clientWriterMap.values()) {
       writer.println(message);
     }
     log.info("Broadcasted message to all clients: {}", message);
   }
 
-  //TODO: @David Funktion zum versenden der Message an einen spezifischen Client
+  /**
+   * Sends a message to a specific client identified by their player ID.
+   *
+   * @param playerId the unique ID of the player
+   * @param message  the message to send
+   */
+  public void sendToClient(int playerId, String message) {//TODO: @David Payload interface
+    PrintWriter writer = clientWriterMap.get(playerId);
+    if (writer != null) {
+      writer.println(message);
+      log.info("Sent message to client {}: {}", playerId, message);
+    } else {
+      log.warn("No client found with ID {} to send message.", playerId);
+    }
+  }
 
   /**
    * Closes the server socket if it is open.
@@ -173,10 +221,10 @@ public class NetworkServer {
    */
   private void close() {
     try {
-      for (PrintWriter writer : clientWriters) {
+      for (PrintWriter writer : clientWriterMap.values()) {
         writer.close();
       }
-      clientWriters.clear();
+      clientWriterMap.clear();
       if (serverSocket != null && !serverSocket.isClosed()) {
         serverSocket.close();
         log.info("Server socket closed.");
@@ -186,8 +234,9 @@ public class NetworkServer {
     }
   }
 
+  //TODO: @David Rausmachen
   public static void main(String[] args) throws IOException, InterruptedException {
-    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER, false)); //TODO @David
+    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER, false));
     server.initConnections();
   }
 }
