@@ -184,7 +184,7 @@ public class NetworkServer {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER)); //TODO @David
+    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER, false)); //TODO @David
     server.initConnections();
   }
 }

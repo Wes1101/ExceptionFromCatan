@@ -33,6 +33,7 @@ public class GameController {
     private int dice1;
     private int dice2;
     private Bandit bandit;
+    private final boolean syso;
 
     @Getter
     private int victoryPoints;
@@ -60,7 +61,7 @@ public class GameController {
      * @param victoryPoints      Victory points necessary to win a game
      * @param gameControllerType Type, of how the game is played -> How the class should react to interaction
      */
-    public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType) {
+    public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType, boolean syso) {
         log.debug("GameController created with type {}", gameControllerType);
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
@@ -78,6 +79,7 @@ public class GameController {
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
         //this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
+        this.syso = syso;
     }
 
     /**
@@ -342,7 +344,9 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
-            gui.activePlayer(player);
+            if (!this.syso) {
+                gui.activePlayer(player);
+            }
         } else {
             log.warn("activePlayer() was called but GameControllerType is {}", this.gameControllerType);
         }
@@ -355,7 +359,9 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
-            gui.startRollDiceAnimation();
+            if (!this.syso) {
+                gui.startRollDiceAnimation();
+            }
         } else {
             log.warn("rollDiceAnimation() was called but GameControllerType is {}", this.gameControllerType);
         }
@@ -371,7 +377,9 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Who wants to see the dice? You want to see the dice: {} {}", dice1, dice2);
-            gui.showDice(dice1, dice2);
+            if (!this.syso) {
+                gui.showDice(dice1, dice2);
+            }
         } else {
             log.warn("showDice() was called but GameControllerType is "  + this.gameControllerType);
         }
@@ -386,8 +394,9 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement and street?");
-            //coordinatesFirstSettlement = gui.buildSettlement();
-            //coordinatesFirstStreet = gui.buildStreet();
+            //coordinatesFirstSettlement = gui.buildSettlement(player);
+            //coordinatesFirstStreet = gui.buildStreet(player);
+            return new TwoTuples(new IntTupel(1,1), new IntTupel(1,1));
         } else {
             log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
                     this.gameControllerType);
@@ -404,7 +413,9 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Another update for the players resources, seriously?");
-            gui.updatePlayerResources(players);
+            if (!this.syso) {
+                gui.updatePlayerResources(players);
+            }
         } else {
             log.warn("updatePlayerResources() was called but GameControllerType is {}", this.gameControllerType);
         }
@@ -419,8 +430,15 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Grrrr... Grrrr... the bandit was activated");
-            IntTupel selectedNewLocation = gui.activateBandit();
-            Player robbedPlayer = null;// gui.getRobbedPlayer(this.players);
+            IntTupel selectedNewLocation;
+            Player robbedPlayer;
+            if (!this.syso) {
+                selectedNewLocation = gui.activateBandit();
+                robbedPlayer = null;// gui.getRobbedPlayer(this.players);
+            } else {
+                selectedNewLocation = new IntTupel(3,2);
+                robbedPlayer = players[1];
+            }
             return new PlayerTupelVar(selectedNewLocation, robbedPlayer);
         } else {
             log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
