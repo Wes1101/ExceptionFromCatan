@@ -26,6 +26,7 @@ import de.dhbw.player.Player;
 
 @Slf4j
 public class GameController {
+    @Getter
     private Player[] players;
     private final Bank bank;
     private final CatanBoard catanBoard;

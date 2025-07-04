@@ -1,8 +1,10 @@
 package de.dhbw.app;
 
+import de.dhbw.client.NetworkClient;
 import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.gameController.GameController;
 import de.dhbw.gameController.GameControllerTypes;
+import de.dhbw.server.NetworkServer;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -112,11 +114,38 @@ public class SinglePlayerScene {
             int maxCardThrow = (int) abwerfenSlider.getValue();
             System.out.println(isServergame + " " + playerCount + " " + winPoints + " " + maxCardThrow);
 
-            if(isServergame) {
-                /*@TODO Server(David) erstellen mit Übergabe der parameter*/
-            } else{
-                SceneBoard gameBoard = new SceneBoard();
+            SceneBoard gameBoard = new SceneBoard();
 
+            if(isServergame) {
+                NetworkServer server = new NetworkServer(new GameController(playerCount, winPoints, GameControllerTypes.SERVER, true));
+
+                // connect clients in a new thread
+                new Thread(() -> {
+                    try {
+                        server.initConnections();
+                    } catch (IOException | InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }, "ServerInitThread").start();
+
+                // connect local player as client
+                GameController controllerClient = new GameController(playerCount, winPoints, GameControllerTypes.CLIENT, true);
+                controllerClient.setGui(gameBoard);
+
+                NetworkClient client = new NetworkClient();
+                try {
+                    client.connect(server.getIp(), server.getPort());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                try {
+                    gameBoard.start(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+            } else{
                 GameController controller = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, true);
                 controller.setGui(gameBoard);
 
