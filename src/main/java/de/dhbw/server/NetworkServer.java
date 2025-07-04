@@ -45,7 +45,7 @@ public class NetworkServer {
   /**
    * List of writers for all connected clients for broadcasting messages.
    */
-  private final List<PrintWriter> clientWriters = new CopyOnWriteArrayList<>();
+  private final List<PrintWriter> clientWriters = new CopyOnWriteArrayList<>(); //TODO: @David Map<PlayerID, PrintWriters>
 
   private final GameController gameController;
 
@@ -59,7 +59,7 @@ public class NetworkServer {
     this.gameController = gameController;
 
     this.initServer();
-    this.startDiscoveryThread();
+    //TODO: @FrontEnd this.startDiscoveryThread();
   }
 
   private static String getHostIP() throws UnknownHostException {

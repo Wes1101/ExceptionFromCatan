@@ -42,8 +42,20 @@ public class NetworkClient {
    */
   public void connect(final String host, final int port) throws IOException {
     clientSocket = new Socket();
-    clientSocket.connect(new InetSocketAddress(host, port));
-    log.info("Connected to {}:{}", host, port);
+    try {
+      clientSocket.connect(new InetSocketAddress(host, port));
+      log.info("Connected to {}:{}", host, port);
+    } catch (IOException e) {
+      log.error("Could not connect to {}:{} - {}", host, port, e.getMessage());
+      if (clientSocket != null && !clientSocket.isClosed()) {
+        try {
+          clientSocket.close();
+        } catch (IOException closeEx) {
+          log.warn("Error closing socket after failed connect: {}", closeEx.getMessage());
+        }
+      }
+      throw e;
+    }
 
     try {
       this.out =
@@ -59,7 +71,8 @@ public class NetworkClient {
     }
 
     new Thread(
-            new ServerHandler(clientSocket)
+            new ServerHandler(clientSocket),
+            String.format("ServerHandler:%s", clientSocket.getInetAddress())
     ).start();
     log.info("Server Handler started.");
   }
@@ -83,13 +96,14 @@ public class NetworkClient {
 
   public static void main(String[] args) {
     try {
-      new Thread(
-              new DiscoveryClient(),
-              "DiscoveryClient"
-      ).start();
+      BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+      System.out.print("Enter server IP address: ");
+      String ip = reader.readLine();
+      System.out.print("Enter server port: ");
+      int port = Integer.parseInt(reader.readLine());
 
       NetworkClient client = new NetworkClient();
-      client.connect("localhost", 8080);
+      client.connect(ip, port);
     } catch (IOException e) {
       log.error("Error connecting to server: {}", e.getMessage());
     }
