@@ -16,7 +16,6 @@ public abstract class Player {
 
     int id;
     List<Street> cards;
-    EnumMap<Resources, Integer> resources;
 
     /**
      * Stores the player's resources using an EnumMap for efficiency.
