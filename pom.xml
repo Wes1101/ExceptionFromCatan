@@ -20,6 +20,13 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.version>5.10.2</junit.version>
     </properties>
+         <repositories>
+                  <repository>
+                           <id>gluon-releases</id>
+                           <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+                  </repository>
+         </repositories>
+
 
     <dependencies>
         <!-- JavaFX -->
