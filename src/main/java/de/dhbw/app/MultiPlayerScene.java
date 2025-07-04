@@ -1,5 +1,9 @@
 package de.dhbw.app;
 
+import de.dhbw.client.NetworkClient;
+import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.gameController.GameController;
+import de.dhbw.gameController.GameControllerTypes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,7 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lombok.extern.slf4j.Slf4j;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
 
@@ -19,6 +27,7 @@ import java.util.function.UnaryOperator;
  * Der Benutzer kann ein Spiel hosten oder einem bestehenden Spiel beitreten.
  */
 
+@Slf4j
 public class MultiPlayerScene {
     private final Scene scene;
     private StartMenuScene startMenuScene;
@@ -175,10 +184,26 @@ public class MultiPlayerScene {
         );
         joinButton.setOnAction(e -> {
                     String Ip = ipField.getText();
-                    String Port = portField.getText();
+                    int Port = Integer.parseInt(portField.getText());
 
                     String Name = nameField.getText();
-                    /*@TODO Hier übergabe an Client bzw Serverlogin*/
+
+                    try {
+                        NetworkClient client = new NetworkClient();
+                        client.connect(Ip, Port);
+                    } catch (IOException ex) {
+                        log.error("Error connecting to server: {}", ex.getMessage());
+                    }
+
+                    SceneBoard gameBoard = new SceneBoard();
+                    GameController controllerClient = new GameController(0,  0, GameControllerTypes.CLIENT, true);//TODO: @Fabian @David gameController Client parameter
+                    controllerClient.setGui(gameBoard);
+
+                    try {
+                        gameBoard.start(primaryStage);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
         );
 
