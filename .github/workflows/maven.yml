@@ -2,7 +2,6 @@ name: Build JavaFX App for All Platforms
 
 on:
   push:
-    branches: [main]
   pull_request:
     branches: [main]
 
