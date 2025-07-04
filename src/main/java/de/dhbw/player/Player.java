@@ -137,7 +137,7 @@ public abstract class Player {
 
                 // Discard each resource and return it to the bank
                 for (Resources res : resToRemove) {
-                    this.removeResources(res, 1);
+                    this.removeResources(res, 1, bank);
                     bank.addResources(res, 1);
                 }
             }
