@@ -9,8 +9,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
 
+@Getter
 public class SceneBoard extends Application {
+    Scene scene = null;
 
   @Override
   public void start(Stage stage) throws IOException {
@@ -19,7 +22,7 @@ public class SceneBoard extends Application {
     );
 
     // Start propertys
-    Scene scene = new Scene(root, 1280, 720);
+    scene = new Scene(root, 1280, 720);
 
     // Minimum/maximum height/width
     stage.setMinHeight(720);

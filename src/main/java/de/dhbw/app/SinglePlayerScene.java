@@ -1,5 +1,8 @@
 package de.dhbw.app;
 
+import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.gameController.GameController;
+import de.dhbw.gameController.GameControllerTypes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -111,7 +115,18 @@ public class SinglePlayerScene {
             if(isServergame) {
                 /*@TODO Server(David) erstellen mit Übergabe der parameter*/
             } else{
-                /*@TODO Spielsteureung(Fabian) erstellen mit Übergabe parameter*/
+                SceneBoard gameBoard = new SceneBoard();
+
+                GameController controller = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, true);
+                controller.setGui(gameBoard);
+
+                try {
+                    gameBoard.start(primaryStage);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                controller.gameStart();
             }
 
         });
