@@ -5,6 +5,7 @@ module de.dhbw {
   requires static lombok;
   requires java.desktop;
   requires com.google.gson;
+    requires java.smartcardio;
 
     opens de.dhbw.app to javafx.fxml;
   exports de.dhbw.app ;

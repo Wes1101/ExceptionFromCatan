@@ -1,6 +1,14 @@
 package de.dhbw.dto;
 
 import lombok.Getter;
+/**
+ * DTO class for an inet server address.
+ *
+ * @author David Willig
+ * @version 1.0
+ * @since 2024-06-09
+ */
+
 
 @Getter
 public class INetServerAddressPayload implements NetworkPayload {

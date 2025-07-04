@@ -108,7 +108,7 @@ public class SinglePlayerScene {
             int maxCardThrow = (int) abwerfenSlider.getValue();
             System.out.println(isServergame + " " + playerCount + " " + winPoints + " " + maxCardThrow);
 
-            if (isServergame) {
+            if(isServergame) {
                 /*@TODO Server(David) erstellen mit Übergabe der parameter*/
             } else{
                 /*@TODO Spielsteureung(Fabian) erstellen mit Übergabe parameter*/

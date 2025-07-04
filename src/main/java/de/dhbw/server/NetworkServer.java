@@ -45,7 +45,7 @@ public class NetworkServer {
   /**
    * List of writers for all connected clients for broadcasting messages.
    */
-  private final List<PrintWriter> clientWriters = new CopyOnWriteArrayList<>();
+  private final List<PrintWriter> clientWriters = new CopyOnWriteArrayList<>(); //TODO: @David Map<PlayerID, PrintWriters>
 
   private final GameController gameController;
 
@@ -59,7 +59,7 @@ public class NetworkServer {
     this.gameController = gameController;
 
     this.initServer();
-    this.startDiscoveryThread();
+    //TODO: @FrontEnd this.startDiscoveryThread();
   }
 
   private static String getHostIP() throws UnknownHostException {
@@ -79,7 +79,7 @@ public class NetworkServer {
   private void startDiscoveryThread() {
     new Thread(() -> {
       try (DatagramSocket udpDiscSocket = new DatagramSocket(DISCOVERY_PORT)) {
-        log.info("Discovery UDP Socket started on UDB-Port {}", DISCOVERY_PORT);
+        log.info("Discovery UDP Socket started on UDP-Port {}", DISCOVERY_PORT);
 
         byte[] buf = new byte[256];
         while (startLatch.getCount() > 0) {
@@ -98,13 +98,13 @@ public class NetworkServer {
                     responseBytes, responseBytes.length, packet.getAddress(), packet.getPort()
             );
             udpDiscSocket.send(responsePacket);
-            log.info("Discovery-Antwort an {} : {}", packet.getAddress(), packet.getPort());
+            log.info("Discovery-Antwort an {}:{}", packet.getAddress(), packet.getPort());
           }
         }
       } catch (IOException e) {
         log.error("UDP Discovery Thread error: {}", e.getMessage());
       }
-    }).start();
+    }, "DiscoverySocket").start();
     log.info("Starting Discovery Thread...");
   }
 
@@ -137,7 +137,8 @@ public class NetworkServer {
 
         if (clientSocket.isConnected()) {
           new Thread(
-                  new ClientHandler(clientSocket, startLatch)
+                  new ClientHandler(clientSocket, startLatch),
+                  String.format("ClientHandler:%s", clientSocket.getInetAddress())
           ).start();
         }
       } catch (IOException e) {
@@ -163,6 +164,8 @@ public class NetworkServer {
     log.info("Broadcasted message to all clients: {}", message);
   }
 
+  //TODO: @David Funktion zum versenden der Message an einen spezifischen Client
+
   /**
    * Closes the server socket if it is open.
    * Logs a message indicating the socket has been closed.
@@ -184,7 +187,7 @@ public class NetworkServer {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER)); //TODO @David
+    NetworkServer server = new NetworkServer(new GameController(3, 0, GameControllerTypes.SERVER, false)); //TODO @David
     server.initConnections();
   }
 }

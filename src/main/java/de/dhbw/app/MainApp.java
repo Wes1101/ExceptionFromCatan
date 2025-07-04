@@ -23,7 +23,7 @@ public class MainApp extends Application {
         StartMenuScene startMenu = new StartMenuScene(primaryStage);
         SinglePlayerScene singlePlayer = new SinglePlayerScene(primaryStage);
         MultiPlayerScene multiPlayer = new MultiPlayerScene(primaryStage);
-
+      
         // Szenen gegenseitig bekannt machen (für Wechsel)
         startMenu.setSinglePlayerScene(singlePlayer);
         startMenu.setMultiPlayerScene(multiPlayer);
@@ -48,3 +48,4 @@ public class MainApp extends Application {
         launch(args);
     }
 }
+//

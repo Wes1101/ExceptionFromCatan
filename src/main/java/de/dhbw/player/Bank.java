@@ -1,35 +1,55 @@
 package de.dhbw.player;
 
-import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.catanBoard.hexGrid.Tile;
-import de.dhbw.player.Player;
+import de.dhbw.gamePieces.*;
 import lombok.Getter;
-import de.dhbw.resources.*;
 
 import java.util.*;
 
 @Getter
 public class Bank  extends Player {
 
-    Map<Player, Storage> storeBuildings = new HashMap<>();
+    List<Building> buildings;
 
     public Bank(int amountResources, Player[] players) {
         super(amountResources);
-        initializeBuildings(players);
+
+        buildings = new ArrayList<>();
+        //cards = new ArrayList<>();
+
+        for (Player player : players) {
+            initBuildings(player, 5, 5, 6);
+        }
     }
 
-    private void initializeBuildings(Player[] players) {
-        int numSettlement = 5;
-        int numCity = 5;
-        int numStreet = 6;
+    private void initBuildings(Player player, int settlement, int city, int street) {
 
-//        for (Player player : players) {
-//            storeBuildings.put(player, new Storage());
-//            storeBuildings.get(player).fillStorage(player);
-//        }
+        for (int i = 0; i < settlement; i++) {
+            this.buildings.add(new Settlement(player));
+        }
+        for (int i = 0; i < city; i++) {
+            this.buildings.add(new City(player));
+        }
+        for (int i = 0; i < street; i++) {
+            this.buildings.add(new Street(player));
+        }
     }
 
+    public Building getBuilding(BuildingTypes getBuilding, Player player) {
+        for (Building building : buildings) {
+            if (building.getBuildingType() == getBuilding && building.getOwner() == player) {
+                removeBuilding(building);
+                return building;
+            }
+        }
+        return null;
+    }
 
+    public void removeBuilding(Building building) {
+        buildings.remove(building);
+    }
 
+    public void addBuilding(Building building) {
+        buildings.add(building);
+    }
 
 }
