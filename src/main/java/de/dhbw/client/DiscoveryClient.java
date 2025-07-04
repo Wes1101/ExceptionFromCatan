@@ -68,7 +68,7 @@ public class DiscoveryClient implements Runnable {
                         if(response.data instanceof INetServerAddressPayload inetServerAddress) {
                         InetSocketAddress serverAddress = new INetServerAddressMapper().fromPayload(inetServerAddress);
                         log.info("Found game server at {}:{}", serverAddress.getHostString(), serverAddress.getPort());
-                        // TODO: Übergabe an Client class
+                        // TODO: @David Übergabe an Client class
                         }
                     }
                 }

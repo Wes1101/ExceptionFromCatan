@@ -69,7 +69,7 @@ public class NetworkServer {
    *
    * @return the server's IP address as a String, or null if unavailable
    */
-  public String getIp() {
+  public String getIp() { //TODO: @David richtige Interface auswählen
     try {
       for (NetworkInterface ni : java.util.Collections.list(NetworkInterface.getNetworkInterfaces())) {
         for (InetAddress addr : java.util.Collections.list(ni.getInetAddresses())) {
