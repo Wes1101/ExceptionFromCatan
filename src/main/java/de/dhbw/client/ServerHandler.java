@@ -53,6 +53,7 @@ public class ServerHandler implements Runnable {
     String message;
     try {
       while (!socket.isClosed() && (message = in.readLine()) != null) {
+        log.info("Received from client: {}", message);
         handleServerMessage(message);
       }
     } catch (IOException e) {
@@ -66,7 +67,7 @@ public class ServerHandler implements Runnable {
    * @param message the message received
    */
   private void handleServerMessage(String message) {
-    // TODO: Implement message handling logic
+    // TODO: @David Implement message handling logic
     log.info("Server: {}", message);
   }
 }
