@@ -66,12 +66,23 @@ public class ClientHandler implements Runnable {
     try {
       while (!clientSocket.isClosed() && (message = in.readLine()) != null) {
         log.info("Received from client: {}", message);
+        handleClientMessage(message);
       }
     } catch (IOException e) {
       log.warn("Client disconnected.", e);
     } finally {
       close();
     }
+  }
+
+  /**
+   * Handles a message received from a Client.
+   *
+   * @param message the message received
+   */
+  private void handleClientMessage(String message) {
+    // TODO: @David Implement message handling logic
+    log.info("Server: {}", message);
   }
 
   /**

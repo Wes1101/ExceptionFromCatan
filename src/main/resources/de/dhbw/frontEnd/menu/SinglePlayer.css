@@ -1,0 +1,90 @@
+.root {
+    -fx-background-image: url("SingleplayerBackground.png");
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+#launcher-title {
+    -fx-font-family: "Grusskarten Gotisch";
+    -fx-font-size: 90px;
+    -fx-text-fill: #cdb882;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, #00000099, 4, 0.5, 0, 2);
+}
+
+.slider .track {
+    -fx-background-image: url("trackwood.png"); /* deine Textur */
+    -fx-background-size: cover;
+    -fx-border-color: #5c3a1e;
+    -fx-border-width: 2;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-padding: 2;
+}
+.slider .thumb {
+    -fx-shape: "M50,0 A50,50 0 1 1 49.9,0"; /* Kreis */
+    -fx-background-image: url("SliederBall.png");
+    -fx-background-size: cover;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-width: 24px;
+    -fx-pref-height: 24px;
+}
+
+.slider .axis{
+    -fx-tick-label-fill: white;
+ -fx-tick-label-font: 22px "Grusskarten Gotisch";
+
+}
+
+.label {
+    -fx-font-family: "Grusskarten Gotisch";
+    -fx-font-size: 40px;
+    -fx-text-fill: #cdb882;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, #00000099, 4, 0.5, 0, 2);
+
+}
+
+#buttonsb {
+    -fx-font-size: 22px;
+    -fx-font-family: "Grusskarten Gotisch";
+    -fx-font-weight: bold;
+
+    /* transparenter Hintergrund, brauner Rand */
+    -fx-background-color: transparent;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+
+    -fx-pref-height: 100px;
+    -fx-pref-width: 680px;
+
+
+    /* runde Form */
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+
+
+    /* Text in deiner Wunschfarbe */
+    -fx-text-fill: #ffffff;
+
+    /* Mauszeiger zum Zeiger ändern */
+    -fx-cursor: hand;
+
+    /* zentrieren */
+    -fx-alignment: center;
+}
+
+#buttonsb:hover {
+    /* leicht getönter Hintergrund in deiner Wunschfarbe */
+    -fx-background-color: #41251533;
+    /* Rand minimal dunkler für Kontrast */
+    -fx-border-color: #351e15;
+}
+
+
+
+
+
+
+
