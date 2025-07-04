@@ -1,0 +1,51 @@
+/* menu/StartMenuStartMenu.css */
+
+.root {
+    -fx-background-image: url("LauncherBackground.png"); /* relativer Pfad innerhalb von /menu */
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+}
+#launcher-title {
+    -fx-font-family: "Grusskarten Gotisch";
+    -fx-font-size: 90px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, #00000099, 4, 0.5, 0, 2);
+}
+
+#buttonEinzelMulti {
+    -fx-font-size: 30px;
+    -fx-font-family: "Cinzel";
+    -fx-font-weight: bold;
+
+    /* transparenter Hintergrund, brauner Rand */
+    -fx-background-color: transparent;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2px;
+
+    -fx-pref-height: 100px;
+    -fx-pref-width: 680px;
+
+
+    /* runde Form */
+    -fx-background-radius: 50px;
+    -fx-border-radius: 50px;
+
+
+    /* Text in deiner Wunschfarbe */
+    -fx-text-fill: #ffffff;
+
+    /* Mauszeiger zum Zeiger ändern */
+    -fx-cursor: hand;
+
+    /* zentrieren */
+    -fx-alignment: center;
+}
+
+#buttonEinzelMulti:hover {
+    /* leicht getönter Hintergrund in deiner Wunschfarbe */
+    -fx-background-color: #41251533;
+    /* Rand minimal dunkler für Kontrast */
+    -fx-border-color: #351e15;
+}

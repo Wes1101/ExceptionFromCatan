@@ -14,7 +14,6 @@ module de.dhbw {
   exports de.dhbw.frontEnd.board ;
 
   opens de.dhbw.frontEnd.menu to javafx.fxml;
-  exports de.dhbw.frontEnd.menu ;
 
   exports de.dhbw.gameController ;
   exports de.dhbw.client;
