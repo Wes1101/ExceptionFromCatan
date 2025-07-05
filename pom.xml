@@ -20,7 +20,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.version>5.10.2</junit.version>
 
-        <classifier>mac-aarch64</classifier> <!-- fallback default -->
+        <classifier>${classifier}</classifier> <!-- fallback default -->
 
     </properties>
          <repositories>
