@@ -28,7 +28,6 @@ import de.dhbw.player.Player;
 public class GameController {
     private Player[] players;
     private final Bank bank;
-    @Getter
     private final CatanBoard catanBoard;
     private int gameRound;
     private int dice1;
