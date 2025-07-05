@@ -41,12 +41,16 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Build in ARM64 Docker container
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build in ARM64 container
         run: |
-          docker build -f Dockerfile.linux-aarch64 -t build-linux-aarch64 .
-          docker create --name extractor build-linux-aarch64
-          docker cp extractor:/app/target ./target-linux-aarch64
-          docker rm extractor
+          docker buildx build \
+            --platform linux/arm64 \
+            -f Dockerfile.linux-aarch64 \
+            -t build-linux-aarch64 \
+            --load .
 
       - name: Upload ARM64 JAR
         uses: actions/upload-artifact@v4
