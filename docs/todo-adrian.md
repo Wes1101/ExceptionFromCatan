@@ -4,9 +4,10 @@
 - [ ] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
 `Int playerNumber = player.getId();`, wenn name vorhanden ist mit 
 ```java
+String name = "";
 if (player instanceof de.dhbw.player.Human)
 {
-    String name = player.getName();
+    name = player.getName();
 }
 ```
 abrufbar. Am besten den Aktiven spieler auch in lokaer Variablen speichern, könnte man später noch mal gebrauchen
