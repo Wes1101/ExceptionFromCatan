@@ -1,6 +1,7 @@
 package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
+import de.dhbw.player.Player;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -39,7 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 @Slf4j
-public class SceneBoardController implements Initializable {
+public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
   private HBox root;
@@ -259,5 +260,101 @@ public class SceneBoardController implements Initializable {
             {43, 42, 41, 40, 39, 38, 37}, //Zeile 6
     };
 
+  }
+
+  /**
+   * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
+   *
+   * @param player Currently active player
+   */
+  @Override
+  public void activePlayer(Player player) {
+
+  }
+
+  /**
+   * Starts the dice roll animation.
+   * This is optional and can be implemented for visual effect.
+   */
+  @Override
+  public void startRollDiceAnimation() {
+
+  }
+
+  /**
+   * Displays the result of a die roll.
+   *
+   * @param dice1 the value of the first dice
+   * @param dice2 the value of the second dice
+   */
+  @Override
+  public void showDice(int dice1, int dice2) {
+
+  }
+
+  /**
+   * Prompts the player to select a location to build a settlement.
+   * The UI should display an instruction like "Please select a node to build a settlement."
+   *
+   * @return the node ID where the settlement should be built
+   */
+  @Override
+  public int buildSettlement() {
+    return 0;
+  }
+
+  /**
+   * Prompts the player to select a location to build a street.
+   * The UI should display an instruction like "Please select a location to build a street."
+   *
+   * @return the two adjacent nodes of where the street should be built
+   */
+  @Override
+  public IntTupel buildStreet() {
+    return null;
+  }
+
+  /**
+   * Prompts the player to select a location to build a city.
+   * The UI should display an instruction like "Please select a node to build a city."
+   *
+   * @return the node ID where the city should be built
+   */
+  @Override
+  public int buildCity() {
+    return 0;
+  }
+
+  /**
+   * Updates the UI to reflect the latest resource values and states of all players.
+   *
+   * @param players an array of all players with their updated states
+   */
+  @Override
+  public void updatePlayerResources(Player[] players) {
+
+  }
+
+  /**
+   * Activates the bandit placement phase in the UI.
+   * Should return the new location for the bandit.
+   *
+   * @return the coordinates (as an IntTupel) of the new bandit location
+   */
+  @Override
+  public IntTupel activateBandit() {
+    return null;
+  }
+
+  /**
+   * Prompts the user to select which player to rob.
+   * The UI should allow choosing from a list of players.
+   *
+   * @param players an array of all possible players to be robbed
+   * @return the player who was selected to be robbed
+   */
+  @Override
+  public Player getRobbedPlayer(Player[] players) {
+    return null;
   }
 }

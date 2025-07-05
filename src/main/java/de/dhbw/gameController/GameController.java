@@ -12,6 +12,7 @@ package de.dhbw.gameController;
 
 import java.util.Random;
 
+import de.dhbw.frontEnd.board.GameUI;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +49,7 @@ public class GameController {
     private MinorGameStates minorGameState;
 
     @Setter
-    private SceneBoard gui;
+    private GameUI gui;
 
     /**
      * Creates new GameController
