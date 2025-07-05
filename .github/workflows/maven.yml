@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
 
     runs-on: ${{ matrix.os }}
 
@@ -29,5 +29,27 @@ jobs:
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: app-${{ matrix.os }}
+          name: app-${{ matrix.os }}-${{ runner.arch }}
           path: target/*shaded.jar
+
+  build-linux-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build in ARM64 Docker container
+        run: |
+          docker build -f Dockerfile.linux-aarch64 -t build-linux-aarch64 .
+          docker create --name extractor build-linux-aarch64
+          docker cp extractor:/app/target ./target-linux-aarch64
+          docker rm extractor
+
+      - name: Upload ARM64 JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-linux-aarch64
+          path: target-linux-aarch64/*SNAPSHOT.jar

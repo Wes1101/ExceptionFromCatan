@@ -87,22 +87,37 @@
     </dependencies>
     <profiles>
         <profile>
-            <id>windows</id>
+            <id>mac-intel</id>
             <activation>
                 <os>
-                    <family>Windows</family>
+                    <family>mac</family>
+                    <arch>x86_64</arch>
                 </os>
             </activation>
             <properties>
-                <classifier>win</classifier>
+                <classifier>mac</classifier>
             </properties>
         </profile>
 
         <profile>
-            <id>linux</id>
+            <id>mac-arm</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <properties>
+                <classifier>mac-aarch64</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>linux-x64</id>
             <activation>
                 <os>
                     <family>unix</family>
+                    <arch>x86_64</arch>
                 </os>
             </activation>
             <properties>
@@ -111,14 +126,27 @@
         </profile>
 
         <profile>
-            <id>mac</id>
+            <id>linux-arm</id>
             <activation>
                 <os>
-                    <family>mac</family>
+                    <family>unix</family>
+                    <arch>aarch64</arch>
                 </os>
             </activation>
             <properties>
-                <classifier>mac-aarch64</classifier>
+                <classifier>linux-aarch64</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <classifier>win</classifier>
             </properties>
         </profile>
     </profiles>

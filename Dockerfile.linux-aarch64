@@ -1,0 +1,23 @@
+# Dockerfile.linux-aarch64
+FROM arm64v8/ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    openjdk-21-jdk \
+    maven \
+    git \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-arm64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+WORKDIR /app
+
+COPY . .
+
+# Force classifier to linux-aarch64
+RUN mvn clean package -Plinux-arm
