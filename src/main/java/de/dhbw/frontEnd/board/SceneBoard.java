@@ -33,22 +33,4 @@ public class SceneBoard extends Application {
 
     stage.show();
   }
-
-  public void activePlayer(Player player) {
-  }
-
-  public void startRollDiceAnimation() {
-  }
-
-  public void showDice(int dice1, int dice2) {
-
-  }
-
-  public IntTupel activateBandit() {
-    return null;
-  }
-
-  public void updatePlayerResources(Player[] players) {
-
-  }
 }
