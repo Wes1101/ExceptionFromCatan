@@ -34,8 +34,11 @@ import javafx.util.Duration;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
+@Slf4j
 public class SceneBoardController implements Initializable {
 
   @FXML
@@ -95,6 +98,9 @@ public class SceneBoardController implements Initializable {
   // Duration of fade animation
   private static final Duration FADE_DURATION = Duration.millis(300);
   private static final Duration HOVER_DURATION = Duration.millis(200);
+  @Setter
+  private CatanBoard catanBoard;
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -207,15 +213,12 @@ public class SceneBoardController implements Initializable {
   }
 
   private void initBoard() {
-    int radius = 3;
-    CatanBoard catanBoard = new CatanBoard(radius);
-
     Map<IntTupel, Tile> hexes = catanBoard.getHexTiles();
 
 
-    System.out.println("Anzahl HexTiles: " + hexes.size());
+    log.debug("Anzahl HexTiles: " + hexes.size());
     for (IntTupel tupel : hexes.keySet()) {
-      System.out.println("Hex bei q=" + tupel.q() + ", r=" + tupel.r());
+      log.debug("Hex bei q=" + tupel.q() + ", r=" + tupel.r());
     }
 
     double size = 50;
