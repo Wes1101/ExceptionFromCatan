@@ -128,7 +128,7 @@ public class SceneBoardController implements Initializable, GameUI {
             }
     );
 
-    initBoard();
+    //initBoard();
 
     // Card hover effect
     addHover(grain_group);
@@ -213,7 +213,7 @@ public class SceneBoardController implements Initializable, GameUI {
     fadeOut.play();
   }
 
-  private void initBoard() {
+  public void initBoard() {
     Map<IntTupel, Tile> hexes = catanBoard.getHexTiles();
 
 

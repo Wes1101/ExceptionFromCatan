@@ -29,6 +29,7 @@ import de.dhbw.player.Player;
 public class GameController {
     private Player[] players;
     private final Bank bank;
+    @Getter
     private final CatanBoard catanBoard;
     private int gameRound;
     private int dice1;
@@ -294,6 +295,7 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
             if (!this.syso) {
+                //Platform.runLater(() -> ui.updateScore(score));
                 gui.startRollDiceAnimation();
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
