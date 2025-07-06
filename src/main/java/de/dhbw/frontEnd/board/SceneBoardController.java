@@ -38,6 +38,7 @@ import de.dhbw.catanBoard.hexGrid.Tile;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
+import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
@@ -235,8 +236,33 @@ public class SceneBoardController implements Initializable, GameUI {
       double x = offsetX + (q * width) + (r * (width / 2));
       double y = offsetY - (r * height);
 
+
+      // Wasser vom Backend
+      if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
+        de.dhbw.frontEnd.board.HexTile frontendHex =
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water");
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+
+      // Hafen vom Backend
+      else if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Habour) {
+        de.dhbw.catanBoard.hexGrid.Tiles.Habour h =
+                (de.dhbw.catanBoard.hexGrid.Tiles.Habour) hexes.get(coords);
+        String resourceName = h.getResourceType().name() + "_Harbour";
+
+        de.dhbw.frontEnd.board.HexTile frontendHex =
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+
+
       // Ressource vom Backend
-      if (hexes.get(coords) instanceof Ressource) {
+      else if (hexes.get(coords) instanceof Ressource) {
         Ressource resTile = (Ressource) hexes.get(coords);
         String resourceName = resTile.getResourceType().name();
 
