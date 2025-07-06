@@ -159,6 +159,12 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  @FXML
+  private void onNodeClicked(ActionEvent event) {
+    Button btn = (Button) event.getSource();
+    System.out.println("Knoten geklickt: fx:id=" + btn.getId());
+  }
+
   private void addHover(StackPane pane) {
     // Card Hover up
     pane.setOnMouseEntered(
@@ -275,16 +281,6 @@ public class SceneBoardController implements Initializable, GameUI {
       }
 
     }
-
-
-    int[][] nodeGrid = {
-            {52, 53, 24, 25, 26, 27, 28},   // Zeile 1
-            {50, 51, 22, 23, 6, 7, 8, 29, 30},  // Zeile 2
-            {48, 49, 20, 21, 5, 0, 1, 9, 10, 31, 32}, // Zeile 3
-            {47, 46, 19, 18, 4, 3, 2, 12, 11, 34, 33},  // Zeile 4
-            {45, 44, 17, 16, 15, 14, 13, 36, 35}, //Zeile 5
-            {43, 42, 41, 40, 39, 38, 37}, //Zeile 6
-    };
 
   }
 

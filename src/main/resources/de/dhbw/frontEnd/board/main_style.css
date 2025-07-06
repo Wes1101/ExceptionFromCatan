@@ -115,3 +115,12 @@
     -fx-border-color: white;
      -fx-opacity: 1;
 }
+
+.build:hover {
+    -fx-background-color: transparent;
+    -fx-border-color: white;
+}
+.build{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
