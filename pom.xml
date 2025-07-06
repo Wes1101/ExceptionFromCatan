@@ -113,7 +113,7 @@
         </profile>
 
         <profile>
-            <id>linux-x64</id>
+            <id>linux</id>
             <activation>
                 <os>
                     <family>unix</family>
@@ -122,19 +122,6 @@
             </activation>
             <properties>
                 <classifier>linux</classifier>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>linux-arm</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                    <arch>aarch64</arch>
-                </os>
-            </activation>
-            <properties>
-                <classifier>linux-aarch64</classifier>
             </properties>
         </profile>
 
