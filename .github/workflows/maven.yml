@@ -1,71 +1,57 @@
-name: Build Cross-Platform JavaFX App
+name: Build JavaFX App
 
-on:
-  push:
-    #branches: [main]
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-13, macos-14, windows-latest ]
-        arch: [ x64, arm64 ]
         include:
           - os: ubuntu-latest
             arch: x64
             classifier: linux
+            useDocker: false
+
+          - os: ubuntu-latest
+            arch: arm64
+            classifier: linux-aarch64
+            useDocker: true
+
           - os: macos-13
             arch: x64
             classifier: mac
+            useDocker: false
+
           - os: macos-14
             arch: arm64
             classifier: mac-aarch64
+            useDocker: false
+
           - os: windows-latest
             arch: x64
             classifier: win
+            useDocker: false
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up QEMU (for ARM Docker)
+        if: matrix.useDocker == true
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build in Docker (linux-aarch64)
+        if: matrix.useDocker == true
+        run: |
+          docker build -f Dockerfile.linux-aarch64 -t arm64-builder .
+
+      - name: Set up JDK
+        if: matrix.useDocker == false
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
       - name: Build with Maven
+        if: matrix.useDocker == false
         run: mvn clean package -Dclassifier=${{ matrix.classifier }}
-
-      - name: Upload JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-${{ matrix.os }}-${{ runner.arch }}
-          path: target/*shaded.jar
-
-  build-linux-arm64:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build in ARM64 container
-        run: |
-          docker buildx build \
-            --platform linux/arm64 \
-            -f Dockerfile.linux-aarch64 \
-            -t build-linux-aarch64 \
-            --load .
-
-      - name: Upload ARM64 JAR
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-linux-aarch64
-          path: target-linux-aarch64/*SNAPSHOT.jar
