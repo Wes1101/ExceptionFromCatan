@@ -41,4 +41,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-${{ matrix.classifier }}
-          path: target/*${{ matrix.classifier }}*shaded.jar
+          path: target/*shaded.jar
