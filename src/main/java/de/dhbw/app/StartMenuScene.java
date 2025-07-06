@@ -36,9 +36,6 @@ public class StartMenuScene {
         Font.loadFont(
                 Objects.requireNonNull(getClass().getResource("/fonts/GrusskartenGotisch.ttf")).toExternalForm(), 36);
 
-
-
-
         VBox root = new VBox(30);
         root.setPadding(new Insets(30));
         root.setStyle("-fx-background-color: #222;");
@@ -126,3 +123,4 @@ public class StartMenuScene {
         return ServerGame;
     }
 }
+//

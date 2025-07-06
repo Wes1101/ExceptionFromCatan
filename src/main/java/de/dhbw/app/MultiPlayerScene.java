@@ -63,7 +63,7 @@ public class MultiPlayerScene {
         TextField ipField = new TextField();
         ipField.setPromptText("IP-Adresse eingeben");
 
-// Hier IP-Filter einfügen:
+        // Hier IP-Filter einfügen:
         UnaryOperator<TextFormatter.Change> ipFilter = change -> {
             String newText = change.getControlNewText();
 
@@ -147,7 +147,6 @@ public class MultiPlayerScene {
         StackPane namePane = new StackPane(nameField);
         namePane.setPadding(new Insets(15));
 
-
         // HBox für horizontale Anordnung der Textfelder
         HBox inputBox = new HBox(10); // 10px Abstand zwischen den Feldern
         inputBox.setAlignment(Pos.CENTER);
@@ -204,3 +203,4 @@ public class MultiPlayerScene {
         this.singlePlayerScene = scene;
     }
 }
+//

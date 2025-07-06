@@ -5,23 +5,19 @@ package de.dhbw.catanBoard.hexGrid;
  * Jeder Eintrag enthält die Verschiebung in den Koordinaten (dq, dr).
  */
 public enum AxialDirection {
-    /** Nordost-Richtung: Verschiebung (1, -1). */
-    NORTH_EAST ( 1, -1 ),
-
     /** Ost-Richtung: Verschiebung (1, 0). */
     EAST       ( 1,  0 ),
-
-    /** Südost-Richtung: Verschiebung (0, 1). */
-    SOUTH_EAST ( 0,  1 ),
-
-    /** Südwest-Richtung: Verschiebung (-1, 1). */
-    SOUTH_WEST (-1,  1 ),
-
+    /** Nordost-Richtung: Verschiebung (1, -1). */
+    NORTH_EAST ( 1, -1 ),
+    /** Nordwest-Richtung: Verschiebung (0, -1). */
+    NORTH_WEST ( 0, -1 ),
     /** West-Richtung: Verschiebung (-1, 0). */
     WEST       (-1,  0 ),
+    /** Südwest-Richtung: Verschiebung (-1, 1). */
+    SOUTH_WEST (-1,  1 ),
+    /** Südost-Richtung: Verschiebung (0, 1). */
+    SOUTH_EAST ( 0,  1 );
 
-    /** Nordwest-Richtung: Verschiebung (0, -1). */
-    NORTH_WEST ( 0, -1 );
 
     /** Änderung der q-Achse (axial). */
     private final int dq;
