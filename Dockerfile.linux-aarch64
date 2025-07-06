@@ -1,8 +1,0 @@
-# Dockerfile.linux-aarch64
-FROM --platform=linux/arm64 eclipse-temurin:21-jdk
-
-WORKDIR /app
-
-COPY . .
-
-RUN ./mvnw clean package -Dclassifier=linux-aarch64

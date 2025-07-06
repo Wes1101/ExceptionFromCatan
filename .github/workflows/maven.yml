@@ -11,47 +11,34 @@ jobs:
           - os: ubuntu-latest
             arch: x64
             classifier: linux
-            useDocker: false
-
-          - os: ubuntu-latest
-            arch: arm64
-            classifier: linux-aarch64
-            useDocker: true
 
           - os: macos-13
             arch: x64
             classifier: mac
-            useDocker: false
 
           - os: macos-14
             arch: arm64
             classifier: mac-aarch64
-            useDocker: false
 
           - os: windows-latest
             arch: x64
             classifier: win
-            useDocker: false
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up QEMU (for ARM Docker)
-        if: matrix.useDocker == true
-        uses: docker/setup-qemu-action@v3
-
-      - name: Build in Docker (linux-aarch64)
-        if: matrix.useDocker == true
-        run: |
-          docker build -f Dockerfile.linux-aarch64 -t arm64-builder .
-
       - name: Set up JDK
-        if: matrix.useDocker == false
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
 
       - name: Build with Maven
-        if: matrix.useDocker == false
         run: mvn clean package -Dclassifier=${{ matrix.classifier }}
+
+      - name: Upload JAR
+        if: matrix.useDocker == false
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ matrix.classifier }}
+          path: target/*${{ matrix.classifier }}*shaded.jar
