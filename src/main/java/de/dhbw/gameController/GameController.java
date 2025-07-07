@@ -21,7 +21,6 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.gamePieces.Bandit;
 import de.dhbw.player.Bank;
-import de.dhbw.player.Human;
 import de.dhbw.player.Player;
 
 @Slf4j
@@ -65,7 +64,7 @@ public class GameController {
         log.debug("GameController created with type {}", gameControllerType);
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
-            players[i] = new Human("", i);
+            players[i] = new Player(i);
         }
 
         if (playerAmount > 4) {
@@ -201,7 +200,7 @@ public class GameController {
                     IntTupel selectedNewLocation = robbedPlayerLocation.intTupel();
                     Player robbedPlayer = robbedPlayerLocation.player();
 
-                    //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
+                    bandit.trigger(catanBoard, selectedNewLocation, robbedPlayer, player, players, bank);
                 } else {
                     log.info("Distributing all resources...");
                     minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
@@ -245,9 +244,9 @@ public class GameController {
     private boolean checkVictory() {
         log.debug("checking victory");
         for (Player player : this.players) {
-        /*if (player.getVictoryPoints() >= this.victoryPoints) {
-            return true;
-        }*/
+            if (player.getVictoryPoints() >= this.victoryPoints) {
+                return true;
+            }
         }
         log.debug("no one was good enough so far");
         return false;

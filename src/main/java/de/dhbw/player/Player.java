@@ -17,9 +17,10 @@ import java.util.*;
  * A player can own, gain, and lose resources during gameplay.
  */
 @Getter
-public abstract class Player {
+public class Player {
 
     int id;
+    int victoryPoints;
     List<Street> cards;
 
     /**
@@ -32,8 +33,9 @@ public abstract class Player {
      *
      *
      */
-    public Player() {
-
+    public Player(int id) {
+        this.id = id;
+        this.victoryPoints = 0;
     }
 
     /**
@@ -100,6 +102,7 @@ public abstract class Player {
 
         if (building != null) {
             board.buildSettlement(node, building);
+            this.victoryPoints++;
             return true;
         }
         return false;
@@ -113,6 +116,7 @@ public abstract class Player {
             if (enoughResources(building.getBuildCost())) {
                 buyBuilding(building.getBuildCost(), bank);
                 board.buildSettlement(node, building);
+                this.victoryPoints++;
                 return true;
             }
         }
@@ -127,6 +131,7 @@ public abstract class Player {
             if (enoughResources(building.getBuildCost())) {
                 buyBuilding(building.getBuildCost(), bank);
                 board.buildCity(node, building, bank);
+                this.victoryPoints++;
                 return true;
             }
         }

@@ -12,6 +12,7 @@ import de.dhbw.gameController.GameController;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This class manages the Bandit, which is a game piece in Catan.
@@ -21,6 +22,7 @@ import de.dhbw.resources.Resources;
  * @version 0.1
  *
  */
+@Slf4j
 public class Bandit {
     // Current coordinates of the Bandit (on a hex tile)
     private IntTupel coords;
@@ -50,6 +52,7 @@ public class Bandit {
      * @param bank the bank to which discarded resources are returned
      */
     public void trigger(CatanBoard board, IntTupel newCoords, Player targetPlayer, Player activePlayer, Player[] allPlayers, Bank bank) {
+        log.info("trigger bandit...");
         board.blockHex(this.coords); // unblock old location
         this.coords = newCoords;
         board.blockHex(this.coords); // block new location
@@ -59,6 +62,7 @@ public class Bandit {
         for (Player player : allPlayers) {
             player.banditRemovesResources(7, bank); // players with >7 resources discard half
         }
+        log.info("bandit complete!");
     }
 
     /**
