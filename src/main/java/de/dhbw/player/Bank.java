@@ -1,6 +1,7 @@
 package de.dhbw.player;
 
 import de.dhbw.gamePieces.*;
+import de.dhbw.resources.Resources;
 import lombok.Getter;
 
 import java.util.*;
@@ -11,7 +12,10 @@ public class Bank  extends Player {
     List<Building> buildings;
 
     public Bank(int amountResources, Player[] players) {
-        super(amountResources);
+        resources = new EnumMap<>(Resources.class);
+        for (Resources res : Resources.values()) {
+            addResources(res, amountResources);
+        }
 
         buildings = new ArrayList<>();
         //cards = new ArrayList<>();
