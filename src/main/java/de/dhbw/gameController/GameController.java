@@ -391,4 +391,25 @@ public class GameController {
         }
         return null;
     }
+
+    public void buildSettlement(int nodeId, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buySettlement(nodeId);
+        }
+        //TODO: Necessary for Server and Client????
+    }
+
+    public void buildStreet(IntTupel location, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buyStreet(location);
+        }
+        //TODO: Necessary for Server and Client????
+    }
+
+    public void buildCity(int nodeId, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buyCity(nodeId);
+        }
+        //TODO: Necessary for Server and Client????
+    }
 }
