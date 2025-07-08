@@ -45,6 +45,12 @@ ODER
 Methoden die zurückgeben wo der Bandit als nächstes stehen soll und wer beklaut wird. (Übergabewert players optional,
 musst du schauen ob du den brauchst)
 
+## Sonstiges
+- finish turn button
+- buttons aktivieren/deaktivieren
+- ein/ausblenden von feldern (wie viele spieler)
+- setter von vicory points
+
 # Reihenfolge
 1. Bauen
 2. Spieler
