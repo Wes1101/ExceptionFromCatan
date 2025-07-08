@@ -38,6 +38,8 @@ import de.dhbw.catanBoard.hexGrid.Tile;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
+import java.util.function.Consumer;
+
 import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 
 @Slf4j
@@ -103,6 +105,10 @@ public class SceneBoardController implements Initializable, GameUI {
   @Setter
   private CatanBoard catanBoard;
 
+  private Player activePlayer;
+
+  private Consumer<String> settlementClickCallback;
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -157,12 +163,18 @@ public class SceneBoardController implements Initializable, GameUI {
             .forEach(n -> n.toFront());
 
 
+
   }
 
   @FXML
   private void onNodeClicked(ActionEvent event) {
     Button btn = (Button) event.getSource();
-    System.out.println("Knoten geklickt: fx:id=" + btn.getId());
+    String fxId = btn.getId();
+    System.out.println("Knoten geklickt: fx:id=" + fxId);
+
+    if (settlementClickCallback != null) {
+      settlementClickCallback.accept(fxId);
+    }
   }
 
   private void addHover(StackPane pane) {
@@ -283,6 +295,9 @@ public class SceneBoardController implements Initializable, GameUI {
     }
 
   }
+  public void setSettlementClickCallback(Consumer<String> callback) {
+    this.settlementClickCallback = callback;
+  }
 
   /**
    * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
@@ -322,6 +337,10 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public int buildSettlement() {
+    int NodeID = 0;
+    Player internalActivePlayer = this.activePlayer;
+
+
     return 0;
   }
 
