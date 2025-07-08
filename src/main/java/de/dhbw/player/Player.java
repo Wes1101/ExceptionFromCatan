@@ -7,7 +7,6 @@ import de.dhbw.gamePieces.Building;
 import de.dhbw.gamePieces.BuildingTypes;
 import de.dhbw.gamePieces.Street;
 import de.dhbw.resources.Resources;
-import de.dhbw.player.Bank;
 import lombok.Getter;
 
 import java.util.*;
@@ -20,12 +19,7 @@ import java.util.*;
 public class Player implements ResourceReceiver {
     @Override
     public void addResources(Resources type, int amount) {
-        for (Resources res : resources.keySet()) {
-            if (res == type) {
-                resources.put(res, resources.get(res) + amount);
-                return;
-            }
-        }
+        resources.put(type, resources.get(type) + amount);
     }
 
     int id;
@@ -45,6 +39,10 @@ public class Player implements ResourceReceiver {
     public Player(int id) {
         this.id = id;
         this.victoryPoints = 0;
+        resources = new EnumMap<>(Resources.class);
+        for (Resources res : Resources.values()) {
+            this.resources.put(res, 0);
+        }
     }
 
     /**
@@ -173,16 +171,10 @@ public class Player implements ResourceReceiver {
         }
     }
 
-    public void trade() {
-
-    }
-
-    public void rollDice() {
-
-    }
-
-    public void endTurn() {
-
+    public void trade(Map<Resources, Integer> resources, Player player) {
+        for (Resources resource : resources.keySet()) {
+            this.removeResources(resource, resources.get(resource), player);
+        }
     }
 
     /**

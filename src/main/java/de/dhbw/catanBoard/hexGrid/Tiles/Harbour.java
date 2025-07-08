@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * </p>
  */
 @Getter
-public class Habour extends Tile {
+public class Harbour extends Tile {
 
     /**
      * Constructs a harbour tile with a given trade resource type and adjacent nodes.
@@ -30,7 +30,7 @@ public class Habour extends Tile {
      * @param resourceType the resource this harbour specializes in, or NONE for generic
      * @param nodes        the nodes surrounding the harbour tile
      */
-    public Habour(Resources resourceType, Node[] nodes) {
+    public Harbour(Resources resourceType, Node[] nodes) {
         super(resourceType, nodes);
     }
 

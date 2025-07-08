@@ -2,8 +2,8 @@
 package de.dhbw.catanBoard;
 
 import de.dhbw.catanBoard.hexGrid.*;
-import de.dhbw.catanBoard.hexGrid.Tiles.Habour;
-import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
+import de.dhbw.catanBoard.hexGrid.Tiles.Harbour;
+import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.gamePieces.Street;
@@ -29,7 +29,7 @@ public class CatanBoard {
 
     private IntTupel[] hex_coords;
     private final Map<IntTupel, Tile> board = new HashMap<>();
-    private final Map<Integer, List<Ressource>> diceBoard = new HashMap<>();
+    private final Map<Integer, List<Resource>> diceBoard = new HashMap<>();
     private final Graph graph;
 
     /**
@@ -130,7 +130,7 @@ public class CatanBoard {
                 }
             }
 
-            Ressource tile = new Ressource(allResources.removeFirst(), HexNodes);
+            Resource tile = new Resource(allResources.removeFirst(), HexNodes);
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
@@ -171,7 +171,7 @@ public class CatanBoard {
 
         for (i = 0; i < harbour.length; i++) {
             if (i % 2 == 1) {
-                board.put(harbour[i], new Habour(harbourTypes.removeFirst(), getExistingNodes(harbour[i])));
+                board.put(harbour[i], new Harbour(harbourTypes.removeFirst(), getExistingNodes(harbour[i])));
             } else {
                 board.put(harbour[i], new Water());
             }
@@ -261,7 +261,7 @@ public class CatanBoard {
      */
     public void triggerBoard(int diceNumber, Bank bank) {
         log.info("Triggering board for dice number: {}", diceNumber);
-        List<Ressource> tiles = diceBoard.get(diceNumber);
+        List<Resource> tiles = diceBoard.get(diceNumber);
         if (tiles != null) {
             tiles.forEach(tile -> tile.trigger(bank));
         }
@@ -310,7 +310,7 @@ public class CatanBoard {
      */
     public void blockHex(IntTupel coords) {
         Tile tile = board.get(coords);
-        if (tile instanceof Ressource resTile) {
+        if (tile instanceof Resource resTile) {
             resTile.setBlocked(!resTile.isBlocked());
             log.info("Hex at {} is now {}", coords, resTile.isBlocked() ? "BLOCKED" : "UNBLOCKED");
         }
@@ -323,7 +323,7 @@ public class CatanBoard {
      */
     public IntTupel getDesertCoords() {
         return board.entrySet().stream()
-                .filter(entry -> entry.getValue() instanceof Ressource res && res.getResourceType() == Resources.NONE)
+                .filter(entry -> entry.getValue() instanceof Resource res && res.getResourceType() == Resources.NONE)
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);

@@ -22,6 +22,8 @@ public class testCatanBoard {
 
         // Build a street between two nodes
         board.buildStreet(0, 1, new Street(player));
+        board.buildStreet(1, 2, new Street(player));
+        board.buildStreet(2, 3, new Street(player));
 
         // Trigger the board with a test dice number
         for (int i = 2; i <= 12; i++) {

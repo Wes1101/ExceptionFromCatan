@@ -1,7 +1,6 @@
 package de.dhbw.frontEnd.board;
 
-import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
-import javafx.geometry.Point2D;
+import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -10,8 +9,6 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -23,11 +20,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
@@ -232,8 +224,8 @@ public class SceneBoardController implements Initializable {
       double y = offsetY - (r * height);
 
       // Ressource vom Backend
-      if (hexes.get(coords) instanceof Ressource) {
-        Ressource resTile = (Ressource) hexes.get(coords);
+      if (hexes.get(coords) instanceof Resource) {
+        Resource resTile = (Resource) hexes.get(coords);
         String resourceName = resTile.getResourceType().name();
 
 

@@ -10,12 +10,7 @@ import java.util.*;
 public class Bank implements ResourceReceiver {
     @Override
     public void addResources(Resources type, int amount) {
-        for (Resources res : resources.keySet()) {
-            if (res == type) {
-                resources.put(res, resources.get(res) + amount);
-                return;
-            }
-        }
+        resources.put(type, resources.get(type) + amount);
     }
 
     List<Building> buildings;

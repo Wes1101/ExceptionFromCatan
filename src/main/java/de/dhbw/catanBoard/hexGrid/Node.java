@@ -1,7 +1,6 @@
 
 package de.dhbw.catanBoard.hexGrid;
 
-import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import de.dhbw.gamePieces.Building;
 import lombok.Getter;
 import lombok.Setter;
