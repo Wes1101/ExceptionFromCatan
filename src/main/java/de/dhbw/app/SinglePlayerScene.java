@@ -3,18 +3,19 @@ package de.dhbw.app;
 import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.gameController.GameController;
 import de.dhbw.gameController.GameControllerTypes;
+import javafx.application.Preloader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.management.Notification;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -105,7 +106,7 @@ public class SinglePlayerScene {
         VBox buttonBox = new VBox(10);
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.getChildren().addAll(startButton, backButton);
-        buttonBox.setPadding(new Insets(10));
+        buttonBox.setPadding(new Insets(15));
 
         root.getChildren().addAll(titlePane, spielerSliderPane, pinkPane, brownPane, buttonBox);
 
