@@ -1,3 +1,4 @@
+
 package de.dhbw.catanBoard;
 
 import de.dhbw.catanBoard.hexGrid.*;
@@ -7,70 +8,61 @@ import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.gamePieces.Street;
 import de.dhbw.player.Bank;
-import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-
-//resourcen zuordnen - check
-//zahlen chips - check
-
-//trigger board funktion um erwürfeltes hexfeld auszuführen - check
-// map: würfelzahl -> arrayList<hexagon> shoutout an LL - check
-
-//alg für längste handelsstraße
-
-//methoden um zu bauen (siedlung, stadt, straße) - check
-
-//attribut für hexagons blocked - boolean - check
-
-//wasser tiles, Häfen - check
-
+/**
+ * Represents the game board for Catan.
+ * <p>
+ * Handles the creation and initialization of resource tiles, number tokens, harbours, water tiles,
+ * and the graph structure used for settlements and roads.
+ * </p>
+ */
 @Getter
 public class CatanBoard {
-    IntTupel[] hex_coords;
-    Map<IntTupel, Tile> board = new HashMap<>();
-    Map<Integer, List<Ressource>> diceBoard = new HashMap<>();
 
-    Graph graph;
+    private static final Logger log = LoggerFactory.getLogger(CatanBoard.class);
+
+    private IntTupel[] hex_coords;
+    private final Map<IntTupel, Tile> board = new HashMap<>();
+    private final Map<Integer, List<Ressource>> diceBoard = new HashMap<>();
+    private final Graph graph;
 
     /**
-     * Konstruktor: Initialisiert das CatanBoard mit dem gegebenen Radius.
-     * Ruft dabei die Methoden initNodes, initGraph, initHexCoords und createGraph auf.
+     * Creates a new CatanBoard instance.
+     * <p>
+     * Initializes the graph structure for settlements and roads, generates all hex tile coordinates based on the board radius,
+     * and builds the complete board including resource tiles, number tokens (chips), and harbour/water tiles.
+     * </p>
      *
-     * @param radius Radius des Spielfelds in Hex-Ringen
+     * @param radius the number of hex rings around the center tile (including the center)
      */
     public CatanBoard(int radius) {
-        graph = new Graph(calcNumNodes(radius));
+        log.info("Initializing CatanBoard with radius: {}", radius);
+        this.graph = new Graph(calcNumNodes(radius));
         initHexCoords(radius);
         createGraph(radius);
     }
 
     /**
-     * Rekursive Berechnung der Gesamtzahl der benötigten Knoten (Nodes)
-     * für einen gegebenen Radius n.
+     * Recursively calculates the total number of graph nodes (settlement positions) required for a board
+     * of given radius.
      *
-     * @param n Radius des Spielfelds (Anzahl der Hex-Ringe inklusive Zentrum)
-     * @return Gesamtzahl der Nodes für diesen Radius
+     * @param n the number of hex rings around the center
+     * @return the total number of nodes needed for the given radius
      */
     private int calcNumNodes(int n) {
-        if (n <= 0) {
-            return 0;
-        }
-        return calcNumNodes(n - 1) + (2 * n - 1) * 6;
+        return (n <= 0) ? 0 : calcNumNodes(n - 1) + (2 * n - 1) * 6;
     }
 
     /**
-     * Berechnet alle axialen Koordinaten (q,r) für HexTiles innerhalb des gegebenen Radius
-     * und füllt das Array hex_coords. Gültige Koordinaten erfüllen |q + r| < radius.
+     * Initializes all axial coordinates (q, r) for hex tiles on the board for a given radius.
      *
-     * @param radius Radius des Spielfelds in Hex-Ringen
+     * @param radius the board radius (number of hex rings)
      */
     private void initHexCoords(int radius) {
         hex_coords = new IntTupel[calcNumHexTiles(radius)];
@@ -78,170 +70,145 @@ public class CatanBoard {
         for (int i = -radius + 1; i < radius; i++) {
             for (int j = -radius + 1; j < radius; j++) {
                 if (Math.abs(i + j) < radius) {
-                    hex_coords[index] = new IntTupel(j, i);
-                    index++;
+                    hex_coords[index++] = new IntTupel(j, i);
                 }
             }
         }
+        log.info("Hex coordinates initialized with {} tiles", hex_coords.length);
     }
 
     /**
-     * Rekursive Berechnung der Gesamtzahl der HexTiles für einen gegebenen Radius.
+     * Recursively calculates the number of hex tiles required for a board of given radius.
      *
-     * @param n Radius des Spielfelds (Anzahl der Hex-Ringe)
-     * @return Anzahl aller HexTiles
+     * @param n the radius of the board (number of rings)
+     * @return the total number of hex tiles
      */
     private int calcNumHexTiles(int n) {
-        if (n == 1) {
-            return 1;
-        }
-        return calcNumHexTiles(n - 1) + 6 * (n - 1);
+        return (n == 1) ? 1 : calcNumHexTiles(n - 1) + 6 * (n - 1);
     }
 
     /**
-     * Erzeugt alle HexTiles auf dem Spielfeld und verteilt dabei zufällig die Ressourcentypen.
-     * Verbindet außerdem die zugehörigen Knoten (Nodes) im Straßen-Graphen.
+     * Generates and assembles the entire game board.
+     * <p>
+     * This includes:
+     * <ul>
+     *     <li>Creating and assigning resource tiles with number tokens</li>
+     *     <li>Creating graph nodes and connecting them</li>
+     *     <li>Placing harbours and water tiles around the edge</li>
+     * </ul>
      *
-     * Vorgehen:
-     * 1. Erzeuge eine Liste aller benötigten Ressourcen (ohne Wüste) und füge dann eine Wüste hinzu.
-     * 2. Für jede Koordinate in hex_coords:
-     *    a) Lege vorhandene Eckknoten anhand von Nachbar-HexTiles fest.
-     *    b) Weise allen noch leeren Eckknoten einen freien Node zu und verbinde benachbarte Knoten im Graphen.
-     *    c) Wähle zufällig eine Ressource aus und erstelle das HexTile.
-     *
-     * @param radius Radius des Spielfelds (wird nicht aktiv in dieser Methode verwendet)
+     * @param radius the board radius used to determine tile layout and harbour placement
      */
     private void createGraph(int radius) {
         int index = 0;
-
         ArrayList<Integer> numChips = generateChipNumbers();
-        Collections.shuffle(numChips);
-
         ArrayList<Resources> allResources = generateResourceTypes(hex_coords.length - 1);
+
         allResources.add(Resources.NONE);
+        Collections.shuffle(numChips);
         Collections.shuffle(allResources);
 
         for (int i = 1; i < allResources.size(); i++) {
             if (allResources.get(i) == Resources.NONE) {
                 numChips.add(i, 0);
+                break;
             }
         }
 
         for (IntTupel coords : hex_coords) {
-
-
             Node[] HexNodes = getExistingNodes(coords);
 
             for (int i = 0; i < HexNodes.length; i++) {
                 if (HexNodes[i] == null) {
                     HexNodes[i] = graph.getNodes()[index];
                     int nextIndex = (i + 1 + HexNodes.length) % HexNodes.length;
-                    if (HexNodes[nextIndex] != null) {
-                        graph.createEdge(index, HexNodes[nextIndex].id);
-                    }
                     int prevIndex = (i - 1 + HexNodes.length) % HexNodes.length;
-                    if (HexNodes[prevIndex] != null) {
-                        graph.createEdge(index, HexNodes[prevIndex].id);
-                    }
+
+                    if (HexNodes[nextIndex] != null) graph.createEdge(index, HexNodes[nextIndex].getId());
+                    if (HexNodes[prevIndex] != null) graph.createEdge(index, HexNodes[prevIndex].getId());
                     index++;
                 }
             }
 
-            board.put(coords, new Ressource(allResources.getFirst(), HexNodes));
-            allResources.removeFirst();
+            Ressource tile = new Ressource(allResources.removeFirst(), HexNodes);
+            board.put(coords, tile);
 
-            for (Node HexNode : HexNodes) {
-                HexNode.addHexTile(board.get(coords));
+            for (Node node : HexNodes) {
+                node.addHexTile(tile);
             }
 
-            if (!diceBoard.containsKey(numChips.getFirst())) {
-                diceBoard.put(numChips.getFirst(), new ArrayList<>());
-            }
-            diceBoard.get(numChips.getFirst()).add((Ressource) board.get(coords));
-            numChips.removeFirst();
+            int chip = numChips.removeFirst();
+            diceBoard.computeIfAbsent(chip, k -> new ArrayList<>()).add(tile);
         }
 
-        //create habour coords
-        IntTupel[] habour = new IntTupel[calcNumHexTiles(radius + 1)-calcNumHexTiles(radius)];
-        int q = AxialDirection.SOUTH_WEST.getDq() * (radius);
-        int r = AxialDirection.SOUTH_WEST.getDr() * (radius);
-        System.out.println("q = " + q + ", r = " + r);
+        createHarbourTiles(radius);
+    }
+
+    /**
+     * Creates harbour and water tiles around the edge of the board.
+     *
+     * @param radius the board radius used to determine outer harbour ring
+     */
+    private void createHarbourTiles(int radius) {
+        IntTupel[] harbour = new IntTupel[calcNumHexTiles(radius + 1) - calcNumHexTiles(radius)];
+        int q = AxialDirection.SOUTH_WEST.getDq() * radius;
+        int r = AxialDirection.SOUTH_WEST.getDr() * radius;
         int i = 0;
 
         for (AxialDirection dir : AxialDirection.values()) {
-            System.out.println(dir.toString());
             for (int j = 0; j < radius; j++) {
-                q = q + dir.getDq();
-                r = r + dir.getDr();
-
-                habour[i] = new IntTupel(q, r);
-                System.out.println(habour[i]);
-                i++;
+                q += dir.getDq();
+                r += dir.getDr();
+                harbour[i++] = new IntTupel(q, r);
             }
         }
 
-        //create habour tiles
-        /**
-         * 2:1 resources
-         * 3:1 any
-         */
-        List<Resources> habourTypes = new ArrayList<>();
-
-        for (Resources resources : Resources.values()) {
-            habourTypes.add(resources);
+        List<Resources> harbourTypes = new ArrayList<>(Arrays.asList(Resources.values()));
+        for (i = harbourTypes.size(); i < harbour.length / 2; i++) {
+            harbourTypes.add(Resources.NONE);
         }
-        for (i = habourTypes.size(); i < habour.length / 2; i++) {
-            habourTypes.add(Resources.NONE);
-        }
+        Collections.shuffle(harbourTypes);
 
-        Collections.shuffle(habourTypes);
-        System.out.println("habourTypes = " + habourTypes);
-
-        for (i = 0; i < habour.length; i++) {
-            if (i%2 == 1) {
-
-                board.put(habour[i], new Habour(habourTypes.getFirst(), getExistingNodes(habour[i])));
-                habourTypes.remove(habourTypes.getFirst());
-            }
-            else {
-                board.put(habour[i], new Water());
+        for (i = 0; i < harbour.length; i++) {
+            if (i % 2 == 1) {
+                board.put(harbour[i], new Habour(harbourTypes.removeFirst(), getExistingNodes(harbour[i])));
+            } else {
+                board.put(harbour[i], new Water());
             }
         }
-
-        for (IntTupel coord : board.keySet()) {
-            if (board.get(coord) instanceof Habour) {
-                Habour habourTile = (Habour) board.get(coord);
-                System.out.println("coords = " + coord + " = " + habourTile.getResourceType());
-            }
-
-        }
+        log.info("Harbours and water tiles created around the board.");
     }
 
+    /**
+     * Returns already existing nodes from neighboring hex tiles.
+     *
+     * @param coords the coordinate of the current tile
+     * @return an array of 6 nodes (some may be null) representing the corners of the hex tile
+     */
     private Node[] getExistingNodes(IntTupel coords) {
+        Node[] HexNodes = new Node[6];
         AxialDirection[] DIR = {
                 AxialDirection.NORTH_WEST,
                 AxialDirection.NORTH_EAST,
                 AxialDirection.WEST
         };
 
-        Node[] HexNodes = new Node[6];
-
         for (AxialDirection dir : DIR) {
             IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
             if (board.containsKey(neighbor)) {
                 switch (dir) {
-                    case NORTH_WEST:
+                    case NORTH_WEST -> {
                         HexNodes[5] = board.get(neighbor).getHexTileNodes()[3];
                         HexNodes[0] = board.get(neighbor).getHexTileNodes()[2];
-                        break;
-                    case NORTH_EAST:
+                    }
+                    case NORTH_EAST -> {
                         HexNodes[0] = board.get(neighbor).getHexTileNodes()[4];
                         HexNodes[1] = board.get(neighbor).getHexTileNodes()[3];
-                        break;
-                    case WEST:
+                    }
+                    case WEST -> {
                         HexNodes[4] = board.get(neighbor).getHexTileNodes()[2];
                         HexNodes[5] = board.get(neighbor).getHexTileNodes()[1];
-                        break;
+                    }
                 }
             }
         }
@@ -250,106 +217,115 @@ public class CatanBoard {
     }
 
     /**
-     * Generiert eine Liste aller benötigten Ressourcen (ohne Wüste) für numTiles HexTiles.
-     * Überspringt dabei den Wert Resources.NONE und sorgt für eine gleichmäßige Verteilung.
+     * Generates a list of number tokens (dice values) with weighted frequency.
      *
-     * @param numTiles Anzahl der HexTiles (ohne Wüste), die eine Ressource benötigen
-     * @return ArrayList mit Ressourcen-Typen
+     * @return list of dice numbers to assign to resource tiles
      */
-    private ArrayList<Resources> generateResourceTypes(int numTiles) {
-        ArrayList<Resources> allResources = new ArrayList<>();
-        Resources[] values = Resources.values();
+    public ArrayList<Integer> generateChipNumbers() {
+        Map<Integer, Integer> weights = Map.of(2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 8, 5, 9, 4, 10, 3, 11, 2, 12, 1);
+        ArrayList<Integer> chips = new ArrayList<>();
+        int tileCount = hex_coords.length - 1;
 
-        for (int i = 0; i < numTiles; i++) {
+        weights.forEach((number, weight) -> {
+            int count = (int) Math.round(weight * tileCount / 30.0);
+            chips.addAll(Collections.nCopies(count, number));
+        });
+
+        return chips;
+    }
+
+    /**
+     * Creates a balanced list of resource types for all resource tiles.
+     *
+     * @param count number of resource tiles to generate (excluding desert)
+     * @return a list of resource types in random order
+     */
+    private ArrayList<Resources> generateResourceTypes(int count) {
+        ArrayList<Resources> types = new ArrayList<>();
+        Resources[] values = Resources.values();
+        for (int i = 0; i < count; i++) {
             if (values[i % values.length] != Resources.NONE) {
-                allResources.add(values[i % values.length]);
+                types.add(values[i % values.length]);
             } else {
-                numTiles++;
+                count++;
             }
         }
-        return allResources;
+        return types;
     }
 
-    public ArrayList<Integer> generateChipNumbers() {
-      ArrayList<Integer> chips = new ArrayList<Integer>();
-
-      Map<Integer, Integer> weights = new HashMap<>();
-      weights.put(2, 1);
-      weights.put(3, 2);
-      weights.put(4, 3);
-      weights.put(5, 4);
-      weights.put(6, 5);
-      weights.put(8, 5);
-      weights.put(9, 4);
-      weights.put(10, 3);
-      weights.put(11, 2);
-      weights.put(12, 1);
-
-      for (int key : weights.keySet()) {
-        int numChips = Math.toIntExact(Math.round(weights.get(key) * (hex_coords.length - 1) / 30.0));
-        for (int j = 0; j < numChips; j++) {
-          chips.add(key);
-        }
-      }
-
-      return chips;
-    }
-
-    public Map<IntTupel, Tile> getHexTiles() {
-        return this.board;
-    }
-
-    public Graph getGraph() {
-        return this.graph;
-    }
-
+    /**
+     * Triggers all resource tiles associated with the rolled dice number.
+     *
+     * @param diceNumber the rolled dice number (2–12)
+     * @param bank       the bank handling resource distribution
+     */
     public void triggerBoard(int diceNumber, Bank bank) {
-
+        log.info("Triggering board for dice number: {}", diceNumber);
         List<Ressource> tiles = diceBoard.get(diceNumber);
-        System.out.println(tiles);
-
-        for (Ressource tile : tiles) {
-            tile.trigger(bank);
+        if (tiles != null) {
+            tiles.forEach(tile -> tile.trigger(bank));
         }
     }
 
+    /**
+     * Places a settlement on the specified node.
+     *
+     * @param node     node index
+     * @param building the building to place
+     */
     public void buildSettlement(int node, Building building) {
         graph.getNodes()[node].setBuilding(building);
+        log.info("Settlement built at node {}", node);
     }
 
+    /**
+     * Upgrades a settlement to a city at the specified node.
+     *
+     * @param node     node index
+     * @param building new city building
+     * @param bank     bank to return the original building
+     */
     public void buildCity(int node, Building building, Bank bank) {
         bank.addBuilding(graph.getNodes()[node].getBuilding());
         graph.getNodes()[node].setBuilding(building);
+        log.info("City built at node {}", node);
     }
 
+    /**
+     * Builds a street between two nodes.
+     *
+     * @param node1  first node index
+     * @param node2  second node index
+     * @param street street object
+     */
     public void buildStreet(int node1, int node2, Building street) {
         graph.updateEdge(node1, node2, (Street) street);
+        log.info("Street built between node {} and {}", node1, node2);
     }
 
+    /**
+     * Toggles blocking state of a hex tile (e.g. due to a robber).
+     *
+     * @param coords coordinates of the tile
+     */
     public void blockHex(IntTupel coords) {
         Tile tile = board.get(coords);
-
-        if (tile instanceof Ressource) {
-            Ressource resTile = (Ressource) tile;
-
-            if (resTile.isBlocked()) {
-                resTile.setBlocked(false);
-            } else {
-                resTile.setBlocked(true);
-            }
+        if (tile instanceof Ressource resTile) {
+            resTile.setBlocked(!resTile.isBlocked());
+            log.info("Hex at {} is now {}", coords, resTile.isBlocked() ? "BLOCKED" : "UNBLOCKED");
         }
     }
 
+    /**
+     * Returns coordinates of the desert tile.
+     *
+     * @return coordinates of the desert tile, or null if not found
+     */
     public IntTupel getDesertCoords() {
-        for (IntTupel coords : board.keySet()) {
-            if (board.get(coords) instanceof Ressource) {
-                Ressource resTile = (Ressource) board.get(coords);
-                if (resTile.getResourceType() == Resources.NONE) {
-                    return coords;
-                }
-            }
-        }
-        return null;
+        return board.entrySet().stream()
+                .filter(entry -> entry.getValue() instanceof Ressource res && res.getResourceType() == Resources.NONE)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
     }
-
 }

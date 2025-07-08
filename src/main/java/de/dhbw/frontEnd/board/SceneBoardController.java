@@ -210,7 +210,7 @@ public class SceneBoardController implements Initializable {
     int radius = 3;
     CatanBoard catanBoard = new CatanBoard(radius);
 
-    Map<IntTupel, Tile> hexes = catanBoard.getHexTiles();
+    Map<IntTupel, Tile> hexes = catanBoard.getBoard();
 
 
     System.out.println("Anzahl HexTiles: " + hexes.size());

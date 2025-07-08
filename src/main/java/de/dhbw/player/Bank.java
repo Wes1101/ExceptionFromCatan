@@ -7,14 +7,24 @@ import lombok.Getter;
 import java.util.*;
 
 @Getter
-public class Bank  extends Player {
+public class Bank implements ResourceReceiver {
+    @Override
+    public void addResources(Resources type, int amount) {
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) + amount);
+                return;
+            }
+        }
+    }
 
     List<Building> buildings;
+    EnumMap<Resources, Integer> resources;
 
     public Bank(int amountResources, Player[] players) {
         resources = new EnumMap<>(Resources.class);
         for (Resources res : Resources.values()) {
-            addResources(res, amountResources);
+            this.resources.put(res, amountResources);
         }
 
         buildings = new ArrayList<>();
@@ -54,6 +64,23 @@ public class Bank  extends Player {
 
     public void addBuilding(Building building) {
         buildings.add(building);
+    }
+
+    /**
+     * Transfers a specific amount of a resource from this player to another player.
+     *
+     * @param type   the type of resource
+     * @param amount the amount to transfer
+     * @param target the player receiving the resource
+     */
+    public void removeResources(Resources type, int amount, ResourceReceiver target) {
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) - amount);
+                target.addResources(type, amount);
+                return;
+            }
+        }
     }
 
 }

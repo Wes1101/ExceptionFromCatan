@@ -17,7 +17,16 @@ import java.util.*;
  * A player can own, gain, and lose resources during gameplay.
  */
 @Getter
-public class Player {
+public class Player implements ResourceReceiver {
+    @Override
+    public void addResources(Resources type, int amount) {
+        for (Resources res : resources.keySet()) {
+            if (res == type) {
+                resources.put(res, resources.get(res) + amount);
+                return;
+            }
+        }
+    }
 
     int id;
     int victoryPoints;
@@ -39,27 +48,13 @@ public class Player {
     }
 
     /**
-     * Adds a specific amount of a resource type to the player.
-     *
-     * @param type   the type of resource
-     * @param amount the amount to add
-     */
-    public void addResources(Resources type, int amount) {
-        for (Resources res : resources.keySet()) {
-            if (res == type) {
-                resources.put(res, resources.get(res) + amount);
-                return;
-            }
-        }
-    }
-    /**
      * Transfers a specific amount of a resource from this player to another player.
      *
      * @param type   the type of resource
      * @param amount the amount to transfer
      * @param target the player receiving the resource
      */
-    public void removeResources(Resources type, int amount, Player target) {
+    public void removeResources(Resources type, int amount, ResourceReceiver target) {
         for (Resources res : resources.keySet()) {
             if (res == type) {
                 resources.put(res, resources.get(res) - amount);
