@@ -58,11 +58,11 @@ public class StartMenuScene {
 
 
         StackPane pinkPane1 = new StackPane(btnEinzel);
-        pinkPane1.setPadding(new Insets(10));
+        pinkPane1.setPadding(new Insets(20));
 
 
         StackPane pinkPane2 = new StackPane(btnMehr);
-        pinkPane2.setPadding(new Insets(10));
+        pinkPane2.setPadding(new Insets(20));
 
 
         root.getChildren().addAll(redPane, pinkPane1, pinkPane2);
