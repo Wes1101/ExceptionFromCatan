@@ -2,7 +2,9 @@ package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import de.dhbw.player.Player;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -38,6 +40,7 @@ import de.dhbw.catanBoard.hexGrid.Tile;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Water;
@@ -109,6 +112,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private Consumer<String> settlementClickCallback;
 
+  private CompletableFuture<Integer> nodeSelectionFuture;
+
+  private Runnable onUIReady;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -162,7 +168,9 @@ public class SceneBoardController implements Initializable, GameUI {
             .filter(n -> n instanceof Button)
             .forEach(n -> n.toFront());
 
-
+    Platform.runLater(() -> {
+      if (onUIReady != null) onUIReady.run();
+    });
 
   }
 
@@ -170,7 +178,8 @@ public class SceneBoardController implements Initializable, GameUI {
   private void onNodeClicked(ActionEvent event) {
     Button btn = (Button) event.getSource();
     String fxId = btn.getId();
-    System.out.println("Knoten geklickt: fx:id=" + fxId);
+    log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + fxId);
+    log.debug("🔴 Callback is: " + settlementClickCallback);
 
     if (settlementClickCallback != null) {
       settlementClickCallback.accept(fxId);
@@ -295,9 +304,6 @@ public class SceneBoardController implements Initializable, GameUI {
     }
 
   }
-  public void setSettlementClickCallback(Consumer<String> callback) {
-    this.settlementClickCallback = callback;
-  }
 
   /**
    * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
@@ -398,4 +404,46 @@ public class SceneBoardController implements Initializable, GameUI {
   public Player getRobbedPlayer(Player[] players) {
     return null;
   }
+
+  public CompletableFuture<Integer> waitForSettlementClick() {
+    log.debug("\uD83D\uDFE2 waitForSettlementClick CALLED");
+
+    this.showUserMessage("Click settlement node", "Please click on a settlement node",
+            Alert.AlertType.INFORMATION);
+
+    nodeSelectionFuture = new CompletableFuture<>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.settlementClickCallback = (String fxId) -> {
+      try {
+        String nodeIdStr = fxId.replace("node_", "");  // ✅ sanitize
+        int nodeId = Integer.parseInt(nodeIdStr);
+        System.out.println("🟡 settlementClickCallback INVOKED with: " + nodeId);
+        if (!nodeSelectionFuture.isDone()) {
+          nodeSelectionFuture.complete(nodeId);
+        }
+      } catch (NumberFormatException e) {
+        nodeSelectionFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.settlementClickCallback = null;
+    };
+
+    return nodeSelectionFuture;
+  }
+
+  public void setOnUIReady(Runnable r) {
+    this.onUIReady = r;
+  }
+
+  public void showUserMessage(String title, String message, Alert.AlertType alertType) {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(alertType);
+      alert.setTitle(title);
+      alert.setHeaderText(title);
+      alert.setContentText(message);
+      alert.show();
+    });
+  }
+
 }

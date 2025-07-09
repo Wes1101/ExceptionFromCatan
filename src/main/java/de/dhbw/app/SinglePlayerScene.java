@@ -5,6 +5,7 @@ import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.frontEnd.board.SceneBoardController;
 import de.dhbw.gameController.GameController;
 import de.dhbw.gameController.GameControllerTypes;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -137,6 +138,13 @@ public class SinglePlayerScene {
                 Scene gameScene = new Scene(gameRoot);
                 primaryStage.setScene(gameScene);
                 primaryStage.show();
+
+                boardController.setOnUIReady(() -> {
+                   new Thread(() -> {
+                       gameController.gameStart();
+                       gameController.mainGame();
+                   }) .start();
+                });
             }
 
         });

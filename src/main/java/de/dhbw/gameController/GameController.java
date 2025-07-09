@@ -11,15 +11,15 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import de.dhbw.frontEnd.board.GameUI;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.frontEnd.board.SceneBoardController;
 import de.dhbw.gamePieces.Bandit;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Human;
@@ -50,7 +50,7 @@ public class GameController {
     private MinorGameStates minorGameState;
 
     @Setter
-    private GameUI gui;
+    private SceneBoardController gui;
 
     /**
      * Creates new GameController
@@ -133,9 +133,8 @@ public class GameController {
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            TwoTuples coordinatesFirstSettlementStreet = this.getCoordinatesFirstSettlementStreet();
-            IntTupel coordinatesFirstSettlement = coordinatesFirstSettlementStreet.t1();
-            IntTupel coordinatesFirstStreet = coordinatesFirstSettlementStreet.t2();
+            int coordinatesFirstSettlement = this.getCoordinatesFirstSettlement();
+            IntTupel coordinatesFirstStreet = this.getCoordinatesFirstStreet();
 
 //            this.players[currentIndex].buyFirstSettlement();
 //            this.players[currentIndex].buyFirstStreet(); TODO: @Johann
@@ -157,9 +156,8 @@ public class GameController {
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            TwoTuples coordinatesSecondSettlementStreet = this.getCoordinatesFirstSettlementStreet();
-            IntTupel coordinatesSecondSettlement = coordinatesSecondSettlementStreet.t1();
-            IntTupel coordinatesSecondStreet = coordinatesSecondSettlementStreet.t2();
+            int coordinatesSecondSettlement = this.getCoordinatesFirstSettlement();
+            IntTupel coordinatesSecondStreet = this.getCoordinatesFirstStreet();
 
 //            player.buySecondSettlement();
 //            player.buySecondStreet();
@@ -330,13 +328,40 @@ public class GameController {
      *
      * @return Returns the coordinates of the settlement and street
      */
-    public TwoTuples getCoordinatesFirstSettlementStreet() {
+    public Integer getCoordinatesFirstSettlement() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
-            log.debug("What, you want the location of the first settlement and street?");
+            log.debug("What, you want the location of the first settlement?");
+            try {
+                return gui.waitForSettlementClick()
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid selection");
+                return -1;  // or handle however you want
+            }
+
             //coordinatesFirstSettlement = gui.buildSettlement(player);
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
+        } else {
+            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+                    this.gameControllerType);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the coordinates for the first (two) settlements and streets
+     *
+     * @return Returns the coordinates of the settlement and street
+     */
+    public IntTupel getCoordinatesFirstStreet() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("What, you want the location of the first street?");
             //coordinatesFirstStreet = gui.buildStreet(player);
-            return new TwoTuples(new IntTupel(1,1), new IntTupel(1,1));
+            return new IntTupel(1, 1);
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
