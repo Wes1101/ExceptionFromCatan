@@ -46,10 +46,11 @@ Methoden die zurückgeben wo der Bandit als nächstes stehen soll und wer beklau
 musst du schauen ob du den brauchst)
 
 ## Sonstiges
-- finish turn button
-- buttons aktivieren/deaktivieren
-- ein/ausblenden von feldern (wie viele spieler)
-- setter von vicory points
+- [ ] finish turn button
+- [ ] buttons aktivieren/deaktivieren
+- [ ] ein/ausblenden von feldern (wie viele spieler)
+- [ ] setter von vicory points
+- [ ] Auswahlmenü welche karten abgeben (man hat zu viele und bandit wird aktiv)
 
 # Reihenfolge
 1. Bauen
