@@ -1,38 +1,43 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+name: Build JavaFX App
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: JavaFX Maven Build and Test
-
-on:
-  push:
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-          os: [ubuntu-latest, windows-latest, macos-latest]
-          node-version: [12.x]
+        include:
+          - os: ubuntu-latest
+            arch: x64
+            classifier: linux
+
+          - os: macos-13
+            arch: x64
+            classifier: mac
+
+          - os: macos-14
+            arch: arm64
+            classifier: mac-aarch64
+
+          - os: windows-latest
+            arch: x64
+            classifier: win
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
-    
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        architecture: x64
-        cache: maven
+      - uses: actions/checkout@v4
 
-    - name: Run JavaFX application
-      run: mvn --batch-mode --update-snapshots package
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Build with Maven
+        run: mvn clean package -Dclassifier=${{ matrix.classifier }}
+
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-${{ matrix.classifier }}
+          path: target/*shaded.jar

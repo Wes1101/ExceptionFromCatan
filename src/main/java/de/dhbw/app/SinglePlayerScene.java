@@ -19,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.management.Notification;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -105,7 +106,13 @@ public class SinglePlayerScene {
         Button backButton = new Button("Back");
         backButton.setId("buttonsb");
 
-        root.getChildren().addAll(titlePane, spielerSliderPane, pinkPane, brownPane, startButton, backButton);
+
+        VBox buttonBox = new VBox(10);
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.getChildren().addAll(startButton, backButton);
+        buttonBox.setPadding(new Insets(15));
+
+        root.getChildren().addAll(titlePane, spielerSliderPane, pinkPane, brownPane, buttonBox);
 
         // Eventhandler
         backButton.setOnAction(e -> primaryStage.setScene(startMenuScene.getScene()));

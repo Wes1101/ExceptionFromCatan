@@ -1,8 +1,12 @@
 package de.dhbw.player;
 
+import de.dhbw.catanBoard.CatanBoard;
+import de.dhbw.catanBoard.hexGrid.IntTupel;
+import de.dhbw.catanBoard.hexGrid.Tile;
+import de.dhbw.gamePieces.Building;
+import de.dhbw.gamePieces.BuildingTypes;
 import de.dhbw.gamePieces.Street;
 import de.dhbw.resources.Resources;
-import de.dhbw.player.Bank;
 import lombok.Getter;
 
 import java.util.*;
@@ -12,9 +16,14 @@ import java.util.*;
  * A player can own, gain, and lose resources during gameplay.
  */
 @Getter
-public abstract class Player {
+public class Player implements ResourceReceiver {
+    @Override
+    public void addResources(Resources type, int amount) {
+        resources.put(type, resources.get(type) + amount);
+    }
 
     int id;
+    int victoryPoints;
     List<Street> cards;
 
     /**
@@ -25,29 +34,17 @@ public abstract class Player {
     /**
      * Constructor initializes each resource type with a given starting amount.
      *
-     * @param amountResources the starting amount of each resource type
+     *
      */
-    public Player(int amountResources) {
+    public Player(int id) {
+        this.id = id;
+        this.victoryPoints = 0;
         resources = new EnumMap<>(Resources.class);
         for (Resources res : Resources.values()) {
-            addResources(res, amountResources);
+            this.resources.put(res, 0);
         }
     }
 
-    /**
-     * Adds a specific amount of a resource type to the player.
-     *
-     * @param type   the type of resource
-     * @param amount the amount to add
-     */
-    public void addResources(Resources type, int amount) {
-        for (Resources res : resources.keySet()) {
-            if (res == type) {
-                resources.put(res, resources.get(res) + amount);
-                return;
-            }
-        }
-    }
     /**
      * Transfers a specific amount of a resource from this player to another player.
      *
@@ -55,7 +52,7 @@ public abstract class Player {
      * @param amount the amount to transfer
      * @param target the player receiving the resource
      */
-    public void removeResources(Resources type, int amount, Player target) {
+    public void removeResources(Resources type, int amount, ResourceReceiver target) {
         for (Resources res : resources.keySet()) {
             if (res == type) {
                 resources.put(res, resources.get(res) - amount);
@@ -82,6 +79,102 @@ public abstract class Player {
             sum += count;
         }
         return sum;
+    }
+
+    public void getNodeResources(int node, Bank bank, CatanBoard board) {
+        for (Tile tile : board.getGraph().getNodes()[node].getHexNeighbors()) {
+            if (tile.getResourceType() != Resources.NONE) {
+                bank.removeResources(tile.getResourceType(), 1, this);
+            }
+        }
+
+    }
+
+    public boolean buyFirstSettlement(int node, Bank bank, CatanBoard board) {
+        Building building = bank.getBuilding(BuildingTypes.SETTLEMENT, this);
+
+        if (building != null) {
+            board.buildSettlement(node, building);
+            this.victoryPoints++;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean buildSettlement(int node, Bank bank, Player player, CatanBoard board) {
+        Building building = bank.getBuilding(BuildingTypes.SETTLEMENT, player);
+
+        if (building != null) {
+
+            if (enoughResources(building.getBuildCost())) {
+                buyBuilding(building.getBuildCost(), bank);
+                board.buildSettlement(node, building);
+                this.victoryPoints++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean buildCity(int node, Bank bank, Player player, CatanBoard board) {
+        Building building = bank.getBuilding(BuildingTypes.CITY, player);
+
+        if (building != null) {
+
+            if (enoughResources(building.getBuildCost())) {
+                buyBuilding(building.getBuildCost(), bank);
+                board.buildCity(node, building, bank);
+                this.victoryPoints++;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean buyFirstStreet(IntTupel nodes, Bank bank, CatanBoard board) {
+        Building building = bank.getBuilding(BuildingTypes.STREET, this);
+
+        if (building != null) {
+
+            board.buildStreet(nodes.q(), nodes.r(), building);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean buildStreet(int node1, int node2, Bank bank, Player player, CatanBoard board) {
+        Building building = bank.getBuilding(BuildingTypes.STREET, player);
+
+        if (building != null) {
+
+            if (enoughResources(building.getBuildCost())) {
+                buyBuilding(building.getBuildCost(), bank);
+                board.buildStreet(node1, node2, building);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean enoughResources(Map<Resources, Integer> costs) {
+        for (Resources resource : costs.keySet()) {
+            if (costs.get(resource) > this.getResources(resource)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void buyBuilding(Map<Resources, Integer> costs, Bank bank) {
+        for (Resources resource : costs.keySet()) {
+            this.removeResources(resource, costs.get(resource), bank);
+        }
+    }
+
+    public void trade(Map<Resources, Integer> resources, Player player) {
+        for (Resources resource : resources.keySet()) {
+            this.removeResources(resource, resources.get(resource), player);
+        }
     }
 
     /**
