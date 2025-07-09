@@ -6,9 +6,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.dhbw</groupId>
-    <artifactId>ExecptionFromCatan</artifactId>
+    <artifactId>ExceptionFromCatan</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>ExecptionFromCatan</name>
+    <name>ExceptionFromCatan</name>
 
     <properties>
         <!-- Java-Version -->
