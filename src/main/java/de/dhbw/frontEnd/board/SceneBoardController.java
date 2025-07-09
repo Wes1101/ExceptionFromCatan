@@ -187,8 +187,7 @@ public class SceneBoardController implements Initializable, GameUI {
     });
 
     loadDiceImages();
-//    initDiceButton(diceButton1);
-//    initDiceButton(diceButton2);
+
 
 // Würfelbutton-Klicks triggern die Animation
     diceButton1.setOnAction(e -> startRollDiceAnimation());
@@ -196,12 +195,6 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
   }
-
-//  private void initDiceButton(Button btn) {
-//    System.out.println("❗ initDiceButton aufgerufen für: " + btn.getId());
-//    btn.setBackground(makeDiceBackground(diceEmptyImage));
-//    btn.setStyle("-fx-border-color: #888; -fx-border-width: 2; -fx-background-radius: 8;");
-//  }
 
   private Background makeDiceBackground(Image image) {
     return new Background(new BackgroundImage(
@@ -369,11 +362,7 @@ public class SceneBoardController implements Initializable, GameUI {
     this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
     int ID = player.getId();
 
-    //LABEL NUR ALS DAS setText funktioniert!!!!!!!!!!!
-    Label aktiverSpieler = new Label("Aktiver Spieler: " + ID);
-
-   //Hier GUI aktualisieren
-    aktiverSpieler.setText("Aktiver Spieler: " + ID);
+    /*TODO Adrian - Aktiver Spieler in GUI setzen*/
 
     // Log-Ausgabe zur Überprüfung
     log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
