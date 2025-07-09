@@ -20,6 +20,7 @@
 
 
 
+
    <children>
       <HBox alignment="BOTTOM_CENTER" HBox.hgrow="ALWAYS">
          <children>
@@ -47,16 +48,94 @@
                               <Insets left="20.0" top="20.0" />
                            </VBox.margin>
                         </StackPane>
+                        <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="Player 1" textFill="#f3e99c">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="victory_points_background_number2" alignment="TOP_CENTER" text="Player 2" textFill="#f3e99c">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="victory_points_background_number21" alignment="TOP_CENTER" layoutX="10.0" layoutY="100.0" text="Player 3" textFill="#f3e99c">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="victory_points_background_number211" alignment="TOP_CENTER" layoutX="10.0" layoutY="135.0" text="Player 4" textFill="#f3e99c">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="victory_points_background_number2111" alignment="TOP_CENTER" layoutX="10.0" layoutY="137.0" text="Player 5" textFill="#f3e99c">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="victory_points_background_number21111" alignment="TOP_CENTER" layoutX="10.0" layoutY="161.0" text="Player 6" textFill="#f3e99c">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" top="5.0" />
+                           </VBox.margin>
+                        </Label>
                      </children>
                   </VBox>
-                  <ImageView fx:id="building_cost_card" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="ALWAYS">
-                     <image>
-                        <Image url="@building_cost_card.png" />
-                     </image>
-                     <VBox.margin>
-                        <Insets left="20.0" />
-                     </VBox.margin>
-                  </ImageView>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fx:id="building_cost_card" fitHeight="140.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@building_cost_card.png" />
+                           </image>
+                        </ImageView>
+                        <Button fx:id="build_development_card" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                           <StackPane.margin>
+                              <Insets top="115.0" />
+                           </StackPane.margin>
+                           <padding>
+                              <Insets right="200.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                           <padding>
+                              <Insets bottom="10.0" right="200.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                           <padding>
+                              <Insets bottom="10.0" right="200.0" />
+                           </padding>
+                           <StackPane.margin>
+                              <Insets top="63.0" />
+                           </StackPane.margin>
+                        </Button>
+                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                           <padding>
+                              <Insets bottom="10.0" right="200.0" />
+                           </padding>
+                           <StackPane.margin>
+                              <Insets bottom="63.0" />
+                           </StackPane.margin>
+                        </Button>
+                     </children>
+                  </StackPane>
                </children>
             </VBox>
          </children></HBox>
@@ -147,222 +226,224 @@
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="419.0" layoutY="172.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="418.0" layoutY="96.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="506.0" layoutY="172.0" rotate="60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" width="8.0" />
-                                    <Button layoutX="264.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_51" layoutX="264.0" layoutY="121.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="309.0" layoutY="95.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_52" layoutX="309.0" layoutY="95.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="352.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_24" layoutX="352.0" layoutY="121.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="396.0" layoutY="95.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_25" layoutX="396.0" layoutY="95.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="440.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_26" layoutX="440.0" layoutY="121.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="483.0" layoutY="95.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_27" layoutX="483.0" layoutY="95.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="526.0" layoutY="121.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_28" layoutX="526.0" layoutY="121.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="264.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_51" layoutX="264.0" layoutY="168.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="352.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_23" layoutX="352.0" layoutY="168.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="440.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_7" layoutX="440.0" layoutY="168.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="526.0" layoutY="168.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_29" layoutX="526.0" layoutY="168.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="309.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_22" layoutX="309.0" layoutY="195.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="396.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_6" layoutX="396.0" layoutY="195.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="483.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_8" layoutX="483.0" layoutY="195.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="220.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_50" layoutX="220.0" layoutY="195.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="572.0" layoutY="195.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_30" layoutX="572.0" layoutY="195.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="220.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_49" layoutX="220.0" layoutY="242.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="309.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_21" layoutX="309.0" layoutY="242.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="396.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_0" layoutX="396.0" layoutY="242.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="483.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_9" layoutX="483.0" layoutY="242.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="572.0" layoutY="242.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_31" layoutX="572.0" layoutY="242.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="309.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_18" layoutX="309.0" layoutY="341.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="396.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_3" layoutX="396.0" layoutY="341.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="483.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_12" layoutX="483.0" layoutY="341.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="220.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_46" layoutX="220.0" layoutY="341.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="572.0" layoutY="341.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_34" layoutX="572.0" layoutY="341.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="220.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_45" layoutX="220.0" layoutY="389.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="309.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_17" layoutX="309.0" layoutY="389.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="396.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_15" layoutX="396.0" layoutY="389.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="483.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_13" layoutX="483.0" layoutY="389.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="572.0" layoutY="389.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_35" layoutX="572.0" layoutY="389.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="264.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_44" layoutX="264.0" layoutY="415.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="352.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_16" layoutX="352.0" layoutY="415.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="440.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_14" layoutX="440.0" layoutY="415.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="526.0" layoutY="415.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_36" layoutX="526.0" layoutY="415.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="264.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_43" layoutX="264.0" layoutY="462.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="352.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_41" layoutX="352.0" layoutY="462.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="440.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_39" layoutX="440.0" layoutY="462.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="309.0" layoutY="488.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_42" layoutX="309.0" layoutY="488.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="396.0" layoutY="488.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_40" layoutX="396.0" layoutY="488.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="264.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_20" layoutX="264.0" layoutY="269.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="352.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_5" layoutX="352.0" layoutY="269.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="440.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_1" layoutX="440.0" layoutY="269.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="178.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_48" layoutX="178.0" layoutY="269.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="526.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_10" layoutX="526.0" layoutY="269.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="178.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_47" layoutX="178.0" layoutY="316.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="264.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_19" layoutX="264.0" layoutY="316.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="352.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_4" layoutX="352.0" layoutY="316.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="440.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_2" layoutX="440.0" layoutY="316.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="526.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_11" layoutX="526.0" layoutY="316.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="614.0" layoutY="269.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_32" layoutX="614.0" layoutY="269.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="614.0" layoutY="316.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_33" layoutX="614.0" layoutY="316.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="483.0" layoutY="488.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_38" layoutX="483.0" layoutY="488.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button layoutX="526.0" layoutY="462.0" mnemonicParsing="false" styleClass="node">
+                                    <Button fx:id="node_37" layoutX="526.0" layoutY="462.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
+                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
+                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
                                  </children></Pane>
                            </children>
                         </StackPane>

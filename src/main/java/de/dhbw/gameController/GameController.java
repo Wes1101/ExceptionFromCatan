@@ -11,6 +11,7 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.frontEnd.board.SceneBoardController;
 import de.dhbw.gamePieces.Bandit;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
@@ -27,6 +28,7 @@ import de.dhbw.player.Player;
 public class GameController {
     private Player[] players;
     private final Bank bank;
+    @Getter
     private final CatanBoard catanBoard;
     private int gameRound;
     private int dice1;
@@ -47,7 +49,7 @@ public class GameController {
     private MinorGameStates minorGameState;
 
     @Setter
-    private SceneBoard gui;
+    private SceneBoardController gui;
 
     /**
      * Creates new GameController
@@ -272,7 +274,7 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
             if (!this.syso) {
-                gui.activePlayer(player);
+                gui.setactivePlayer(player);
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -289,6 +291,7 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
             if (!this.syso) {
+                //Platform.runLater(() -> ui.updateScore(score));
                 gui.startRollDiceAnimation();
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
@@ -326,9 +329,18 @@ public class GameController {
     public Integer getCoordinatesFirstSettlement() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
-            log.debug("What, you want the location of the first settlement and street?");
+            log.debug("What, you want the location of the first settlement?");
+            try {
+                return gui.waitForSettlementClick()
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid selection");
+                return -1;  // or handle however you want
+            }
+
             //coordinatesFirstSettlement = gui.buildSettlement(player);
-            return 1;
+
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
@@ -402,5 +414,26 @@ public class GameController {
             log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
         }
         return null;
+    }
+
+    public void buildSettlement(int nodeId, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buySettlement(nodeId);
+        }
+        //TODO: Necessary for Server and Client????
+    }
+
+    public void buildStreet(IntTupel location, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buyStreet(location);
+        }
+        //TODO: Necessary for Server and Client????
+    }
+
+    public void buildCity(int nodeId, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buyCity(nodeId);
+        }
+        //TODO: Necessary for Server and Client????
     }
 }

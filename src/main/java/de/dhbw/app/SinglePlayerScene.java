@@ -1,11 +1,15 @@
 package de.dhbw.app;
 
+import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.frontEnd.board.SceneBoardController;
 import de.dhbw.gameController.GameController;
 import de.dhbw.gameController.GameControllerTypes;
-import javafx.application.Preloader;
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -123,18 +127,31 @@ public class SinglePlayerScene {
             if(isServergame) {
                 /*@TODO Server(David) erstellen mit Übergabe der parameter*/
             } else{
-                SceneBoard gameBoard = new SceneBoard();
-
-                GameController controller = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, true);
-                controller.setGui(gameBoard);
-
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/dhbw/frontEnd/board/card-bar.fxml"));
+                Parent gameRoot = null;
                 try {
-                    gameBoard.start(primaryStage);
+                    gameRoot = loader.load();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+                SceneBoardController boardController = loader.getController();
 
-                controller.gameStart();
+                GameController gameController = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, true);
+                gameController.setGui(boardController);
+
+                boardController.setCatanBoard(gameController.getCatanBoard());
+                boardController.initBoard();
+
+                Scene gameScene = new Scene(gameRoot);
+                primaryStage.setScene(gameScene);
+                primaryStage.show();
+
+                boardController.setOnUIReady(() -> {
+                   new Thread(() -> {
+                       gameController.gameStart();
+                       gameController.mainGame();
+                   }) .start();
+                });
             }
 
         });
