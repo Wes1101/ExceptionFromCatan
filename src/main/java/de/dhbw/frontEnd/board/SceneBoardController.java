@@ -5,6 +5,7 @@ import de.dhbw.player.Player;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -311,7 +312,18 @@ public class SceneBoardController implements Initializable, GameUI {
    * @param player Currently active player
    */
   @Override
-  public void activePlayer(Player player) {
+  public void setactivePlayer(Player player) {
+    this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
+    int ID = player.getId();
+
+    //LABEL NUR ALS DAS setText funktioniert!!!!!!!!!!!
+    Label aktiverSpieler = new Label("Aktiver Spieler: " + ID);
+
+   //Hier GUI aktualisieren
+    aktiverSpieler.setText("Aktiver Spieler: " + ID);
+
+    // Log-Ausgabe zur Überprüfung
+    log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
 
   }
 
@@ -345,8 +357,6 @@ public class SceneBoardController implements Initializable, GameUI {
   public int buildSettlement() {
     int NodeID = 0;
     Player internalActivePlayer = this.activePlayer;
-
-
     return 0;
   }
 
