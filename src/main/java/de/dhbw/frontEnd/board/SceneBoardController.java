@@ -187,8 +187,8 @@ public class SceneBoardController implements Initializable, GameUI {
     });
 
     loadDiceImages();
-    initDiceButton(diceButton1);
-    initDiceButton(diceButton2);
+//    initDiceButton(diceButton1);
+//    initDiceButton(diceButton2);
 
 // Würfelbutton-Klicks triggern die Animation
     diceButton1.setOnAction(e -> startRollDiceAnimation());
@@ -197,11 +197,11 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
-  private void initDiceButton(Button btn) {
-    System.out.println("❗ initDiceButton aufgerufen für: " + btn.getId());
-    btn.setBackground(makeDiceBackground(diceEmptyImage));
-    btn.setStyle("-fx-border-color: #888; -fx-border-width: 2; -fx-background-radius: 8;");
-  }
+//  private void initDiceButton(Button btn) {
+//    System.out.println("❗ initDiceButton aufgerufen für: " + btn.getId());
+//    btn.setBackground(makeDiceBackground(diceEmptyImage));
+//    btn.setStyle("-fx-border-color: #888; -fx-border-width: 2; -fx-background-radius: 8;");
+//  }
 
   private Background makeDiceBackground(Image image) {
     return new Background(new BackgroundImage(
@@ -404,7 +404,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
     // Letzter Frame: Anzeige des echten Ergebnisses
     timeline.getKeyFrames().add(new KeyFrame(Duration.millis(rollSteps * 100), e -> {
-      showDice(realDice1, realDice2); // 🎯 hier kommt das „echte“ Ergebnis
+      showDice(realDice1, realDice2); // hier kommt das „echte“ Ergebnis
     }));
 
     timeline.play();
@@ -420,9 +420,9 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   public void showDice(int dice1, int dice2) {
     System.out.println("🎲 Ergebnis anzeigen: " + dice1 + ", " + dice2);
-    // Pfadbilder
+
     Image[] diceImages = {
-            null, // index 0 wird ignoriert
+            null,
             new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice1.png").toExternalForm()),
             new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice2.png").toExternalForm()),
             new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice3.png").toExternalForm()),
@@ -431,7 +431,6 @@ public class SceneBoardController implements Initializable, GameUI {
             new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice6.png").toExternalForm())
     };
 
-    // Hintergrund für Würfel 1
     BackgroundImage bg1 = new BackgroundImage(
             diceImages[dice1],
             BackgroundRepeat.NO_REPEAT,
@@ -439,9 +438,7 @@ public class SceneBoardController implements Initializable, GameUI {
             BackgroundPosition.CENTER,
             new BackgroundSize(100, 100, true, true, true, true)
     );
-    diceButton1.setBackground(new Background(bg1));
 
-    // Hintergrund für Würfel 2
     BackgroundImage bg2 = new BackgroundImage(
             diceImages[dice2],
             BackgroundRepeat.NO_REPEAT,
@@ -449,12 +446,15 @@ public class SceneBoardController implements Initializable, GameUI {
             BackgroundPosition.CENTER,
             new BackgroundSize(100, 100, true, true, true, true)
     );
+
+    diceButton1.setBackground(new Background(bg1));
     diceButton2.setBackground(new Background(bg2));
 
+
+    // Optional: rolled-Klasse für CSS-Fix
     if (!diceButton1.getStyleClass().contains("rolled")) diceButton1.getStyleClass().add("rolled");
     if (!diceButton2.getStyleClass().contains("rolled")) diceButton2.getStyleClass().add("rolled");
   }
-
 
 
   /**

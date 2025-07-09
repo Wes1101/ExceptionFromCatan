@@ -799,12 +799,12 @@
                   </VBox>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="167.0" prefWidth="239.0">
                      <children>
-                        <Button fx:id="diceButton1" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" stylesheets="dice.css" styleClass="dice-button">
+                        <Button fx:id="diceButton1" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" stylesheets="@dice.css" styleClass="dice-button">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="diceButton2" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" stylesheets="dice.css" styleClass="dice-button">
+                        <Button fx:id="diceButton2" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" stylesheets="@dice.css" styleClass="dice-button">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
