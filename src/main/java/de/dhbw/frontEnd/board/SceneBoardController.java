@@ -305,7 +305,8 @@ public class SceneBoardController implements Initializable, GameUI {
    * @param player Currently active player
    */
   @Override
-  public void activePlayer(Player player) {
+  public void setactivePlayer(Player player) {
+  activePlayer = player;
 
   }
 
@@ -339,8 +340,6 @@ public class SceneBoardController implements Initializable, GameUI {
   public int buildSettlement() {
     int NodeID = 0;
     Player internalActivePlayer = this.activePlayer;
-
-
     return 0;
   }
 
