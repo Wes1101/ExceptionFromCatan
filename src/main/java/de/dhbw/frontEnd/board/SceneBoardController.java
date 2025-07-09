@@ -198,6 +198,7 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   private void initDiceButton(Button btn) {
+    System.out.println("❗ initDiceButton aufgerufen für: " + btn.getId());
     btn.setBackground(makeDiceBackground(diceEmptyImage));
     btn.setStyle("-fx-border-color: #888; -fx-border-width: 2; -fx-background-radius: 8;");
   }
@@ -385,6 +386,10 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public void startRollDiceAnimation() {
+
+    diceButton1.getStyleClass().remove("rolled");
+    diceButton2.getStyleClass().remove("rolled");
+
     Timeline timeline = new Timeline();
     int rollSteps = 10;
 
@@ -413,15 +418,43 @@ public class SceneBoardController implements Initializable, GameUI {
    * @param dice1 the value of the first dice
    * @param dice2 the value of the second dice
    */
-  @Override
   public void showDice(int dice1, int dice2) {
-    if (dice1 >= 1 && dice1 <= 6) {
-      diceButton1.setBackground(makeDiceBackground(diceImages[dice1 - 1]));
-    }
-    if (dice2 >= 1 && dice2 <= 6) {
-      diceButton2.setBackground(makeDiceBackground(diceImages[dice2 - 1]));
-    }
+    System.out.println("🎲 Ergebnis anzeigen: " + dice1 + ", " + dice2);
+    // Pfadbilder
+    Image[] diceImages = {
+            null, // index 0 wird ignoriert
+            new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice1.png").toExternalForm()),
+            new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice2.png").toExternalForm()),
+            new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice3.png").toExternalForm()),
+            new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice4.png").toExternalForm()),
+            new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice5.png").toExternalForm()),
+            new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice6.png").toExternalForm())
+    };
+
+    // Hintergrund für Würfel 1
+    BackgroundImage bg1 = new BackgroundImage(
+            diceImages[dice1],
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(100, 100, true, true, true, true)
+    );
+    diceButton1.setBackground(new Background(bg1));
+
+    // Hintergrund für Würfel 2
+    BackgroundImage bg2 = new BackgroundImage(
+            diceImages[dice2],
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(100, 100, true, true, true, true)
+    );
+    diceButton2.setBackground(new Background(bg2));
+
+    if (!diceButton1.getStyleClass().contains("rolled")) diceButton1.getStyleClass().add("rolled");
+    if (!diceButton2.getStyleClass().contains("rolled")) diceButton2.getStyleClass().add("rolled");
   }
+
 
 
   /**

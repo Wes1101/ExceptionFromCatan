@@ -9,3 +9,7 @@
     -fx-background-image: none !important;
     -fx-border-color: transparent !important;
 }
+.dice-button.rolled:hover {
+    -fx-background-image: none !important;  /* Deaktiviert Hover-Reset */
+    -fx-background-color: transparent !important;
+}
