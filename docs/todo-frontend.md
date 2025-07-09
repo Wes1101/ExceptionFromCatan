@@ -1,16 +1,26 @@
 # ToDo für Adrian
 
 ## Spieler
-- [ ] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
+- [DONE ] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
 `Int playerNumber = player.getId();`, wenn name vorhanden ist mit 
 ```java
-String name = "";
-if (player instanceof de.dhbw.player.Human)
-{
-    name = player.getName();
+@Override
+public void setactivePlayer(Player player) {
+  this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
+  int ID = player.getId();
+
+  //LABEL NUR DAS setText funktioniert!!!!!!!!!!!
+  Label aktiverSpieler = new Label("Aktiver Spieler: " + ID);
+
+  //Hier GUI aktualisieren
+  aktiverSpieler.setText("Aktiver Spieler: " + ID);
+
+  // Log-Ausgabe zur Überprüfung
+  log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
+
 }
 ```
-abrufbar. Am besten den Aktiven spieler auch in lokaer Variablen speichern, könnte man später noch mal gebrauchen
+
 
 ## Würfel
 - [ ] `startRollDiceAnimation()` Methode um eine Animation zum wüfeln zu starten
