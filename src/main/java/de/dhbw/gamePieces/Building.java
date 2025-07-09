@@ -22,6 +22,4 @@ public abstract class Building {
     public Building(Player owner) {
         this.owner = owner;
     }
-
-    public abstract Map<Resources, Integer> getBuildCost ();
 }

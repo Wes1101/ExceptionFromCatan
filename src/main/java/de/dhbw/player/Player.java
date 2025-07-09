@@ -3,11 +3,10 @@ package de.dhbw.player;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
-import de.dhbw.gamePieces.Building;
-import de.dhbw.gamePieces.BuildingTypes;
-import de.dhbw.gamePieces.Street;
+import de.dhbw.gamePieces.*;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
@@ -16,6 +15,7 @@ import java.util.*;
  * A player can own, gain, and lose resources during gameplay.
  */
 @Getter
+@Setter
 public class Player implements ResourceReceiver {
     @Override
     public void addResources(Resources type, int amount) {
@@ -105,13 +105,10 @@ public class Player implements ResourceReceiver {
         Building building = bank.getBuilding(BuildingTypes.SETTLEMENT, player);
 
         if (building != null) {
-
-            if (enoughResources(building.getBuildCost())) {
-                buyBuilding(building.getBuildCost(), bank);
-                board.buildSettlement(node, building);
-                this.victoryPoints++;
-                return true;
-            }
+            buyBuilding(Settlement.getBuildCost(), bank);
+            board.buildSettlement(node, building);
+            this.victoryPoints++;
+            return true;
         }
         return false;
     }
@@ -120,13 +117,10 @@ public class Player implements ResourceReceiver {
         Building building = bank.getBuilding(BuildingTypes.CITY, player);
 
         if (building != null) {
-
-            if (enoughResources(building.getBuildCost())) {
-                buyBuilding(building.getBuildCost(), bank);
-                board.buildCity(node, building, bank);
-                this.victoryPoints++;
-                return true;
-            }
+            buyBuilding(City.getBuildCost(), bank);
+            board.buildCity(node, building, bank);
+            this.victoryPoints++;
+            return true;
         }
         return false;
     }
@@ -146,17 +140,14 @@ public class Player implements ResourceReceiver {
         Building building = bank.getBuilding(BuildingTypes.STREET, player);
 
         if (building != null) {
-
-            if (enoughResources(building.getBuildCost())) {
-                buyBuilding(building.getBuildCost(), bank);
-                board.buildStreet(node1, node2, building);
-                return true;
-            }
+            buyBuilding(Street.getBuildCost(), bank);
+            board.buildStreet(node1, node2, building);
+            return true;
         }
         return false;
     }
 
-    private boolean enoughResources(Map<Resources, Integer> costs) {
+    public boolean enoughResources(Map<Resources, Integer> costs) {
         for (Resources resource : costs.keySet()) {
             if (costs.get(resource) > this.getResources(resource)) {
                 return false;

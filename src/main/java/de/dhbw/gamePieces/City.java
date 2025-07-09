@@ -20,8 +20,7 @@ public class City extends Building {
         buildingType = BuildingTypes.CITY;
     }
 
-    @Override
-    public Map<Resources, Integer> getBuildCost() {
+    public static Map<Resources, Integer> getBuildCost() {
         Map<Resources, Integer> cost = new HashMap<>();
         cost.put(Resources.STONE, 3);
         cost.put(Resources.WHEAT, 2);
