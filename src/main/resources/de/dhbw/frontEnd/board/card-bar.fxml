@@ -442,8 +442,8 @@
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" styleClass="dice-button" stylesheets="@dice.css" />
-                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" styleClass="dice-button" stylesheets="@dice.css" />
+                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
+                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
                                  </children></Pane>
                            </children>
                         </StackPane>
