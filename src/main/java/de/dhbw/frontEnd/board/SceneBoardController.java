@@ -15,6 +15,11 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
+
+import javafx.scene.shape.Rectangle;  //+++
+import javafx.scene.Node;   //+++
+
+
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -195,6 +200,11 @@ public class SceneBoardController implements Initializable, GameUI {
     diceButton2.setOnAction(e -> startRollDiceAnimation());
 
 
+    tile_layer.getChildren().stream()
+            .filter(n -> n instanceof Rectangle && n.getId() != null && n.getId().startsWith("road_"))
+            .forEach(n -> n.setOnMouseClicked(evt ->
+                    System.out.println("Straße geklickt: fx:id=" + n.getId())
+            ));
   }
 
   private Background makeDiceBackground(Image image) {
@@ -288,6 +298,8 @@ public class SceneBoardController implements Initializable, GameUI {
     fadeOut.setOnFinished(e -> setting_menue.setVisible(false));
     fadeOut.play();
   }
+
+
 
   public void initBoard() {
     Map<IntTupel, Tile> hexes = catanBoard.getBoard();
