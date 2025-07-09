@@ -25,7 +25,7 @@ public void setactivePlayer(Player player) {
 ## Würfel
 - [ DONE ] `startRollDiceAnimation()` Methode um eine Animation zum wüfeln zu starten
 
-- [ ] `showDice(Int dice1, Int dice2)` Methode mit der die Würfel in der GUI angezeigt werden können. Entweder
+- [ Done ] `showDice(Int dice1, Int dice2)` Methode mit der die Würfel in der GUI angezeigt werden können. Entweder
 tatsächlich einzeln oder einfach zusammenrechnen und in einem Textfeld anzeigen
 
 ## Bauen / Ressourcen
