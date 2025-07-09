@@ -3,6 +3,7 @@ package de.dhbw.frontEnd.board;
 import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import de.dhbw.player.Player;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -302,11 +303,21 @@ public class SceneBoardController implements Initializable, GameUI {
   /**
    * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
    *
-   * @param player Currently active player
+   * @param activeplayer Currently active player
    */
   @Override
   public void setactivePlayer(Player player) {
-  activePlayer = player;
+    this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
+    int ID = player.getId();
+
+    //LABEL NUR ALS DAS setText funktioniert!!!!!!!!!!!
+    Label aktiverSpieler = new Label("Aktiver Spieler: " + ID);
+
+   //Hier GUI aktualisieren
+    aktiverSpieler.setText("Aktiver Spieler: " + ID);
+
+    // Log-Ausgabe zur Überprüfung
+    log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
 
   }
 
