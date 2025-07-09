@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.frontEnd.board.SceneBoard;
 import de.dhbw.gamePieces.Bandit;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Human;
