@@ -1,123 +1,159 @@
+
 package de.dhbw.catanBoard.hexGrid;
 
 import de.dhbw.gamePieces.Street;
 import de.dhbw.player.Player;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Represents the underlying graph for the Catan board used to track roads and settlements.
+ * <p>
+ * Each node represents a build location (corner of hex tiles), and edges represent possible streets between them.
+ * </p>
+ */
 @Setter
 @Getter
 public class Graph {
-    Edge[][] graph;
-    Node[] nodes;
 
+    private static final Logger log = LoggerFactory.getLogger(Graph.class);
+
+    private Edge[][] graph;
+    private Node[] nodes;
+
+    /**
+     * Constructs a new Graph with a specified number of nodes.
+     *
+     * @param nodes total number of nodes to initialize in the graph
+     */
     public Graph(int nodes) {
         initNodes(nodes);
         graph = new Edge[nodes][nodes];
     }
 
+    /**
+     * Initializes an array of {@link Node} objects with the given number of entries.
+     *
+     * @param numNodes number of nodes to create
+     */
     private void initNodes(int numNodes) {
         nodes = new Node[numNodes];
         for (int i = 0; i < numNodes; i++) {
             nodes[i] = new Node(i);
-            System.out.println("Node " + i + " created");
         }
-    }
-
-    public void createEdge(int i, int j) {
-        graph[i][j] = new Edge();
-        graph[j][i] = new Edge();
-    }
-
-    public void updateEdge(int i, int j, Street street) {
-        graph[i][j].setStreet(street);
-        graph[j][i].setStreet(street);
+        log.info("Initialized {} graph nodes", numNodes);
     }
 
     /**
-     *Dies ist der Algorithmus, welcher die längste Handel-Strecke heraussucht.
-     *Es wird als Algorithms Depth-First Search genutzt,
-     *es wird erst geschaut, sobald ein Spieler 3 Gebäude aneinander hat.
-     * @param player dies ist die ID des spielers
-     * @return Gibt die Länge des shits raus.
+     * Creates a bidirectional edge between two nodes.
+     *
+     * @param i index of the first node
+     * @param j index of the second node
      */
+    public void createEdge(int i, int j) {
+        graph[i][j] = new Edge();
+        graph[j][i] = new Edge();
+        log.info("Created edge between node {} and node {}", i, j);
+    }
 
+    /**
+     * Updates an edge between two nodes with a specific street object.
+     * <p>
+     * This represents a player building a road between two locations.
+     * </p>
+     *
+     * @param i      first node index
+     * @param j      second node index
+     * @param street the street to assign to the edge
+     */
+    public void updateEdge(int i, int j, Street street) {
+        graph[i][j].setStreet(street);
+        graph[j][i].setStreet(street);
+        log.info("Street built between node {} and node {} by PlayerID {}", i, j, street.getOwner().getId());
+    }
+
+    /**
+     * Calculates the longest continuous trade route (road) owned by the specified player.
+     * <p>
+     * Uses depth-first search (DFS) to explore paths and determine the maximum path length.
+     * </p>
+     *
+     * @param player the player whose roads are being analyzed
+     * @return the length of the longest connected road owned by the player (minimum 3 to count)
+     */
     public int findLongestTradeRoutes(Player player) {
         int maxLength = 0;
         for (int startNode = 0; startNode < graph.length; startNode++) {
             boolean[] searched = new boolean[graph.length];
-            maxLength =
-                    Math.max(maxLength, dfsLength(startNode, -1, searched, player));
+            maxLength = Math.max(maxLength, dfsLength(startNode, -1, searched, player));
         }
-        System.out.println("Winner: Player" + maxLength);
+        log.info("Longest road length for player {}: {}", player, maxLength);
         return maxLength >= 3 ? maxLength : 0;
     }
 
     /**
-     *Führt die Suche durch (DFS) zur Ermittlung der Längsten durchgehenden Straße eines Spielers.
-     * @param current Aktueller Knoten
-     * @param from Vorheriger Knoten (Vermeidung von Rücklaufen)
-     * @param player ID des Spielers, dessen Straße aktuell geprüft wird.
-     * @param searched Merkt sich, welche Knoten schon durchsucht wurden.
-     * @return Länge des längsten Pfades.
+     * Recursive helper function that performs DFS to find the longest road segment from a given node.
+     *
+     * @param current  the current node being explored
+     * @param from     the previous node to avoid looping back
+     * @param searched boolean array marking visited nodes
+     * @param player   the player owning the roads
+     * @return length of the longest path found from this node
      */
-
-    private int dfsLength(int current, int from, boolean[] searched, Player player)
-    {
+    private int dfsLength(int current, int from, boolean[] searched, Player player) {
         searched[current] = true;
-        int maxTiefe = 1;
+        int maxDepth = 1;
 
-        for (int nachbar = 0; nachbar < graph.length; nachbar++)
-        {
-            if (graph[current][nachbar].getStreet().getOwner() == player)
-            {
-                if (nachbar != from && !searched[nachbar])
-                {
-                    maxTiefe = Math.max(maxTiefe, 1 + dfsLength(nachbar, current, searched, player));
+        for (int neighbor = 0; neighbor < graph.length; neighbor++) {
+            if (graph[current][neighbor] != null &&
+                    graph[current][neighbor].getStreet() != null &&
+                    graph[current][neighbor].getStreet().getOwner() == player) {
+
+                if (neighbor != from && !searched[neighbor]) {
+                    maxDepth = Math.max(maxDepth, 1 + dfsLength(neighbor, current, searched, player));
                 }
             }
         }
+
         searched[current] = false;
-        System.out.println("DFS von node:" + current + "ergibt die Tiefe:" + maxTiefe);
-        return maxTiefe;
+        log.debug("DFS from node {} results in depth {}", current, maxDepth);
+        return maxDepth;
     }
 
     /**
-     *Dies hier findet den Spieler mit der längsten Handelsstraße.
-     * @param players Anzahl aller Spieler.
-     * @return Spieler ID mit der längsten Straße oder gibt halt -1 aus, falls keiner derzeit die längste Straße hat.
+     * Determines which player currently has the longest road.
+     *
+     * @param players array of all players
+     * @return the player with the longest road, or {@code null} if no one qualifies
      */
-
-    public Player findPlayerLongestStreet(Player[] players)
-    {
+    public Player findPlayerLongestStreet(Player[] players) {
         int maxLength = 0;
         Player winner = null;
 
-        for (Player player : players)
-        {
+        for (Player player : players) {
             int length = findLongestTradeRoutes(player);
-            if (length > maxLength)
-            {
+            if (length > maxLength) {
                 maxLength = length;
                 winner = player;
             }
-            logRouteDetails(player,length,winner,maxLength);
+            logRouteDetails(player, length, winner, maxLength);
         }
+
         return winner;
     }
 
     /**
-     *Helfer Methode zur Protokollierung von den Routeninformationen
-     * @param player spieler id
-     * @param length Länge des in Führung liegenden Spielers
-     * @param winner Spieler Id mi der bislang längsten Straße
-     * @param maxLength Länge der bislang längsten Straße
+     * Helper method for logging current road details per player during evaluation.
+     *
+     * @param player    the player currently being evaluated
+     * @param length    the length of the player's longest road
+     * @param winner    the current leading player
+     * @param maxLength the length of the longest road so far
      */
-
-    private void logRouteDetails(Player player,int length, Player winner,int maxLength)
-    {
-        System.out.println("Spieler" + player + "Hat eine Straßen länge" + length);
-        System.out.println("Aktueller Sieger ist Spieler" + winner + "mit der Straßenlänge:" + maxLength);
+    private void logRouteDetails(Player player, int length, Player winner, int maxLength) {
+        log.info("Player {} has a road length of {}", player, length);
+        log.info("Current longest road is by Player {} with length {}", winner, maxLength);
     }
-
 }
