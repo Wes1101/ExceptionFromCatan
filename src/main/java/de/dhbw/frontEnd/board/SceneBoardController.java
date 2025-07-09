@@ -340,6 +340,11 @@ public class SceneBoardController implements Initializable, GameUI {
   @Override
   public void showDice(int dice1, int dice2) {
 
+    //Würfelpanes nur damitsetzung funktioniert
+      Pane dicePane1 = new Pane();
+      Pane dicePane2 = new Pane();
+
+
   }
 
   /**
