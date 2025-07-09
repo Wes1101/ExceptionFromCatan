@@ -1,6 +1,6 @@
 package de.dhbw.frontEnd.board;
 
-import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
+import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import de.dhbw.player.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -290,7 +290,7 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   public void initBoard() {
-    Map<IntTupel, Tile> hexes = catanBoard.getHexTiles();
+    Map<IntTupel, Tile> hexes = catanBoard.getBoard();
 
 
     log.debug("Anzahl HexTiles: " + hexes.size());
@@ -322,9 +322,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
       // Hafen vom Backend
-      else if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Habour) {
-        de.dhbw.catanBoard.hexGrid.Tiles.Habour h =
-                (de.dhbw.catanBoard.hexGrid.Tiles.Habour) hexes.get(coords);
+      else if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour) {
+        de.dhbw.catanBoard.hexGrid.Tiles.Harbour h =
+                (de.dhbw.catanBoard.hexGrid.Tiles.Harbour) hexes.get(coords);
         String resourceName = h.getResourceType().name() + "_Harbour";
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
@@ -337,8 +337,8 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
       // Ressource vom Backend
-      else if (hexes.get(coords) instanceof Ressource) {
-        Ressource resTile = (Ressource) hexes.get(coords);
+      else if (hexes.get(coords) instanceof Resource) {
+        Resource resTile = (Resource) hexes.get(coords);
         String resourceName = resTile.getResourceType().name();
 
 

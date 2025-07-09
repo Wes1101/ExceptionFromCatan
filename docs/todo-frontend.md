@@ -1,7 +1,7 @@
 # ToDo für Adrian
 
 ## Spieler
-- [DONE ] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
+- [ DONE ] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
 `Int playerNumber = player.getId();`, wenn name vorhanden ist mit 
 ```java
 @Override
@@ -29,11 +29,11 @@ public void setactivePlayer(Player player) {
 tatsächlich einzeln oder einfach zusammenrechnen und in einem Textfeld anzeigen
 
 ## Bauen / Ressourcen
-- [ ] `buildSettlement()` Methode um eine Siedlung zu bauen. Gibt zurück wo eine Siedlung gebaut wird. Maybe so lösbar,
+- [ DONE ] `buildSettlement()` Methode um eine Siedlung zu bauen. Gibt zurück wo eine Siedlung gebaut wird. Maybe so lösbar,
 dass du so ne Info box machst in der steht "Bitte auswählen wo eine Siedlung gebaut werden soll" (auch gerne in
 Englisch) und dann die Koordinaten zurückgeben, wo das sein soll. GENAUERE DEFINITION DES DATENTYPS FOLGT
 
-- [ ] `buildStreet()` Methode um eine Straßw zu bauen. Gibt zurück wo eine Straße gebaut wird. Maybe so lösbar,
+- [ ] `buildStreet()` Methode um eine Straße zu bauen. Gibt zurück wo eine Straße gebaut wird. Maybe so lösbar,
   dass du so ne Info box machst in der steht "Bitte auswählen wo eine Straße gebaut werden soll" (auch gerne in
   Englisch) und dann die Koordinaten zurückgeben, wo das sein soll. GENAUERE DEFINITION DES DATENTYPS FOLGT
 
@@ -63,8 +63,8 @@ musst du schauen ob du den brauchst)
 - [ ] Auswahlmenü welche karten abgeben (man hat zu viele und bandit wird aktiv)
 
 # Reihenfolge
-1. Bauen
-2. Spieler
-2. Bandit
-4. Resourcen
-5. Würfel
+1. Bauen WOP
+                2. Spieler DONE
+   2. Bandit NOT location return und spieler der beklaut wird
+   4. Resourcen NOT
+               5. Würfel DONE

@@ -340,7 +340,7 @@ public class GameController {
             }
 
             //coordinatesFirstSettlement = gui.buildSettlement(player);
-            return 1;
+
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
