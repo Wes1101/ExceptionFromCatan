@@ -2,8 +2,6 @@ package de.dhbw.frontEnd.board;
 
 import java.io.IOException;
 
-import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.player.Player;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

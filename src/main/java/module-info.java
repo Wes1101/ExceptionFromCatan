@@ -7,6 +7,7 @@ module de.dhbw {
     requires com.google.gson;
     requires java.smartcardio;
     requires javafx.graphics;
+    requires java.management;
 
     opens de.dhbw.app to javafx.fxml;
     exports de.dhbw.app;

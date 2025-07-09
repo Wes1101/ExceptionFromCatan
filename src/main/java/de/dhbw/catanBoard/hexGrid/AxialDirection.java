@@ -1,35 +1,44 @@
+
 package de.dhbw.catanBoard.hexGrid;
 
 /**
- * Enum für die sechs Nachbarrichtungen im axialen Hex-Koordinatensystem.
- * Jeder Eintrag enthält die Verschiebung in den Koordinaten (dq, dr).
+ * Represents the six neighbor directions in the axial hex grid coordinate system.
+ * <p>
+ * Each direction corresponds to a specific offset in axial coordinates (q, r),
+ * allowing movement or adjacency detection within a hexagonal grid.
+ * </p>
  */
 public enum AxialDirection {
-    /** Ost-Richtung: Verschiebung (1, 0). */
+
+    /** East direction (q+1, r+0). */
     EAST       ( 1,  0 ),
-    /** Nordost-Richtung: Verschiebung (1, -1). */
+
+    /** Northeast direction (q+1, r-1). */
     NORTH_EAST ( 1, -1 ),
-    /** Nordwest-Richtung: Verschiebung (0, -1). */
+
+    /** Northwest direction (q+0, r-1). */
     NORTH_WEST ( 0, -1 ),
-    /** West-Richtung: Verschiebung (-1, 0). */
+
+    /** West direction (q-1, r+0). */
     WEST       (-1,  0 ),
-    /** Südwest-Richtung: Verschiebung (-1, 1). */
+
+    /** Southwest direction (q-1, r+1). */
     SOUTH_WEST (-1,  1 ),
-    /** Südost-Richtung: Verschiebung (0, 1). */
+
+    /** Southeast direction (q+0, r+1). */
     SOUTH_EAST ( 0,  1 );
 
-
-    /** Änderung der q-Achse (axial). */
+    /** Offset on the q-axis for this direction. */
     private final int dq;
 
-    /** Änderung der r-Achse (axial). */
+    /** Offset on the r-axis for this direction. */
     private final int dr;
 
     /**
-     * Konstruktor für eine Richtung mit den gegebenen Verschiebungen.
+     * Constructs an axial direction with specific coordinate offsets.
      *
-     * @param dq Veränderung auf der q-Achse
-     * @param dr Veränderung auf der r-Achse
+     * @param dq the q-axis offset
+     * @param dr the r-axis offset
      */
     private AxialDirection(int dq, int dr) {
         this.dq = dq;
@@ -37,18 +46,18 @@ public enum AxialDirection {
     }
 
     /**
-     * Liefert die Verschiebung auf der q-Achse für diese Richtung.
+     * Gets the q-axis offset of the direction.
      *
-     * @return Wert der dq-Koordinate
+     * @return the dq offset
      */
     public int getDq() {
         return dq;
     }
 
     /**
-     * Liefert die Verschiebung auf der r-Achse für diese Richtung.
+     * Gets the r-axis offset of the direction.
      *
-     * @return Wert der dr-Koordinate
+     * @return the dr offset
      */
     public int getDr() {
         return dr;

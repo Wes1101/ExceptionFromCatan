@@ -22,7 +22,7 @@
 
 .big_button:hover {
   /* leicht getönter Hintergrund in deiner Wunschfarbe */
-  -fx-background-color: #41251533;
+    -fx-background-color: rgba(65, 37, 21, 0.2);
   /* Rand minimal dunkler für Kontrast */
   -fx-border-color: #351e15;
 }
@@ -58,7 +58,7 @@
 
 .round-button:hover {
   /* leicht getönter Hintergrund in deiner Wunschfarbe */
-  -fx-background-color: #41251533;
+    -fx-background-color: rgba(65, 37, 21, 0.2);
   /* Rand minimal dunkler für Kontrast */
   -fx-border-color: #351e15;
 }
@@ -128,3 +128,6 @@
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
+
+
+

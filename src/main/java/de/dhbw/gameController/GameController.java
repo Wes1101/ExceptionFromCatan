@@ -11,18 +11,17 @@
 package de.dhbw.gameController;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import de.dhbw.frontEnd.board.GameUI;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.frontEnd.board.SceneBoard;
+import de.dhbw.frontEnd.board.SceneBoardController;
 import de.dhbw.gamePieces.Bandit;
 import de.dhbw.player.Bank;
-import de.dhbw.player.Human;
 import de.dhbw.player.Player;
 
 @Slf4j
@@ -50,7 +49,7 @@ public class GameController {
     private MinorGameStates minorGameState;
 
     @Setter
-    private GameUI gui;
+    private SceneBoardController gui;
 
     /**
      * Creates new GameController
@@ -67,7 +66,7 @@ public class GameController {
         log.debug("GameController created with type {}", gameControllerType);
         this.players = new Player[playerAmount];
         for (int i = 0; i < playerAmount; i++) {
-            players[i] = new Human("", i);
+            players[i] = new Player(i);
         }
 
         if (playerAmount > 4) {
@@ -80,7 +79,7 @@ public class GameController {
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
-        //this.bandit = new Bandit(catanBoard.getDesertCoords());  //TODO: @Johann implement method in catanboard to return IntTuple of Desert location
+        this.bandit = new Bandit(catanBoard.getDesertCoords());
         this.syso = syso;
     }
 
@@ -133,12 +132,11 @@ public class GameController {
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            TwoTuples coordinatesFirstSettlementStreet = this.getCoordinatesFirstSettlementStreet();
-            IntTupel coordinatesFirstSettlement = coordinatesFirstSettlementStreet.t1();
-            IntTupel coordinatesFirstStreet = coordinatesFirstSettlementStreet.t2();
+            int coordinatesFirstSettlement = getCoordinatesFirstSettlement();
+            IntTupel coordinatesFirstStreet = getCoordinatesFirstStreet();
 
-//            this.players[currentIndex].buyFirstSettlement();
-//            this.players[currentIndex].buyFirstStreet(); TODO: @Johann
+            this.players[currentIndex].buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
+            this.players[currentIndex].buyFirstStreet(coordinatesFirstStreet, bank, catanBoard);
 
             orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
             currentIndex = currentIndex - 1;
@@ -157,14 +155,12 @@ public class GameController {
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            TwoTuples coordinatesSecondSettlementStreet = this.getCoordinatesFirstSettlementStreet();
-            IntTupel coordinatesSecondSettlement = coordinatesSecondSettlementStreet.t1();
-            IntTupel coordinatesSecondStreet = coordinatesSecondSettlementStreet.t2();
+            int coordinatesSecondSettlement = getCoordinatesFirstSettlement();
+            IntTupel coordinatesSecondStreet = getCoordinatesFirstStreet();
 
-//            player.buySecondSettlement();
-//            player.buySecondStreet();
-
-            //TODO: recieve according ressources: @Johann
+            this.players[currentIndex].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
+            this.players[currentIndex].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
+            this.players[currentIndex].buyFirstStreet(coordinatesSecondStreet, bank, catanBoard);
         }
         minorGameState = MinorGameStates.NO_STATE;
 
@@ -206,7 +202,7 @@ public class GameController {
                     IntTupel selectedNewLocation = robbedPlayerLocation.intTupel();
                     Player robbedPlayer = robbedPlayerLocation.player();
 
-                    //bandit.trigger(selectedNewLocation); TODO: @Fabian @Johann Information von welchem Spieler die Resource geklaut wird.
+                    bandit.trigger(catanBoard, selectedNewLocation, robbedPlayer, player, players, bank);
                 } else {
                     log.info("Distributing all resources...");
                     minorGameState = MinorGameStates.DISTRIBUTE_RESOURCES;
@@ -250,9 +246,9 @@ public class GameController {
     private boolean checkVictory() {
         log.debug("checking victory");
         for (Player player : this.players) {
-        /*if (player.getVictoryPoints() >= this.victoryPoints) {
-            return true;
-        }*/
+            if (player.getVictoryPoints() >= this.victoryPoints) {
+                return true;
+            }
         }
         log.debug("no one was good enough so far");
         return false;
@@ -278,7 +274,7 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
             if (!this.syso) {
-                gui.activePlayer(player);
+                gui.setactivePlayer(player);
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -330,13 +326,41 @@ public class GameController {
      *
      * @return Returns the coordinates of the settlement and street
      */
-    public TwoTuples getCoordinatesFirstSettlementStreet() {
+    public Integer getCoordinatesFirstSettlement() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("What, you want the location of the first settlement?");
+            try {
+                return gui.waitForSettlementClick()
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid selection");
+                return -1;  // or handle however you want
+            }
+
+            //coordinatesFirstSettlement = gui.buildSettlement(player);
+
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
+        } else {
+            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+                    this.gameControllerType);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the coordinates for the first (two) settlements and streets
+     *
+     * @return Returns the coordinates of the settlement and street
+     */
+    public IntTupel getCoordinatesFirstStreet() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement and street?");
-            //coordinatesFirstSettlement = gui.buildSettlement(player);
             //coordinatesFirstStreet = gui.buildStreet(player);
-            return new TwoTuples(new IntTupel(1,1), new IntTupel(1,1));
+            return new IntTupel(1, 1);
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
@@ -390,5 +414,26 @@ public class GameController {
             log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
         }
         return null;
+    }
+
+    public void buildSettlement(int nodeId, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buySettlement(nodeId);
+        }
+        //TODO: Necessary for Server and Client????
+    }
+
+    public void buildStreet(IntTupel location, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buyStreet(location);
+        }
+        //TODO: Necessary for Server and Client????
+    }
+
+    public void buildCity(int nodeId, Player activePlayer) {
+        if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // TODO: activeplayer.buyCity(nodeId);
+        }
+        //TODO: Necessary for Server and Client????
     }
 }
