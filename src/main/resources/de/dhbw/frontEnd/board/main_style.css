@@ -116,6 +116,10 @@
      -fx-opacity: 1;
 }
 
+.road:hover {
+  -fx-fill: white ;
+}
+
 .build:hover {
     -fx-background-color: transparent;
     -fx-border-color: white;
