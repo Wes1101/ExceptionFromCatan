@@ -126,13 +126,13 @@ public class SinglePlayerScene {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
-                SceneBoardController controller = loader.getController();
+                SceneBoardController boardController = loader.getController();
 
                 GameController gameController = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, true);
-                gameController.setGui(controller);
+                gameController.setGui(boardController);
 
-                controller.setCatanBoard(gameController.getCatanBoard());
-                controller.initBoard();
+                boardController.setCatanBoard(gameController.getCatanBoard());
+                boardController.initBoard();
 
                 Scene gameScene = new Scene(gameRoot);
                 primaryStage.setScene(gameScene);
