@@ -1,0 +1,11 @@
+.dice-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+}
+
+.dice-button:hover {
+    -fx-background-color: transparent !important;
+    -fx-background-image: none !important;
+    -fx-border-color: transparent !important;
+}

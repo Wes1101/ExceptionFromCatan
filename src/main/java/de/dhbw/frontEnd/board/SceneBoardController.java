@@ -2,6 +2,8 @@ package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import de.dhbw.player.Player;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -13,6 +15,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -35,6 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
 
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
@@ -93,6 +97,16 @@ public class SceneBoardController implements Initializable, GameUI {
   @FXML
   private Button close_option_menue;
 
+  @FXML
+  private Button diceButton1;
+
+  @FXML
+  private Button diceButton2;
+
+  private final Image[] diceImages = new Image[6];
+  private Image diceEmptyImage;
+  private final Random random = new Random();
+
   // Duration of fade animation
   private static final Duration FADE_DURATION = Duration.millis(300);
   private static final Duration HOVER_DURATION = Duration.millis(200);
@@ -111,6 +125,10 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
   private Runnable onUIReady;
+
+  private int realDice1 = 1;
+  private int realDice2 = 1;
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -168,7 +186,40 @@ public class SceneBoardController implements Initializable, GameUI {
       if (onUIReady != null) onUIReady.run();
     });
 
+    loadDiceImages();
+    initDiceButton(diceButton1);
+    initDiceButton(diceButton2);
+
+// Würfelbutton-Klicks triggern die Animation
+    diceButton1.setOnAction(e -> startRollDiceAnimation());
+    diceButton2.setOnAction(e -> startRollDiceAnimation());
+
+
   }
+
+  private void initDiceButton(Button btn) {
+    btn.setBackground(makeDiceBackground(diceEmptyImage));
+    btn.setStyle("-fx-border-color: #888; -fx-border-width: 2; -fx-background-radius: 8;");
+  }
+
+  private Background makeDiceBackground(Image image) {
+    return new Background(new BackgroundImage(
+            image,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+            BackgroundPosition.CENTER,
+            new BackgroundSize(100, 100, false, false, false, false)
+    ));
+  }
+
+  private void loadDiceImages() {
+    for (int i = 0; i < 6; i++) {
+      diceImages[i] = new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice" + (i + 1) + ".png").toExternalForm());
+    }
+    diceEmptyImage = new Image(getClass().getResource("/de/dhbw/frontEnd/board/diceempty.png").toExternalForm());
+  }
+
+
 
   @FXML
   private void onNodeClicked(ActionEvent event) {
@@ -200,6 +251,12 @@ public class SceneBoardController implements Initializable, GameUI {
             }
     );
   }
+
+  public void setDiceResult(int dice1, int dice2) {
+    this.realDice1 = dice1;
+    this.realDice2 = dice2;
+  }
+
 
   private void onOpenTrade(MouseEvent event) {
     // Trade menue animation (open)
@@ -328,8 +385,27 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public void startRollDiceAnimation() {
+    Timeline timeline = new Timeline();
+    int rollSteps = 10;
 
+    for (int i = 0; i < rollSteps; i++) {
+      timeline.getKeyFrames().add(new KeyFrame(Duration.millis(i * 100), e -> {
+        int temp1 = random.nextInt(6);
+        int temp2 = random.nextInt(6);
+        diceButton1.setBackground(makeDiceBackground(diceImages[temp1]));
+        diceButton2.setBackground(makeDiceBackground(diceImages[temp2]));
+      }));
+    }
+
+    // Letzter Frame: Anzeige des echten Ergebnisses
+    timeline.getKeyFrames().add(new KeyFrame(Duration.millis(rollSteps * 100), e -> {
+      showDice(realDice1, realDice2); // 🎯 hier kommt das „echte“ Ergebnis
+    }));
+
+    timeline.play();
   }
+
+
 
   /**
    * Displays the result of a die roll.
@@ -339,13 +415,14 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public void showDice(int dice1, int dice2) {
-
-    //Würfelpanes nur damitsetzung funktioniert
-      Pane dicePane1 = new Pane();
-      Pane dicePane2 = new Pane();
-
-
+    if (dice1 >= 1 && dice1 <= 6) {
+      diceButton1.setBackground(makeDiceBackground(diceImages[dice1 - 1]));
+    }
+    if (dice2 >= 1 && dice2 <= 6) {
+      diceButton2.setBackground(makeDiceBackground(diceImages[dice2 - 1]));
+    }
   }
+
 
   /**
    * Prompts the player to select a location to build a settlement.
