@@ -125,12 +125,12 @@ public class Player implements ResourceReceiver {
         return false;
     }
 
-    public boolean buyFirstStreet(IntTupel nodes, Bank bank, CatanBoard board) {
+    public boolean buyFirstStreet(int node1, int node2, Bank bank, CatanBoard board) {
         Building building = bank.getBuilding(BuildingTypes.STREET, this);
 
         if (building != null) {
 
-            board.buildStreet(nodes.q(), nodes.r(), building);
+            board.buildStreet(node1, node2, building);
             return true;
         }
         return false;

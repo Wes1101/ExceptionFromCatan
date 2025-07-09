@@ -12,6 +12,7 @@ package de.dhbw.gameController;
 
 import java.util.Random;
 
+import de.dhbw.gameRules.Rules;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,7 @@ public class GameController {
     private Player[] players;
     private final Bank bank;
     private final CatanBoard catanBoard;
+    private final Rules rules;
     private int gameRound;
     private int dice1;
     private int dice2;
@@ -73,6 +75,7 @@ public class GameController {
             this.catanBoard = new CatanBoard(3);
         }
 
+        this.rules = new Rules(victoryPoints);
         this.bank = new Bank(19, players);       // Sind eig immer 19 -> Konstroktor
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
@@ -111,58 +114,93 @@ public class GameController {
 
         log.info("...done. Sorting players...");
 
-        //check highest number
-        int highestNumber = 0;
-        int highestNumberIndex = 0;
-        for (int i = 0; i < playerDiceNumber.length; i++) {
-            if (playerDiceNumber[i] > highestNumber) {
-                highestNumber = playerDiceNumber[i];
-                highestNumberIndex = i;
+        //sort by highest number
+        int[][] kombiListe = new int[this.players.length][2];
+        for (int i = 0; i < players.length; i++) {
+            kombiListe[i][0] = i;
+            kombiListe[i][1] = playerDiceNumber[i];
+        }
+        for (int i = 0; i < kombiListe.length - 1; i++) {
+            for (int j = 0; j < kombiListe.length - 1 - i; j++) {
+                if (kombiListe[j][1] < kombiListe[j + 1][1]) {
+                    // Tausche Einträge
+                    int[] temp = kombiListe[j];
+                    kombiListe[j] = kombiListe[j + 1];
+                    kombiListe[j + 1] = temp;
+                }
             }
+        }
+        Player[] tempPlayers = this.players;
+        for (int i = kombiListe.length; i > 0; i--) {
+            this.players[i] = tempPlayers[kombiListe[i][0]];
         }
 
         log.info("...done. Placing first settlements and streets");
         //place first settlement
-        int currentIndex = highestNumberIndex;
         Player[] orderedPlayers = this.players;
         for (int i = 0; i < this.players.length; i++) {
-            this.activePlayer(this.players[currentIndex]);
+            this.activePlayer(this.players[i]);
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             int coordinatesFirstSettlement = getCoordinatesFirstSettlement();
-            IntTupel coordinatesFirstStreet = getCoordinatesFirstStreet();
+            int[] coordinatesFirstStreet = getCoordinatesFirstStreet();
 
-            this.players[currentIndex].buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
-            this.players[currentIndex].buyFirstStreet(coordinatesFirstStreet, bank, catanBoard);
+            if (rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, this.players[i])) {
+                this.players[i].buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
+            }
+            else {
+                i ++;
+                continue;
+            }
 
-            orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
-            currentIndex = currentIndex - 1;
-            if (currentIndex < 0) {
-                currentIndex = this.players.length - 1;
+            int node1 = coordinatesFirstStreet[0];
+            int node2 = coordinatesFirstStreet[1];
+            if (rules.buildStreet(catanBoard, node1, node2, this.players[i])) {
+                this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
+            }
+            else {
+                i ++;
+                continue;
             }
         }
-        this.players = orderedPlayers;
         minorGameState = MinorGameStates.NO_STATE;
+
+        gameRound++;
 
         log.info("...done. Placing second settlements and streets...");
 
         //place second settlement and get according resources
-        for (Player player : this.players) {
-            this.activePlayer(player);
+        for (int i = this.players.length; i > 0; i--) {
+            this.activePlayer(this.players[i]);
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             int coordinatesSecondSettlement = getCoordinatesFirstSettlement();
-            IntTupel coordinatesSecondStreet = getCoordinatesFirstStreet();
+            int[] coordinatesSecondStreet = getCoordinatesFirstStreet();
 
-            this.players[currentIndex].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
-            this.players[currentIndex].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
-            this.players[currentIndex].buyFirstStreet(coordinatesSecondStreet, bank, catanBoard);
+            if (rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, this.players[i])) {
+                this.players[i].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
+                this.players[i].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
+            }
+            else {
+                i ++;
+                continue;
+            }
+
+            int node1 = coordinatesSecondStreet[0];
+            int node2 = coordinatesSecondStreet[1];
+            if (rules.buildStreet(catanBoard, node1, node2, this.players[i])) {
+                this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
+            }
+            else {
+                i ++;
+                continue;
+            }
         }
         minorGameState = MinorGameStates.NO_STATE;
 
-        gameRound += 2;
+        gameRound ++;
 
         log.info("...done!");
 
@@ -244,7 +282,8 @@ public class GameController {
     private boolean checkVictory() {
         log.debug("checking victory");
         for (Player player : this.players) {
-            if (player.getVictoryPoints() >= this.victoryPoints) {
+            if (this.rules.checkWin(player)) {
+                log.debug(player + " wins!");
                 return true;
             }
         }
@@ -343,12 +382,12 @@ public class GameController {
      *
      * @return Returns the coordinates of the settlement and street
      */
-    public IntTupel getCoordinatesFirstStreet() {
+    public int[] getCoordinatesFirstStreet() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement and street?");
             //coordinatesFirstStreet = gui.buildStreet(player);
-            return new IntTupel(1, 1);
+            return new int[]{1, 1};
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {

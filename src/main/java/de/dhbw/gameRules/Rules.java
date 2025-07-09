@@ -22,12 +22,14 @@ public class Rules {
      * Used to update victory points accordingly.
      */
     private Player playerWithLongestRoad;
+    private final int victoryPoints;
 
     /**
      * Constructs a new Rules object with no longest road owner initially set.
      */
-    public Rules() {
+    public Rules(int victoryPoints) {
         this.playerWithLongestRoad = null;
+        this.victoryPoints = victoryPoints;
     }
 
     /**
@@ -127,11 +129,10 @@ public class Rules {
      * Checks if the player has reached the victory point goal.
      *
      * @param player         the player to check
-     * @param victoryPoints  the number of points required to win
      * @return the player if they have won, otherwise null
      */
-    public Player checkWin(Player player, int victoryPoints) {
-        return player.getVictoryPoints() >= victoryPoints ? player : null;
+    public Boolean checkWin(Player player) {
+        return player.getVictoryPoints() >= this.victoryPoints ? true : false;
     }
 
     // === Private Helper Methods ===
