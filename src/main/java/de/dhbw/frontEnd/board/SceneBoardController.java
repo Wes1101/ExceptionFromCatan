@@ -3,7 +3,6 @@ package de.dhbw.frontEnd.board;
 import de.dhbw.catanBoard.hexGrid.Tiles.Ressource;
 import de.dhbw.player.Player;
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,8 +13,6 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -27,11 +24,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 
@@ -43,8 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-
-import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
@@ -113,7 +103,12 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private Consumer<String> settlementClickCallback;
 
-  private CompletableFuture<Integer> nodeSelectionFuture;
+  private CompletableFuture<Integer> settlenemtNodeSelectionFuture;
+
+  private Consumer<String> streetClickCallback;
+
+  private CompletableFuture<Integer> streetSelectionFuture;
+
 
   private Runnable onUIReady;
 
@@ -421,7 +416,7 @@ public class SceneBoardController implements Initializable, GameUI {
     this.showUserMessage("Click settlement node", "Please click on a settlement node",
             Alert.AlertType.INFORMATION);
 
-    nodeSelectionFuture = new CompletableFuture<>();
+    settlenemtNodeSelectionFuture = new CompletableFuture<>();
 
     // Set a one-time callback to complete the future when a button is clicked
     this.settlementClickCallback = (String fxId) -> {
@@ -429,17 +424,17 @@ public class SceneBoardController implements Initializable, GameUI {
         String nodeIdStr = fxId.replace("node_", "");  // ✅ sanitize
         int nodeId = Integer.parseInt(nodeIdStr);
         System.out.println("🟡 settlementClickCallback INVOKED with: " + nodeId);
-        if (!nodeSelectionFuture.isDone()) {
-          nodeSelectionFuture.complete(nodeId);
+        if (!settlenemtNodeSelectionFuture.isDone()) {
+          settlenemtNodeSelectionFuture.complete(nodeId);
         }
       } catch (NumberFormatException e) {
-        nodeSelectionFuture.completeExceptionally(e);
+        settlenemtNodeSelectionFuture.completeExceptionally(e);
       }
       // ✅ Clear the callback so future clicks do nothing
       this.settlementClickCallback = null;
     };
 
-    return nodeSelectionFuture;
+    return settlenemtNodeSelectionFuture;
   }
 
   public void setOnUIReady(Runnable r) {
