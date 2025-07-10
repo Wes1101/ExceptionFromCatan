@@ -338,7 +338,7 @@ public class GameController {
                 log.error("Timeout or invalid selection");
                 return -1;  // or handle however you want
             }
-            
+
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
@@ -357,8 +357,16 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first street?");
-            //coordinatesFirstStreet = gui.buildStreet(player);
-            return new IntTupel(1, 1);
+
+            try {
+                return gui.waitForStreetClick()
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid selection");
+                return null;  // or handle however you want
+            }
+
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {

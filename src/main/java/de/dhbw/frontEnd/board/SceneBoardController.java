@@ -6,8 +6,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -17,7 +15,6 @@ import javafx.scene.layout.BackgroundSize;
 
 
 import javafx.scene.shape.Rectangle;  //+++
-import javafx.scene.Node;   //+++
 
 
 import java.net.URL;
@@ -127,7 +124,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private Consumer<String> streetClickCallback;
 
-  private CompletableFuture<Integer> streetSelectionFuture;
+  private CompletableFuture<IntTupel> streetSelectionFuture;
 
 
   private Runnable onUIReady;
@@ -202,8 +199,16 @@ public class SceneBoardController implements Initializable, GameUI {
 
     tile_layer.getChildren().stream()
             .filter(n -> n instanceof Rectangle && n.getId() != null && n.getId().startsWith("road_"))
-            .forEach(n -> n.setOnMouseClicked(evt ->
-                    System.out.println("Straße geklickt: fx:id=" + n.getId())
+            .forEach(n -> n.setOnMouseClicked(evt -> {
+                      System.out.println("Straße geklickt: fx:id=" + n.getId());
+
+                      log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + n.getId());
+                      log.debug("🔴 Callback is: " + streetClickCallback);
+
+                      if (streetClickCallback != null) {
+                        streetClickCallback.accept(n.getId());
+                      }
+                    }
             ));
   }
 
@@ -552,6 +557,36 @@ public class SceneBoardController implements Initializable, GameUI {
     };
 
     return settlenemtNodeSelectionFuture;
+  }
+
+  public CompletableFuture<IntTupel> waitForStreetClick() {
+    log.debug("\uD83D\uDFE2 waitForStreetClick CALLED");
+
+    this.showUserMessage("Click street", "Please click on a street node",
+            Alert.AlertType.INFORMATION);
+
+    streetSelectionFuture = new CompletableFuture<IntTupel>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.streetClickCallback = (String fxId) -> {
+      try {
+        // ✅ sanitize
+        String idPart = fxId.replace("road_", "");
+        String[] parts = idPart.split("_");
+        IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+
+        System.out.println("🟡 settlementClickCallback INVOKED with: " + streetId);
+        if (!streetSelectionFuture.isDone()) {
+          streetSelectionFuture.complete(streetId);
+        }
+      } catch (NumberFormatException e) {
+        streetSelectionFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.settlementClickCallback = null;
+    };
+
+    return streetSelectionFuture;
   }
 
   public void setOnUIReady(Runnable r) {
