@@ -7,6 +7,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -31,6 +32,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 
@@ -46,6 +49,19 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
+
+  @FXML
+  private Label player_1_label;
+  @FXML
+  private Label player_2_label;
+  @FXML
+  private Label player_3_label;
+  @FXML
+  private Label player_4_label;
+  @FXML
+  private Label player_5_label;
+  @FXML
+  private Label player_6_label;
 
   @FXML
   private HBox root;
@@ -121,6 +137,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
   private Button build_road;
+
+  @FXML
+  private Label victory_points_background_number;
 
   private final Image[] diceImages = new Image[6];
   private Image diceEmptyImage;
@@ -254,6 +273,9 @@ public class SceneBoardController implements Initializable, GameUI {
     build_city.setDisable(true);
     build_road.setDisable(true);
     build_development_card.setDisable(true);
+
+    //DEBUG
+    player_1_label.setStyle("-fx-font-weight: bold;");
 
   }
 
@@ -483,6 +505,19 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  public void setPlayerAmount(int playerCount) {
+    // Set the visibility of player labels based on the number of players
+    player_1_label.setVisible(playerCount >= 1);
+    player_2_label.setVisible(playerCount >= 2);
+    player_3_label.setVisible(playerCount >= 3);
+    player_4_label.setVisible(playerCount >= 4);
+    player_5_label.setVisible(playerCount >= 5);
+    player_6_label.setVisible(playerCount >= 6);
+
+    // Log-Ausgabe zur Überprüfung
+    log.info("Anzahl der Spieler in SceneBoardController gesetzt: {}", playerCount);
+  }
+
   /**
    * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
    *
@@ -493,11 +528,26 @@ public class SceneBoardController implements Initializable, GameUI {
     this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
     int ID = player.getId();
 
-    /*TODO Adrian - Aktiver Spieler in GUI setzen*/
+    victory_points_background_number.setText(Integer.toString(player.getVictoryPoints()));
+
+    this.setActivePlayerLabel(ID);
 
     // Log-Ausgabe zur Überprüfung
     log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
 
+  }
+
+  private void setActivePlayerLabel(int id) {
+    Label[] labels = {player_1_label, player_2_label, player_3_label, player_4_label, player_5_label, player_6_label};
+    for (int i = 0; i < labels.length; i++) {
+      if (labels[i] != null) {
+        if (i == id) {
+          labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.BOLD, labels[i].getFont().getSize()));
+        } else {
+          labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.NORMAL, labels[i].getFont().getSize()));
+        }
+      }
+    }
   }
 
   /**

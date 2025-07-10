@@ -97,6 +97,8 @@ public class GameController {
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
+        this.initGui();
+
         int[] playerDiceNumber = new int[this.players.length];
         log.info("Creating all players...");
         for (int i = 0; i < this.players.length; i++) {
@@ -168,6 +170,15 @@ public class GameController {
 
         log.info("...done!");
 
+    }
+
+    private void initGui() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("initializing gui from GameController");
+            gui.setGameController(this);
+            gui.setPlayerAmount(this.players.length);
+        }
     }
 
     /**
@@ -428,7 +439,6 @@ public class GameController {
     public String awaitFinishTurnClicked() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
-            gui.setGameController(this);
             log.debug("await finish turn called");
             try {
                 log.info("You have 2 minutes to click on a Settlement location");
