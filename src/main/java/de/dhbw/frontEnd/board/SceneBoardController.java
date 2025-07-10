@@ -106,6 +106,21 @@ public class SceneBoardController implements Initializable, GameUI {
   @FXML
   private Button diceButton2;
 
+  @FXML
+  private ImageView finish_turn_button;
+
+  @FXML
+  private Button build_development_card;
+
+  @FXML
+  private Button build_settlement;
+
+  @FXML
+    private Button build_city;
+
+  @FXML
+  private Button build_road;
+
   private final Image[] diceImages = new Image[6];
   private Image diceEmptyImage;
   private final Random random = new Random();
@@ -125,6 +140,10 @@ public class SceneBoardController implements Initializable, GameUI {
   private Consumer<String> streetClickCallback;
 
   private CompletableFuture<IntTupel> streetSelectionFuture;
+
+  private Consumer<String> finishTurnClickCallback;
+
+  private CompletableFuture<String> finishTurnSelectionFuture;
 
 
   private Runnable onUIReady;
@@ -210,6 +229,14 @@ public class SceneBoardController implements Initializable, GameUI {
                       }
                     }
             ));
+
+    finish_turn_button.setMouseTransparent(true);
+    trade_card.setMouseTransparent(true);
+    build_settlement.setDisable(true);
+    build_city.setDisable(true);
+    build_road.setDisable(true);
+    build_development_card.setDisable(true);
+
   }
 
   private Background makeDiceBackground(Image image) {
@@ -240,6 +267,20 @@ public class SceneBoardController implements Initializable, GameUI {
 
     if (settlementClickCallback != null) {
       settlementClickCallback.accept(fxId);
+    }
+  }
+
+  @FXML
+  private void onFinishTurnClicked(MouseEvent event) {
+    log.debug("🔵 Finish Turn button clicked");
+    finish_turn_button.setMouseTransparent(true);
+    trade_card.setMouseTransparent(true);
+    build_settlement.setDisable(true);
+    build_city.setDisable(true);
+    build_road.setDisable(true);
+
+    if (finishTurnClickCallback != null) {
+      finishTurnClickCallback.accept("finish_turn_button");
     }
   }
 
@@ -587,6 +628,34 @@ public class SceneBoardController implements Initializable, GameUI {
     };
 
     return streetSelectionFuture;
+  }
+
+  public CompletableFuture<String> waitForFinishTurnClick() {
+    log.debug("\uD83D\uDFE2 waitForFinishTurnClick CALLED");
+
+    finish_turn_button.setMouseTransparent(false);
+    trade_card.setMouseTransparent(false);
+    build_settlement.setDisable(false);
+    build_city.setDisable(false);
+    build_road.setDisable(false);
+
+    finishTurnSelectionFuture = new CompletableFuture<String>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.finishTurnClickCallback = (String name) -> {
+      try {
+        log.debug("🟡 waitForFinishTurnClicked INVOKED with: " + name);
+        if (!finishTurnSelectionFuture.isDone()) {
+          finishTurnSelectionFuture.complete(name);
+        }
+      } catch (NumberFormatException e) {
+        finishTurnSelectionFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.finishTurnClickCallback = null;
+    };
+
+    return finishTurnSelectionFuture;
   }
 
   public void setOnUIReady(Runnable r) {

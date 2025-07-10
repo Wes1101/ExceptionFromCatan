@@ -637,6 +637,14 @@
                               <Insets right="20.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
+                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" styleClass="round-button" onMouseClicked="#onFinishTurnClicked">
+                           <image>
+                              <Image url="@finish-turn_icon.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets right="20.0" top="20.0" />
+                           </VBox.margin>
+                        </ImageView>
                         <StackPane fx:id="trade_menue" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
                            <VBox.margin>
                               <Insets right="20.0" />

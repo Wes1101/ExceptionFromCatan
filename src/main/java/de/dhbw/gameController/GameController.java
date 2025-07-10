@@ -215,7 +215,8 @@ public class GameController {
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-                //TODO: Clarify handling of that part as well
+                this.awaitFinishTurnClicked();
+
             }
             gameRound++;
         }
@@ -420,6 +421,29 @@ public class GameController {
             /*   TODO: @David   */
         } else {
             log.warn("activateBandit() was called but GameControllerType is {}", this.gameControllerType);
+        }
+        return null;
+    }
+
+    public String awaitFinishTurnClicked() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("await finish turn called");
+            try {
+                log.info("You have 2 minutes to click on a Settlement location");
+                return gui.waitForFinishTurnClick()
+                        .orTimeout(32, TimeUnit.MINUTES)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid");
+                return "ERROR";  // or handle however you want
+            }
+
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
+        } else {
+            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}",
+                    this.gameControllerType);
         }
         return null;
     }
