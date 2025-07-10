@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 public class Graph {
 
     private static final Logger log = LoggerFactory.getLogger(Graph.class);
-
     private Edge[][] graph;
     private Node[] nodes;
 
@@ -28,6 +27,7 @@ public class Graph {
      *
      * @param nodes total number of nodes to initialize in the graph
      */
+
     public Graph(int nodes) {
         initNodes(nodes);
         graph = new Edge[nodes][nodes];
@@ -38,6 +38,7 @@ public class Graph {
      *
      * @param numNodes number of nodes to create
      */
+
     private void initNodes(int numNodes) {
         nodes = new Node[numNodes];
         for (int i = 0; i < numNodes; i++) {
@@ -52,6 +53,7 @@ public class Graph {
      * @param i index of the first node
      * @param j index of the second node
      */
+
     public void createEdge(int i, int j) {
         graph[i][j] = new Edge();
         graph[j][i] = new Edge();
@@ -68,6 +70,7 @@ public class Graph {
      * @param j      second node index
      * @param street the street to assign to the edge
      */
+
     public void updateEdge(int i, int j, Street street) {
         graph[i][j].setStreet(street);
         graph[j][i].setStreet(street);
@@ -83,6 +86,7 @@ public class Graph {
      * @param player the player whose roads are being analyzed
      * @return the length of the longest connected road owned by the player (minimum 3 to count)
      */
+
     public int findLongestTradeRoutes(Player player) {
         int maxLength = 0;
         for (int startNode = 0; startNode < graph.length; startNode++) {
@@ -102,6 +106,7 @@ public class Graph {
      * @param player   the player owning the roads
      * @return length of the longest path found from this node
      */
+
     private int dfsLength(int current, int from, boolean[] searched, Player player) {
         searched[current] = true;
         int maxDepth = 1;
@@ -128,6 +133,7 @@ public class Graph {
      * @param players array of all players
      * @return the player with the longest road, or {@code null} if no one qualifies
      */
+
     public Player findPlayerLongestStreet(Player[] players) {
         int maxLength = 0;
         Player winner = null;
@@ -140,7 +146,6 @@ public class Graph {
             }
             logRouteDetails(player, length, winner, maxLength);
         }
-
         return winner;
     }
 
@@ -152,6 +157,7 @@ public class Graph {
      * @param winner    the current leading player
      * @param maxLength the length of the longest road so far
      */
+
     private void logRouteDetails(Player player, int length, Player winner, int maxLength) {
         log.info("Player {} has a road length of {}", player, length);
         log.info("Current longest road is by Player {} with length {}", winner, maxLength);

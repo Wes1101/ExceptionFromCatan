@@ -22,17 +22,46 @@ public class Rules {
      * Keeps track of the current player with the longest road bonus.
      * Used to update victory points accordingly.
      */
+    private final CatanBoard board;
     private Player playerWithLongestRoad;
     private final int victoryPoints;
 
     /**
      * Constructs a new Rules object with no longest road owner initially set.
      */
+
     public Rules(int victoryPoints) {
-        this.playerWithLongestRoad = null;
+    this.board = board;
         this.victoryPoints = victoryPoints;
+        this.playerWithLongestRoad = null;
         log.info("Rules initialized with victory points: {}", victoryPoints);
     }
+
+    /**
+     * assigning longest road to player
+     *<p>
+     *Requires the current winner
+     *@param winner
+     *@param player
+     */
+     public void assignLongestRoadToPlayer(Player[] players)
+     {
+         if(this.playerWithLongestRoad !=null)
+             {
+             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() -2);
+             log.info("Removed longest road bonus to player {}", this.playerWithLongestRoad.getId());
+             }
+
+         Player longestRoadOwner = board.getGraph().findPlayerLongestStreet(player);
+         this.playerWithLongestRoad = longestRoadOwner;
+
+         if(this.playerWithLongestRoad !=null)
+             {
+             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() +2);
+             log.info("Assigned longest road bonus to player {}", this.playerWithLongestRoad.getId());
+             }
+     }
+
 
     /**
      * Checks if a player can build their first settlement.
@@ -45,6 +74,7 @@ public class Rules {
      * @param player the player attempting the build
      * @return true if the player can build the first settlement, false otherwise
      */
+
     public boolean buildFirstSettlement(CatanBoard board, int node, Player player) {
         boolean canBuild = !areEnemyBuildingsNext(board, node, player) && !isBuilt(board, node);
         log.info("Player {} attempting to build first settlement at node {}: {}", player.getId(), node, canBuild);
@@ -74,6 +104,7 @@ public class Rules {
      * @param player the player attempting the build
      * @return true if valid, otherwise false
      */
+
     public boolean buildSettlement(CatanBoard board, int node, Player player) {
         boolean canBuild = nextToOwnStreet(board, node, player)
                 && !isBuilt(board, node)
@@ -94,6 +125,7 @@ public class Rules {
      * @param player the player attempting the upgrade
      * @return true if the city can be built, false otherwise
      */
+
     public boolean buildCity(CatanBoard board, int node, Player player) {
         boolean canBuild = hasOwnSettlement(board, node, player)
                 && player.enoughResources(City.getBuildCost());
@@ -113,6 +145,7 @@ public class Rules {
      * @param player the player attempting the build
      * @return true if the road can be built, false otherwise
      */
+
     public boolean buildStreet(CatanBoard board, int node1, int node2, Player player) {
         boolean builtNode1 = hasOwnSettlement(board, node1, player);
         boolean builtNode2 = hasOwnSettlement(board, node2, player);
@@ -134,6 +167,7 @@ public class Rules {
      * @param board   the game board
      * @param players all players in the game
      */
+
     public void assignLongestRoadToPlayer(CatanBoard board, Player[] players) {
         if (this.playerWithLongestRoad != null) {
             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() - 2);
@@ -155,6 +189,7 @@ public class Rules {
      * @param player         the player to check
      * @return the player if they have won, otherwise null
      */
+
     public Boolean checkWin(Player player) {
         boolean hasWon = player.getVictoryPoints() >= this.victoryPoints;
         log.info("Checking win condition for player {}: {}", player.getId(), hasWon);
@@ -171,6 +206,7 @@ public class Rules {
      * @param player the current player
      * @return true if no enemy buildings are adjacent, false otherwise
      */
+
     private boolean areEnemyBuildingsNext(CatanBoard board, int node, Player player) {
         int allNodes = board.getGraph().getNodes().length;
         for (int i = 0; i < allNodes; i++) {
