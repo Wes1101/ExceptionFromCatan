@@ -13,6 +13,7 @@ package de.dhbw.gameController;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import javafx.application.Platform;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -286,7 +287,9 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
             if (!this.syso) {
-                gui.setactivePlayer(player);
+                Platform.runLater(() -> {
+                    gui.setactivePlayer(player);
+                });
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -401,7 +404,9 @@ public class GameController {
             log.debug("Another update for the players resources, seriously?");
             if (!this.syso) {
                 gui.updatePlayerResources(players);
-                gui.updateBoard(catanBoard);
+                Platform.runLater(() -> {;
+                    gui.updateBoard(catanBoard);
+                });
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */

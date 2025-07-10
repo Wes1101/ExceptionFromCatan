@@ -557,8 +557,9 @@ public class SceneBoardController implements Initializable, GameUI {
       }
 
       // Show bandit overlay if needed
-        assert tile instanceof Resource;
-        showBanditIfBlocked((Resource) tile, x, y, size);
+      if (tile instanceof Resource resTile) {
+        showBanditIfBlocked(resTile, x, y, size);
+      }
 
         //ToDo: add roads and buildings
     }
