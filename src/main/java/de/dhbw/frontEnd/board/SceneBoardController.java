@@ -537,23 +537,36 @@ public class SceneBoardController implements Initializable, GameUI {
   private void setActivePlayerLabel(int id) {
 
     switch (id) {
-      case 1:
-        player_1_label.setStyle("-fx-text-fill: red");
-        break;
       case 2:
-        player_2_label.setStyle("-fx-text-fill: red");
+        player_1_label.setStyle("-fx-text-fill: red");
+        //log.info("Spieler 1 ist aktiv");
+        System.out.println("Spieler 1 ist aktiv");
+
         break;
       case 3:
-        player_3_label.setStyle("-fx-text-fill: red");
+        player_2_label.setStyle("-fx-text-fill: red");
+       // log.info("Spieler 2 ist aktiv");
+        System.out.println("Spieler 2 ist aktiv");
         break;
       case 4:
-        player_4_label.setStyle("-fx-text-fill: red");
+        player_3_label.setStyle("-fx-text-fill: red");
+        //log.info("Spieler 3 ist aktiv");
+        System.out.println("Spieler 3 ist aktiv");
         break;
       case 5:
-        player_5_label.setStyle("-fx-text-fill: red");
+        player_4_label.setStyle("-fx-text-fill: red");
+        //log.info("Spieler 4 ist aktiv");
+        System.out.println("Spieler 4 ist aktiv");
         break;
       case 6:
+        player_5_label.setStyle("-fx-text-fill: red");
+        //log.info("Spieler 5 ist aktiv");
+        System.out.println("Spieler 5 ist aktiv");
+        break;
+      case 7:
         player_6_label.setStyle("-fx-text-fill: red");
+       // log.info("Spieler 6 ist aktiv");
+        System.out.println("Spieler 6 ist aktiv");
         break;
     }
 
