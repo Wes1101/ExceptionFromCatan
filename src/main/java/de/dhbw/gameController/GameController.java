@@ -331,6 +331,7 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement?");
             try {
+                log.info("You have 30 seconds to click on a Settlement location");
                 return gui.waitForSettlementClick()
                         .orTimeout(30, TimeUnit.SECONDS)
                         .join();  // Blocks until click or timeout
@@ -359,6 +360,7 @@ public class GameController {
             log.debug("What, you want the location of the first street?");
 
             try {
+                log.info("You have 30 seconds to click on a street");
                 return gui.waitForStreetClick()
                         .orTimeout(30, TimeUnit.SECONDS)
                         .join();  // Blocks until click or timeout
