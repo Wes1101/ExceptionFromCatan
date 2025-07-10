@@ -154,39 +154,28 @@ public class GameController {
 
         log.info("...done. Placing first settlements and streets");
         //place first settlement
-        for (int i = 0; i < this.players.length; i++) {
-            System.out.println(this.players[i].getId());
-            this.activePlayer(this.players[i]);
+        for (Player player : this.players) {
+            System.out.println(player.getId());
+            this.activePlayer(player);
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            while (true) {
-                int coordinatesFirstSettlement = getCoordinatesFirstSettlement();
+            int coordinatesFirstSettlement;
+            do {
+                coordinatesFirstSettlement = getCoordinatesFirstSettlement();
 
-                if (rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, this.players[i])) {
-                    log.info("*Building first settlement " + this.players[i]);
-                    this.players[i].buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
-                    break;
-                }
-                else {
-                    log.warn("can not build first settlement");
-                }
-            }
+            } while (!rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, player));
+            log.info("*Building first settlement " + player);
+            player.buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
 
-            while (true) {
-                int[] coordinatesFirstStreet = getCoordinatesFirstStreet();
-                int node1 = coordinatesFirstStreet[0];
-                int node2 = coordinatesFirstStreet[1];
-
-                if (rules.buildFirstStreet(catanBoard, node1, node2, this.players[i])) {
-                    log.info("*Building first street " + this.players[i]);
-                    this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
-                    break;
-                }
-                else {
-                    log.warn("can not build first street");
-                }
-            }
+            IntTupel coordinatesFirstStreet;
+            do {
+                coordinatesFirstStreet = getCoordinatesFirstStreet();
+            } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), player));
+            int node1 = coordinatesFirstStreet.q();
+            int node2 = coordinatesFirstStreet.r();
+            log.info("*Building first street " + player);
+            player.buyFirstStreet(node1, node2, bank, catanBoard);
 
         }
         minorGameState = MinorGameStates.NO_STATE;
@@ -202,34 +191,24 @@ public class GameController {
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-            while (true) {
-                int coordinatesSecondSettlement = getCoordinatesFirstSettlement();
+            int coordinatesSecondSettlement;
+            do {
+                coordinatesSecondSettlement = getCoordinatesFirstSettlement();
 
-                if (rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, this.players[i])) {
-                    log.info("*Building second settlement " + this.players[i]);
-                    this.players[i].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
-                    this.players[i].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
-                    break;
-                }
-                else {
-                    log.warn("can not build second settlement");
-                }
-            }
+            } while (!rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, this.players[i]));
+            log.info("*Building first settlement " + this.players[i]);
+            log.info("*Building second settlement " + this.players[i]);
+            this.players[i].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
+            this.players[i].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
 
-            while (true) {
-                int[] coordinatesSecondStreet = getCoordinatesFirstStreet();
-                int node1 = coordinatesSecondStreet[0];
-                int node2 = coordinatesSecondStreet[1];
-
-                if (rules.buildFirstStreet(catanBoard, node1, node2, this.players[i])) {
-                    log.info("*Building second street " + this.players[i]);
-                    this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
-                    break;
-                }
-                else {
-                    log.warn("can not build second street");
-                }
-            }
+            IntTupel coordinatesSecondStreet;
+            do {
+                coordinatesSecondStreet = getCoordinatesFirstStreet();
+            } while (!rules.buildFirstStreet(catanBoard, coordinatesSecondStreet.q(), coordinatesSecondStreet.r(), this.players[i]));
+            int node1 = coordinatesSecondStreet.q();
+            int node2 = coordinatesSecondStreet.r();
+            log.info("*Building first street " + this.players[i]);
+            this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
         }
         minorGameState = MinorGameStates.NO_STATE;
 
