@@ -46,20 +46,5 @@ public class HexTile extends Group {
     this.setOnMouseClicked(evt ->
             System.out.println("HexTile: q=" + q + ", r=" + r + ", Res=" + resourceName)
     );
-
-    this.setOnMouseClicked((MouseEvent event) -> {
-      if (onClickedCallback != null) {
-        onClickedCallback.accept(this);
-      }
-    });
-
-
   }
-
-  private Consumer<HexTile> onClickedCallback;
-
-  public void setOnClickedCallback(Consumer<HexTile> callback) {
-    this.onClickedCallback = callback;
-  }
-
 }
