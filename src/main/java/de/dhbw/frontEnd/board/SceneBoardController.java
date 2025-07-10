@@ -1,11 +1,13 @@
 package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
+import de.dhbw.gameController.GameController;
 import de.dhbw.player.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -30,6 +32,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 
@@ -45,6 +49,19 @@ import java.util.function.Consumer;
 
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
+
+  @FXML
+  private Label player_1_label;
+  @FXML
+  private Label player_2_label;
+  @FXML
+  private Label player_3_label;
+  @FXML
+  private Label player_4_label;
+  @FXML
+  private Label player_5_label;
+  @FXML
+  private Label player_6_label;
 
   @FXML
   private HBox root;
@@ -106,6 +123,24 @@ public class SceneBoardController implements Initializable, GameUI {
   @FXML
   private Button diceButton2;
 
+  @FXML
+  private ImageView finish_turn_button;
+
+  @FXML
+  private Button build_development_card;
+
+  @FXML
+  private Button build_settlement;
+
+  @FXML
+    private Button build_city;
+
+  @FXML
+  private Button build_road;
+
+  @FXML
+  private Label victory_points_background_number;
+
   private final Image[] diceImages = new Image[6];
   private Image diceEmptyImage;
   private final Random random = new Random();
@@ -126,11 +161,27 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private CompletableFuture<IntTupel> streetSelectionFuture;
 
+  private Consumer<String> finishTurnClickCallback;
+
+  private CompletableFuture<String> finishTurnSelectionFuture;
+
 
   private Runnable onUIReady;
 
   private int realDice1 = 1;
   private int realDice2 = 1;
+
+  @Setter
+  private GameController gameController;
+
+  private boolean waitingForSettlementClick;
+  private Consumer<Button> settlementClickHandler;
+
+  private boolean waitingForCityClick;
+  private Consumer<Button> cityClickHandler;
+
+  private boolean waitingForStreetClick;
+  private Consumer<Button> streetClickHandler;
 
 
   @Override
@@ -208,8 +259,24 @@ public class SceneBoardController implements Initializable, GameUI {
                       if (streetClickCallback != null) {
                         streetClickCallback.accept(n.getId());
                       }
+
+                      if (waitingForStreetClick && streetClickHandler != null) {
+                        log.debug("🟢 Street click handler invoked for: " + n.getId());
+                        streetClickHandler.accept((Button) n);
+                      }
                     }
             ));
+
+    finish_turn_button.setMouseTransparent(true);
+    trade_card.setMouseTransparent(true);
+    build_settlement.setDisable(true);
+    build_city.setDisable(true);
+    build_road.setDisable(true);
+    build_development_card.setDisable(true);
+
+    //DEBUG
+    player_1_label.setStyle("-fx-font-weight: bold;");
+
   }
 
   private Background makeDiceBackground(Image image) {
@@ -241,6 +308,74 @@ public class SceneBoardController implements Initializable, GameUI {
     if (settlementClickCallback != null) {
       settlementClickCallback.accept(fxId);
     }
+
+    if (waitingForSettlementClick && settlementClickHandler != null) {
+      log.debug("🟢 Settlement click handler invoked for: " + fxId);
+      settlementClickHandler.accept(btn);
+    }
+
+    if (waitingForCityClick && cityClickHandler != null) {
+      log.debug("🟢 City click handler invoked for: " + fxId);
+      cityClickHandler.accept(btn);
+    }
+  }
+
+  @FXML
+  private void onFinishTurnClicked(MouseEvent event) {
+    log.debug("🔵 Finish Turn button clicked");
+    finish_turn_button.setMouseTransparent(true);
+    trade_card.setMouseTransparent(true);
+    build_settlement.setDisable(true);
+    build_city.setDisable(true);
+    build_road.setDisable(true);
+
+    if (finishTurnClickCallback != null) {
+      finishTurnClickCallback.accept("finish_turn_button");
+    }
+  }
+
+  @FXML
+  private void onBuildSettlement(MouseEvent event) {
+    waitingForSettlementClick = true;
+    settlementClickHandler = (Button btn) -> {
+      log.debug("🟢 Settlement button clicked: " + btn.getId());
+
+      int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
+      gameController.buildSettlement(nodeId, activePlayer);
+
+      waitingForSettlementClick = false;
+      settlementClickHandler = null;
+    };
+  }
+
+  @FXML
+  private void onBuildCity(MouseEvent event) {
+    waitingForCityClick = true;
+    cityClickHandler = (Button btn) -> {
+      log.debug("🟢 City button clicked: " + btn.getId());
+
+      int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
+      gameController.buildCity(nodeId, activePlayer);
+
+      waitingForCityClick = false;
+      cityClickHandler = null;
+    };
+  }
+
+  @FXML
+  private void onBuildRoad(MouseEvent event) {
+    waitingForStreetClick = true;
+    streetClickHandler = (Button btn) -> {
+      log.debug("🟢 Street button clicked: " + btn.getId());
+
+      String idPart = btn.getId().replace("road_", "");
+      String[] parts = idPart.split("_");
+      IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+      gameController.buildStreet(streetId, activePlayer);
+
+      waitingForStreetClick = false;
+      streetClickHandler = null;
+    };
   }
 
   private void addHover(StackPane pane) {
@@ -370,6 +505,19 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  public void setPlayerAmount(int playerCount) {
+    // Set the visibility of player labels based on the number of players
+    player_1_label.setVisible(playerCount >= 1);
+    player_2_label.setVisible(playerCount >= 2);
+    player_3_label.setVisible(playerCount >= 3);
+    player_4_label.setVisible(playerCount >= 4);
+    player_5_label.setVisible(playerCount >= 5);
+    player_6_label.setVisible(playerCount >= 6);
+
+    // Log-Ausgabe zur Überprüfung
+    log.info("Anzahl der Spieler in SceneBoardController gesetzt: {}", playerCount);
+  }
+
   /**
    * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
    *
@@ -380,11 +528,26 @@ public class SceneBoardController implements Initializable, GameUI {
     this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
     int ID = player.getId();
 
-    /*TODO Adrian - Aktiver Spieler in GUI setzen*/
+    victory_points_background_number.setText(Integer.toString(player.getVictoryPoints()));
+
+    this.setActivePlayerLabel(ID);
 
     // Log-Ausgabe zur Überprüfung
     log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
 
+  }
+
+  private void setActivePlayerLabel(int id) {
+    Label[] labels = {player_1_label, player_2_label, player_3_label, player_4_label, player_5_label, player_6_label};
+    for (int i = 0; i < labels.length; i++) {
+      if (labels[i] != null) {
+        if (i == id) {
+          labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.BOLD, labels[i].getFont().getSize()));
+        } else {
+          labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.NORMAL, labels[i].getFont().getSize()));
+        }
+      }
+    }
   }
 
   /**
@@ -587,6 +750,34 @@ public class SceneBoardController implements Initializable, GameUI {
     };
 
     return streetSelectionFuture;
+  }
+
+  public CompletableFuture<String> waitForFinishTurnClick() {
+    log.debug("\uD83D\uDFE2 waitForFinishTurnClick CALLED");
+
+    finish_turn_button.setMouseTransparent(false);
+    trade_card.setMouseTransparent(false);
+    build_settlement.setDisable(false);
+    build_city.setDisable(false);
+    build_road.setDisable(false);
+
+    finishTurnSelectionFuture = new CompletableFuture<String>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.finishTurnClickCallback = (String name) -> {
+      try {
+        log.debug("🟡 waitForFinishTurnClicked INVOKED with: " + name);
+        if (!finishTurnSelectionFuture.isDone()) {
+          finishTurnSelectionFuture.complete(name);
+        }
+      } catch (NumberFormatException e) {
+        finishTurnSelectionFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.finishTurnClickCallback = null;
+    };
+
+    return finishTurnSelectionFuture;
   }
 
   public void setOnUIReady(Runnable r) {

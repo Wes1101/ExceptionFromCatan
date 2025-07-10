@@ -97,6 +97,8 @@ public class GameController {
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
 
+        this.initGui();
+
         int[] playerDiceNumber = new int[this.players.length];
         log.info("Creating all players...");
         for (int i = 0; i < this.players.length; i++) {
@@ -170,6 +172,15 @@ public class GameController {
 
     }
 
+    private void initGui() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("initializing gui from GameController");
+            gui.setGameController(this);
+            gui.setPlayerAmount(this.players.length);
+        }
+    }
+
     /**
      * Starts the main game logic
      * <p>
@@ -215,7 +226,8 @@ public class GameController {
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-                //TODO: Clarify handling of that part as well
+                this.awaitFinishTurnClicked();
+
             }
             gameRound++;
         }
@@ -424,23 +436,46 @@ public class GameController {
         return null;
     }
 
+    public String awaitFinishTurnClicked() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("await finish turn called");
+            try {
+                log.info("You have 2 minutes to click on a Settlement location");
+                return gui.waitForFinishTurnClick()
+                        .orTimeout(32, TimeUnit.MINUTES)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid");
+                return "ERROR";  // or handle however you want
+            }
+
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
+        } else {
+            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}",
+                    this.gameControllerType);
+        }
+        return null;
+    }
+
     public void buildSettlement(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buySettlement(nodeId);
+            activePlayer.buildSettlement(nodeId, bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildStreet(IntTupel location, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buyStreet(location);
+            activePlayer.buildStreet(location.q(), location.r(), bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildCity(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buyCity(nodeId);
+            activePlayer.buildCity(nodeId, bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
