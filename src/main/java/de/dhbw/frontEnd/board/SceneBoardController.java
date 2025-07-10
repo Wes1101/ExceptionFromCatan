@@ -20,6 +20,7 @@ import javafx.scene.shape.Rectangle;  //+++
 
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.animation.FadeTransition;
@@ -499,6 +500,75 @@ public class SceneBoardController implements Initializable, GameUI {
 
     }
 
+  }
+
+  public void updateBoard(CatanBoard catanBoard) {
+    Map<IntTupel, Tile> hexes = catanBoard.getBoard();
+
+    log.debug("Anzahl HexTiles: " + hexes.size());
+    for (IntTupel tupel : hexes.keySet()) {
+      log.debug("Hex bei q=" + tupel.q() + ", r=" + tupel.r());
+    }
+
+    double size = 50;
+    double width = Math.sqrt(3) * size;
+    double height = 1.5 * size;
+    double offsetX = 400;
+    double offsetY = 300;
+
+    for (IntTupel coords : hexes.keySet()) {
+      int q = coords.q();
+      int r = coords.r();
+
+      double x = offsetX + (q * width) + (r * (width / 2));
+      double y = offsetY - (r * height);
+
+      Tile tile = hexes.get(coords);
+
+      // Wasser
+      if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
+        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water");
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+      // Hafen
+      else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
+        String resourceName = h.getResourceType().name() + "_Harbour";
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName);
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+      // Ressourcen
+      else if (tile instanceof Resource resTile) {
+        String resourceName = resTile.getResourceType().name();
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName);
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+      // Show bandit overlay if needed
+        assert tile instanceof Resource;
+        showBanditIfBlocked((Resource) tile, x, y, size);
+
+        //ToDo: add roads and buildings
+    }
+  }
+
+
+  private void showBanditIfBlocked(Resource tile, double x, double y, double size) {
+    if (tile.isBlocked()) {
+      Image banditImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/de/dhbw/frontEnd/board/bandit.png")));
+      ImageView banditView = new ImageView(banditImage);
+
+      banditView.setFitWidth(size);  // Adjust size if needed
+      banditView.setFitHeight(size);
+      banditView.setX(x - size / 2);  // Center over tile
+      banditView.setY(y - size / 2);
+
+      tile_layer.getChildren().add(banditView);
+    }
   }
 
 
