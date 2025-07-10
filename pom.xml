@@ -6,9 +6,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.dhbw</groupId>
-    <artifactId>ExecptionFromCatan</artifactId>
+    <artifactId>ExceptionFromCatan</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>ExecptionFromCatan</name>
+    <name>ExceptionFromCatan</name>
 
     <properties>
         <!-- Java-Version -->
@@ -19,7 +19,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.version>5.10.2</junit.version>
+
+        <classifier>${classifier}</classifier> <!-- fallback default -->
+
     </properties>
+         <repositories>
+                  <repository>
+                           <id>gluon-releases</id>
+                           <url>https://nexus.gluonhq.com/nexus/content/repositories/releases/</url>
+                  </repository>
+         </repositories>
+
 
     <dependencies>
         <!-- JavaFX -->
@@ -27,11 +37,13 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
             <version>21.0.7</version>
+            <classifier>${classifier}</classifier>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>21.0.7</version>
+            <classifier>${classifier}</classifier>
         </dependency>
         <!-- JUnit -->
         <dependency>
@@ -73,6 +85,58 @@
         </dependency>
 
     </dependencies>
+    <profiles>
+        <profile>
+            <id>mac-intel</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                    <arch>x86_64</arch>
+                </os>
+            </activation>
+            <properties>
+                <classifier>mac</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>mac-arm</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                    <arch>aarch64</arch>
+                </os>
+            </activation>
+            <properties>
+                <classifier>mac-aarch64</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>linux</id>
+            <activation>
+                <os>
+                    <family>unix</family>
+                    <arch>x86_64</arch>
+                </os>
+            </activation>
+            <properties>
+                <classifier>linux</classifier>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>windows</id>
+            <activation>
+                <os>
+                    <family>Windows</family>
+                </os>
+            </activation>
+            <properties>
+                <classifier>win</classifier>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
@@ -106,7 +170,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
+                            <mainClass>de.dhbw.app.MainApp</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -122,7 +186,7 @@
                             <options>
                                 <option>-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:8001</option>
                             </options>
-                            <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
+                            <mainClass>de.dhbw.app.MainApp</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -219,7 +283,7 @@
                             </filters>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>de.dhbw/de.dhbw.app.MainApp</mainClass>
+                                    <mainClass>de.dhbw.app.Main</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
