@@ -401,6 +401,7 @@ public class GameController {
             log.debug("Another update for the players resources, seriously?");
             if (!this.syso) {
                 gui.updatePlayerResources(players);
+                gui.updateBoard(catanBoard);
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -418,16 +419,15 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Grrrr... Grrrr... the bandit was activated");
-            IntTupel selectedNewLocation;
-            Player robbedPlayer;
-            if (!this.syso) {
-                selectedNewLocation = gui.activateBandit();
-                robbedPlayer = null;// gui.getRobbedPlayer(this.players);
-            } else {
-                selectedNewLocation = new IntTupel(3,2);
-                robbedPlayer = players[1];
+            try {
+                log.info("You have 2 minutes to click on a new Bandit location and select a player to rob");
+                return gui.waitForBanditLoctionAndPlayer(players)
+                        .orTimeout(2, TimeUnit.MINUTES)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid");
+                return null;  // or handle however you want
             }
-            return new PlayerTupelVar(selectedNewLocation, robbedPlayer);
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
@@ -443,7 +443,7 @@ public class GameController {
             try {
                 log.info("You have 2 minutes to click on a Settlement location");
                 return gui.waitForFinishTurnClick()
-                        .orTimeout(32, TimeUnit.MINUTES)
+                        .orTimeout(2, TimeUnit.MINUTES)
                         .join();  // Blocks until click or timeout
             } catch (Exception e) {
                 log.error("Timeout or invalid");

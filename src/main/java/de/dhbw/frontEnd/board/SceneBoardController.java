@@ -2,6 +2,7 @@ package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import de.dhbw.gameController.GameController;
+import de.dhbw.gameController.PlayerTupelVar;
 import de.dhbw.player.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,8 +34,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 
@@ -46,6 +45,12 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.geometry.Insets;
+
+import java.util.Optional;
 
 
 @Slf4j
@@ -166,6 +171,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private CompletableFuture<String> finishTurnSelectionFuture;
 
+  protected Consumer<IntTupel> newBanditLocationClickCallback;
+
+  protected CompletableFuture<PlayerTupelVar> triggerBanditFuture;
 
   private Runnable onUIReady;
 
@@ -464,7 +472,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Wasser vom Backend
       if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water");
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water", this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -477,7 +485,7 @@ public class SceneBoardController implements Initializable, GameUI {
         String resourceName = h.getResourceType().name() + "_Harbour";
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -492,7 +500,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -527,7 +535,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
       // Wasser
       if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
-        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water");
+        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water", this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -535,7 +543,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Hafen
       else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
         String resourceName = h.getResourceType().name() + "_Harbour";
-        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName);
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -543,7 +551,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Ressourcen
       else if (tile instanceof Resource resTile) {
         String resourceName = resTile.getResourceType().name();
-        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName);
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -863,6 +871,92 @@ public class SceneBoardController implements Initializable, GameUI {
     };
 
     return finishTurnSelectionFuture;
+  }
+
+  public CompletableFuture<PlayerTupelVar> waitForBanditLoctionAndPlayer(Player[] players) {
+    log.debug("\uD83D\uDFE2 waitForBanditLoactionAndPlayer CALLED");
+
+    this.showUserMessage("Click on new Bandit location", "Please click on a new Bandit location",
+            Alert.AlertType.INFORMATION);
+
+    triggerBanditFuture = new CompletableFuture<PlayerTupelVar>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.newBanditLocationClickCallback = (IntTupel banditLocation) -> {
+      try {
+
+        System.out.println("🟡 waitForBanditLoactionAndPlayer INVOKED with: " + banditLocation);
+        if (!triggerBanditFuture.isDone()) {
+
+          Player robbedPlayer;
+          do {
+            robbedPlayer = promptPlayerToRob(players);
+          } while (robbedPlayer == null);
+
+          triggerBanditFuture.complete(new PlayerTupelVar(banditLocation, robbedPlayer));
+        }
+      } catch (NumberFormatException e) {
+        triggerBanditFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.newBanditLocationClickCallback = null;
+    };
+
+    return triggerBanditFuture;
+  }
+
+  public Player promptPlayerToRob(Player[] players) {
+    // Create a dialog
+    Dialog<Player> dialog = new Dialog<>();
+    dialog.setTitle("Rob a Player");
+    dialog.setHeaderText("Please select the player you would like to steal a random resource from");
+
+    // Add buttons
+    ButtonType stealButtonType = new ButtonType("Steal", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(stealButtonType, ButtonType.CANCEL);
+
+    // ComboBox with player IDs
+    ComboBox<Player> comboBox = new ComboBox<>();
+    comboBox.getItems().addAll(players);
+    comboBox.setPromptText("Select a player");
+
+    // Display player ID in dropdown (instead of toString)
+    comboBox.setCellFactory(listView -> new ListCell<>() {
+      @Override
+      protected void updateItem(Player player, boolean empty) {
+        super.updateItem(player, empty);
+        setText(empty || player == null ? null : "Player " + player.getId());
+      }
+    });
+    comboBox.setButtonCell(new ListCell<>() {
+      @Override
+      protected void updateItem(Player player, boolean empty) {
+        super.updateItem(player, empty);
+        setText(empty || player == null ? null : "Player " + player.getId());
+      }
+    });
+
+    // Layout
+    VBox vbox = new VBox(10);
+    vbox.setPadding(new Insets(15));
+    vbox.getChildren().add(comboBox);
+    dialog.getDialogPane().setContent(vbox);
+
+    // Result converter
+    dialog.setResultConverter(dialogButton -> {
+      if (dialogButton == stealButtonType) {
+        return comboBox.getValue();
+      }
+      return null;
+    });
+
+    // Show dialog and return selected player
+    Optional<Player> result = dialog.showAndWait();
+    return result.orElse(null);
+  }
+
+  public Consumer<IntTupel> getNewBanditLocationClickCallback() {
+    return newBanditLocationClickCallback;
   }
 
   public void setOnUIReady(Runnable r) {
