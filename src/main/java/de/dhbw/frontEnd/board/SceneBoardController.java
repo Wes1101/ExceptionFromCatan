@@ -501,6 +501,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+
   public void setPlayerAmount(int playerCount) {
     // Set the visibility of player labels based on the number of players
     player_1_label.setVisible(playerCount >= 1);
