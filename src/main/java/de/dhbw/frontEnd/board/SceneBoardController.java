@@ -133,7 +133,7 @@ public class SceneBoardController implements Initializable, GameUI {
   private Button build_settlement;
 
   @FXML
-    private Button build_city;
+  private Button build_city;
 
   @FXML
   private Button build_road;
@@ -538,6 +538,7 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   private void setActivePlayerLabel(int id) {
+    log.debug("setActivePlayerLabel: ID = {}", id);
     Label[] labels = {player_1_label, player_2_label, player_3_label, player_4_label, player_5_label, player_6_label};
     for (int i = 0; i < labels.length; i++) {
       if (labels[i] != null) {
@@ -546,6 +547,9 @@ public class SceneBoardController implements Initializable, GameUI {
         } else {
           labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.NORMAL, labels[i].getFont().getSize()));
         }
+      }
+      else {
+        log.warn("Label für Spieler-ID {} ist null. Bitte überprüfen Sie die FXML-Datei.", i);
       }
     }
   }
