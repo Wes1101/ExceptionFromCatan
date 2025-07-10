@@ -16,14 +16,6 @@ import lombok.Setter;
 public class Edge {
 
     /**
-     * Indicates whether the edge is currently buildable.
-     * <p>
-     * This flag may be used to prevent or allow construction depending on game state.
-     * </p>
-     */
-    private boolean build;
-
-    /**
      * The street (road) currently built on this edge.
      * <p>
      * Initially null until a player builds a road.
@@ -35,7 +27,6 @@ public class Edge {
      * Constructs a new buildable edge with no street.
      */
     public Edge() {
-        this.build = true;
         this.street = null;
     }
 }
