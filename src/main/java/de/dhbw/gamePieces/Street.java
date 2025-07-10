@@ -26,8 +26,7 @@ public class Street extends Building {
      *
      * @return a map containing the number of each resource needed for road construction
      */
-    @Override
-    public Map<Resources, Integer> getBuildCost() {
+    public static Map<Resources, Integer> getBuildCost() {
         Map<Resources, Integer> cost = new HashMap<>();
         cost.put(Resources.WOOD, 1);
         cost.put(Resources.BRICK, 1);
