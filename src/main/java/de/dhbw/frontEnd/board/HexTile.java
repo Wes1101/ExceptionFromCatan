@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
+import java.util.function.Consumer;
+import javafx.scene.input.MouseEvent;
+
 
 public class HexTile extends Group {
   private final int q, r;
@@ -43,6 +46,20 @@ public class HexTile extends Group {
     this.setOnMouseClicked(evt ->
             System.out.println("HexTile: q=" + q + ", r=" + r + ", Res=" + resourceName)
     );
+
+    this.setOnMouseClicked((MouseEvent event) -> {
+      if (onClickedCallback != null) {
+        onClickedCallback.accept(this);
+      }
+    });
+
+
+  }
+
+  private Consumer<HexTile> onClickedCallback;
+
+  public void setOnClickedCallback(Consumer<HexTile> callback) {
+    this.onClickedCallback = callback;
   }
 
 }

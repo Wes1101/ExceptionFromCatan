@@ -534,20 +534,30 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   private void setActivePlayerLabel(int id) {
-    log.debug("setActivePlayerLabel: ID = {}", id);
-    Label[] labels = {player_1_label, player_2_label, player_3_label, player_4_label, player_5_label, player_6_label};
-    for (int i = 0; i < labels.length; i++) {
-      if (labels[i] != null) {
-        if (i == id) {
-          labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.BOLD, labels[i].getFont().getSize()));
-        } else {
-          labels[i].setFont(Font.font(labels[i].getFont().getFamily(), FontWeight.NORMAL, labels[i].getFont().getSize()));
-        }
-      }
-      else {
-        log.warn("Label für Spieler-ID {} ist null. Bitte überprüfen Sie die FXML-Datei.", i);
-      }
+
+    switch (id) {
+      case 1:
+        player_1_label.setStyle("-fx-text-fill: red");
+        break;
+      case 2:
+        player_2_label.setStyle("-fx-text-fill: red");
+        break;
+      case 3:
+        player_3_label.setStyle("-fx-text-fill: red");
+        break;
+      case 4:
+        player_4_label.setStyle("-fx-text-fill: red");
+        break;
+      case 5:
+        player_5_label.setStyle("-fx-text-fill: red");
+        break;
+      case 6:
+        player_6_label.setStyle("-fx-text-fill: red");
+        break;
     }
+
+
+
   }
 
   /**
@@ -680,6 +690,10 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public IntTupel activateBandit() {
+
+
+
+
     return null;
   }
 
