@@ -105,7 +105,6 @@ public class GameController {
         for (int i = 0; i < this.players.length; i++) {
 
             this.activePlayer(this.players[i]);
-            this.rollDiceAnimation();
 
             this.rollDice();
 
@@ -200,7 +199,6 @@ public class GameController {
                 minorGameState = MinorGameStates.DICE;
 
                 this.activePlayer(player);
-                this.rollDiceAnimation();
 
                 this.rollDice();
 
@@ -327,7 +325,8 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Who wants to see the dice? You want to see the dice: {} {}", dice1, dice2);
             if (!this.syso) {
-                gui.showDice(dice1, dice2);
+                gui.setDiceResult(dice1, dice2);
+                this.rollDiceAnimation();
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
