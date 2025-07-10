@@ -61,6 +61,7 @@ musst du schauen ob du den brauchst)
 - [ ] ein/ausblenden von feldern (wie viele spieler)
 - [ ] setter von vicory points
 - [ ] Auswahlmenü welche karten abgeben (man hat zu viele und bandit wird aktiv)
+- [ ] finish trading
 
 # Reihenfolge
 1. Bauen DONE
