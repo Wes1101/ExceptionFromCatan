@@ -21,9 +21,8 @@ import javafx.scene.shape.Rectangle;  //+++
 
 
 import java.net.URL;
-import java.util.Objects;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -42,15 +41,13 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import java.util.Map;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Insets;
-
-import java.util.Optional;
 
 
 @Slf4j
@@ -191,6 +188,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private boolean waitingForStreetClick;
   private Consumer<Button> streetClickHandler;
+
+  private final Map<IntTupel, ImageView> banditOverlays = new HashMap<>();
+
 
 
   @Override
@@ -558,7 +558,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
       // Show bandit overlay if needed
       if (tile instanceof Resource resTile) {
-        showBanditIfBlocked(resTile, x, y, size);
+        showBanditIfBlocked(coords, resTile, x, y, size);
       }
 
         //ToDo: add roads and buildings
@@ -566,17 +566,28 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
 
-  private void showBanditIfBlocked(Resource tile, double x, double y, double size) {
+  private void showBanditIfBlocked(IntTupel coords, Resource tile, double x, double y, double size) {
     if (tile.isBlocked()) {
-      Image banditImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/de/dhbw/frontEnd/board/bandit.png")));
-      ImageView banditView = new ImageView(banditImage);
+      // Only add if not already added
+      if (!banditOverlays.containsKey(coords)) {
+        Image banditImage = new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream("/de/dhbw/frontEnd/board/bandit.png")));
+        ImageView banditView = new ImageView(banditImage);
 
-      banditView.setFitWidth(size);  // Adjust size if needed
-      banditView.setFitHeight(size);
-      banditView.setX(x - size / 2);  // Center over tile
-      banditView.setY(y - size / 2);
+        banditView.setFitWidth(size);
+        banditView.setFitHeight(size);
+        banditView.setX(x - size / 2);
+        banditView.setY(y - size / 2);
 
-      tile_layer.getChildren().add(banditView);
+        tile_layer.getChildren().add(banditView);
+        banditOverlays.put(coords, banditView);
+      }
+    } else {
+      // Remove existing bandit image if present
+      ImageView existing = banditOverlays.remove(coords);
+      if (existing != null) {
+        tile_layer.getChildren().remove(existing);
+      }
     }
   }
 
