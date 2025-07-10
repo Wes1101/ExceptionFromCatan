@@ -1,13 +1,14 @@
 package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
+import de.dhbw.gameController.GameController;
+import de.dhbw.gameController.PlayerTupelVar;
 import de.dhbw.player.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -17,12 +18,11 @@ import javafx.scene.layout.BackgroundSize;
 
 
 import javafx.scene.shape.Rectangle;  //+++
-import javafx.scene.Node;   //+++
 
 
 import java.net.URL;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -41,13 +41,30 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import java.util.Map;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.geometry.Insets;
 
 
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
+
+  @FXML
+  private Label player_1_label;
+  @FXML
+  private Label player_2_label;
+  @FXML
+  private Label player_3_label;
+  @FXML
+  private Label player_4_label;
+  @FXML
+  private Label player_5_label;
+  @FXML
+  private Label player_6_label;
 
   @FXML
   private HBox root;
@@ -109,6 +126,24 @@ public class SceneBoardController implements Initializable, GameUI {
   @FXML
   private Button diceButton2;
 
+  @FXML
+  private ImageView finish_turn_button;
+
+  @FXML
+  private Button build_development_card;
+
+  @FXML
+  private Button build_settlement;
+
+  @FXML
+  private Button build_city;
+
+  @FXML
+  private Button build_road;
+
+  @FXML
+  private Label victory_points_background_number;
+
   private final Image[] diceImages = new Image[6];
   private Image diceEmptyImage;
   private final Random random = new Random();
@@ -127,13 +162,35 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private Consumer<String> streetClickCallback;
 
-  private CompletableFuture<Integer> streetSelectionFuture;
+  private CompletableFuture<IntTupel> streetSelectionFuture;
 
+  private Consumer<String> finishTurnClickCallback;
+
+  private CompletableFuture<String> finishTurnSelectionFuture;
+
+  protected Consumer<IntTupel> newBanditLocationClickCallback;
+
+  protected CompletableFuture<PlayerTupelVar> triggerBanditFuture;
 
   private Runnable onUIReady;
 
   private int realDice1 = 1;
   private int realDice2 = 1;
+
+  @Setter
+  private GameController gameController;
+
+  private boolean waitingForSettlementClick;
+  private Consumer<Button> settlementClickHandler;
+
+  private boolean waitingForCityClick;
+  private Consumer<Button> cityClickHandler;
+
+  private boolean waitingForStreetClick;
+  private Consumer<Button> streetClickHandler;
+
+  private final Map<IntTupel, ImageView> banditOverlays = new HashMap<>();
+
 
 
   @Override
@@ -202,9 +259,29 @@ public class SceneBoardController implements Initializable, GameUI {
 
     tile_layer.getChildren().stream()
             .filter(n -> n instanceof Rectangle && n.getId() != null && n.getId().startsWith("road_"))
-            .forEach(n -> n.setOnMouseClicked(evt ->
-                    System.out.println("Straße geklickt: fx:id=" + n.getId())
+            .forEach(n -> n.setOnMouseClicked(evt -> {
+                      System.out.println("Straße geklickt: fx:id=" + n.getId());
+
+                      log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + n.getId());
+                      log.debug("🔴 Callback is: " + streetClickCallback);
+
+                      if (streetClickCallback != null) {
+                        streetClickCallback.accept(n.getId());
+                      }
+
+                      if (waitingForStreetClick && streetClickHandler != null) {
+                        log.debug("🟢 Street click handler invoked for: " + n.getId());
+                        streetClickHandler.accept((Button) n);
+                      }
+                    }
             ));
+
+    finish_turn_button.setMouseTransparent(true);
+    trade_card.setMouseTransparent(true);
+    build_settlement.setDisable(true);
+    build_city.setDisable(true);
+    build_road.setDisable(true);
+    build_development_card.setDisable(true);
   }
 
   private Background makeDiceBackground(Image image) {
@@ -236,6 +313,74 @@ public class SceneBoardController implements Initializable, GameUI {
     if (settlementClickCallback != null) {
       settlementClickCallback.accept(fxId);
     }
+
+    if (waitingForSettlementClick && settlementClickHandler != null) {
+      log.debug("🟢 Settlement click handler invoked for: " + fxId);
+      settlementClickHandler.accept(btn);
+    }
+
+    if (waitingForCityClick && cityClickHandler != null) {
+      log.debug("🟢 City click handler invoked for: " + fxId);
+      cityClickHandler.accept(btn);
+    }
+  }
+
+  @FXML
+  private void onFinishTurnClicked(MouseEvent event) {
+    log.debug("🔵 Finish Turn button clicked");
+    finish_turn_button.setMouseTransparent(true);
+    trade_card.setMouseTransparent(true);
+    build_settlement.setDisable(true);
+    build_city.setDisable(true);
+    build_road.setDisable(true);
+
+    if (finishTurnClickCallback != null) {
+      finishTurnClickCallback.accept("finish_turn_button");
+    }
+  }
+
+  @FXML
+  private void onBuildSettlement(MouseEvent event) {
+    waitingForSettlementClick = true;
+    settlementClickHandler = (Button btn) -> {
+      log.debug("🟢 Settlement button clicked: " + btn.getId());
+
+      int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
+      gameController.buildSettlement(nodeId, activePlayer);
+
+      waitingForSettlementClick = false;
+      settlementClickHandler = null;
+    };
+  }
+
+  @FXML
+  private void onBuildCity(MouseEvent event) {
+    waitingForCityClick = true;
+    cityClickHandler = (Button btn) -> {
+      log.debug("🟢 City button clicked: " + btn.getId());
+
+      int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
+      gameController.buildCity(nodeId, activePlayer);
+
+      waitingForCityClick = false;
+      cityClickHandler = null;
+    };
+  }
+
+  @FXML
+  private void onBuildRoad(MouseEvent event) {
+    waitingForStreetClick = true;
+    streetClickHandler = (Button btn) -> {
+      log.debug("🟢 Street button clicked: " + btn.getId());
+
+      String idPart = btn.getId().replace("road_", "");
+      String[] parts = idPart.split("_");
+      IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+      gameController.buildStreet(streetId, activePlayer);
+
+      waitingForStreetClick = false;
+      streetClickHandler = null;
+    };
   }
 
   private void addHover(StackPane pane) {
@@ -327,7 +472,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Wasser vom Backend
       if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water");
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water", this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -340,7 +485,7 @@ public class SceneBoardController implements Initializable, GameUI {
         String resourceName = h.getResourceType().name() + "_Harbour";
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -355,7 +500,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -363,6 +508,102 @@ public class SceneBoardController implements Initializable, GameUI {
 
     }
 
+  }
+
+  public void updateBoard(CatanBoard catanBoard) {
+    Map<IntTupel, Tile> hexes = catanBoard.getBoard();
+
+    log.debug("Anzahl HexTiles: " + hexes.size());
+    for (IntTupel tupel : hexes.keySet()) {
+      log.debug("Hex bei q=" + tupel.q() + ", r=" + tupel.r());
+    }
+
+    double size = 50;
+    double width = Math.sqrt(3) * size;
+    double height = 1.5 * size;
+    double offsetX = 400;
+    double offsetY = 300;
+
+    for (IntTupel coords : hexes.keySet()) {
+      int q = coords.q();
+      int r = coords.r();
+
+      double x = offsetX + (q * width) + (r * (width / 2));
+      double y = offsetY - (r * height);
+
+      Tile tile = hexes.get(coords);
+
+      // Wasser
+      if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
+        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water", this);
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+      // Hafen
+      else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
+        String resourceName = h.getResourceType().name() + "_Harbour";
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+      // Ressourcen
+      else if (tile instanceof Resource resTile) {
+        String resourceName = resTile.getResourceType().name();
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
+        tile_layer.getChildren().add(frontendHex);
+        frontendHex.toBack();
+      }
+
+      // Show bandit overlay if needed
+      if (tile instanceof Resource resTile) {
+        showBanditIfBlocked(coords, resTile, x, y, size);
+      }
+
+        //ToDo: add roads and buildings
+    }
+  }
+
+
+  private void showBanditIfBlocked(IntTupel coords, Resource tile, double x, double y, double size) {
+    log.debug("Tile at {} isBlocked: {}", coords, tile.isBlocked());
+    if (tile.isBlocked()) {
+      // Only add if not already added
+      if (!banditOverlays.containsKey(coords)) {
+        Image banditImage = new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream("/de/dhbw/frontEnd/board/bandit.png")));
+        ImageView banditView = new ImageView(banditImage);
+
+        banditView.setFitWidth(size);
+        banditView.setFitHeight(size);
+        banditView.setX(x - size / 2);
+        banditView.setY(y - size / 2);
+
+        tile_layer.getChildren().add(banditView);
+        banditOverlays.put(coords, banditView);
+      }
+    } else {
+      // Remove existing bandit image if present
+      ImageView existing = banditOverlays.remove(coords);
+      if (existing != null) {
+        tile_layer.getChildren().remove(existing);
+      }
+    }
+  }
+
+
+  public void setPlayerAmount(int playerCount) {
+    // Set the visibility of player labels based on the number of players
+    player_1_label.setVisible(playerCount >= 1);
+    player_2_label.setVisible(playerCount >= 2);
+    player_3_label.setVisible(playerCount >= 3);
+    player_4_label.setVisible(playerCount >= 4);
+    player_5_label.setVisible(playerCount >= 5);
+    player_6_label.setVisible(playerCount >= 6);
+
+    // Log-Ausgabe zur Überprüfung
+    log.info("Anzahl der Spieler in SceneBoardController gesetzt: {}", playerCount);
   }
 
   /**
@@ -375,10 +616,93 @@ public class SceneBoardController implements Initializable, GameUI {
     this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
     int ID = player.getId();
 
-    /*TODO Adrian - Aktiver Spieler in GUI setzen*/
+    victory_points_background_number.setText(Integer.toString(player.getVictoryPoints()));
+
+    this.setActivePlayerLabel(ID);
 
     // Log-Ausgabe zur Überprüfung
     log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
+
+  }
+
+  private void setActivePlayerLabel(int id) {
+
+    switch (id) {
+      case 0:
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_1_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 1 ist aktiv coloured");
+
+
+        break;
+      case 1:
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_2_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 2 ist aktiv coloured");
+
+        break;
+      case 2:
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_3_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 3 ist aktiv coloured");
+
+        break;
+      case 3:
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_4_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 4 ist aktiv coloured");
+
+        break;
+      case 4:
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_5_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 5 ist aktiv coloured");
+
+        break;
+      case 5:
+
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+
+        player_6_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 6 ist aktiv coloured");
+        break;
+    }
+
+
 
   }
 
@@ -512,6 +836,10 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public IntTupel activateBandit() {
+
+
+
+
     return null;
   }
 
@@ -552,6 +880,150 @@ public class SceneBoardController implements Initializable, GameUI {
     };
 
     return settlenemtNodeSelectionFuture;
+  }
+
+  public CompletableFuture<IntTupel> waitForStreetClick() {
+    log.debug("\uD83D\uDFE2 waitForStreetClick CALLED");
+
+    this.showUserMessage("Click street", "Please click on a street node",
+            Alert.AlertType.INFORMATION);
+
+    streetSelectionFuture = new CompletableFuture<IntTupel>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.streetClickCallback = (String fxId) -> {
+      try {
+        // ✅ sanitize
+        String idPart = fxId.replace("road_", "");
+        String[] parts = idPart.split("_");
+        IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+
+        System.out.println("🟡 settlementClickCallback INVOKED with: " + streetId);
+        if (!streetSelectionFuture.isDone()) {
+          streetSelectionFuture.complete(streetId);
+        }
+      } catch (NumberFormatException e) {
+        streetSelectionFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.settlementClickCallback = null;
+    };
+
+    return streetSelectionFuture;
+  }
+
+  public CompletableFuture<String> waitForFinishTurnClick() {
+    log.debug("\uD83D\uDFE2 waitForFinishTurnClick CALLED");
+
+    finish_turn_button.setMouseTransparent(false);
+    trade_card.setMouseTransparent(false);
+    build_settlement.setDisable(false);
+    build_city.setDisable(false);
+    build_road.setDisable(false);
+
+    finishTurnSelectionFuture = new CompletableFuture<String>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.finishTurnClickCallback = (String name) -> {
+      try {
+        log.debug("🟡 waitForFinishTurnClicked INVOKED with: " + name);
+        if (!finishTurnSelectionFuture.isDone()) {
+          finishTurnSelectionFuture.complete(name);
+        }
+      } catch (NumberFormatException e) {
+        finishTurnSelectionFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.finishTurnClickCallback = null;
+    };
+
+    return finishTurnSelectionFuture;
+  }
+
+  public CompletableFuture<PlayerTupelVar> waitForBanditLoctionAndPlayer(Player[] players) {
+    log.debug("\uD83D\uDFE2 waitForBanditLoactionAndPlayer CALLED");
+
+    this.showUserMessage("Click on new Bandit location", "Please click on a new Bandit location",
+            Alert.AlertType.INFORMATION);
+
+    triggerBanditFuture = new CompletableFuture<PlayerTupelVar>();
+
+    // Set a one-time callback to complete the future when a button is clicked
+    this.newBanditLocationClickCallback = (IntTupel banditLocation) -> {
+      try {
+
+        System.out.println("🟡 waitForBanditLoactionAndPlayer INVOKED with: " + banditLocation);
+        if (!triggerBanditFuture.isDone()) {
+
+          Player robbedPlayer;
+          do {
+            robbedPlayer = promptPlayerToRob(players);
+          } while (robbedPlayer == null);
+
+          triggerBanditFuture.complete(new PlayerTupelVar(banditLocation, robbedPlayer));
+        }
+      } catch (NumberFormatException e) {
+        triggerBanditFuture.completeExceptionally(e);
+      }
+      // ✅ Clear the callback so future clicks do nothing
+      this.newBanditLocationClickCallback = null;
+    };
+
+    return triggerBanditFuture;
+  }
+
+  public Player promptPlayerToRob(Player[] players) {
+    // Create a dialog
+    Dialog<Player> dialog = new Dialog<>();
+    dialog.setTitle("Rob a Player");
+    dialog.setHeaderText("Please select the player you would like to steal a random resource from");
+
+    // Add buttons
+    ButtonType stealButtonType = new ButtonType("Steal", ButtonBar.ButtonData.OK_DONE);
+    dialog.getDialogPane().getButtonTypes().addAll(stealButtonType, ButtonType.CANCEL);
+
+    // ComboBox with player IDs
+    ComboBox<Player> comboBox = new ComboBox<>();
+    comboBox.getItems().addAll(players);
+    comboBox.setPromptText("Select a player");
+
+    // Display player ID in dropdown (instead of toString)
+    comboBox.setCellFactory(listView -> new ListCell<>() {
+      @Override
+      protected void updateItem(Player player, boolean empty) {
+        super.updateItem(player, empty);
+        setText(empty || player == null ? null : "Player " + player.getId());
+      }
+    });
+    comboBox.setButtonCell(new ListCell<>() {
+      @Override
+      protected void updateItem(Player player, boolean empty) {
+        super.updateItem(player, empty);
+        setText(empty || player == null ? null : "Player " + player.getId());
+      }
+    });
+
+    // Layout
+    VBox vbox = new VBox(10);
+    vbox.setPadding(new Insets(15));
+    vbox.getChildren().add(comboBox);
+    dialog.getDialogPane().setContent(vbox);
+
+    // Result converter
+    dialog.setResultConverter(dialogButton -> {
+      if (dialogButton == stealButtonType) {
+        return comboBox.getValue();
+      }
+      return null;
+    });
+
+    // Show dialog and return selected player
+    Optional<Player> result = dialog.showAndWait();
+    return result.orElse(null);
+  }
+
+  public Consumer<IntTupel> getNewBanditLocationClickCallback() {
+    return newBanditLocationClickCallback;
   }
 
   public void setOnUIReady(Runnable r) {

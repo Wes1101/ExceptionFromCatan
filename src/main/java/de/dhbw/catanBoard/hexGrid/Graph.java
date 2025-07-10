@@ -72,8 +72,13 @@ public class Graph {
      */
 
     public void updateEdge(int i, int j, Street street) {
+    if(graph[i][j]==null)
+        {
+        log.info("Keine kante für("+i+","+j+"), gefunden -> somit uss eine neue erstellt werden.");
+        createEdge(i,j);
+        }
         graph[i][j].setStreet(street);
-        graph[j][i].setStreet(street);
+        graph[j][i].setStreet(street); //zum testen einmal drinnen lassen und dann einmal entfernen bitte.
         log.info("Street built between node {} and node {} by PlayerID {}", i, j, street.getOwner().getId());
     }
 

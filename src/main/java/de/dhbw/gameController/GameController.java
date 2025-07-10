@@ -16,6 +16,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import de.dhbw.gameRules.Rules;
+import javafx.application.Platform;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -101,6 +102,8 @@ public class GameController {
         log.info("Starting game...");
         majorGameState = MajorGameStates.BEGINNING;
         minorGameState = MinorGameStates.NO_STATE;
+
+        this.initGui();
 
         int[] playerDiceNumber = new int[this.players.length];
         log.info("Creating all players...");
@@ -236,6 +239,15 @@ public class GameController {
 
     }
 
+    private void initGui() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("initializing gui from GameController");
+            gui.setGameController(this);
+            gui.setPlayerAmount(this.players.length);
+        }
+    }
+
     /**
      * Starts the main game logic
      * <p>
@@ -254,7 +266,6 @@ public class GameController {
                 minorGameState = MinorGameStates.DICE;
 
                 this.activePlayer(player);
-                this.rollDiceAnimation();
 
                 this.rollDice();
 
@@ -281,7 +292,8 @@ public class GameController {
                 /*---Trade, build and play special cards---*/
                 minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
-                //TODO: Clarify handling of that part as well
+                this.awaitFinishTurnClicked();
+
             }
             gameRound++;
         }
@@ -341,7 +353,9 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
             if (!this.syso) {
-                gui.setactivePlayer(player);
+                Platform.runLater(() -> {
+                    gui.setactivePlayer(player);
+                });
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -379,7 +393,8 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Who wants to see the dice? You want to see the dice: {} {}", dice1, dice2);
             if (!this.syso) {
-                gui.showDice(dice1, dice2);
+                gui.setDiceResult(dice1, dice2);
+                this.rollDiceAnimation();
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -389,57 +404,57 @@ public class GameController {
     }
 
     /**
-     * Gets the coordinates for the first (two) settlements and streets
+     * Gets the coordinates for the first (two) settlements
      *
-     * @return Returns the coordinates of the settlement and street
+     * @return Returns the coordinates of the first settlement
      */
     public Integer getCoordinatesFirstSettlement() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement?");
-//            try {
-//                return gui.waitForSettlementClick()
-//                        .orTimeout(30, TimeUnit.SECONDS)
-//                        .join();  // Blocks until click or timeout
-//            } catch (Exception e) {
-//                log.error("Timeout or invalid selection");
-//                return -1;  // or handle however you want
-//            }
+            try {
+                log.info("You have 30 seconds to click on a Settlement location");
+                return gui.waitForSettlementClick()
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid selection");
+                return -1;  // or handle however you want
+            }
 
-            //coordinatesFirstSettlement = gui.buildSettlement(player);
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("coords settlement: ");
-            int first = scanner.nextInt();
-            return first;
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
-            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}",
                     this.gameControllerType);
         }
         return null;
     }
 
     /**
-     * Gets the coordinates for the first (two) settlements and streets
+     * Gets the coordinates for the first (two) streets
      *
-     * @return Returns the coordinates of the settlement and street
+     * @return Returns the coordinates of the first street
      */
-    public int[] getCoordinatesFirstStreet() {
+    public IntTupel getCoordinatesFirstStreet() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
-            log.debug("What, you want the location of the first settlement and street?");
-            //coordinatesFirstStreet = gui.buildStreet(player);
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("coords street1: ");
-            int first = scanner.nextInt();
-            System.out.print("coords street2: ");
-            int second = scanner.nextInt();
-            return new int[]{first, second};
+            log.debug("What, you want the location of the first street?");
+
+            try {
+                log.info("You have 30 seconds to click on a street");
+                return gui.waitForStreetClick()
+                        .orTimeout(30, TimeUnit.SECONDS)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid selection");
+                return null;  // or handle however you want
+            }
+
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
-            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+            log.warn("getCoordinatesFirstStreet() was called, but GameControllerType is {}",
                     this.gameControllerType);
         }
         return null;
@@ -456,6 +471,9 @@ public class GameController {
             log.debug("Another update for the players resources, seriously?");
             if (!this.syso) {
                 gui.updatePlayerResources(players);
+                Platform.runLater(() -> {;
+                    gui.updateBoard(catanBoard);
+                });
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -473,16 +491,15 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Grrrr... Grrrr... the bandit was activated");
-            IntTupel selectedNewLocation;
-            Player robbedPlayer;
-            if (!this.syso) {
-                selectedNewLocation = gui.activateBandit();
-                robbedPlayer = null;// gui.getRobbedPlayer(this.players);
-            } else {
-                selectedNewLocation = new IntTupel(3,2);
-                robbedPlayer = players[1];
+            try {
+                log.info("You have 2 minutes to click on a new Bandit location and select a player to rob");
+                return gui.waitForBanditLoctionAndPlayer(players)
+                        .orTimeout(2, TimeUnit.MINUTES)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid");
+                return null;  // or handle however you want
             }
-            return new PlayerTupelVar(selectedNewLocation, robbedPlayer);
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
@@ -491,23 +508,46 @@ public class GameController {
         return null;
     }
 
+    public String awaitFinishTurnClicked() {
+        if (this.gameControllerType == GameControllerTypes.CLIENT ||
+                this.gameControllerType == GameControllerTypes.LOCAL) {
+            log.debug("await finish turn called");
+            try {
+                log.info("You have 2 minutes to click on a Settlement location");
+                return gui.waitForFinishTurnClick()
+                        .orTimeout(2, TimeUnit.MINUTES)
+                        .join();  // Blocks until click or timeout
+            } catch (Exception e) {
+                log.error("Timeout or invalid");
+                return "ERROR";  // or handle however you want
+            }
+
+        } else if (this.gameControllerType == GameControllerTypes.SERVER) {
+            /*   TODO: @David   */
+        } else {
+            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}",
+                    this.gameControllerType);
+        }
+        return null;
+    }
+
     public void buildSettlement(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buySettlement(nodeId);
+            activePlayer.buildSettlement(nodeId, bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildStreet(IntTupel location, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buyStreet(location);
+            activePlayer.buildStreet(location.q(), location.r(), bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildCity(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buyCity(nodeId);
+            activePlayer.buildCity(nodeId, bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
