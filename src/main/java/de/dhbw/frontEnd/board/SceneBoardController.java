@@ -537,36 +537,77 @@ public class SceneBoardController implements Initializable, GameUI {
   private void setActivePlayerLabel(int id) {
 
     switch (id) {
-      case 2:
+      case 0:
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
         player_1_label.setStyle("-fx-text-fill: red");
-        //log.info("Spieler 1 ist aktiv");
-        System.out.println("Spieler 1 ist aktiv");
+        log.info("Spieler 1 ist aktiv coloured");
+
+
+        break;
+      case 1:
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_2_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 2 ist aktiv coloured");
+
+        break;
+      case 2:
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_3_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 3 ist aktiv coloured");
 
         break;
       case 3:
-        player_2_label.setStyle("-fx-text-fill: red");
-       // log.info("Spieler 2 ist aktiv");
-        System.out.println("Spieler 2 ist aktiv");
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_4_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 4 ist aktiv coloured");
+
         break;
       case 4:
-        player_3_label.setStyle("-fx-text-fill: red");
-        //log.info("Spieler 3 ist aktiv");
-        System.out.println("Spieler 3 ist aktiv");
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_6_label.setStyle("-fx-text-fill: white");
+
+
+        player_5_label.setStyle("-fx-text-fill: red");
+        log.info("Spieler 5 ist aktiv coloured");
+
         break;
       case 5:
-        player_4_label.setStyle("-fx-text-fill: red");
-        //log.info("Spieler 4 ist aktiv");
-        System.out.println("Spieler 4 ist aktiv");
-        break;
-      case 6:
-        player_5_label.setStyle("-fx-text-fill: red");
-        //log.info("Spieler 5 ist aktiv");
-        System.out.println("Spieler 5 ist aktiv");
-        break;
-      case 7:
+
+        player_1_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: white");
+        player_3_label.setStyle("-fx-text-fill: white");
+        player_4_label.setStyle("-fx-text-fill: white");
+        player_5_label.setStyle("-fx-text-fill: white");
+
         player_6_label.setStyle("-fx-text-fill: red");
-       // log.info("Spieler 6 ist aktiv");
-        System.out.println("Spieler 6 ist aktiv");
+        log.info("Spieler 6 ist aktiv coloured");
         break;
     }
 
