@@ -322,9 +322,9 @@ public class GameController {
     }
 
     /**
-     * Gets the coordinates for the first (two) settlements and streets
+     * Gets the coordinates for the first (two) settlements
      *
-     * @return Returns the coordinates of the settlement and street
+     * @return Returns the coordinates of the first settlement
      */
     public Integer getCoordinatesFirstSettlement() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
@@ -338,33 +338,31 @@ public class GameController {
                 log.error("Timeout or invalid selection");
                 return -1;  // or handle however you want
             }
-
-            //coordinatesFirstSettlement = gui.buildSettlement(player);
-
+            
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
-            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}",
                     this.gameControllerType);
         }
         return null;
     }
 
     /**
-     * Gets the coordinates for the first (two) settlements and streets
+     * Gets the coordinates for the first (two) streets
      *
-     * @return Returns the coordinates of the settlement and street
+     * @return Returns the coordinates of the first street
      */
     public IntTupel getCoordinatesFirstStreet() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
-            log.debug("What, you want the location of the first settlement and street?");
+            log.debug("What, you want the location of the first street?");
             //coordinatesFirstStreet = gui.buildStreet(player);
             return new IntTupel(1, 1);
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
         } else {
-            log.warn("getCoordiantesFirstSettlementStreet() was called, but GameControllerType is {}",
+            log.warn("getCoordinatesFirstStreet() was called, but GameControllerType is {}",
                     this.gameControllerType);
         }
         return null;
