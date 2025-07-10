@@ -567,6 +567,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
   private void showBanditIfBlocked(IntTupel coords, Resource tile, double x, double y, double size) {
+    log.debug("Tile at {} isBlocked: {}", coords, tile.isBlocked());
     if (tile.isBlocked()) {
       // Only add if not already added
       if (!banditOverlays.containsKey(coords)) {
