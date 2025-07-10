@@ -273,10 +273,6 @@ public class SceneBoardController implements Initializable, GameUI {
     build_city.setDisable(true);
     build_road.setDisable(true);
     build_development_card.setDisable(true);
-
-    //DEBUG
-    player_1_label.setStyle("-fx-font-weight: bold;");
-
   }
 
   private Background makeDiceBackground(Image image) {

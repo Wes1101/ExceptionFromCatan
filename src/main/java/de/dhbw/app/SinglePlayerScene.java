@@ -136,7 +136,7 @@ public class SinglePlayerScene {
                 }
                 SceneBoardController boardController = loader.getController();
 
-                GameController gameController = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, true);
+                GameController gameController = new GameController(playerCount, winPoints, GameControllerTypes.LOCAL, false);
                 gameController.setGui(boardController);
 
                 boardController.setCatanBoard(gameController.getCatanBoard());
