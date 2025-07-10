@@ -428,6 +428,7 @@ public class GameController {
     public String awaitFinishTurnClicked() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
+            gui.setGameController(this);
             log.debug("await finish turn called");
             try {
                 log.info("You have 2 minutes to click on a Settlement location");
@@ -450,21 +451,21 @@ public class GameController {
 
     public void buildSettlement(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buySettlement(nodeId);
+            activePlayer.buildSettlement(nodeId, bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildStreet(IntTupel location, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buyStreet(location);
+            activePlayer.buildStreet(location.q(), location.r(), bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildCity(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            // TODO: activeplayer.buyCity(nodeId);
+            activePlayer.buildCity(nodeId, bank, activePlayer, catanBoard);
         }
         //TODO: Necessary for Server and Client????
     }

@@ -1,6 +1,7 @@
 package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
+import de.dhbw.gameController.GameController;
 import de.dhbw.player.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -151,6 +152,18 @@ public class SceneBoardController implements Initializable, GameUI {
   private int realDice1 = 1;
   private int realDice2 = 1;
 
+  @Setter
+  private GameController gameController;
+
+  private boolean waitingForSettlementClick;
+  private Consumer<Button> settlementClickHandler;
+
+  private boolean waitingForCityClick;
+  private Consumer<Button> cityClickHandler;
+
+  private boolean waitingForStreetClick;
+  private Consumer<Button> streetClickHandler;
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -227,6 +240,11 @@ public class SceneBoardController implements Initializable, GameUI {
                       if (streetClickCallback != null) {
                         streetClickCallback.accept(n.getId());
                       }
+
+                      if (waitingForStreetClick && streetClickHandler != null) {
+                        log.debug("🟢 Street click handler invoked for: " + n.getId());
+                        streetClickHandler.accept((Button) n);
+                      }
                     }
             ));
 
@@ -268,6 +286,16 @@ public class SceneBoardController implements Initializable, GameUI {
     if (settlementClickCallback != null) {
       settlementClickCallback.accept(fxId);
     }
+
+    if (waitingForSettlementClick && settlementClickHandler != null) {
+      log.debug("🟢 Settlement click handler invoked for: " + fxId);
+      settlementClickHandler.accept(btn);
+    }
+
+    if (waitingForCityClick && cityClickHandler != null) {
+      log.debug("🟢 City click handler invoked for: " + fxId);
+      cityClickHandler.accept(btn);
+    }
   }
 
   @FXML
@@ -282,6 +310,50 @@ public class SceneBoardController implements Initializable, GameUI {
     if (finishTurnClickCallback != null) {
       finishTurnClickCallback.accept("finish_turn_button");
     }
+  }
+
+  @FXML
+  private void onBuildSettlement(MouseEvent event) {
+    waitingForSettlementClick = true;
+    settlementClickHandler = (Button btn) -> {
+      log.debug("🟢 Settlement button clicked: " + btn.getId());
+
+      int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
+      gameController.buildSettlement(nodeId, activePlayer);
+
+      waitingForSettlementClick = false;
+      settlementClickHandler = null;
+    };
+  }
+
+  @FXML
+  private void onBuildCity(MouseEvent event) {
+    waitingForCityClick = true;
+    cityClickHandler = (Button btn) -> {
+      log.debug("🟢 City button clicked: " + btn.getId());
+
+      int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
+      gameController.buildCity(nodeId, activePlayer);
+
+      waitingForCityClick = false;
+      cityClickHandler = null;
+    };
+  }
+
+  @FXML
+  private void onBuildRoad(MouseEvent event) {
+    waitingForStreetClick = true;
+    streetClickHandler = (Button btn) -> {
+      log.debug("🟢 Street button clicked: " + btn.getId());
+
+      String idPart = btn.getId().replace("road_", "");
+      String[] parts = idPart.split("_");
+      IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+      gameController.buildStreet(streetId, activePlayer);
+
+      waitingForStreetClick = false;
+      streetClickHandler = null;
+    };
   }
 
   private void addHover(StackPane pane) {
