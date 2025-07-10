@@ -397,14 +397,14 @@ public class GameController {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement?");
-            try {
-                return gui.waitForSettlementClick()
-                        .orTimeout(30, TimeUnit.SECONDS)
-                        .join();  // Blocks until click or timeout
-            } catch (Exception e) {
-                log.error("Timeout or invalid selection");
-                return -1;  // or handle however you want
-            }
+//            try {
+//                return gui.waitForSettlementClick()
+//                        .orTimeout(30, TimeUnit.SECONDS)
+//                        .join();  // Blocks until click or timeout
+//            } catch (Exception e) {
+//                log.error("Timeout or invalid selection");
+//                return -1;  // or handle however you want
+//            }
 
             //coordinatesFirstSettlement = gui.buildSettlement(player);
             Scanner scanner = new Scanner(System.in);
