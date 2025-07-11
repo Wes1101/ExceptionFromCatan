@@ -78,7 +78,7 @@ public class Graph {
         createEdge(i,j);
         }
         graph[i][j].setStreet(street);
-        graph[j][i].setStreet(street); //zum testen einmal drinnen lassen und dann einmal entfernen bitte.
+        graph[j][i].setStreet(street); // TODO zum Testen einmal drinnen lassen und dann einmal entfernen bitte.
         log.info("Street built between node {} and node {} by PlayerID {}", i, j, street.getOwner().getId());
     }
 

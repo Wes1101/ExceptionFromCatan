@@ -5,6 +5,8 @@ import de.dhbw.resources.Resources;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 /**
  * Represents a single hexagonal tile on the Catan board.
  * <p>
@@ -39,10 +41,6 @@ public class Tile {
      */
     public Tile(Resources resourceType, Node[] nodes) {
         this.resourceType = resourceType;
-        if (nodes != null) {
-            this.hexTileNodes = nodes;
-        } else {
-            this.hexTileNodes = new Node[6];
-        }
+        this.hexTileNodes = Objects.requireNonNullElseGet(nodes, () -> new Node[6]);
     }
 }

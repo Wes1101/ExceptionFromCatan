@@ -40,7 +40,7 @@ public enum AxialDirection {
      * @param dq the q-axis offset
      * @param dr the r-axis offset
      */
-    private AxialDirection(int dq, int dr) {
+    AxialDirection(int dq, int dr) {
         this.dq = dq;
         this.dr = dr;
     }

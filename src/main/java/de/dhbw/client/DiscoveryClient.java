@@ -1,6 +1,6 @@
 package de.dhbw.client;
 
-import com.google.gson.Gson;
+
 import de.dhbw.dto.INetServerAddressPayload;
 import de.dhbw.dto.NetMsgType;
 import de.dhbw.dto.NetworkPayload;
@@ -16,7 +16,6 @@ import java.nio.charset.StandardCharsets;
 /**
  * Handles the discovery of servers in the local network using UDP broadcast.
  * This class implements Runnable and can be executed in a separate thread.
- *
  * The DiscoveryClient sends a discovery request and waits for server responses.
  *
  * @author David Willig
