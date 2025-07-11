@@ -43,11 +43,20 @@ public class Rules {
      * @return true if the player can build the first settlement, false otherwise
      */
     public boolean buildFirstSettlement(CatanBoard board, int node, Player player) {
+        if (node < 0 || node >= board.getGraph().getNodes().length) {
+            log.warn("Invalid node index {} for player {}", node, player.getId());
+            return false; // Invalid node index
+        }
         boolean canBuild = !areEnemyBuildingsNext(board, node, player) && !isBuilt(board, node);
         log.info("Player {} attempting to build first settlement at node {}: {}", player.getId(), node, canBuild);
         return canBuild;
     }
     public boolean buildFirstStreet(CatanBoard board, int node1, int node2, Player player) {
+        if (node1 < 0 || node1 >= board.getGraph().getNodes().length
+                || node2 < 0 || node2 >= board.getGraph().getNodes().length) {
+            log.warn("Invalid node indices {} and {} for player {}", node1, node2, player.getId());
+            return false; // Invalid node indices
+        }
         boolean builtNode1 = hasOwnSettlement(board, node1, player);
         boolean builtNode2 = hasOwnSettlement(board, node2, player);
         boolean streetFromNode1 = nextToOwnStreet(board, node1, player);
@@ -69,6 +78,10 @@ public class Rules {
      * @return true if valid, otherwise false
      */
     public boolean buildSettlement(CatanBoard board, int node, Player player) {
+        if (node < 0 || node >= board.getGraph().getNodes().length) {
+            log.warn("Invalid node index {} for player {}", node, player.getId());
+            return false; // Invalid node index
+        }
         boolean canBuild = nextToOwnStreet(board, node, player)
                 && !isBuilt(board, node)
                 && areEnemyBuildingsNext(board, node, player)
@@ -88,6 +101,10 @@ public class Rules {
      * @return true if the city can be built, false otherwise
      */
     public boolean buildCity(CatanBoard board, int node, Player player) {
+        if (node < 0 || node >= board.getGraph().getNodes().length) {
+            log.warn("Invalid node index {} for player {}", node, player.getId());
+            return false; // Invalid node index
+        }
         boolean canBuild = hasOwnSettlement(board, node, player)
                 && player.enoughResources(City.getBuildCost());
         log.info("Player {} attempting to build city at node {}: {}", player.getId(), node, canBuild);
@@ -106,6 +123,11 @@ public class Rules {
      * @return true if the road can be built, false otherwise
      */
     public boolean buildStreet(CatanBoard board, int node1, int node2, Player player) {
+        if (node1 < 0 || node1 >= board.getGraph().getNodes().length
+                || node2 < 0 || node2 >= board.getGraph().getNodes().length) {
+            log.warn("Invalid node indices {} and {} for player {}", node1, node2, player.getId());
+            return false; // Invalid node indices
+        }
         boolean builtNode1 = hasOwnSettlement(board, node1, player);
         boolean builtNode2 = hasOwnSettlement(board, node2, player);
         boolean streetFromNode1 = nextToOwnStreet(board, node1, player);
