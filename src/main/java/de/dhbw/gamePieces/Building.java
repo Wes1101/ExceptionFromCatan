@@ -1,8 +1,5 @@
 package de.dhbw.gamePieces;
 import de.dhbw.player.Player;
-import de.dhbw.resources.Resources;
-
-import java.util.Map;
 
 
 /**
