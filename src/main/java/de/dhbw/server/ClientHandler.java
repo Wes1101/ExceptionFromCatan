@@ -18,14 +18,14 @@ public class ClientHandler implements Runnable {
   /**
    * The socket for the connected client.
    */
-  private Socket clientSocket = null;
+  private final Socket clientSocket;
 
   /**
    * Reader for incoming messages from the client.
    */
   private BufferedReader in = null;
 
-  private CountDownLatch startLatch = null;
+  private final CountDownLatch startLatch;
 
   /**
    * Constructs a new ClientHandler for the given client socket.

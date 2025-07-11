@@ -33,12 +33,12 @@ public class NetworkServer {
   private ServerSocket serverSocket = null;
 
   /**
-   * The port number the server listens on.
+   * The port number the server listens to on.
    */
   public static final int DISCOVERY_PORT = 54321;
 
   /**
-   * The port number the server listens on.
+   * The port number the server listens to.
    */
   private static int TCP_PORT = 0;
 

@@ -1,7 +1,6 @@
 package de.dhbw.player;
 
 import de.dhbw.catanBoard.CatanBoard;
-import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.gamePieces.*;
 import de.dhbw.resources.Resources;
@@ -178,7 +177,7 @@ public class Player implements ResourceReceiver {
     public void stealRandomResources(Player from, Player to) {
 //        List<Resources> resources = new ArrayList<>();
 //
-//        // checkt die Ressoucen des Spielers und schaut, ob der Spieler Res besitzt.
+//        // checkt die Ressourcen des Spielers und schaut, ob der Spieler Res besitzt.
 //        // Wenn nicht gibt es 0 zurück
 //        for (Resources res : Resources.values()) {
 //            Integer count = from.getResources().getOrDefault(res, 0);
@@ -199,7 +198,7 @@ public class Player implements ResourceReceiver {
 //        Random r = new Random();
 //        Resources chosen = resources.get(r.nextInt(resources.size()));
 //
-//        // Ressoucen Transfer
+//        // Ressourcen Transfer
 //        from.removeResources(chosen, 1, to);
     }
 

@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Factory class for serializing and deserializing network messages to and from JSON.
- * Uses Gson for JSON processing and supports type-safe deserialization based on message type.
+ * Uses Gson for JSON processing and supports type-safe deserialization based on the message type.
  */
 @Slf4j
 public class MessageFactory {
