@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * Represents the game board for Catan.
  * <p>
- * Handles the creation and initialization of resource tiles, number tokens, harbours, water tiles,
+ * Handles the creation and initialization of resource tiles, number tokens, harbor, water tiles,
  * and the graph structure used for settlements and roads.
  * </p>
  */
@@ -36,7 +36,7 @@ public class CatanBoard {
      * Creates a new CatanBoard instance.
      * <p>
      * Initializes the graph structure for settlements and roads, generates all hex tile coordinates based on the board radius,
-     * and builds the complete board including resource tiles, number tokens (chips), and harbour/water tiles.
+     * and builds the complete board including resource tiles, number tokens (chips), and harbor/water tiles.
      * </p>
      *
      * @param radius the number of hex rings around the center tile (including the center)
@@ -50,7 +50,7 @@ public class CatanBoard {
 
     /**
      * Recursively calculates the total number of graph nodes (settlement positions) required for a board
-     * of given radius.
+     * of the given radius.
      *
      * @param n the number of hex rings around the center
      * @return the total number of nodes needed for the given radius
@@ -78,7 +78,7 @@ public class CatanBoard {
     }
 
     /**
-     * Recursively calculates the number of hex tiles required for a board of given radius.
+     * Recursively calculates the number of hex tiles required for a board of the given radius.
      *
      * @param n the radius of the board (number of rings)
      * @return the total number of hex tiles
@@ -94,10 +94,10 @@ public class CatanBoard {
      * <ul>
      *     <li>Creating and assigning resource tiles with number tokens</li>
      *     <li>Creating graph nodes and connecting them</li>
-     *     <li>Placing harbours and water tiles around the edge</li>
+     *     <li>Placing harbors and water tiles around the edge</li>
      * </ul>
      *
-     * @param radius the board radius used to determine tile layout and harbour placement
+     * @param radius the board radius used to determine tile layout and harbor placement
      */
     private void createGraph(int radius) {
         int index = 0;
@@ -145,9 +145,9 @@ public class CatanBoard {
     }
 
     /**
-     * Creates harbour and water tiles around the edge of the board.
+     * Creates harbor and water tiles around the edge of the board.
      *
-     * @param radius the board radius used to determine outer harbour ring
+     * @param radius the board radius used to determine the outer harbor ring
      */
     private void createHarbourTiles(int radius) {
         IntTupel[] harbour = new IntTupel[calcNumHexTiles(radius + 1) - calcNumHexTiles(radius)];
@@ -304,7 +304,7 @@ public class CatanBoard {
     }
 
     /**
-     * Toggles blocking state of a hex tile (e.g. due to a robber).
+     * Toggles blocking the state of a hex tile (e.g., due to a robber).
      *
      * @param coords coordinates of the tile
      */

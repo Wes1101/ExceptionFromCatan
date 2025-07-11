@@ -4,14 +4,14 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.gamePieces.*;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
-import de.dhbw.resources.Resources;
+
 
 public class testCatanBoard {
     public static void main(String[] args) {
-        // Create board with radius 3
+        // Create the board with radius 3
         CatanBoard board = new CatanBoard(3);
 
-        // Create dummy bank and players
+        // Create the dummy bank and players
         Player player = new Player(1);
         Player[] players = {player};
         Bank bank = new Bank(19, players);
