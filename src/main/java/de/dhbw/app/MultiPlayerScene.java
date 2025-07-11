@@ -166,7 +166,7 @@ public class MultiPlayerScene {
             System.out.println(Ip + " " + Port + " " + Name);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("ALERT {WOP}");
+            alert.setTitle("ALERT {WiP}");
             alert.setHeaderText("Server-Game not yet implemented");
             alert.setContentText("The Local Servergame option is not implemented at the current time");
             alert.showAndWait();
