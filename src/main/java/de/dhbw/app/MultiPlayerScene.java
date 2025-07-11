@@ -8,11 +8,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.util.Objects;
-import java.util.Stack;
 import java.util.function.UnaryOperator;
 
 /**
@@ -61,7 +58,7 @@ public class MultiPlayerScene {
 
         // IP-Feld (linke Hälfte)
         TextField ipField = new TextField();
-        ipField.setPromptText("IP-Adresse eingeben");
+        ipField.setPromptText("Insert IP-Address");
 
         // Hier IP-Filter einfügen:
         UnaryOperator<TextFormatter.Change> ipFilter = change -> {
@@ -80,7 +77,7 @@ public class MultiPlayerScene {
 
             // Prüfe, ob jeder Block maximal 3 Ziffern hat und zwischen 0 und 255 liegt
             for (String part : parts) {
-                if (part.length() > 0) {
+                if (!part.isEmpty()) {
                     try {
                         int num = Integer.parseInt(part);
                         if (num < 0 || num > 255) {
@@ -106,7 +103,7 @@ public class MultiPlayerScene {
 
         // === Port-TextField definieren ===
         TextField portField = new TextField();
-        portField.setPromptText("Port eingeben");
+        portField.setPromptText("Enter Port");
         portField.setStyle("-fx-font-size: 16px; " + "-fx-background-color: #222; " + "-fx-text-fill: #66ccff;");
 
         StackPane portPane = new StackPane(portField);
@@ -125,7 +122,7 @@ public class MultiPlayerScene {
 
         portField.setTextFormatter(new TextFormatter<>(filter));
 
-// === Auslesen und prüfen (z. B. bei Buttonklick) ===
+// === Auslesen und prüfen (z. B. bei Button klick) ===
         String input = portField.getText();
         try {
             int port = Integer.parseInt(input);
@@ -142,7 +139,7 @@ public class MultiPlayerScene {
 
         // Namensfeld (rechte Hälfte)
         TextField nameField = new TextField();
-        nameField.setPromptText("Spielername eingeben");
+        nameField.setPromptText("Insert Playername");
         nameField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
         StackPane namePane = new StackPane(nameField);
         namePane.setPadding(new Insets(15));
@@ -166,6 +163,13 @@ public class MultiPlayerScene {
             String Ip = ipField.getText();
             String Port = portField.getText();
             String Name = nameField.getText();
+            System.out.println(Ip + " " + Port + " " + Name);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("ALERT {WOP}");
+            alert.setHeaderText("Server-Game not yet implemented");
+            alert.setContentText("The Local Servergame option is not implemented at the current time");
+            alert.showAndWait();
             /*@TODO Hier übergabe an Client bzw Serverlogin*/
         });
 

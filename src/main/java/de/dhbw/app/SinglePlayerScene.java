@@ -1,16 +1,15 @@
 package de.dhbw.app;
 
-import de.dhbw.catanBoard.CatanBoard;
-import de.dhbw.frontEnd.board.SceneBoard;
+
 import de.dhbw.frontEnd.board.SceneBoardController;
 import de.dhbw.gameController.GameController;
 import de.dhbw.gameController.GameControllerTypes;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -18,8 +17,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import javax.management.Notification;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -54,7 +51,7 @@ public class SinglePlayerScene {
 
         VBox greenBox = new VBox(8);
         greenBox.setAlignment(Pos.CENTER_LEFT);
-        Label greenLabel = new Label("Spieleranzahl");
+        Label greenLabel = new Label("Player-amount");
 
         Slider spielerSlider = new Slider(3, 6, 1);
         spielerSlider.setMajorTickUnit(1);
@@ -70,7 +67,7 @@ public class SinglePlayerScene {
 
         VBox pinkBox = new VBox(8);
         pinkBox.setAlignment(Pos.CENTER_LEFT);
-        Label pinkLabel = new Label("Siegpunktanzahl");
+        Label pinkLabel = new Label("Win points");
 
         Slider siegpunktSlider = new Slider(6, 20, 1);
         siegpunktSlider.setMajorTickUnit(2);
@@ -85,7 +82,7 @@ public class SinglePlayerScene {
 
         VBox brownBox = new VBox(8);
         brownBox.setAlignment(Pos.CENTER_LEFT);
-        Label brownLabel = new Label("Max. abwerfbare Karten");
+        Label brownLabel = new Label("Maximal thrown cards if bandit gets active");
 
         Slider abwerfenSlider = new Slider(4, 10, 1);
         abwerfenSlider.setMajorTickUnit(2);
@@ -99,7 +96,7 @@ public class SinglePlayerScene {
 
 
         Button startButton = new Button("Start Game");
-        startButton.setId("buttonsb");
+        startButton.setId("buttons");
         startButton.setPrefWidth(220);
         startButton.setPrefHeight(50);
 
@@ -125,10 +122,15 @@ public class SinglePlayerScene {
             System.out.println(isServergame + " " + playerCount + " " + winPoints + " " + maxCardThrow);
 
             if(isServergame) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("ALERT {WOP}");
+                alert.setHeaderText("Server-Game not yet implemented");
+                alert.setContentText("The Local Servergame option is not implemented at the current time");
+                alert.showAndWait();
                 /*@TODO Server(David) erstellen mit Übergabe der parameter*/
             } else{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/de/dhbw/frontEnd/board/card-bar.fxml"));
-                Parent gameRoot = null;
+                Parent gameRoot;
                 try {
                     gameRoot = loader.load();
                 } catch (IOException ex) {
@@ -146,12 +148,10 @@ public class SinglePlayerScene {
                 primaryStage.setScene(gameScene);
                 primaryStage.show();
 
-                boardController.setOnUIReady(() -> {
-                   new Thread(() -> {
-                       gameController.gameStart();
-                       gameController.mainGame();
-                   }) .start();
-                });
+                boardController.setOnUIReady(() -> new Thread(() -> {
+                    gameController.gameStart();
+                    gameController.mainGame();
+                }) .start());
             }
 
         });
