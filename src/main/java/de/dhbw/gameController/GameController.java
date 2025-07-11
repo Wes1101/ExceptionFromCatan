@@ -110,7 +110,6 @@ public class GameController {
         for (int i = 0; i < this.players.length; i++) {
 
             this.activePlayer(this.players[i]);
-            this.rollDiceAnimation();
 
             this.rollDice();
 
@@ -294,8 +293,8 @@ public class GameController {
     private void rollDice() {
         log.debug("rolling the dice:");
         Random rand = new Random();
-        dice1 = rand.nextInt(6) + 1;
-        dice2 = rand.nextInt(6) + 1;
+        this.dice1 = rand.nextInt(6) + 1;
+        this.dice2 = rand.nextInt(6) + 1;
         log.debug(dice1 + " " + dice2);
     }
 
@@ -352,7 +351,7 @@ public class GameController {
     /**
      * Starts the roll dice animation in the gui
      */
-    public void rollDiceAnimation() {
+    private void rollDiceAnimation() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui to start the rollDiceAnimation");
