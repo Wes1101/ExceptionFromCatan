@@ -8,6 +8,7 @@ import de.dhbw.gameController.PlayerTupelVar;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.gamePieces.Street;
 import de.dhbw.player.Player;
+import de.dhbw.resources.Resources;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -56,6 +57,16 @@ import javafx.geometry.Insets;
 @Slf4j
 public class SceneBoardController implements Initializable, GameUI {
 
+  @FXML
+  private Label grain_card_number;
+  @FXML
+  private Label brick_card_number;
+  @FXML
+  private Label ore_card_number;
+  @FXML
+  private Label wool_card_number;
+  @FXML
+  private Label lumber_card_number;
   @FXML
   private Label player_1_label;
   @FXML
@@ -813,10 +824,19 @@ public class SceneBoardController implements Initializable, GameUI {
     victory_points_background_number.setText(Integer.toString(player.getVictoryPoints()));
 
     this.setActivePlayerLabel(ID);
+    this.updatePlayerResources(player);
 
     // Log-Ausgabe zur Überprüfung
     log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
 
+  }
+
+  private void updatePlayerResources(Player player) {
+    grain_card_number.setText(Integer.toString(player.getResources(Resources.WHEAT)));
+    brick_card_number.setText(Integer.toString(player.getResources(Resources.BRICK)));
+    ore_card_number.setText(Integer.toString(player.getResources(Resources.STONE)));
+    wool_card_number.setText(Integer.toString(player.getResources(Resources.SHEEP)));
+    lumber_card_number.setText(Integer.toString(player.getResources(Resources.WOOD)));
   }
 
   private void setActivePlayerLabel(int id) {
