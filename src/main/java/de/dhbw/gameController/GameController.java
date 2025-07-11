@@ -168,7 +168,9 @@ public class GameController {
             log.info("*Building first settlement " + player);
             player.buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
 
-            IntTupel coordinatesFirstStreet;
+            this.updatePlayerResources(players);
+
+            IntTupel coordinatesFirstStreet = new IntTupel(-100, -100);
             do {
                 coordinatesFirstStreet = getCoordinatesFirstStreet();
             } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), player));
@@ -201,7 +203,9 @@ public class GameController {
             this.players[i].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
             this.players[i].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
 
-            IntTupel coordinatesSecondStreet;
+            this.updatePlayerResources(players);
+
+            IntTupel coordinatesSecondStreet = new IntTupel(-100, -100);;
             do {
                 coordinatesSecondStreet = getCoordinatesFirstStreet();
             } while (!rules.buildFirstStreet(catanBoard, coordinatesSecondStreet.q(), coordinatesSecondStreet.r(), this.players[i]));
