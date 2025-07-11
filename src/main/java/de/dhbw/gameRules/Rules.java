@@ -43,9 +43,9 @@ public class Rules {
      * @return true if the player can build the first settlement, false otherwise
      */
     public boolean buildFirstSettlement(CatanBoard board, int node, Player player) {
-        boolean canBuild = !areEnemyBuildingsNext(board, node, player) && !isBuilt(board, node);
+        boolean canBuild = !areEnemyBuildingsNext(board, node, player) && isBuilt(board, node);
         log.info("Player {} attempting to build first settlement at node {}: {}", player.getId(), node, canBuild);
-        return canBuild;
+        return !canBuild;
     }
     public boolean buildFirstStreet(CatanBoard board, int node1, int node2, Player player) {
         boolean builtNode1 = hasOwnSettlement(board, node1, player);
@@ -55,7 +55,7 @@ public class Rules {
         boolean buildable = isStreetBuildable(board, node1, node2);
         boolean canBuild = (builtNode1 || builtNode2 || streetFromNode1 || streetFromNode2) && buildable;
         log.info("Player {} attempting to build street between nodes {} and {}: {}", player.getId(), node1, node2, canBuild);
-        return canBuild;
+        return !canBuild;
     }
     /**
      * Checks if a player can build a regular settlement.
@@ -70,7 +70,7 @@ public class Rules {
      */
     public boolean buildSettlement(CatanBoard board, int node, Player player) {
         boolean canBuild = nextToOwnStreet(board, node, player)
-                && !isBuilt(board, node)
+                && isBuilt(board, node)
                 && areEnemyBuildingsNext(board, node, player)
                 && player.enoughResources(Settlement.getBuildCost());
         log.info("Player {} attempting to build settlement at node {}: {}", player.getId(), node, canBuild);
@@ -129,8 +129,7 @@ public class Rules {
             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() - 2);
             log.info("Removed longest road bonus from player {}", this.playerWithLongestRoad.getId());
         }
-        Player longestRoadOwner = board.getGraph().findPlayerLongestStreet(players);
-        this.playerWithLongestRoad = longestRoadOwner;
+        this.playerWithLongestRoad = board.getGraph().findPlayerLongestStreet(players);
         if (this.playerWithLongestRoad != null) {
             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() + 2);
             log.info("Assigned longest road bonus to player {}", this.playerWithLongestRoad.getId());
@@ -180,7 +179,7 @@ public class Rules {
     private boolean isBuilt(CatanBoard board, int node) {
         boolean result = board.getGraph().getNodes()[node].getBuilding() != null;
         log.info("Node {} is built: {}", node, result);
-        return result;
+        return !result;
     }
     /**
      * Checks if the node is adjacent to a road owned by the player.
@@ -216,9 +215,6 @@ public class Rules {
         return ownsSettlement;
     }
     private boolean isStreetBuildable(CatanBoard board, int node1, int node2) {
-        if (board.getGraph().getGraph()[node1][node2] != null) {
-            return true;
-        }
-        return false;
+        return board.getGraph().getGraph()[node1][node2] != null;
     }
 }

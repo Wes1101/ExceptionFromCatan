@@ -162,14 +162,14 @@ public class GameController {
             do {
                 coordinatesFirstSettlement = getCoordinatesFirstSettlement();
 
-            } while (!rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, player));
+            } while (rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, player));
             log.info("*Building first settlement " + player);
             player.buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
 
             IntTupel coordinatesFirstStreet;
             do {
                 coordinatesFirstStreet = getCoordinatesFirstStreet();
-            } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), player));
+            } while (rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), player));
             int node1 = coordinatesFirstStreet.q();
             int node2 = coordinatesFirstStreet.r();
             log.info("*Building first street " + player);
@@ -193,7 +193,7 @@ public class GameController {
             do {
                 coordinatesSecondSettlement = getCoordinatesFirstSettlement();
 
-            } while (!rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, this.players[i]));
+            } while (rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, this.players[i]));
             log.info("*Building first settlement " + this.players[i]);
             log.info("*Building second settlement " + this.players[i]);
             this.players[i].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
@@ -202,7 +202,7 @@ public class GameController {
             IntTupel coordinatesSecondStreet;
             do {
                 coordinatesSecondStreet = getCoordinatesFirstStreet();
-            } while (!rules.buildFirstStreet(catanBoard, coordinatesSecondStreet.q(), coordinatesSecondStreet.r(), this.players[i]));
+            } while (rules.buildFirstStreet(catanBoard, coordinatesSecondStreet.q(), coordinatesSecondStreet.r(), this.players[i]));
             int node1 = coordinatesSecondStreet.q();
             int node2 = coordinatesSecondStreet.r();
             log.info("*Building first street " + this.players[i]);
