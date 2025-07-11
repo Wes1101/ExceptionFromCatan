@@ -2,7 +2,7 @@
  * GameController Class
  * <p>
  * Handles all logic/interaction between objects for playing the game. According to the gameControllerType, the required
- * actions are either send to the gui or the server.
+ * actions are either sent to the gui or the server.
  * </p>
  *
  * @author: Fabian Weller
@@ -10,9 +10,7 @@
  */
 package de.dhbw.gameController;
 
-import java.awt.*;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import de.dhbw.gameRules.Rules;
@@ -63,9 +61,9 @@ public class GameController {
      * victoryPoints and gameControllerType accordingly
      * </p>
      *
-     * @param playerAmount       Amount of players in game
+     * @param playerAmount       Number of players in the game
      * @param victoryPoints      Victory points necessary to win a game
-     * @param gameControllerType Type, of how the game is played -> How the class should react to interaction
+     * @param gameControllerType Type of how the game is played -> How the class should react to interaction
      */
     public GameController(int playerAmount, int victoryPoints, GameControllerTypes gameControllerType, boolean syso) {
         log.debug("GameController created with type {}", gameControllerType);
@@ -81,7 +79,7 @@ public class GameController {
         }
 
         this.rules = new Rules(victoryPoints);
-        this.bank = new Bank(19, players);       // Sind eig immer 19 -> Konstroktor
+        this.bank = new Bank(19, players);       // Sind eig immer 19 -> Konstruktor
         this.gameRound = 0;
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
@@ -184,7 +182,7 @@ public class GameController {
 
         log.info("...done. Placing second settlements and streets...");
 
-        //place second settlement and get according resources
+        //place the second settlement and get according resources
         for (int i = this.players.length-1; i >= 0; i--) {
             System.out.println(this.players[i].getId());
             this.activePlayer(this.players[i]);
@@ -231,7 +229,7 @@ public class GameController {
      * Starts the main game logic
      * <p>
      * Every loop starts with a check if someone already has enough victory points to win the game. Then the dice are
-     * rolled and if a seven was rolled the bandit is activated. After that the resources are distributed. Then the
+     * rolled, and if a seven was rolled, the bandit is activated. After that the resources are distributed. Then the
      * player gets the option to build, trade or use special cards. This repeats for all players and the loop starts
      * again.
      * </p>
@@ -296,8 +294,8 @@ public class GameController {
     /**
      * Checks for a victory
      * <p>
-     * Checks victory by iterating through the whole players array and if one player has enough victory points true is
-     * returned. If no one has enough points false is returned.
+     * Checks victory by iterating through the whole players array, and if one player has enough victory points true is
+     * returned. If no one has enough points, false is returned.
      * </p>
      */
     private boolean checkVictory() {
@@ -332,9 +330,7 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("im just a client and was told to tell the gui the active player");
             if (!this.syso) {
-                Platform.runLater(() -> {
-                    gui.setactivePlayer(player);
-                });
+                Platform.runLater(() -> gui.setactivePlayer(player));
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
             /*   TODO: @David   */
@@ -450,7 +446,7 @@ public class GameController {
             log.debug("Another update for the players resources, seriously?");
             if (!this.syso) {
                 gui.updatePlayerResources(players);
-                Platform.runLater(() -> {;
+                Platform.runLater(() -> {
                     gui.updateBoard(catanBoard);
                 });
             }

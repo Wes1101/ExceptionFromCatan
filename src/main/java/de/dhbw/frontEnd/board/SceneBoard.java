@@ -1,6 +1,7 @@
 package de.dhbw.frontEnd.board;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,16 +17,16 @@ public class SceneBoard extends Application {
   @Override
   public void start(Stage stage) throws IOException {
     Parent root = FXMLLoader.load(
-      getClass().getResource("/de/dhbw/frontEnd/board/card-bar.fxml")
+            Objects.requireNonNull(getClass().getResource("/de/dhbw/frontEnd/board/card-bar.fxml"))
     );
 
-    // Start propertys
+    // Start properties
     scene = new Scene(root, 1280, 720);
 
     // Minimum/maximum height/width
     stage.setMinHeight(720);
     stage.setMinWidth(1280);
-    stage.setTitle("Exception from Catan - SiedlungsOverflow");
+    stage.setTitle("Exception from Catan - SettlementOverflow");
 
     stage.setScene(scene);
 

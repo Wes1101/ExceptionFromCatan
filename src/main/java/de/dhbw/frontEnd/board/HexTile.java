@@ -2,15 +2,13 @@ package de.dhbw.frontEnd.board;
 
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
-import java.util.function.Consumer;
-import javafx.scene.input.MouseEvent;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Objects;
 
 @Slf4j
 public class HexTile extends Group {
@@ -35,8 +33,9 @@ public class HexTile extends Group {
     // Hex Bilder
     Image img = null;
     try {
-      img = new Image(getClass().getResourceAsStream( resourceName + ".png"));
+      img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(resourceName + ".png")));
     } catch (Exception e) {
+      System.out.println("HexTile: Could not load image for resource " + resourceName + ".");
     }
     if (img != null) {
       hex.setFill(new ImagePattern(img));
