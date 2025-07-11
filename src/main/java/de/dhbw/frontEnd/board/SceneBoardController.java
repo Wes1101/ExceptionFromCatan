@@ -194,6 +194,8 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private final Map<IntTupel, ImageView> banditOverlays = new HashMap<>();
 
+  private final Map<Integer, Point2D> nodeScreenPositions = new HashMap<>();
+
 
 
   @Override
@@ -510,7 +512,39 @@ public class SceneBoardController implements Initializable, GameUI {
       }
 
     }
+    calculateNodeScreenPositions(catanBoard);
 
+  }
+
+  private void calculateNodeScreenPositions(CatanBoard catanBoard) {
+    double size = 50;
+    double width = Math.sqrt(3) * size;
+    double height = 1.5 * size;
+    double offsetX = 400;
+    double offsetY = 300;
+
+    Map<IntTupel, Tile> board = catanBoard.getBoard();
+
+    for (Map.Entry<IntTupel, Tile> entry : board.entrySet()) {
+      IntTupel coords = entry.getKey();
+      Tile tile = entry.getValue();
+      Node[] hexNodes = tile.getHexTileNodes();
+
+      int q = coords.q();
+      int r = coords.r();
+      double centerX = offsetX + (q * width) + (r * (width / 2));
+      double centerY = offsetY - (r * height);
+
+      for (int i = 0; i < 6; i++) {
+        Node node = hexNodes[i];
+        if (node == null || nodeScreenPositions.containsKey(node.getId())) continue;
+
+        double angle = Math.toRadians(60 * i - 30);
+        double x = centerX + size * Math.cos(angle);
+        double y = centerY + size * Math.sin(angle);
+        nodeScreenPositions.put(node.getId(), new Point2D(x, y));
+      }
+    }
   }
 
   public void updateBoard(CatanBoard catanBoard) {
@@ -629,9 +663,11 @@ public class SceneBoardController implements Initializable, GameUI {
           log.debug("Drawing building at node: {}", node.getId());
 
         // Calculate node screen position
-        double angle = Math.toRadians(60 * i - 30);
-        double x = centerX + size * Math.cos(angle);
-        double y = centerY + size * Math.sin(angle);
+        Point2D pos = nodeScreenPositions.get(node.getId());
+        if (pos == null) continue;
+
+        double x = pos.getX();
+        double y = pos.getY();
 
         String imgPath;
         if (building instanceof de.dhbw.gamePieces.City) {
@@ -700,19 +736,19 @@ public class SceneBoardController implements Initializable, GameUI {
         double centerY = offsetY - (r * height);
 
         // Estimate screen positions of the nodes
-        double[][] positions = getNodeScreenPositions(sharedTile, centerX, centerY, size);
-        double[] posA = findNodePosition(nodeA, sharedTile, positions);
-        double[] posB = findNodePosition(nodeB, sharedTile, positions);
+        Point2D posA = nodeScreenPositions.get(nodeA.getId());
+        Point2D posB = nodeScreenPositions.get(nodeB.getId());
+        if (posA == null || posB == null) continue;
 
         if (posA == null || posB == null) {
           System.out.println("Could not find position for edge between " + i + " and " + j);
           continue;
         }
 
-        double midX = (posA[0] + posB[0]) / 2;
-        double midY = (posA[1] + posB[1]) / 2;
-        double dx = posB[0] - posA[0];
-        double dy = posB[1] - posA[1];
+        double midX = (posA.getX() + posB.getX()) / 2;
+        double midY = (posA.getY() + posB.getY()) / 2;
+        double dx = posB.getX() - posA.getX();
+        double dy = posB.getY() - posA.getY();
         double angleDeg = Math.toDegrees(Math.atan2(dy, dx));
         double length = Math.hypot(dx, dy);
 
