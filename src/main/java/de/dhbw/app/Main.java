@@ -1,5 +1,5 @@
 /**
- * Main Class to make .jar file runnable
+ * Main Class to make the .jar file runnable
  */
 
 package de.dhbw.app;
