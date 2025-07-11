@@ -1,12 +1,17 @@
 package de.dhbw.frontEnd.board;
 
+import de.dhbw.catanBoard.hexGrid.*;
+import de.dhbw.catanBoard.hexGrid.Tiles.Harbour;
 import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import de.dhbw.gameController.GameController;
 import de.dhbw.gameController.PlayerTupelVar;
+import de.dhbw.gamePieces.Building;
+import de.dhbw.gamePieces.Street;
 import de.dhbw.player.Player;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -37,8 +42,6 @@ import javafx.util.Duration;
 
 
 import de.dhbw.catanBoard.CatanBoard;
-import de.dhbw.catanBoard.hexGrid.IntTupel;
-import de.dhbw.catanBoard.hexGrid.Tile;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -560,9 +563,9 @@ public class SceneBoardController implements Initializable, GameUI {
       if (tile instanceof Resource resTile) {
         showBanditIfBlocked(coords, resTile, x, y, size);
       }
-
-        //ToDo: add roads and buildings
     }
+    this.drawAllBuildings(catanBoard);
+    this.drawAllStreets(catanBoard);
   }
 
 
@@ -592,6 +595,161 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
+  private void drawAllBuildings(CatanBoard catanBoard) {
+    double size = 50;
+    double width = Math.sqrt(3) * size;
+    double height = 1.5 * size;
+    double offsetX = 400;
+    double offsetY = 300;
+
+    Map<IntTupel, Tile> board = catanBoard.getBoard();
+    Set<Integer> drawnNodes = new HashSet<>(); // Avoid duplicates
+
+    for (Map.Entry<IntTupel, Tile> entry : board.entrySet()) {
+      IntTupel coords = entry.getKey();
+      Tile tile = entry.getValue();
+
+      if (!(tile instanceof Resource || tile instanceof Harbour)) continue;
+
+      Node[] hexNodes = tile.getHexTileNodes();
+      int q = coords.q();
+      int r = coords.r();
+
+      double centerX = offsetX + (q * width) + (r * (width / 2));
+      double centerY = offsetY - (r * height);
+
+      for (int i = 0; i < 6; i++) {
+        Node node = hexNodes[i];
+        if (node == null || drawnNodes.contains(node.getId())) continue;
+
+        Building building = node.getBuilding();
+        if (building == null) continue;
+        drawnNodes.add(node.getId());
+
+          log.debug("Drawing building at node: {}", node.getId());
+
+        // Calculate node screen position
+        double angle = Math.toRadians(60 * i - 30);
+        double x = centerX + size * Math.cos(angle);
+        double y = centerY + size * Math.sin(angle);
+
+        String imgPath;
+        if (building instanceof de.dhbw.gamePieces.City) {
+          imgPath = "/de/dhbw/frontEnd/board/city.png";
+        } else {
+          imgPath = "/de/dhbw/frontEnd/board/settlement.png";
+        }
+
+        Image img = new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream(imgPath)));
+        ImageView buildingView = new ImageView(img);
+
+        double imgSize = size * 0.6;
+        buildingView.setFitWidth(imgSize);
+        buildingView.setFitHeight(imgSize);
+        buildingView.setX(x - imgSize / 2);
+        buildingView.setY(y - imgSize / 2);
+
+        tile_layer.getChildren().add(buildingView);
+      }
+    }
+  }
+
+  private void drawAllStreets(CatanBoard catanBoard) {
+    double size = 50;
+    double width = Math.sqrt(3) * size;
+    double height = 1.5 * size;
+    double offsetX = 400;
+    double offsetY = 300;
+
+    Graph graph = catanBoard.getGraph();
+    Node[] nodes = graph.getNodes();
+    Edge[][] edges = graph.getGraph();
+    Set<String> drawnEdges = new HashSet<>();
+
+    for (int i = 0; i < nodes.length; i++) {
+      for (int j = i + 1; j < nodes.length; j++) {
+        Edge edge = edges[i][j];
+        if (edge == null || edge.getStreet() == null) continue;
+
+        String edgeKey = i + "-" + j;
+        if (drawnEdges.contains(edgeKey)) continue;
+        drawnEdges.add(edgeKey);
+
+        Node nodeA = nodes[i];
+        Node nodeB = nodes[j];
+
+        log.debug("Drawing street at nodeA: {}, nodeB: {}", nodeA.getId(), nodeB.getId());
+
+        // Try to find a common tile shared by both nodes
+        Tile sharedTile = nodeA.getHexNeighbors().stream()
+                .filter(nodeB.getHexNeighbors()::contains)
+                .findFirst()
+                .orElse(null);
+
+        if (sharedTile == null) {
+          System.out.println("No shared tile between node " + i + " and node " + j);
+          continue; // skip drawing
+        }
+
+        IntTupel coords = sharedTile.getCoordinates(); // You’ll need to add this getter to Tile
+        int q = coords.q();
+        int r = coords.r();
+
+        double centerX = offsetX + (q * width) + (r * (width / 2));
+        double centerY = offsetY - (r * height);
+
+        // Estimate screen positions of the nodes
+        double[][] positions = getNodeScreenPositions(sharedTile, centerX, centerY, size);
+        double[] posA = findNodePosition(nodeA, sharedTile, positions);
+        double[] posB = findNodePosition(nodeB, sharedTile, positions);
+
+        if (posA == null || posB == null) {
+          System.out.println("Could not find position for edge between " + i + " and " + j);
+          continue;
+        }
+
+        double midX = (posA[0] + posB[0]) / 2;
+        double midY = (posA[1] + posB[1]) / 2;
+        double dx = posB[0] - posA[0];
+        double dy = posB[1] - posA[1];
+        double angleDeg = Math.toDegrees(Math.atan2(dy, dx));
+        double length = Math.hypot(dx, dy);
+
+        Image roadImage = new Image(Objects.requireNonNull(
+                getClass().getResourceAsStream("/de/dhbw/frontEnd/board/street.png")));
+        ImageView roadView = new ImageView(roadImage);
+
+        roadView.setFitWidth(length);
+        roadView.setFitHeight(size * 0.2);
+        roadView.setX(midX - length / 2);
+        roadView.setY(midY - roadView.getFitHeight() / 2);
+        roadView.setRotate(angleDeg);
+
+        tile_layer.getChildren().add(roadView);
+      }
+    }
+  }
+
+  private double[][] getNodeScreenPositions(Tile tile, double centerX, double centerY, double size) {
+    double[][] positions = new double[6][2];
+    for (int i = 0; i < 6; i++) {
+      double angle = Math.toRadians(60 * i - 30);
+      positions[i][0] = centerX + size * Math.cos(angle);
+      positions[i][1] = centerY + size * Math.sin(angle);
+    }
+    return positions;
+  }
+
+  private double[] findNodePosition(Node node, Tile tile, double[][] positions) {
+    Node[] tileNodes = tile.getHexTileNodes();
+    for (int i = 0; i < tileNodes.length; i++) {
+      if (tileNodes[i] != null && tileNodes[i].getId() == node.getId()) {
+        return positions[i];
+      }
+    }
+    return null;
+  }
 
   public void setPlayerAmount(int playerCount) {
     // Set the visibility of player labels based on the number of players

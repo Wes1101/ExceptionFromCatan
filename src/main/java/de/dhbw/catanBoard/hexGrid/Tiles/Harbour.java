@@ -1,6 +1,7 @@
 
 package de.dhbw.catanBoard.hexGrid.Tiles;
 
+import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.player.Bank;
@@ -30,8 +31,8 @@ public class Harbour extends Tile {
      * @param resourceType the resource this harbour specializes in, or NONE for generic
      * @param nodes        the nodes surrounding the harbour tile
      */
-    public Harbour(Resources resourceType, Node[] nodes) {
-        super(resourceType, nodes);
+    public Harbour(Resources resourceType, Node[] nodes, IntTupel coordinates) {
+        super(resourceType, nodes, coordinates);
     }
 
     /**

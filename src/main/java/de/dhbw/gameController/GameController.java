@@ -177,6 +177,7 @@ public class GameController {
             log.info("*Building first street " + player);
             player.buyFirstStreet(node1, node2, bank, catanBoard);
 
+            this.updatePlayerResources(players);
         }
         minorGameState = MinorGameStates.NO_STATE;
 
@@ -196,7 +197,6 @@ public class GameController {
                 coordinatesSecondSettlement = getCoordinatesFirstSettlement();
 
             } while (!rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, this.players[i]));
-            log.info("*Building first settlement " + this.players[i]);
             log.info("*Building second settlement " + this.players[i]);
             this.players[i].buyFirstSettlement(coordinatesSecondSettlement, bank, catanBoard);
             this.players[i].getNodeResources(coordinatesSecondSettlement, bank, catanBoard);
@@ -209,6 +209,8 @@ public class GameController {
             int node2 = coordinatesSecondStreet.r();
             log.info("*Building first street " + this.players[i]);
             this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
+
+            this.updatePlayerResources(players);
         }
         minorGameState = MinorGameStates.NO_STATE;
 
@@ -449,8 +451,8 @@ public class GameController {
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("Another update for the players resources, seriously?");
             if (!this.syso) {
-                gui.updatePlayerResources(players);
-                Platform.runLater(() -> {;
+                Platform.runLater(() -> {
+                    gui.updatePlayerResources(players);
                     gui.updateBoard(catanBoard);
                 });
             }
