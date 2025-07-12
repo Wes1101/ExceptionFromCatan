@@ -277,7 +277,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
     tile_layer.getChildren().stream()
-            .filter(n -> n instanceof Rectangle && n.getId() != null && n.getId().startsWith("road_"))
+            .filter(n -> n instanceof EdgeFX && n.getId() != null && n.getId().startsWith("road_"))
             .forEach(n -> n.setOnMouseClicked(evt -> {
                       System.out.println("Straße geklickt: fx:id=" + n.getId());
 
@@ -323,7 +323,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
   @FXML
-  private void onNodeClicked(ActionEvent event) {
+  private void onNodeClicked(ActionEvent event) { //johann
     Button btn = (Button) event.getSource();
     String fxId = btn.getId();
     log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + fxId);
@@ -342,6 +342,27 @@ public class SceneBoardController implements Initializable, GameUI {
       log.debug("🟢 City click handler invoked for: " + fxId);
       cityClickHandler.accept(btn);
     }
+  }
+
+  @FXML
+  private void onEdgeClicked(ActionEvent event) { //johann
+    Button btn = (Button) event.getSource();
+    String fxId = btn.getId();
+
+    System.out.println("Straße geklickt: fx:id=" + fxId);
+
+    log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + fxId);
+    log.debug("🔴 Callback is: " + streetClickCallback);
+
+    if (streetClickCallback != null) {
+      streetClickCallback.accept(fxId);
+    }
+
+    if (waitingForStreetClick && streetClickHandler != null) {
+      log.debug("🟢 Street click handler invoked for: " + fxId);
+      streetClickHandler.accept((Button) btn);
+    }
+
   }
 
   @FXML
@@ -386,8 +407,10 @@ public class SceneBoardController implements Initializable, GameUI {
     };
   }
 
+  //johann
   @FXML
-  private void onBuildRoad(MouseEvent event) {
+  private void onBuildRoad(ActionEvent event) {
+    System.out.println("<UNK> Build Road button clicked");
     waitingForStreetClick = true;
     streetClickHandler = (Button btn) -> {
       log.debug("🟢 Street button clicked: " + btn.getId());
@@ -485,7 +508,7 @@ public class SceneBoardController implements Initializable, GameUI {
       int r = coords.r();
 
       double x = offsetX + (q * width) + (r * (width / 2));
-      double y = offsetY - (r * height);
+      double y = offsetY + (r * height);
 
 
       // Wasser vom Backend
@@ -540,17 +563,28 @@ public class SceneBoardController implements Initializable, GameUI {
 
       Node node = hexTileNodes[i];
       if (node == null) continue;
+      boolean exists = tile_layer.getChildren().stream()
+              .anyMatch(n -> ("node_" + node.getId()).equals(n.getId()));
+      if (exists) {
+        System.out.println("Node " + node.getId() + " already exists");
+        continue;
+      }
+      else {
+        System.out.println("Node " + node.getId() + " is new");
+      }
 
       Button redButton = new NodeFX();
-      redButton.setLayoutX(x - 5);
-      redButton.setLayoutY(y - 5);
-      redButton.setMouseTransparent(true);
+      redButton.setLayoutX(x - 7);
+      redButton.setLayoutY(y - 7);
+      //redButton.setMouseTransparent(true);
       redButton.setId("node_" + node.getId());
+      System.out.println(redButton.getId());
 
       // Optional: EventHandler für später
+      //redButton.setOnAction(this::onNodeClicked);
       redButton.setOnAction(this::onNodeClicked);
 
-      button_layer.getChildren().add(redButton);
+      tile_layer.getChildren().add(redButton);
     }
   }
 
@@ -558,9 +592,24 @@ public class SceneBoardController implements Initializable, GameUI {
   public void addEdgeButtons(Tile tile, List<double[]> corners) {
     if (!(tile instanceof Resource resTile)) return;
 
+    Node[] hexTileNodes = tile.getHexTileNodes();
+
     for (int i = 0; i < corners.size(); i++) {
       double[] start = corners.get(i);
       double[] end = corners.get((i + 1) % 6);
+
+      Node nodeA = hexTileNodes[i];
+      Node nodeB = hexTileNodes[(i + 1) % 6];
+      if (nodeA == null || nodeB == null) continue;
+
+      String id = "road_" + nodeA.getId() + "_" + nodeB.getId();
+
+      boolean exists = tile_layer.getChildren().stream()
+              .anyMatch(n -> id.equals(n.getId()));
+      if (exists) {
+        System.out.println("street " + id + " already exists");
+        continue;
+      }
 
       double startX = start[0];
       double startY = start[1];
@@ -572,21 +621,23 @@ public class SceneBoardController implements Initializable, GameUI {
       double length = Math.sqrt(dx * dx + dy * dy);
       double angle = Math.toDegrees(Math.atan2(dy, dx));
 
-      double shorteningFactor = 0.7; // z. B. 80 % der Länge
+      double shorteningFactor = 0.6;
       double shortenedLength = length * shorteningFactor;
 
       double centerX = (startX + endX) / 2;
       double centerY = (startY + endY) / 2;
 
-      Rectangle rect = new EdgeFX(shortenedLength, 5); // neue kürzere Länge
+      EdgeFX rect = new EdgeFX(shortenedLength, 8);
       rect.setLayoutX(centerX - shortenedLength / 2);
-      rect.setLayoutY(centerY - 2.5); // halbe Höhe bleibt gleich
+      rect.setLayoutY(centerY - 4); // halbe Höhe
       rect.setRotate(angle);
-      rect.setMouseTransparent(true);
+      rect.setId(id);
+      rect.setOnAction(this::onEdgeClicked);
 
-      button_layer.getChildren().add(rect);
+      tile_layer.getChildren().add(rect);
     }
   }
+
 
 
   private void calculateNodeScreenPositions(CatanBoard catanBoard) {
@@ -702,28 +753,19 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
+  //johann
   private void drawAllBuildings(CatanBoard catanBoard) {
     double size = 50;
-    double width = Math.sqrt(3) * size;
-    double height = 1.5 * size;
-    double offsetX = 400;
-    double offsetY = 300;
 
     Map<IntTupel, Tile> board = catanBoard.getBoard();
     Set<Integer> drawnNodes = new HashSet<>(); // Avoid duplicates
 
     for (Map.Entry<IntTupel, Tile> entry : board.entrySet()) {
-      IntTupel coords = entry.getKey();
       Tile tile = entry.getValue();
 
       if (!(tile instanceof Resource || tile instanceof Harbour)) continue;
 
       Node[] hexNodes = tile.getHexTileNodes();
-      int q = coords.q();
-      int r = coords.r();
-
-      double centerX = offsetX + (q * width) + (r * (width / 2));
-      double centerY = offsetY - (r * height);
 
       for (int i = 0; i < 6; i++) {
         Node node = hexNodes[i];
@@ -739,8 +781,6 @@ public class SceneBoardController implements Initializable, GameUI {
         Point2D pos = nodeScreenPositions.get(node.getId());
         if (pos == null) continue;
 
-        double x = pos.getX();
-        double y = pos.getY();
 
         String imgPath;
         if (building instanceof de.dhbw.gamePieces.City) {
@@ -758,12 +798,11 @@ public class SceneBoardController implements Initializable, GameUI {
         buildingView.setFitHeight(imgSize);
 
         String nodeID = "node_" + node.getId();
+        System.out.println(nodeID);
         tile_layer.getChildren().stream()
-                .filter(node1 -> node1 instanceof Button && node1.getId().equals(nodeID))
+                .filter(node1 -> node1 instanceof NodeFX && node1.getId().equals(nodeID))
                 .forEach(node1 -> {
-                  ((Button) node1).setGraphic(buildingView);
-                  node1.setTranslateX(-imgSize / 2);
-                  node1.setTranslateY(-imgSize / 2);
+                  ((NodeFX) node1).setGraphic(buildingView);
                   node1.setStyle("-fx-padding: 0; -fx-background-insets: 0;");;
                 });
 
@@ -773,10 +812,6 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private void drawAllStreets(CatanBoard catanBoard) {
     double size = 50;
-    double width = Math.sqrt(3) * size;
-    double height = 1.5 * size;
-    double offsetX = 400;
-    double offsetY = 300;
 
     Graph graph = catanBoard.getGraph();
     Node[] nodes = graph.getNodes();
@@ -808,12 +843,35 @@ public class SceneBoardController implements Initializable, GameUI {
           continue; // skip drawing
         }
 
-        IntTupel coords = sharedTile.getCoordinates(); // You’ll need to add this getter to Tile
-        int q = coords.q();
-        int r = coords.r();
+        Optional<NodeFX> maybeNode = tile_layer.getChildren().stream()
+                .filter(node1 -> node1 instanceof NodeFX && node1.getId().equals("node_" + nodeA.getId()))
+                .map(node1 -> (NodeFX) node1)
+                .findFirst();
 
-        double centerX = offsetX + (q * width) + (r * (width / 2));
-        double centerY = offsetY - (r * height);
+        double Ax = 0;
+        double Ay = 0;
+
+        if (maybeNode.isPresent()) {
+          NodeFX nodeFX = maybeNode.get();
+          Ax = nodeFX.getLayoutX();
+          Ay = nodeFX.getLayoutY();
+          System.out.println("Ax = " + Ax + ", Ay = " + Ay);
+        }
+
+        maybeNode = tile_layer.getChildren().stream()
+                .filter(node1 -> node1 instanceof NodeFX && node1.getId().equals("node_" + nodeB.getId()))
+                .map(node1 -> (NodeFX) node1)
+                .findFirst();
+
+        double Bx = 0;
+        double By = 0;
+
+        if (maybeNode.isPresent()) {
+          NodeFX nodeFX = maybeNode.get();
+          Bx = nodeFX.getLayoutX();
+          By = nodeFX.getLayoutY();
+          System.out.println("Bx = " + Bx + ", By = " + By);
+        }
 
         // Estimate screen positions of the nodes
         Point2D posA = nodeScreenPositions.get(nodeA.getId());
@@ -825,24 +883,27 @@ public class SceneBoardController implements Initializable, GameUI {
           continue;
         }
 
-        double midX = (posA.getX() + posB.getX()) / 2;
-        double midY = (posA.getY() + posB.getY()) / 2;
-        double dx = posB.getX() - posA.getX();
-        double dy = posB.getY() - posA.getY();
-        double angleDeg = Math.toDegrees(Math.atan2(dy, dx));
+        double dx = Bx - Ax;
+        double dy = By - Ay;
         double length = Math.hypot(dx, dy);
 
         Image roadImage = new Image(Objects.requireNonNull(
                 getClass().getResourceAsStream("/de/dhbw/frontEnd/board/street.png")));
         ImageView roadView = new ImageView(roadImage);
 
-        roadView.setFitWidth(length);
-        roadView.setFitHeight(size * 0.2);
-        roadView.setX(midX - length / 2);
-        roadView.setY(midY - roadView.getFitHeight() / 2);
-        roadView.setRotate(angleDeg);
+        roadView.setFitWidth(length * 0.9);
+        roadView.setFitHeight(size * 0.6);
 
-        tile_layer.getChildren().add(roadView);
+
+        String nodeID = "road_" + nodeA.getId() + "_" + nodeB.getId();
+        System.out.println(nodeID);
+        tile_layer.getChildren().stream()
+                .filter(node1 -> node1 instanceof EdgeFX && node1.getId().equals(nodeID))
+                .forEach(node1 -> {
+                  ((EdgeFX) node1).setGraphic(roadView);
+
+                  node1.setStyle("-fx-padding: 0; -fx-background-insets: 0;");;
+                });
       }
     }
   }
