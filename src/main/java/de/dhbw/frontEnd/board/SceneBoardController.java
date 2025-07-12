@@ -894,6 +894,8 @@ public class SceneBoardController implements Initializable, GameUI {
 
     this.setActivePlayerLabel(ID);
     this.updatePlayerResources(player);
+    this.showUserMessage("New active Player!",
+            "Player " + (player.getId() + 1) + " is now active.", Alert.AlertType.INFORMATION);
 
     // Log-Ausgabe zur Überprüfung
     log.info("Aktiver Spieler in SceneBoardController gesetzt: ID = {}", player.getId());
