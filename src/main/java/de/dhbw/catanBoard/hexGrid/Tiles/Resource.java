@@ -1,6 +1,7 @@
 
 package de.dhbw.catanBoard.hexGrid.Tiles;
 
+import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.player.Bank;
@@ -31,8 +32,8 @@ public class Resource extends Tile {
      * @param resourceType the type of resource this tile produces
      * @param nodes        the corner nodes surrounding this tile
      */
-    public Resource(Resources resourceType, Node[] nodes) {
-        super(resourceType, nodes);
+    public Resource(Resources resourceType, Node[] nodes, IntTupel coordinates) {
+        super(resourceType, nodes, coordinates);
         this.blocked = false;
     }
 

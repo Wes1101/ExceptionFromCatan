@@ -167,4 +167,9 @@ public class Graph {
         log.info("Player {} has a road length of {}", player, length);
         log.info("Current longest road is by Player {} with length {}", winner, maxLength);
     }
+
+    public Edge getEdge(int i, int j) {
+        if (i < 0 || j < 0 || i >= graph.length || j >= graph[i].length) return null;
+        return graph[i][j];
+    }
 }
