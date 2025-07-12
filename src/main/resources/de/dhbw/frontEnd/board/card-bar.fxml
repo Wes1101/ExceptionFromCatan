@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
 
 
 
@@ -35,12 +35,28 @@
                                     <Image url="@victory_points.png" />
                                  </image>
                               </ImageView>
-                              <Label fx:id="victory_points_background_number" alignment="TOP_CENTER" text="8" textFill="#412515">
+                              <Label fx:id="victory_points_bacvictory_points_background_number1kground_number" alignment="TOP_CENTER" text="8" textFill="#412515">
                                  <font>
-                                    <Font name="EB Garamond Regular" size="29.0" />
+                                    <Font size="22.0" />
                                  </font>
                                  <StackPane.margin>
-                                    <Insets left="180.0" />
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="Player 1" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
                            </children>
@@ -48,54 +64,186 @@
                               <Insets left="20.0" top="20.0" />
                            </VBox.margin>
                         </StackPane>
-                        <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="Player 1" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background1" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number2" alignment="TOP_CENTER" text="Player 2" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="victory_points_background_number2" alignment="TOP_CENTER" text="Player 2" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background11" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number11" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number21" alignment="TOP_CENTER" text="Player 3" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="victory_points_background_number21" alignment="TOP_CENTER" layoutX="10.0" layoutY="100.0" text="Player 3" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background111" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number111" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number211" alignment="TOP_CENTER" text="Player 4" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="victory_points_background_number211" alignment="TOP_CENTER" layoutX="10.0" layoutY="135.0" text="Player 4" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background1111" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number1111" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number2111" alignment="TOP_CENTER" text="Player 5" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="victory_points_background_number2111" alignment="TOP_CENTER" layoutX="10.0" layoutY="137.0" text="Player 5" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background11111" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number11111" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number21111" alignment="TOP_CENTER" text="Player 6" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="victory_points_background_number21111" alignment="TOP_CENTER" layoutX="10.0" layoutY="161.0" text="Player 6" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets left="20.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        </StackPane>
                      </children>
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
@@ -105,14 +253,6 @@
                               <Image url="@building_cost_card.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="build_development_card" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
-                           <StackPane.margin>
-                              <Insets top="115.0" />
-                           </StackPane.margin>
-                           <padding>
-                              <Insets right="200.0" />
-                           </padding>
-                        </Button>
                         <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
@@ -135,6 +275,9 @@
                            </StackPane.margin>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
                   </StackPane>
                </children>
             </VBox>
@@ -442,8 +585,6 @@
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
-                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
                                  </children></Pane>
                            </children>
                         </StackPane>
@@ -496,7 +637,7 @@
                   </StackPane>
                </children>
             </StackPane>
-            <HBox alignment="BOTTOM_CENTER" prefHeight="140.0" prefWidth="809.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="140.0" prefWidth="809.0">
                <children>
                   <StackPane fx:id="grain_group" alignment="BOTTOM_CENTER" prefHeight="140.0" styleClass="card">
                      <children>
@@ -599,18 +740,25 @@
                      </HBox.margin>
                   </StackPane>
                   <StackPane fx:id="development_card_group" alignment="BOTTOM_CENTER" prefHeight="140.0" styleClass="card">
-                     <children>
-                        <ImageView cache="true" fitHeight="140.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@development_card.png" />
-                           </image>
-                           <StackPane.margin>
-                              <Insets left="15.0" />
-                           </StackPane.margin>
-                        </ImageView>
-                     </children>
                      <HBox.margin>
                         <Insets top="75.0" />
+                     </HBox.margin>
+                  </StackPane>
+                  <StackPane maxHeight="150.0" maxWidth="180.0" prefHeight="150.0" prefWidth="180.0">
+                     <children>
+                        <Button fx:id="diceButton1" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0">
+                           <StackPane.margin>
+                              <Insets left="65.0" top="82.0" />
+                           </StackPane.margin>
+                        </Button>
+                        <Button fx:id="diceButton2" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0">
+                           <StackPane.margin>
+                              <Insets bottom="65.0" right="65.0" />
+                           </StackPane.margin>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="70.0" />
                      </HBox.margin>
                   </StackPane>
                </children>
