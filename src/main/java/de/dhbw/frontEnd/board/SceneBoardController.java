@@ -1325,4 +1325,15 @@ public class SceneBoardController implements Initializable, GameUI {
     });
   }
 
+  private String playerIdToColor(int playerId) {
+      return switch (playerId) {
+          case 0 -> "red";
+          case 1 -> "green";
+          case 2 -> "blue";
+          case 3 -> "yellow";
+          case 4 -> "magenta";
+          case 5 -> "cyan";
+          default -> "unknown";
+      };
+  }
 }
