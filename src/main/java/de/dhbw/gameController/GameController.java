@@ -109,11 +109,11 @@ public class GameController {
         log.info("Creating all players...");
         for (int i = 0; i < this.players.length; i++) {
 
-            this.activePlayer(this.players[i]);
+            //this.activePlayer(this.players[i]);
 
             this.rollDice();
 
-            this.showDice(dice1, dice2);
+            //this.showDice(dice1, dice2);
 
             playerDiceNumber[i] = (this.dice1 + this.dice2);
         }
