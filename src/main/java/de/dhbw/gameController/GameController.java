@@ -143,7 +143,7 @@ public class GameController {
 
             int coordinatesFirstSettlement;
             do {
-                coordinatesFirstSettlement = getCoordinatesFirstSettlement();
+                coordinatesFirstSettlement = getCoordinatesFirstSettlement(this.players[currentIndex].getId());
 
             } while (!rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, this.players[currentIndex]));
             log.info("*Building first settlement " + this.players[currentIndex]);
@@ -153,7 +153,7 @@ public class GameController {
 
             IntTupel coordinatesFirstStreet = new IntTupel(-100, -100);
             do {
-                coordinatesFirstStreet = getCoordinatesFirstStreet();
+                coordinatesFirstStreet = getCoordinatesFirstStreet(this.players[currentIndex].getId());
             } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), this.players[currentIndex]));
             int node1 = coordinatesFirstStreet.q();
             int node2 = coordinatesFirstStreet.r();
@@ -183,7 +183,7 @@ public class GameController {
 
             int coordinatesSecondSettlement;
             do {
-                coordinatesSecondSettlement = getCoordinatesFirstSettlement();
+                coordinatesSecondSettlement = getCoordinatesFirstSettlement(player.getId());
 
             } while (!rules.buildFirstSettlement(catanBoard, coordinatesSecondSettlement, player));
             log.info("*Building second settlement " + player);
@@ -194,7 +194,7 @@ public class GameController {
 
             IntTupel coordinatesSecondStreet = new IntTupel(-100, -100);;
             do {
-                coordinatesSecondStreet = getCoordinatesFirstStreet();
+                coordinatesSecondStreet = getCoordinatesFirstStreet(player.getId());
             } while (!rules.buildFirstStreet(catanBoard, coordinatesSecondStreet.q(), coordinatesSecondStreet.r(), player));
             int node1 = coordinatesSecondStreet.q();
             int node2 = coordinatesSecondStreet.r();
@@ -379,13 +379,13 @@ public class GameController {
      *
      * @return Returns the coordinates of the first settlement
      */
-    public Integer getCoordinatesFirstSettlement() {
+    public Integer getCoordinatesFirstSettlement(int playerId) {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first settlement?");
             try {
                 log.info("You have 30 seconds to click on a Settlement location");
-                return gui.waitForSettlementClick()
+                return gui.waitForSettlementClick(playerId)
                         .orTimeout(30, TimeUnit.SECONDS)
                         .join();  // Blocks until click or timeout
             } catch (Exception e) {
@@ -407,14 +407,14 @@ public class GameController {
      *
      * @return Returns the coordinates of the first street
      */
-    public IntTupel getCoordinatesFirstStreet() {
+    public IntTupel getCoordinatesFirstStreet(int playerId) {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("What, you want the location of the first street?");
 
             try {
                 log.info("You have 30 seconds to click on a street");
-                return gui.waitForStreetClick()
+                return gui.waitForStreetClick(playerId)
                         .orTimeout(30, TimeUnit.SECONDS)
                         .join();  // Blocks until click or timeout
             } catch (Exception e) {
