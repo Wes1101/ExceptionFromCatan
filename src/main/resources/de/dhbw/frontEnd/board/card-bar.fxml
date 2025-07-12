@@ -35,12 +35,30 @@
                                     <Image url="@victory_points.png" />
                                  </image>
                               </ImageView>
+
                               <Label fx:id="victory_points_background_number" alignment="TOP_CENTER" text="0" textFill="#412515">
+
                                  <font>
-                                    <Font name="EB Garamond Regular" size="29.0" />
+                                    <Font size="22.0" />
                                  </font>
                                  <StackPane.margin>
-                                    <Insets left="180.0" />
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="Player 1" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
                            </children>
@@ -48,54 +66,188 @@
                               <Insets left="20.0" top="20.0" />
                            </VBox.margin>
                         </StackPane>
-                        <Label fx:id="player_1_label" alignment="TOP_CENTER" text="Player 1" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background1" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number2" alignment="TOP_CENTER" text="Player 2" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="player_2_label" alignment="TOP_CENTER" text="Player 2" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background11" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number11" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number21" alignment="TOP_CENTER" text="Player 3" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="player_3_label" alignment="TOP_CENTER" layoutX="10.0" layoutY="100.0" text="Player 3" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background111" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number111" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number211" alignment="TOP_CENTER" text="Player 4" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="player_4_label" alignment="TOP_CENTER" layoutX="10.0" layoutY="135.0" text="Player 4" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background1111" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number1111" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number2111" alignment="TOP_CENTER" text="Player 5" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="player_5_label" alignment="TOP_CENTER" layoutX="10.0" layoutY="137.0" text="Player 5" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
+                        </StackPane>
+                        <StackPane alignment="TOP_LEFT">
+                           <children>
+                              <ImageView fx:id="victory_points_background11111" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                                 <image>
+                                    <Image url="@victory_points.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="victory_points_background_number11111" alignment="TOP_CENTER" text="8" textFill="#412515">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="182.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label fx:id="victory_points_background_number21111" alignment="TOP_CENTER" text="Player 6" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="2.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                              <Label alignment="TOP_CENTER" text="VP" textFill="#412515">
+                                 <font>
+                                    <Font name="Serif Regular" size="22.0" />
+                                 </font>
+                                 <StackPane.margin>
+                                    <Insets left="133.0" top="5.0" />
+                                 </StackPane.margin>
+                              </Label>
+                           </children>
+
                            <VBox.margin>
                               <Insets left="20.0" top="5.0" />
                            </VBox.margin>
-                        </Label>
-                        <Label fx:id="player_6_label" alignment="TOP_CENTER" layoutX="10.0" layoutY="161.0" text="Player 6" textFill="#f3e99c">
-                           <font>
-                              <Font size="10.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets left="20.0" top="5.0" />
-                           </VBox.margin>
-                        </Label>
+                        </StackPane>
                      </children>
                   </VBox>
                   <StackPane prefHeight="150.0" prefWidth="200.0">
@@ -105,15 +257,9 @@
                               <Image url="@building_cost_card.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="build_development_card" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
-                           <StackPane.margin>
-                              <Insets top="115.0" />
-                           </StackPane.margin>
-                           <padding>
-                              <Insets right="200.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildSettlement">
+
+                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
@@ -135,6 +281,9 @@
                            </StackPane.margin>
                         </Button>
                      </children>
+                     <VBox.margin>
+                        <Insets left="20.0" />
+                     </VBox.margin>
                   </StackPane>
                </children>
             </VBox>
@@ -149,8 +298,10 @@
                            <children>
                               <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0">
                                  <children>
+
                                     <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
                                     <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
+
                                  </children></Pane>
                            </children>
                            <Pane fx:id="button_layer" mouseTransparent="true" />
@@ -204,7 +355,7 @@
                   </StackPane>
                </children>
             </StackPane>
-            <HBox alignment="BOTTOM_CENTER" prefHeight="140.0" prefWidth="809.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="140.0" prefWidth="809.0">
                <children>
                   <StackPane fx:id="grain_group" alignment="BOTTOM_CENTER" prefHeight="140.0" styleClass="card">
                      <children>
@@ -307,18 +458,25 @@
                      </HBox.margin>
                   </StackPane>
                   <StackPane fx:id="development_card_group" alignment="BOTTOM_CENTER" prefHeight="140.0" styleClass="card">
-                     <children>
-                        <ImageView cache="true" fitHeight="140.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@development_card.png" />
-                           </image>
-                           <StackPane.margin>
-                              <Insets left="15.0" />
-                           </StackPane.margin>
-                        </ImageView>
-                     </children>
                      <HBox.margin>
                         <Insets top="75.0" />
+                     </HBox.margin>
+                  </StackPane>
+                  <StackPane maxHeight="150.0" maxWidth="180.0" prefHeight="150.0" prefWidth="180.0">
+                     <children>
+                        <Button fx:id="diceButton1" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0">
+                           <StackPane.margin>
+                              <Insets left="65.0" top="82.0" />
+                           </StackPane.margin>
+                        </Button>
+                        <Button fx:id="diceButton2" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0">
+                           <StackPane.margin>
+                              <Insets bottom="65.0" right="65.0" />
+                           </StackPane.margin>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" top="70.0" />
                      </HBox.margin>
                   </StackPane>
                </children>
@@ -345,6 +503,384 @@
                               <Insets right="20.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
+
+                        <StackPane fx:id="trade_menue1" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
+                           <children>
+                              <StackPane fx:id="trade_menue" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
+                                 <children>
+                                    <ImageView fitHeight="480.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@trade_background.png" />
+                                       </image>
+                                    </ImageView>
+                                    <MenuButton mnemonicParsing="false" style="-fx-background-color: 0; -fx-border-color: #412515; -fx-border-width: 1.5;">
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" text="Player 1" />
+                                        <MenuItem mnemonicParsing="false" text="Player 2" />
+                                          <MenuItem mnemonicParsing="false" text="Player 3" />
+                                          <MenuItem mnemonicParsing="false" text="Player 4" />
+                                          <MenuItem mnemonicParsing="false" text="Player 5" />
+                                          <MenuItem mnemonicParsing="false" text="Player 6" />
+                                      </items>
+                                       <StackPane.margin>
+                                          <Insets bottom="250.0" right="31.0" />
+                                       </StackPane.margin>
+                                       <padding>
+                                          <Insets left="110.0" />
+                                       </padding>
+                                    </MenuButton>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="60.0" right="90.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="252.0" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="-38.0" right="90.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="227.0" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="12.0" right="90.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="86.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="135.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="233.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="282.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="330.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="380.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="447.0" text="0" textFill="#412515">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="430.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Button fx:id="grain_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="233.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="brick_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="282.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="ore_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="330.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="wool_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="380.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="lumber_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="430.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="lumber_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="430.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="wool_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="380.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="ore_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="330.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="brick_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="282.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="233.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="close" mnemonicParsing="false" style="-fx-background-color: D35050; -fx-text-fill: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-width: 2;" styleClass="round-button" stylesheets="@main_style.css" text="X">
+                                       <StackPane.margin>
+                                          <Insets bottom="470.0" right="-10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                 </children>
+                              </StackPane>
+                              <StackPane fx:id="trade_menue2" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
+                                 <children>
+                                    <ImageView fitHeight="480.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@harbour_background.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#bf1b1b">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="150.0" right="90.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="252.0" text="0" textFill="#bf1b1b">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="52.0" right="90.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="227.0" text="0" textFill="#bf1b1b">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="102.0" right="90.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#bf1b1b">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="90.0" right="90.0" top="86.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#bf1b1b">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="45.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#259407">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="123.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#259407">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="172.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#259407">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="220.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" text="0" textFill="#259407">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="270.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="447.0" text="0" textFill="#259407">
+                                       <font>
+                                          <Font name="EB Garamond Regular" size="24.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets right="90.0" top="315.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Button fx:id="grain_plus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="125.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="brick_plus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="173.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="ore_plus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="220.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="wool_plus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="267.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="lumber_plus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets right="40.0" top="315.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="lumber_minus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="315.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="wool_minus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="267.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="ore_minus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="220.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="brick_minus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="173.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button1" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="125.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="close1" mnemonicParsing="false" style="-fx-background-color: D35050; -fx-text-fill: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-width: 2;" styleClass="round-button" stylesheets="@main_style.css" text="X">
+                                       <StackPane.margin>
+                                          <Insets bottom="470.0" right="-10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" styleClass="big_button" stylesheets="@main_style.css" text="Submit" textFill="#412515">
+                                       <StackPane.margin>
+                                          <Insets right="50.0" top="410.0" />
+                                       </StackPane.margin>
+                                       <font>
+                                          <Font name="Serif Bold" size="17.0" />
+                                       </font>
+                                    </Button>
+                                    <Label alignment="TOP_CENTER" text="Brick Harbour 3:1" textFill="#412515">
+                                       <font>
+                                          <Font name="Serif Bold" size="17.0" />
+                                       </font>
+                                       <StackPane.margin>
+                                          <Insets bottom="300.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Label>
+                                    <Button fx:id="grain_plus_button11" layoutX="166.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="150.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button11" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets bottom="150.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button12" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets bottom="102.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button12" layoutX="166.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="102.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button13" layoutX="166.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="55.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button13" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                       <StackPane.margin>
+                                          <Insets bottom="55.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button131" layoutX="166.0" layoutY="233.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="20.0" right="40.0" top="60.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button1311" layoutX="196.0" layoutY="256.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="7.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button14" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets bottom="7.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button141" layoutX="196.0" layoutY="257.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                 </children>
+                              </StackPane>
+                           </children>
+
                         <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" styleClass="round-button" onMouseClicked="#onFinishTurnClicked">
                            <image>
                               <Image url="@finish-turn_icon.png" />
@@ -354,164 +890,10 @@
                            </VBox.margin>
                         </ImageView>
                         <StackPane fx:id="trade_menue" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
+
                            <VBox.margin>
                               <Insets right="20.0" />
                            </VBox.margin>
-                           <children>
-                              <ImageView fitHeight="480.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@trade_background.png" />
-                                 </image>
-                              </ImageView>
-                              <MenuButton mnemonicParsing="false" style="-fx-background-color: 0; -fx-border-color: #412515; -fx-border-width: 1.5;">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Player 1" />
-                                  <MenuItem mnemonicParsing="false" text="Player 2" />
-                                    <MenuItem mnemonicParsing="false" text="Player 3" />
-                                </items>
-                                 <StackPane.margin>
-                                    <Insets bottom="250.0" right="31.0" />
-                                 </StackPane.margin>
-                                 <padding>
-                                    <Insets left="110.0" />
-                                 </padding>
-                              </MenuButton>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets bottom="60.0" right="90.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="252.0" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets bottom="-38.0" right="90.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="227.0" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets bottom="12.0" right="90.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="86.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="135.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="233.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="282.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="330.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="380.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="447.0" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="430.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Button fx:id="grain_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="233.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="brick_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="282.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="ore_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="330.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="wool_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="380.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="lumber_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="430.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="lumber_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="430.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="wool_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="380.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="ore_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="330.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="brick_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="282.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="grain_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="233.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="close" mnemonicParsing="false" style="-fx-background-color: D35050; -fx-text-fill: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-width: 2;" styleClass="round-button" stylesheets="@main_style.css" text="X">
-                                 <StackPane.margin>
-                                    <Insets bottom="470.0" right="-10.0" />
-                                 </StackPane.margin>
-                              </Button>
-                           </children>
                         </StackPane>
                      </children>
                   </VBox>

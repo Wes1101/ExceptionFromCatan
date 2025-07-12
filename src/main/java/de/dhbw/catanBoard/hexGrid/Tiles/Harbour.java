@@ -31,8 +31,10 @@ public class Harbour extends Tile {
      * @param resourceType the resource this harbour specializes in, or NONE for generic
      * @param nodes        the nodes surrounding the harbour tile
      */
+
     public Harbour(Resources resourceType, Node[] nodes, IntTupel coordinates) {
         super(resourceType, nodes, coordinates);
+
     }
 
     /**
