@@ -149,17 +149,6 @@
                            <children>
                               <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <ImageView fitHeight="467.0" fitWidth="677.0" layoutX="65.0" layoutY="52.0" visible="false">
-                                       <image>
-                                          <Image url="@Spielfeld.PNG" />
-                                       </image>
-                                    </ImageView>
-                                    <Rectangle fx:id="road_47_48" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="179.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
-
-                                    <Button fx:id="node_37" layoutX="526.0" layoutY="462.0" mnemonicParsing="false" onAction="#onNodeClicked" styleClass="node">
-                                       <font>
-                                          <Font size="1.0" />
-                                       </font></Button>
                                     <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
                                     <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
                                  </children></Pane>
