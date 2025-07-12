@@ -694,10 +694,17 @@ public class SceneBoardController implements Initializable, GameUI {
         double imgSize = size * 0.6;
         buildingView.setFitWidth(imgSize);
         buildingView.setFitHeight(imgSize);
-        buildingView.setX(x - imgSize / 2);
-        buildingView.setY(y - imgSize / 2);
 
-        tile_layer.getChildren().add(buildingView);
+        String nodeID = "node_" + node.getId();
+        tile_layer.getChildren().stream()
+                .filter(node1 -> node1 instanceof Button && node1.getId().equals(nodeID))
+                .forEach(node1 -> {
+                  ((Button) node1).setGraphic(buildingView);
+                  node1.setTranslateX(-imgSize / 2);
+                  node1.setTranslateY(-imgSize / 2);
+                  node1.setStyle("-fx-padding: 0; -fx-background-insets: 0;");;
+                });
+
       }
     }
   }
