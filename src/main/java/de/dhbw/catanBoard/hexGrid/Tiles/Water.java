@@ -1,6 +1,7 @@
 
 package de.dhbw.catanBoard.hexGrid.Tiles;
 
+import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
 
 /**
@@ -15,7 +16,7 @@ public class Water extends Tile {
     /**
      * Constructs a water tile with no resource type and no adjacent nodes.
      */
-    public Water() {
-        super(null, 0, null);
+    public Water(IntTupel coords) {
+        super(null, null, coords);
     }
 }

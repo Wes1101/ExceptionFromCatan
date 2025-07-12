@@ -29,6 +29,7 @@ public class CatanBoard {
 
     private IntTupel[] hex_coords;
     private final Map<IntTupel, Tile> board = new HashMap<>();
+    private final Map<Integer, List<Resource>> diceBoard = new HashMap<>();
     private final Graph graph;
 
     /**
@@ -129,14 +130,15 @@ public class CatanBoard {
                 }
             }
 
-            int chip = numChips.removeFirst();
-            Resource tile = new Resource(allResources.removeFirst(), chip, HexNodes);
+            Resource tile = new Resource(allResources.removeFirst(), HexNodes, coords);
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
                 node.addHexTile(tile);
             }
 
+            int chip = numChips.removeFirst();
+            diceBoard.computeIfAbsent(chip, k -> new ArrayList<>()).add(tile);
         }
 
         createHarbourTiles(radius);
@@ -168,10 +170,11 @@ public class CatanBoard {
         Collections.shuffle(harbourTypes);
 
         for (i = 0; i < harbour.length; i++) {
+            IntTupel coords = harbour[i];
             if (i % 2 == 1) {
-                board.put(harbour[i], new Harbour(harbourTypes.removeFirst(), getExistingNodes(harbour[i])));
+                board.put(coords, new Harbour(harbourTypes.removeFirst(), getExistingNodes(coords), coords));
             } else {
-                board.put(harbour[i], new Water());
+                board.put(harbour[i], new Water(coords));
             }
         }
         log.info("Harbours and water tiles created around the board.");
@@ -259,15 +262,9 @@ public class CatanBoard {
      */
     public void triggerBoard(int diceNumber, Bank bank) {
         log.info("Triggering board for dice number: {}", diceNumber);
-        List<Resource> triggertTiles = new ArrayList<>();
-
-        for (IntTupel coords : board.keySet()) {
-            if (board.get(coords).getDiceNumber() == diceNumber) {
-                triggertTiles.add( (Resource) board.get(coords));
-            }
-        }
-        if (triggertTiles != null) {
-            triggertTiles.forEach(tile -> tile.trigger(bank));
+        List<Resource> tiles = diceBoard.get(diceNumber);
+        if (tiles != null) {
+            tiles.forEach(tile -> tile.trigger(bank));
         }
     }
 

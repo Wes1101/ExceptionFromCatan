@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
 
 
 
@@ -43,7 +43,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="Player 1" textFill="#412515">
+                              <Label fx:id="player_1_label" alignment="TOP_CENTER" text="Player 1" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -79,7 +79,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number2" alignment="TOP_CENTER" text="Player 2" textFill="#412515">
+                              <Label fx:id="player_2_label" alignment="TOP_CENTER" text="Player 2" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -115,7 +115,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number21" alignment="TOP_CENTER" text="Player 3" textFill="#412515">
+                              <Label fx:id="player_3_label" alignment="TOP_CENTER" text="Player 3" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -151,7 +151,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number211" alignment="TOP_CENTER" text="Player 4" textFill="#412515">
+                              <Label fx:id="player_4_label" alignment="TOP_CENTER" text="Player 4" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -187,7 +187,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number2111" alignment="TOP_CENTER" text="Player 5" textFill="#412515">
+                              <Label fx:id="player_5_label" alignment="TOP_CENTER" text="Player 5" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -223,7 +223,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number21111" alignment="TOP_CENTER" text="Player 6" textFill="#412515">
+                              <Label fx:id="player_6_label" alignment="TOP_CENTER" text="Player 6" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -253,12 +253,20 @@
                               <Image url="@building_cost_card.png" />
                            </image>
                         </ImageView>
-                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                        <Button fx:id="build_development_card" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                           <StackPane.margin>
+                              <Insets top="115.0" />
+                           </StackPane.margin>
+                           <padding>
+                              <Insets right="200.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildSettlement">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildCity">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
@@ -266,7 +274,7 @@
                               <Insets top="63.0" />
                            </StackPane.margin>
                         </Button>
-                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css">
+                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildRoad">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
@@ -291,9 +299,13 @@
                         <StackPane fx:id="board_stack" prefHeight="552.0" prefWidth="806.0">
                            <children>
                               <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0">
-
+                                 <!--<children>
+                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
+                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
+                                 </children>-->
                               </Pane>
                            </children>
+                           <Pane fx:id="button_layer" mouseTransparent="true" />
                         </StackPane>
                      </content>
                      <styleClass>
@@ -487,6 +499,14 @@
                         <ImageView fx:id="setting_button" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" styleClass="round-button">
                            <image>
                               <Image url="@settings_icon.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets right="20.0" top="20.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" styleClass="round-button" onMouseClicked="#onFinishTurnClicked">
+                           <image>
+                              <Image url="@finish-turn_icon.png" />
                            </image>
                            <VBox.margin>
                               <Insets right="20.0" top="20.0" />
