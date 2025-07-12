@@ -1143,7 +1143,7 @@ public class SceneBoardController implements Initializable, GameUI {
   public CompletableFuture<Integer> waitForSettlementClick() {
     log.debug("\uD83D\uDFE2 waitForSettlementClick CALLED");
 
-    this.showUserMessage("Click settlement node", "Please click on a settlement node",
+    this.showUserMessage("Click settlement node", "Player " + (this.activePlayer.getId() + 1) + ", Please click on a settlement node",
             Alert.AlertType.INFORMATION);
 
     settlenemtNodeSelectionFuture = new CompletableFuture<>();
@@ -1170,7 +1170,7 @@ public class SceneBoardController implements Initializable, GameUI {
   public CompletableFuture<IntTupel> waitForStreetClick() {
     log.debug("\uD83D\uDFE2 waitForStreetClick CALLED");
 
-    this.showUserMessage("Click street", "Please click on a street node",
+    this.showUserMessage("Click street", "Player " + (this.activePlayer.getId() + 1) + ", Please click on a street node",
             Alert.AlertType.INFORMATION);
 
     streetSelectionFuture = new CompletableFuture<IntTupel>();
