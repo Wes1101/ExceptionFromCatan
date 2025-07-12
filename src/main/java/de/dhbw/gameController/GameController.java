@@ -76,8 +76,10 @@ public class GameController {
 
         if (playerAmount > 4) {
             this.catanBoard = new CatanBoard(4);
+            this.bank = new Bank(25, players);
         } else {
             this.catanBoard = new CatanBoard(3);
+            this.bank = new Bank(19, players);
         }
 
         this.rules = new Rules(victoryPoints);
