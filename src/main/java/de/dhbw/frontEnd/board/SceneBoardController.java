@@ -734,6 +734,7 @@ public class SceneBoardController implements Initializable, GameUI {
         drawnNodes.add(node.getId());
 
           log.debug("Drawing building at node: {}", node.getId());
+          int ownerPlayerId = node.getBuilding().getOwner().getId();
 
         // Calculate node screen position
         Point2D pos = nodeScreenPositions.get(node.getId());
@@ -744,9 +745,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
         String imgPath;
         if (building instanceof de.dhbw.gamePieces.City) {
-          imgPath = "/de/dhbw/frontEnd/board/city.png";
+          imgPath = "/de/dhbw/frontEnd/board/city-"+this.playerIdToColor(ownerPlayerId)+".png";
         } else {
-          imgPath = "/de/dhbw/frontEnd/board/settlement.png";
+          imgPath = "/de/dhbw/frontEnd/board/settlement-"+this.playerIdToColor(ownerPlayerId)+".png";
         }
 
         Image img = new Image(Objects.requireNonNull(
