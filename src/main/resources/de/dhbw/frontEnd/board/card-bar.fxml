@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
@@ -45,7 +44,7 @@
                                     <Insets left="182.0" top="5.0" />
                                  </StackPane.margin>
                               </Label>
-                              <Label fx:id="victory_points_background_number1" alignment="TOP_CENTER" text="Player 1" textFill="#412515">
+                              <Label fx:id="victory_points_background_number1000" alignment="TOP_CENTER" text="Player 1" textFill="#412515">
                                  <font>
                                     <Font name="Serif Regular" size="22.0" />
                                  </font>
@@ -264,7 +263,8 @@
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildCity">
+                        
+                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" onAction="#onBuildCity" styleClass="build" stylesheets="@main_style.css">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
@@ -272,12 +272,20 @@
                               <Insets top="63.0" />
                            </StackPane.margin>
                         </Button>
-                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildRoad">
+                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" onAction="#onBuildRoad" styleClass="build" stylesheets="@main_style.css">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
                            <StackPane.margin>
                               <Insets bottom="63.0" />
+                           </StackPane.margin>
+                        </Button>
+                        <Button fx:id="build_development_card" layoutX="16.0" layoutY="97.0" mnemonicParsing="false" onAction="#onBuildCity" styleClass="build" stylesheets="@main_style.css">
+                           <padding>
+                              <Insets bottom="10.0" right="200.0" />
+                           </padding>
+                           <StackPane.margin>
+                              <Insets top="110.0" />
                            </StackPane.margin>
                         </Button>
                      </children>
@@ -299,8 +307,8 @@
                               <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0">
                                  <children>
 
-                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
-                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
+                                    <Button fx:id="diceButton3" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
+                                    <Button fx:id="diceButton4" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
 
                                  </children></Pane>
                            </children>
@@ -506,7 +514,7 @@
 
                         <StackPane fx:id="trade_menue1" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
                            <children>
-                              <StackPane fx:id="trade_menue" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
+                              <StackPane fx:id="trade_menue1000" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
                                  <children>
                                     <ImageView fitHeight="480.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -880,8 +888,8 @@
                                  </children>
                               </StackPane>
                            </children>
-
-                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" styleClass="round-button" onMouseClicked="#onFinishTurnClicked">
+                        </StackPane>
+                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#onFinishTurnClicked" pickOnBounds="true" styleClass="round-button">
                            <image>
                               <Image url="@finish-turn_icon.png" />
                            </image>
