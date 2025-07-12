@@ -1275,7 +1275,7 @@ public class SceneBoardController implements Initializable, GameUI {
       @Override
       protected void updateItem(Player player, boolean empty) {
         super.updateItem(player, empty);
-        setText(empty || player == null ? null : "Player " + player.getId());
+        setText(empty || player == null ? null : "Player " + (player.getId() + 1));
       }
     });
     comboBox.setButtonCell(new ListCell<>() {
