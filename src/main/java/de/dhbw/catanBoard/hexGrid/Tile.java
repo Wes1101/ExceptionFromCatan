@@ -16,6 +16,8 @@ import lombok.Setter;
 @Setter
 public class Tile {
 
+    private int diceNumber;
+
     /**
      * The type of resource this tile produces.
      * Can be one of the {@link Resources} types, or NONE (e.g., for a desert).
@@ -37,8 +39,9 @@ public class Tile {
      * @param resourceType the resource type associated with this tile
      * @param nodes        the six corner nodes (can be null)
      */
-    public Tile(Resources resourceType, Node[] nodes) {
+    public Tile(Resources resourceType, int diceNumber, Node[] nodes) {
         this.resourceType = resourceType;
+        this.diceNumber = diceNumber;
         if (nodes != null) {
             this.hexTileNodes = nodes;
         } else {

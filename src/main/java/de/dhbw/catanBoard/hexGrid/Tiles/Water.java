@@ -16,6 +16,6 @@ public class Water extends Tile {
      * Constructs a water tile with no resource type and no adjacent nodes.
      */
     public Water() {
-        super(null, null);
+        super(null, 0, null);
     }
 }

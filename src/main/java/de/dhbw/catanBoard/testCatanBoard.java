@@ -51,5 +51,8 @@ public class testCatanBoard {
         } else {
             System.out.println("No player has the longest road.");
         }
+
+        IntTupel coords = new IntTupel(0,0);
+        System.out.println(board.getBoard().get( coords ).getDiceNumber());
     }
 }

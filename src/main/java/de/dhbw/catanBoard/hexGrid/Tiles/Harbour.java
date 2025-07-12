@@ -31,7 +31,7 @@ public class Harbour extends Tile {
      * @param nodes        the nodes surrounding the harbour tile
      */
     public Harbour(Resources resourceType, Node[] nodes) {
-        super(resourceType, nodes);
+        super(resourceType, 0, nodes);
     }
 
     /**
