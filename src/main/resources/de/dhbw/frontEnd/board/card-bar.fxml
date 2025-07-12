@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
+<HBox fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.dhbw.frontEnd.board.SceneBoardController">
 
 
 
@@ -1105,6 +1105,59 @@
                                           <Insets bottom="300.0" right="10.0" />
                                        </StackPane.margin>
                                     </Label>
+                                    <Button fx:id="grain_plus_button11" layoutX="166.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="150.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button11" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets bottom="150.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button12" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets bottom="102.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button12" layoutX="166.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="102.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button13" layoutX="166.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="55.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button13" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                       <StackPane.margin>
+                                          <Insets bottom="55.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button131" layoutX="166.0" layoutY="233.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="20.0" right="40.0" top="60.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_plus_button1311" layoutX="196.0" layoutY="256.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                                       <StackPane.margin>
+                                          <Insets bottom="7.0" right="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button14" layoutX="196.0" layoutY="323.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets bottom="7.0" right="10.0" />
+                                       </StackPane.margin>
+                                    </Button>
+                                    <Button fx:id="grain_minus_button141" layoutX="196.0" layoutY="257.0" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
+                                       <StackPane.margin>
+                                          <Insets right="10.0" top="40.0" />
+                                       </StackPane.margin>
+                                    </Button>
                                  </children>
                               </StackPane>
                            </children>
