@@ -129,8 +129,9 @@ public class CatanBoard {
                 }
             }
 
-            int chip = numChips.removeFirst();
-            Resource tile = new Resource(allResources.removeFirst(), chip, HexNodes);
+
+            Resource tile = new Resource(allResources.removeFirst(), HexNodes, coords);
+
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
@@ -168,10 +169,11 @@ public class CatanBoard {
         Collections.shuffle(harbourTypes);
 
         for (i = 0; i < harbour.length; i++) {
+            IntTupel coords = harbour[i];
             if (i % 2 == 1) {
-                board.put(harbour[i], new Harbour(harbourTypes.removeFirst(), getExistingNodes(harbour[i])));
+                board.put(coords, new Harbour(harbourTypes.removeFirst(), getExistingNodes(coords), coords));
             } else {
-                board.put(harbour[i], new Water());
+                board.put(harbour[i], new Water(coords));
             }
         }
         log.info("Harbours and water tiles created around the board.");

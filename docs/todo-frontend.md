@@ -1,7 +1,7 @@
 # ToDo für Adrian
 
 ## Spieler
-- [ DONE ] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
+- [x] `activePlayer(Player player)` Methode um in der GUI anzuzeigen welcher der aktive Spieler ist. Nummer Abfragen mit
 `Int playerNumber = player.getId();`, wenn name vorhanden ist mit 
 ```java
 @Override
@@ -23,25 +23,25 @@ public void setactivePlayer(Player player) {
 
 
 ## Würfel
-- [ DONE ] `startRollDiceAnimation()` Methode um eine Animation zum wüfeln zu starten
+- [x] `startRollDiceAnimation()` Methode um eine Animation zum wüfeln zu starten
 
-- [ Done ] `showDice(Int dice1, Int dice2)` Methode mit der die Würfel in der GUI angezeigt werden können. Entweder
+- [x] `showDice(Int dice1, Int dice2)` Methode mit der die Würfel in der GUI angezeigt werden können. Entweder
 tatsächlich einzeln oder einfach zusammenrechnen und in einem Textfeld anzeigen
 
 ## Bauen / Ressourcen
-- [ DONE ] `buildSettlement()` Methode um eine Siedlung zu bauen. Gibt zurück wo eine Siedlung gebaut wird. Maybe so lösbar,
+- [x] `buildSettlement()` Methode um eine Siedlung zu bauen. Gibt zurück wo eine Siedlung gebaut wird. Maybe so lösbar,
 dass du so ne Info box machst in der steht "Bitte auswählen wo eine Siedlung gebaut werden soll" (auch gerne in
 Englisch) und dann die Koordinaten zurückgeben, wo das sein soll. GENAUERE DEFINITION DES DATENTYPS FOLGT
 
-- [ ] `buildStreet()` Methode um eine Straße zu bauen. Gibt zurück wo eine Straße gebaut wird. Maybe so lösbar,
+- [x] `buildStreet()` Methode um eine Straße zu bauen. Gibt zurück wo eine Straße gebaut wird. Maybe so lösbar,
   dass du so ne Info box machst in der steht "Bitte auswählen wo eine Straße gebaut werden soll" (auch gerne in
   Englisch) und dann die Koordinaten zurückgeben, wo das sein soll. GENAUERE DEFINITION DES DATENTYPS FOLGT
 
-- [ ] `buildCity()` Methode um eine Stadt zu bauen. Gibt zurück wo eine Stadt gebaut wird. Maybe so lösbar,
+- [x] `buildCity()` Methode um eine Stadt zu bauen. Gibt zurück wo eine Stadt gebaut wird. Maybe so lösbar,
   dass du so ne Info box machst in der steht "Bitte auswählen wo eine Stadt gebaut werden soll" (auch gerne in
   Englisch) und dann die Koordinaten zurückgeben, wo das sein soll. GENAUERE DEFINITION DES DATENTYPS FOLGT
 
-- [ ] `updatePlayerResources(Player[] players)` Methode, mit welcher ich dir alle Spieler übergebe, dass du in der GUI
+- [ ] [DEPRECATED] `updatePlayerResources(Player[] players)` Methode, mit welcher ich dir alle Spieler übergebe, dass du in der GUI
 anzeigen kannst wer jetzt wie viele Ressource hat.
 
 ## Bandit
@@ -56,15 +56,16 @@ Methoden die zurückgeben wo der Bandit als nächstes stehen soll und wer beklau
 musst du schauen ob du den brauchst)
 
 ## Sonstiges
-- [ ] finish turn button
-- [ ] buttons aktivieren/deaktivieren
+- [x] finish turn button
+- [x] buttons aktivieren/deaktivieren
 - [ ] ein/ausblenden von feldern (wie viele spieler)
 - [ ] setter von vicory points
 - [ ] Auswahlmenü welche karten abgeben (man hat zu viele und bandit wird aktiv)
+- [ ] finish trading
 
 # Reihenfolge
-1. Bauen WOP
-                2. Spieler DONE
-   2. Bandit NOT location return und spieler der beklaut wird
-   4. Resourcen NOT
-               5. Würfel DONE
+1. Bauen DONE
+1. Spieler DONE
+2. Bandit NOT location return und spieler der beklaut wird
+4. Resourcen NOT
+5. Würfel DONE

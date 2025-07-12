@@ -29,6 +29,7 @@ public class Tile {
      * Used to determine which players are adjacent to the tile.
      */
     private Node[] hexTileNodes;
+    private IntTupel coordinates;
 
     /**
      * Constructs a new Tile with a specific resource type and surrounding nodes.
@@ -39,9 +40,11 @@ public class Tile {
      * @param resourceType the resource type associated with this tile
      * @param nodes        the six corner nodes (can be null)
      */
-    public Tile(Resources resourceType, int diceNumber, Node[] nodes) {
+
+    public Tile(Resources resourceType, Node[] nodes, IntTupel coordinates) {
         this.resourceType = resourceType;
-        this.diceNumber = diceNumber;
+        this.coordinates = coordinates;
+
         if (nodes != null) {
             this.hexTileNodes = nodes;
         } else {

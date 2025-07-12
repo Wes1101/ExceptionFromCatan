@@ -8,6 +8,7 @@ module de.dhbw {
     requires java.smartcardio;
     requires javafx.graphics;
     requires java.management;
+    requires java.logging;
 
     opens de.dhbw.app to javafx.fxml;
     exports de.dhbw.app;
