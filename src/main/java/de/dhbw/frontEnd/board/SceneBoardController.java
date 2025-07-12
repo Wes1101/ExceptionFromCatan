@@ -111,6 +111,9 @@ public class SceneBoardController implements Initializable, GameUI {
   private Pane tile_layer;
 
   @FXML
+  private Pane button_layer;
+
+  @FXML
   private Pane road_layer;
 
   @FXML
@@ -488,7 +491,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Wasser vom Backend
       if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water", this);
+                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, "Water", this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -501,7 +504,7 @@ public class SceneBoardController implements Initializable, GameUI {
         String resourceName = h.getResourceType().name() + "_Harbour";
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
+                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, resourceName, this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -516,7 +519,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
+                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, resourceName, this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -526,6 +529,65 @@ public class SceneBoardController implements Initializable, GameUI {
     calculateNodeScreenPositions(catanBoard);
 
   }
+
+  public void addCornerButtons(Tile tile, List<double[]> corners) {
+    Node[] hexTileNodes = tile.getHexTileNodes();
+
+    for (int i = 0; i < corners.size(); i++) {
+      double[] point = corners.get(i);
+      double x = point[0];
+      double y = point[1];
+
+      Node node = hexTileNodes[i];
+      if (node == null) continue;
+
+      Button redButton = new NodeFX();
+      redButton.setLayoutX(x - 5);
+      redButton.setLayoutY(y - 5);
+      redButton.setMouseTransparent(true);
+      redButton.setId("node_" + node.getId());
+
+      // Optional: EventHandler für später
+      redButton.setOnAction(this::onNodeClicked);
+
+      button_layer.getChildren().add(redButton);
+    }
+  }
+
+  // Methode zum Hinzufügen gelber Rechtecke zwischen den Ecken
+  public void addEdgeButtons(Tile tile, List<double[]> corners) {
+    if (!(tile instanceof Resource resTile)) return;
+
+    for (int i = 0; i < corners.size(); i++) {
+      double[] start = corners.get(i);
+      double[] end = corners.get((i + 1) % 6);
+
+      double startX = start[0];
+      double startY = start[1];
+      double endX = end[0];
+      double endY = end[1];
+
+      double dx = endX - startX;
+      double dy = endY - startY;
+      double length = Math.sqrt(dx * dx + dy * dy);
+      double angle = Math.toDegrees(Math.atan2(dy, dx));
+
+      double shorteningFactor = 0.7; // z. B. 80 % der Länge
+      double shortenedLength = length * shorteningFactor;
+
+      double centerX = (startX + endX) / 2;
+      double centerY = (startY + endY) / 2;
+
+      Rectangle rect = new EdgeFX(shortenedLength, 5); // neue kürzere Länge
+      rect.setLayoutX(centerX - shortenedLength / 2);
+      rect.setLayoutY(centerY - 2.5); // halbe Höhe bleibt gleich
+      rect.setRotate(angle);
+      rect.setMouseTransparent(true);
+
+      button_layer.getChildren().add(rect);
+    }
+  }
+
 
   private void calculateNodeScreenPositions(CatanBoard catanBoard) {
     double size = 50;
@@ -558,7 +620,7 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
-  public void updateBoard(CatanBoard catanBoard) {
+  public void updateBoard(CatanBoard catanBoard) { //TODO: new tiles generated???
     Map<IntTupel, Tile> hexes = catanBoard.getBoard();
 
     log.debug("Anzahl HexTiles: " + hexes.size());
@@ -583,7 +645,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
       // Wasser
       if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
-        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water", this);
+        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, "Water", this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -591,7 +653,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Hafen
       else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
         String resourceName = h.getResourceType().name() + "_Harbour";
-        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
+        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, resourceName, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -599,7 +661,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Ressourcen
       else if (tile instanceof Resource resTile) {
         String resourceName = resTile.getResourceType().name();
-        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
+        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, resourceName, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }

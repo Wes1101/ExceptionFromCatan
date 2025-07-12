@@ -174,7 +174,7 @@ public class CatanBoard {
             if (i % 2 == 1) {
                 board.put(coords, new Harbour(harbourTypes.removeFirst(), getExistingNodes(coords), coords));
             } else {
-                board.put(harbour[i], new Water());
+                board.put(harbour[i], new Water(coords));
             }
         }
         log.info("Harbours and water tiles created around the board.");

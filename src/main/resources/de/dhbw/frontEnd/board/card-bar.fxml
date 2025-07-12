@@ -446,6 +446,7 @@
                                     <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
                                  </children></Pane>
                            </children>
+                           <Pane fx:id="button_layer" mouseTransparent="true" />
                         </StackPane>
                      </content>
                      <styleClass>
