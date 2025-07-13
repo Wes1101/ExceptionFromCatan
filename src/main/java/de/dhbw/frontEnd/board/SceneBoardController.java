@@ -188,6 +188,24 @@ public class SceneBoardController implements Initializable, GameUI {
   private ImageView victory_points_background_6;
 
   @FXML
+  private ImageView longest_trade_street_1;
+
+  @FXML
+  private ImageView longest_trade_street_2;
+
+  @FXML
+  private ImageView longest_trade_street_3;
+
+  @FXML
+  private ImageView longest_trade_street_4;
+
+  @FXML
+  private ImageView longest_trade_street_5;
+
+  @FXML
+  private ImageView longest_trade_street_6;
+
+  @FXML
   private Label victory_points_player_1;
 
   @FXML
@@ -415,7 +433,6 @@ public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
   private void onBuildSettlement(ActionEvent event) {
-    resetBuildMode();
     waitingForSettlementClick = true;
     settlementClickHandler = (Button btn) -> {
       log.debug("🟢 Settlement button clicked: " + btn.getId());
@@ -432,7 +449,6 @@ public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
   private void onBuildCity(ActionEvent event) {
-    resetBuildMode();
     waitingForCityClick = true;
     cityClickHandler = (Button btn) -> {
       log.debug("🟢 City button clicked: " + btn.getId());
@@ -449,7 +465,6 @@ public class SceneBoardController implements Initializable, GameUI {
   //johann
   @FXML
   private void onBuildRoad(ActionEvent event) {
-    resetBuildMode();
     waitingForStreetClick = true;
     streetClickHandler = (Button btn) -> {
       log.debug("🟢 Street button clicked: " + btn.getId());
@@ -995,6 +1010,10 @@ public class SceneBoardController implements Initializable, GameUI {
     int ID = player.getId();
 
     this.setActivePlayerLabel(ID);
+
+    int player_longest_street = this.gameController.getRules().assignLongestRoadToPlayer(catanBoard, players);
+    this.setLongestStreet(player_longest_street);
+
     this.updateVictoryPoints(players);
     this.updatePlayerResources(player);
     this.showUserMessage("New active Player!",
@@ -1041,11 +1060,6 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   private void setActivePlayerLabel(int id) {
-
-    DropShadow glow = new DropShadow();
-    glow.setColor(Color.GOLD);
-    glow.setRadius(10);
-    glow.setSpread(0.6);
 
     switch (id) {
       case 0:
@@ -1109,8 +1123,16 @@ public class SceneBoardController implements Initializable, GameUI {
         break;
     }
 
+  }
 
-
+  private void setLongestStreet(int id) {
+    log.info("Longest street: {}", id);
+    longest_trade_street_1.setVisible(id == 0);
+    longest_trade_street_2.setVisible(id == 1);
+    longest_trade_street_3.setVisible(id == 2);
+    longest_trade_street_4.setVisible(id == 3);
+    longest_trade_street_5.setVisible(id == 4);
+    longest_trade_street_6.setVisible(id == 5);
   }
 
   /**
@@ -1453,20 +1475,6 @@ public class SceneBoardController implements Initializable, GameUI {
           case 5 -> "cyan";
           default -> "unknown";
       };
-  }
-
-  private void resetBuildMode() {
-    waitingForSettlementClick = false;
-    waitingForCityClick       = false;
-    waitingForStreetClick     = false;
-
-    settlementClickHandler = null;
-    cityClickHandler       = null;
-    streetClickHandler     = null;
-
-    settlementClickCallback = null;
-    streetClickCallback     = null;
-    finishTurnClickCallback = null;
   }
 
 }

@@ -38,6 +38,7 @@ public class GameController {
     private final Bank bank;
     @Getter
     private final CatanBoard catanBoard;
+    @Getter
     private final Rules rules;
     private int gameRound;
     private int dice1;

@@ -148,7 +148,7 @@ public class Rules {
      * @param board   the game board
      * @param players all players in the game
      */
-    public void assignLongestRoadToPlayer(CatanBoard board, Player[] players) {
+    public int assignLongestRoadToPlayer(CatanBoard board, Player[] players) {
         if (this.playerWithLongestRoad != null) {
             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() - 2);
             log.info("Removed longest road bonus from player {}", this.playerWithLongestRoad.getId());
@@ -159,6 +159,14 @@ public class Rules {
             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() + 2);
             log.info("Assigned longest road bonus to player {}", this.playerWithLongestRoad.getId());
         }
+
+        if (this.playerWithLongestRoad != null) {
+            return this.playerWithLongestRoad.getId();
+        }
+        else {
+            return -1;
+        }
+
     }
     /**
      * Checks if the player has reached the victory point goal.

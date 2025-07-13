@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 @Getter
 public class Graph {
 
+    private static final int MIN_LONGEST = 4;   // Mindestlänge für die Wertung
+
     private static final Logger log = LoggerFactory.getLogger(Graph.class);
     private Edge[][] graph;
     private Node[] nodes;
@@ -139,19 +141,37 @@ public class Graph {
      * @return the player with the longest road, or {@code null} if no one qualifies
      */
 
+    /**
+     * Ermittelt den Spieler mit der längsten Straße.
+     * Gibt {@code null} zurück, wenn
+     *   – niemand MIN_LONGEST erreicht oder
+     *   – mehrere Spieler dieselbe maximale Länge haben.
+     */
     public Player findPlayerLongestStreet(Player[] players) {
-        int maxLength = 0;
-        Player winner = null;
+        int maxLength = 0;          // aktuelle Bestmarke
+        int winnersWithMax = 0;     // wie viele Spieler haben diese Bestmarke?
+        Player winner = null;       // möglicher eindeutiger Gewinner
 
-        for (Player player : players) {
-            int length = findLongestTradeRoutes(player);
-            if (length > maxLength) {
-                maxLength = length;
-                winner = player;
+        for (Player p : players) {
+            int len = findLongestTradeRoutes(p);
+
+            if (len > maxLength) {                  // neue Bestmarke gefunden
+                maxLength = len;
+                winner = p;
+                winnersWithMax = 1;                 // erster Spieler mit dieser Länge
+            } else if (len == maxLength &&          // gleich lang wie Bestmarke
+                    len >= MIN_LONGEST) {        // …und lang genug, um zu zählen
+                winnersWithMax++;                   // weiterer Spieler mit Bestmarke
             }
-            logRouteDetails(player, length, winner, maxLength);
+
+            logRouteDetails(p, len, winner, maxLength);
         }
-        return winner;
+
+        // Bedingung für eindeutigen Gewinner prüfen
+        if (maxLength-1 < MIN_LONGEST || winnersWithMax != 1) {
+            return null;                            // kein Gewinner oder Gleichstand
+        }
+        return winner;                              // genau ein Spieler hat die längste Straße
     }
 
     /**
