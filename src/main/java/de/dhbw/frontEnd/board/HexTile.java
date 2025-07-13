@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import java.util.function.Consumer;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,15 +60,16 @@ public class HexTile extends Group {
 
     // ❶ Sechseck zeichnen (unverändert)
 
-    // ❷ Zahl-Badge nur, wenn > 0 (also nicht auf Wasser / Hafen / Wüste)
     if (numberToken > 0) {
       double radius = size * 0.30;
 
-      Circle badge = new Circle(centerX, centerY, radius, Color.WHITE);
-      badge.setStroke(Color.BLACK);
+      Circle badge = new Circle(centerX, centerY, radius, Color.web("#E2DBC7"));
+      badge.setStroke(Color.web("#412515"));
 
       Text txt = new Text(centerX - 4, centerY + 4, String.valueOf(numberToken));
-      txt.setMouseTransparent(true);     // Klick geht ans HexTile
+      txt.setFont(Font.font("Serif", size * 0.20));       // ← Serif-Schrift
+      txt.setFill(Color.web("#412515"));                  // ← brauner Farbton
+      txt.setMouseTransparent(true);                      // Klick geht ans HexTile
 
       getChildren().addAll(badge, txt);
     }

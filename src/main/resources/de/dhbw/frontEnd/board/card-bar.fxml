@@ -784,17 +784,17 @@
                               <Insets right="20.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#onFinishTurnClicked" pickOnBounds="true" styleClass="round-button">
+                        <ImageView fx:id="finish_turn_button" fitHeight="28.0" fitWidth="158.0" onMouseClicked="#onFinishTurnClicked" pickOnBounds="true" styleClass="round-button">
                            <image>
                               <Image url="@finish-turn_icon.png" />
                            </image>
                            <VBox.margin>
-                              <Insets right="20.0" top="20.0" />
+                              <Insets right="20.0" top="485.0" />
                            </VBox.margin>
                         </ImageView>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <VBox.margin>
-                              <Insets right="20.0" top="460.0" />
+                              <Insets right="20.0" />
                            </VBox.margin>
                            <children>
                               <Button fx:id="diceButton2" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" rotate="5.0">
