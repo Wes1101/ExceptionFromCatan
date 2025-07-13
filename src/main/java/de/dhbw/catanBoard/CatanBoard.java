@@ -130,15 +130,14 @@ public class CatanBoard {
                 }
             }
 
-            Resource tile = new Resource(allResources.removeFirst(), HexNodes, coords);
+            int chip = numChips.removeFirst();
+            Resource tile = new Resource(allResources.removeFirst(), chip, HexNodes, coords);
+
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
                 node.addHexTile(tile);
             }
-
-            int chip = numChips.removeFirst();
-            diceBoard.computeIfAbsent(chip, k -> new ArrayList<>()).add(tile);
         }
 
         createHarbourTiles(radius);

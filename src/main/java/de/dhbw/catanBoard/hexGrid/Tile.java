@@ -28,6 +28,7 @@ public class Tile {
      */
     private Node[] hexTileNodes;
     private IntTupel coordinates;
+    private int diceNumber;
 
     /**
      * Constructs a new Tile with a specific resource type and surrounding nodes.
@@ -38,9 +39,10 @@ public class Tile {
      * @param resourceType the resource type associated with this tile
      * @param nodes        the six corner nodes (can be null)
      */
-    public Tile(Resources resourceType, Node[] nodes, IntTupel coordinates) {
+    public Tile(Resources resourceType, int diceNumber, Node[] nodes, IntTupel coordinates) {
         this.resourceType = resourceType;
         this.coordinates = coordinates;
+        this.diceNumber = diceNumber;
         if (nodes != null) {
             this.hexTileNodes = nodes;
         } else {

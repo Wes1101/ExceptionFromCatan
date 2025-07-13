@@ -32,8 +32,8 @@ public class Resource extends Tile {
      * @param resourceType the type of resource this tile produces
      * @param nodes        the corner nodes surrounding this tile
      */
-    public Resource(Resources resourceType, Node[] nodes, IntTupel coordinates) {
-        super(resourceType, nodes, coordinates);
+    public Resource(Resources resourceType, int diceNumber, Node[] nodes, IntTupel coordinates) {
+        super(resourceType, diceNumber, nodes, coordinates);
         this.blocked = false;
     }
 

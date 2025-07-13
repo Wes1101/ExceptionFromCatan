@@ -53,6 +53,6 @@ public class testCatanBoard {
         }
 
         IntTupel coords = new IntTupel(0,0);
-        //System.out.println(board.getBoard().get( coords ).getDiceNumber());
+        System.out.println(board.getBoard().get( coords ).getDiceNumber());
     }
 }
