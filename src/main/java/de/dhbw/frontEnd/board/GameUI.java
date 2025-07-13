@@ -39,27 +39,6 @@ public interface GameUI {
     void showDice(int dice1, int dice2);
 
     /**
-     * Prompts the player to select a location to build a settlement.
-     *
-     * @return the ID of the node selected for settlement placement
-     */
-    int buildSettlement();
-
-    /**
-     * Prompts the player to select a location to build a road.
-     *
-     * @return an IntTupel representing the two nodes that define the road
-     */
-    IntTupel buildStreet();
-
-    /**
-     * Prompts the player to select a location to build a city.
-     *
-     * @return the ID of the node selected for city placement
-     */
-    int buildCity();
-
-    /**
      * Updates the UI to reflect current resources and states of all players.
      */
     void updatePlayerResources();

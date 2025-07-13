@@ -274,7 +274,16 @@ public class SceneBoardController implements Initializable, GameUI {
   private final Map<Integer, Point2D> nodeScreenPositions = new HashMap<>();
 
 
-
+  /**
+   * Initializes the controller class.
+   * @param location
+   * The location used to resolve relative paths for the root object, or
+   * {@code null} if the location is not known.
+   *
+   * @param resources
+   * The resources used to localize the root object, or {@code null} if
+   * the root object was not localized.
+   */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
@@ -359,6 +368,11 @@ public class SceneBoardController implements Initializable, GameUI {
     build_development_card.setDisable(true);
   }
 
+  /**
+   * returns the background of a dice background.
+   * @param image The active player.
+   * @return The background of the dice.
+   */
   private Background makeDiceBackground(Image image) {
     return new Background(new BackgroundImage(
             image,
@@ -369,6 +383,9 @@ public class SceneBoardController implements Initializable, GameUI {
     ));
   }
 
+  /**
+   * Loads the dice images from the resources folder.
+   */
   private void loadDiceImages() {
     for (int i = 0; i < 6; i++) {
       diceImages[i] = new Image(getClass().getResource("/de/dhbw/frontEnd/board/dice" + (i + 1) + ".png").toExternalForm());
@@ -376,7 +393,10 @@ public class SceneBoardController implements Initializable, GameUI {
     diceEmptyImage = new Image(getClass().getResource("/de/dhbw/frontEnd/board/diceempty.png").toExternalForm());
   }
 
-
+  /**
+   * Method called when the player clicks on a node (settlement, city or empty).
+   * @param event The action event triggered by the click.
+   */
 
   @FXML
   private void onNodeClicked(ActionEvent event) { //johann
@@ -400,6 +420,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
+    /**
+     * Mehtod called when the player clicks on an edge (street or empty).
+     * @param event The action event triggered by the click.
+     */
   @FXML
   private void onEdgeClicked(ActionEvent event) { //johann
     Button btn = (Button) event.getSource();
@@ -419,6 +443,10 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  /**
+   * Method called when the player clicks on the finish turn button.
+   * @param event The action event triggered by the click.
+   */
   @FXML
   private void onFinishTurnClicked(MouseEvent event) {
     log.debug("🔵 Finish Turn button clicked");
@@ -432,6 +460,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
+  /**
+   * Method called when the player clicks on the build Settlement button.
+   * @param event The action event triggered by the click.
+   */
   @FXML
   private void onBuildSettlement(ActionEvent event) {
     waitingForSettlementClick = true;
@@ -448,6 +480,10 @@ public class SceneBoardController implements Initializable, GameUI {
     };
   }
 
+  /**
+   * Method called when the player clicks on the build City button.
+   * @param event The action event triggered by the click.
+   */
   @FXML
   private void onBuildCity(ActionEvent event) {
     waitingForCityClick = true;
@@ -463,7 +499,10 @@ public class SceneBoardController implements Initializable, GameUI {
     };
   }
 
-  //johann
+  /**
+   * Method called when the player clicks on the build Road button.
+   * @param event The action event triggered by the click.
+   */
   @FXML
   private void onBuildRoad(ActionEvent event) {
     waitingForStreetClick = true;
@@ -481,6 +520,10 @@ public class SceneBoardController implements Initializable, GameUI {
     };
   }
 
+  /**
+   * Method to add hover effects on the transferred StackPane.
+   * @param pane The StackPane to which the hover effect should be added.
+   */
   private void addHover(StackPane pane) {
     // Card Hover up
     pane.setOnMouseEntered(
@@ -500,14 +543,20 @@ public class SceneBoardController implements Initializable, GameUI {
     );
   }
 
+  /**
+   * Setter for the dice result
+   * @param dice1 The result of the first dice
+   * @param dice2 The result of the second dice
+   */
   public void setDiceResult(int dice1, int dice2) {
     this.realDice1 = dice1;
     this.realDice2 = dice2;
   }
 
-
-
-
+  /**
+   * Opens the setting menu with a fade-in animation.
+   * @param event The mouse event that triggered the action.
+   */
   private void onOpenSetting(MouseEvent event) {
     // Setting menue animation (open)
     setting_menue.setVisible(true);
@@ -517,6 +566,10 @@ public class SceneBoardController implements Initializable, GameUI {
     fadeIn.play();
   }
 
+  /**
+   * Closes the setting menu with a fade-out animation.
+   * @param event The action event triggered by the close button.
+   */
   private void onCloseSetting(ActionEvent event) {
     // Setting menue animation (close)
     FadeTransition fadeOut = new FadeTransition(FADE_DURATION, setting_menue);
@@ -526,8 +579,9 @@ public class SceneBoardController implements Initializable, GameUI {
     fadeOut.play();
   }
 
-
-
+    /**
+     * Initializes the game board by placing hex tiles based on the CatanBoard data.
+     */
   public void initBoard() {
     Map<IntTupel, Tile> hexes = catanBoard.getBoard();
 
@@ -605,6 +659,11 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  /**
+   * Adds corner buttons to the hex tile nodes.
+   * @param tile The tile to which the corner buttons should be added.
+   * @param corners A list of corner coordinates where buttons should be placed.
+   */
   public void addCornerButtons(Tile tile, List<double[]> corners) {
     Node[] hexTileNodes = tile.getHexTileNodes();
 
@@ -636,6 +695,12 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   // Methode zum Hinzufügen gelber Rechtecke zwischen den Ecken
+
+  /**
+   * Adds edge buttons to the hex tile nodes.
+   * @param tile The tile to which the edge buttons should be added.
+   * @param corners A list of corner coordinates where edge buttons should be placed.
+   */
   public void addEdgeButtons(Tile tile, List<double[]> corners) {
     if (!(tile instanceof Resource resTile)) return;
 
@@ -684,8 +749,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
-
-
+/**
+   * Calculates the screen positions of the nodes based on the CatanBoard data.
+   * @param catanBoard The CatanBoard containing the hex tiles and their coordinates.
+   */
   private void calculateNodeScreenPositions(CatanBoard catanBoard) {
     double size = 50;
     double width = Math.sqrt(3) * size;
@@ -717,6 +784,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
+  /**
+   * Updates the game board with the current state of the CatanBoard.
+   * @param catanBoard The CatanBoard containing the hex tiles and their coordinates.
+   */
   public void updateBoard(CatanBoard catanBoard) { //TODO: new tiles generated???
     Map<IntTupel, Tile> hexes = catanBoard.getBoard();
 
@@ -772,7 +843,14 @@ public class SceneBoardController implements Initializable, GameUI {
     this.drawAllStreets(catanBoard);
   }
 
-
+/**
+   * Shows the bandit overlay on the tile if it is blocked.
+   * @param coords The coordinates of the tile.
+   * @param tile The tile to check if it is blocked.
+   * @param x The x-coordinate for the bandit image.
+   * @param y The y-coordinate for the bandit image.
+   * @param size The size of the bandit image.
+   */
   private void showBanditIfBlocked(IntTupel coords, Resource tile, double x, double y, double size) {
     log.debug("Tile at {} isBlocked: {}", coords, tile.isBlocked());
     if (tile.isBlocked()) {
@@ -800,7 +878,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
-  //johann
+  /**
+   * Draws all buildings (settlements and cities) on the game board.
+   * @param catanBoard The CatanBoard containing the hex tiles and their coordinates.
+   */
   private void drawAllBuildings(CatanBoard catanBoard) {
     double size = 50;
 
@@ -856,6 +937,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
+    /**
+     * Draws all streets on the game board.
+     * @param catanBoard The CatanBoard containing the hex tiles and their coordinates.
+     */
   private void drawAllStreets(CatanBoard catanBoard) {
     double size = 50;
 
@@ -953,26 +1038,10 @@ public class SceneBoardController implements Initializable, GameUI {
     }
   }
 
-  private double[][] getNodeScreenPositions(Tile tile, double centerX, double centerY, double size) {
-    double[][] positions = new double[6][2];
-    for (int i = 0; i < 6; i++) {
-      double angle = Math.toRadians(60 * i - 30);
-      positions[i][0] = centerX + size * Math.cos(angle);
-      positions[i][1] = centerY + size * Math.sin(angle);
-    }
-    return positions;
-  }
-
-  private double[] findNodePosition(Node node, Tile tile, double[][] positions) {
-    Node[] tileNodes = tile.getHexTileNodes();
-    for (int i = 0; i < tileNodes.length; i++) {
-      if (tileNodes[i] != null && tileNodes[i].getId() == node.getId()) {
-        return positions[i];
-      }
-    }
-    return null;
-  }
-
+  /**
+   * Sets the number of players in the game and adjusts the visibility of player labels accordingly.
+   * @param playerCount The number of players in the game.
+   */
   public void setPlayerAmount(int playerCount) {
     // Set the visibility of player labels based on the number of players
 
@@ -1025,6 +1094,10 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  /**
+   * Updates the victory points of all players in the UI.
+   * @param players The array of players whose victory points should be updated.
+   */
   private void updateVictoryPoints(Player[] players) {
     for (Player player : players) {
       switch (player.getId()) {
@@ -1051,6 +1124,10 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+    /**
+     * Updates the resources of the active player in the UI.
+     * This method is called whenever the player's resources change.
+     */
   @Override
   public void updatePlayerResources() {
     Player player = this.activePlayer;
@@ -1062,6 +1139,12 @@ public class SceneBoardController implements Initializable, GameUI {
     lumber_card_number.setText(Integer.toString(player.getResources(Resources.WOOD)));
   }
 
+  /**
+   * Sets the active player label based on the player's ID.
+   * This method highlights the background of the active player's victory points.
+   *
+   * @param id The ID of the active player (0-5).
+   */
   private void setActivePlayerLabel(int id) {
 
     switch (id) {
@@ -1128,6 +1211,12 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  /**
+   * Sets the longest street in the UI based on the player's ID.
+   * This method updates the visibility of the longest street labels.
+   *
+   * @param id The ID of the player who has the longest street (0-5).
+   */
   private void setLongestStreet(int id) {
     log.info("Longest street: {}", id);
     longest_trade_street_1.setVisible(id == 0);
@@ -1214,70 +1303,11 @@ public class SceneBoardController implements Initializable, GameUI {
     if (!diceButton2.getStyleClass().contains("rolled")) diceButton2.getStyleClass().add("rolled");
   }
 
-
-  /**
-   * Prompts the player to select a location to build a settlement.
-   * The UI should display an instruction like "Please select a node to build a settlement."
-   *
-   * @return the node ID where the settlement should be built
-   */
-  @Override
-  public int buildSettlement() {
-    int NodeID = 0;
-    Player internalActivePlayer = this.activePlayer;
-    return 0;
-  }
-
-  /**
-   * Prompts the player to select a location to build a street.
-   * The UI should display an instruction like "Please select a location to build a street."
-   *
-   * @return the two adjacent nodes of where the street should be built
-   */
-  @Override
-  public IntTupel buildStreet() {
-    return null;
-  }
-
-  /**
-   * Prompts the player to select a location to build a city.
-   * The UI should display an instruction like "Please select a node to build a city."
-   *
-   * @return the node ID where the city should be built
-   */
-  @Override
-  public int buildCity() {
-    return 0;
-  }
-
-
-  /**
-   * Activates the bandit placement phase in the UI.
-   * Should return the new location for the bandit.
-   *
-   * @return the coordinates (as an IntTupel) of the new bandit location
-   */
-  @Override
-  public IntTupel activateBandit() {
-
-
-
-
-    return null;
-  }
-
-  /**
-   * Prompts the user to select which player to rob.
-   * The UI should allow choosing from a list of players.
-   *
-   * @param players an array of all possible players to be robbed
-   * @return the player who was selected to be robbed
-   */
-  @Override
-  public Player getRobbedPlayer(Player[] players) {
-    return null;
-  }
-
+    /**
+     * Waits for a settlement node click from the specified player.
+     * @param playerId The ID of the player who is expected to click a settlement node.
+     * @return A CompletableFuture that will be completed with the clicked node ID.
+     */
   public CompletableFuture<Integer> waitForSettlementClick(int playerId) {
     log.debug("\uD83D\uDFE2 waitForSettlementClick CALLED");
 
@@ -1304,6 +1334,11 @@ public class SceneBoardController implements Initializable, GameUI {
     return settlenemtNodeSelectionFuture;
   }
 
+  /**
+   * Waits for a street click from the specified player.
+   * @param playerId The ID of the player who is expected to click a street node.
+   * @return A CompletableFuture that will be completed with the clicked street coordinates.
+   */
   public CompletableFuture<IntTupel> waitForStreetClick(int playerId) {
     log.debug("\uD83D\uDFE2 waitForStreetClick CALLED");
 
@@ -1333,6 +1368,10 @@ public class SceneBoardController implements Initializable, GameUI {
     return streetSelectionFuture;
   }
 
+  /**
+   * Waits for the finish turn button to be clicked.
+   * @return A CompletableFuture that will be completed with the name of the player who clicked the button.
+   */
   public CompletableFuture<String> waitForFinishTurnClick() {
     log.debug("\uD83D\uDFE2 waitForFinishTurnClick CALLED");
 
@@ -1360,6 +1399,11 @@ public class SceneBoardController implements Initializable, GameUI {
     return finishTurnSelectionFuture;
   }
 
+  /**
+   * Waits for a new bandit location to be clicked and prompts the player to rob another player.
+   * @param players The array of players in the game.
+   * @return A CompletableFuture that will be completed with the bandit location and the robbed player.
+   */
   public CompletableFuture<PlayerTupelVar> waitForBanditLoctionAndPlayer(Player[] players) {
     log.debug("🟢 waitForBanditLoactionAndPlayer CALLED");
 
@@ -1396,7 +1440,11 @@ public class SceneBoardController implements Initializable, GameUI {
     return triggerBanditFuture;
   }
 
-
+/**
+   * Prompts the player to select another player to rob resources from.
+   * @param banditLocation The location of the bandit on the board.
+   * @return The selected player to rob, or null if no player was selected.
+   */
   public Player promptPlayerToRob(IntTupel banditLocation) {
 
     // --- 1) Kandidaten holen + frühzeitig prüfen ----------------------------
@@ -1451,14 +1499,28 @@ public class SceneBoardController implements Initializable, GameUI {
     return dialog.showAndWait().orElse(null);
   }
 
+  /**
+   * Returns the callback for new bandit location clicks.
+   * @return The callback that handles new bandit location clicks.
+   */
   public Consumer<IntTupel> getNewBanditLocationClickCallback() {
     return newBanditLocationClickCallback;
   }
 
+  /**
+   * Sets the callback for when the UI is ready.
+   * @param r The Runnable to be executed when the UI is ready.
+   */
   public void setOnUIReady(Runnable r) {
     this.onUIReady = r;
   }
 
+    /**
+     * Displays a user message in a popup alert.
+     * @param title The title of the alert.
+     * @param message The message to be displayed in the alert.
+     * @param alertType The type of alert (e.g., INFORMATION, WARNING, ERROR).
+     */
   public void showUserMessage(String title, String message, Alert.AlertType alertType) {
     Platform.runLater(() -> {
       Alert alert = new Alert(alertType);
@@ -1469,6 +1531,10 @@ public class SceneBoardController implements Initializable, GameUI {
     });
   }
 
+    /**
+     * Mehtod used to convert player ID to a color string.
+     * @param playerId The ID of the player (0-5).
+     */
   private String playerIdToColor(int playerId) {
       return switch (playerId) {
           case 0 -> "red";
