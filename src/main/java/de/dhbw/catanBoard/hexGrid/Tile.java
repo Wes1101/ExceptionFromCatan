@@ -1,10 +1,9 @@
-
 package de.dhbw.catanBoard.hexGrid;
-
 import de.dhbw.resources.Resources;
+
+
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * Represents a single hexagonal tile on the Catan board.
  * <p>
@@ -16,19 +15,18 @@ import lombok.Setter;
 @Setter
 public class Tile {
 
+    private int diceNumber;
+
     /**
      * The type of resource this tile produces.
      * Can be one of the {@link Resources} types, or NONE (e.g., for a desert).
      */
     private Resources resourceType;
-
     /**
      * The six corner nodes surrounding this tile.
      * Used to determine which players are adjacent to the tile.
      */
     private Node[] hexTileNodes;
-    private IntTupel coordinates;
-
     /**
      * Constructs a new Tile with a specific resource type and surrounding nodes.
      * <p>
@@ -38,9 +36,9 @@ public class Tile {
      * @param resourceType the resource type associated with this tile
      * @param nodes        the six corner nodes (can be null)
      */
-    public Tile(Resources resourceType, Node[] nodes, IntTupel coordinates) {
+    public Tile(Resources resourceType, int diceNumber, Node[] nodes) {
         this.resourceType = resourceType;
-        this.coordinates = coordinates;
+        this.diceNumber = diceNumber;
         if (nodes != null) {
             this.hexTileNodes = nodes;
         } else {

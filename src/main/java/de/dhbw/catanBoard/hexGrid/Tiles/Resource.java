@@ -1,7 +1,4 @@
-
 package de.dhbw.catanBoard.hexGrid.Tiles;
-
-import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.player.Bank;
@@ -9,7 +6,6 @@ import de.dhbw.resources.Resources;
 import de.dhbw.gamePieces.Building;
 import lombok.Getter;
 import lombok.Setter;
-
 /**
  * Represents a resource-producing hex tile on the Catan board.
  * <p>
@@ -20,20 +16,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Resource extends Tile {
-
     /**
      * Indicates whether this tile is currently blocked (e.g. by the robber).
      */
     private boolean blocked;
-
     /**
      * Constructs a resource tile with the given resource type and corner nodes.
      *
      * @param resourceType the type of resource this tile produces
      * @param nodes        the corner nodes surrounding this tile
      */
-    public Resource(Resources resourceType, Node[] nodes, IntTupel coordinates) {
-        super(resourceType, nodes, coordinates);
+    public Resource(Resources resourceType, int diceNumber,Node[] nodes) {
+        super(resourceType, diceNumber, nodes);
         this.blocked = false;
     }
 
@@ -48,7 +42,6 @@ public class Resource extends Tile {
      */
     public void trigger(Bank bank) {
         if (blocked) return;
-
         for (Node node : this.getHexTileNodes()) {
             Building building = node.getBuilding();
             if (building != null && building.getOwner() != null) {

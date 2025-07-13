@@ -1,16 +1,12 @@
-
 package de.dhbw.catanBoard.hexGrid.Tiles;
 
-import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Node;
 import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
-
 import java.util.ArrayList;
-
 /**
  * Represents a harbour tile on the Catan board.
  * <p>
@@ -20,7 +16,6 @@ import java.util.ArrayList;
  */
 @Getter
 public class Harbour extends Tile {
-
     /**
      * Constructs a harbour tile with a given trade resource type and adjacent nodes.
      * <p>
@@ -31,8 +26,8 @@ public class Harbour extends Tile {
      * @param resourceType the resource this harbour specializes in, or NONE for generic
      * @param nodes        the nodes surrounding the harbour tile
      */
-    public Harbour(Resources resourceType, Node[] nodes, IntTupel coordinates) {
-        super(resourceType, nodes, coordinates);
+    public Harbour(Resources resourceType, Node[] nodes) {
+        super(resourceType, 0, nodes);
     }
 
     /**
@@ -48,7 +43,6 @@ public class Harbour extends Tile {
     public void trade(Player player, Bank bank) {
         for (Node node : this.getHexTileNodes()) {
             if (node.getBuilding() != null && node.getBuilding().getOwner().equals(player)) {
-
                 if (this.getResourceType() == Resources.NONE) {
                     // Generic 3:1 trade
                     ArrayList<Resources> tradable = new ArrayList<>();
@@ -57,10 +51,8 @@ public class Harbour extends Tile {
                             tradable.add(res);
                         }
                     }
-
                     // Simulated trade (should be replaced with GUI input)
                     Resources[] chosenRes = {Resources.STONE, Resources.WOOD};
-
                     if (chosenRes != null && player.getResources(chosenRes[1]) >= 3) {
                         bank.removeResources(chosenRes[0], 1, player);
                         player.removeResources(chosenRes[1], 3, bank);
@@ -69,7 +61,6 @@ public class Harbour extends Tile {
                     // Specific 2:1 trade
                     if (player.getResources(this.getResourceType()) >= 2) {
                         Resources[] chosenRes = {Resources.STONE, this.getResourceType()};
-
                         if (chosenRes != null) {
                             bank.removeResources(chosenRes[0], 1, player);
                             player.removeResources(chosenRes[1], 2, bank);

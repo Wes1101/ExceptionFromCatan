@@ -1,7 +1,7 @@
-
 package de.dhbw.catanBoard;
-
 import de.dhbw.catanBoard.hexGrid.*;
+
+
 import de.dhbw.catanBoard.hexGrid.Tiles.Harbour;
 import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import de.dhbw.catanBoard.hexGrid.Tiles.Water;
@@ -12,9 +12,7 @@ import de.dhbw.resources.Resources;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.*;
-
 /**
  * Represents the game board for Catan.
  * <p>
@@ -24,12 +22,10 @@ import java.util.*;
  */
 @Getter
 public class CatanBoard {
-
     private static final Logger log = LoggerFactory.getLogger(CatanBoard.class);
 
     private IntTupel[] hex_coords;
     private final Map<IntTupel, Tile> board = new HashMap<>();
-    private final Map<Integer, List<Resource>> diceBoard = new HashMap<>();
     private final Graph graph;
 
     /**
@@ -47,7 +43,6 @@ public class CatanBoard {
         initHexCoords(radius);
         createGraph(radius);
     }
-
     /**
      * Recursively calculates the total number of graph nodes (settlement positions) required for a board
      * of given radius.
@@ -58,7 +53,6 @@ public class CatanBoard {
     private int calcNumNodes(int n) {
         return (n <= 0) ? 0 : calcNumNodes(n - 1) + (2 * n - 1) * 6;
     }
-
     /**
      * Initializes all axial coordinates (q, r) for hex tiles on the board for a given radius.
      *
@@ -76,7 +70,6 @@ public class CatanBoard {
         }
         log.info("Hex coordinates initialized with {} tiles", hex_coords.length);
     }
-
     /**
      * Recursively calculates the number of hex tiles required for a board of given radius.
      *
@@ -86,7 +79,6 @@ public class CatanBoard {
     private int calcNumHexTiles(int n) {
         return (n == 1) ? 1 : calcNumHexTiles(n - 1) + 6 * (n - 1);
     }
-
     /**
      * Generates and assembles the entire game board.
      * <p>
@@ -103,47 +95,40 @@ public class CatanBoard {
         int index = 0;
         ArrayList<Integer> numChips = generateChipNumbers();
         ArrayList<Resources> allResources = generateResourceTypes(hex_coords.length - 1);
-
         allResources.add(Resources.NONE);
         Collections.shuffle(numChips);
         Collections.shuffle(allResources);
-
         for (int i = 1; i < allResources.size(); i++) {
             if (allResources.get(i) == Resources.NONE) {
                 numChips.add(i, 0);
                 break;
             }
         }
-
         for (IntTupel coords : hex_coords) {
             Node[] HexNodes = getExistingNodes(coords);
-
             for (int i = 0; i < HexNodes.length; i++) {
                 if (HexNodes[i] == null) {
                     HexNodes[i] = graph.getNodes()[index];
                     int nextIndex = (i + 1 + HexNodes.length) % HexNodes.length;
                     int prevIndex = (i - 1 + HexNodes.length) % HexNodes.length;
-
                     if (HexNodes[nextIndex] != null) graph.createEdge(index, HexNodes[nextIndex].getId());
                     if (HexNodes[prevIndex] != null) graph.createEdge(index, HexNodes[prevIndex].getId());
                     index++;
                 }
             }
 
-            Resource tile = new Resource(allResources.removeFirst(), HexNodes, coords);
+            int chip = numChips.removeFirst();
+            Resource tile = new Resource(allResources.removeFirst(), chip, HexNodes);
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
                 node.addHexTile(tile);
             }
 
-            int chip = numChips.removeFirst();
-            diceBoard.computeIfAbsent(chip, k -> new ArrayList<>()).add(tile);
         }
 
         createHarbourTiles(radius);
     }
-
     /**
      * Creates harbour and water tiles around the edge of the board.
      *
@@ -154,7 +139,6 @@ public class CatanBoard {
         int q = AxialDirection.SOUTH_WEST.getDq() * radius;
         int r = AxialDirection.SOUTH_WEST.getDr() * radius;
         int i = 0;
-
         for (AxialDirection dir : AxialDirection.values()) {
             for (int j = 0; j < radius; j++) {
                 q += dir.getDq();
@@ -162,24 +146,20 @@ public class CatanBoard {
                 harbour[i++] = new IntTupel(q, r);
             }
         }
-
         List<Resources> harbourTypes = new ArrayList<>(Arrays.asList(Resources.values()));
         for (i = harbourTypes.size(); i < harbour.length / 2; i++) {
             harbourTypes.add(Resources.NONE);
         }
         Collections.shuffle(harbourTypes);
-
         for (i = 0; i < harbour.length; i++) {
-            IntTupel coords = harbour[i];
             if (i % 2 == 1) {
-                board.put(coords, new Harbour(harbourTypes.removeFirst(), getExistingNodes(coords), coords));
+                board.put(harbour[i], new Harbour(harbourTypes.removeFirst(), getExistingNodes(harbour[i])));
             } else {
-                board.put(harbour[i], new Water(coords));
+                board.put(harbour[i], new Water());
             }
         }
         log.info("Harbours and water tiles created around the board.");
     }
-
     /**
      * Returns already existing nodes from neighboring hex tiles.
      *
@@ -193,7 +173,6 @@ public class CatanBoard {
                 AxialDirection.NORTH_EAST,
                 AxialDirection.WEST
         };
-
         for (AxialDirection dir : DIR) {
             IntTupel neighbor = new IntTupel(coords.q() + dir.getDq(), coords.r() + dir.getDr());
             if (board.containsKey(neighbor)) {
@@ -213,10 +192,8 @@ public class CatanBoard {
                 }
             }
         }
-
         return HexNodes;
     }
-
     /**
      * Generates a list of number tokens (dice values) with weighted frequency.
      *
@@ -226,15 +203,12 @@ public class CatanBoard {
         Map<Integer, Integer> weights = Map.of(2, 1, 3, 2, 4, 3, 5, 4, 6, 5, 8, 5, 9, 4, 10, 3, 11, 2, 12, 1);
         ArrayList<Integer> chips = new ArrayList<>();
         int tileCount = hex_coords.length - 1;
-
         weights.forEach((number, weight) -> {
             int count = (int) Math.round(weight * tileCount / 30.0);
             chips.addAll(Collections.nCopies(count, number));
         });
-
         return chips;
     }
-
     /**
      * Creates a balanced list of resource types for all resource tiles.
      *
@@ -253,7 +227,6 @@ public class CatanBoard {
         }
         return types;
     }
-
     /**
      * Triggers all resource tiles associated with the rolled dice number.
      *
@@ -262,9 +235,15 @@ public class CatanBoard {
      */
     public void triggerBoard(int diceNumber, Bank bank) {
         log.info("Triggering board for dice number: {}", diceNumber);
-        List<Resource> tiles = diceBoard.get(diceNumber);
-        if (tiles != null) {
-            tiles.forEach(tile -> tile.trigger(bank));
+        List<Resource> triggertTiles = new ArrayList<>();
+
+        for (IntTupel coords : board.keySet()) {
+            if (board.get(coords).getDiceNumber() == diceNumber) {
+                triggertTiles.add( (Resource) board.get(coords));
+            }
+        }
+        if (triggertTiles != null) {
+            triggertTiles.forEach(tile -> tile.trigger(bank));
         }
     }
 
@@ -278,7 +257,6 @@ public class CatanBoard {
         graph.getNodes()[node].setBuilding(building);
         log.info("Settlement built at node {}", node);
     }
-
     /**
      * Upgrades a settlement to a city at the specified node.
      *
@@ -291,7 +269,6 @@ public class CatanBoard {
         graph.getNodes()[node].setBuilding(building);
         log.info("City built at node {}", node);
     }
-
     /**
      * Builds a street between two nodes.
      *
@@ -303,7 +280,6 @@ public class CatanBoard {
         graph.updateEdge(node1, node2, (Street) street);
         log.info("Street built between node {} and {}", node1, node2);
     }
-
     /**
      * Toggles blocking state of a hex tile (e.g. due to a robber).
      *
@@ -316,7 +292,6 @@ public class CatanBoard {
             log.info("Hex at {} is now {}", coords, resTile.isBlocked() ? "BLOCKED" : "UNBLOCKED");
         }
     }
-
     /**
      * Returns coordinates of the desert tile.
      *
