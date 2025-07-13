@@ -129,15 +129,14 @@ public class CatanBoard {
                 }
             }
 
-
-            Resource tile = new Resource(allResources.removeFirst(), HexNodes, coords);
+            int chip = numChips.removeFirst();
+            Resource tile = new Resource(allResources.removeFirst(), chip, HexNodes, coords);
 
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
                 node.addHexTile(tile);
             }
-
         }
 
         createHarbourTiles(radius);
@@ -261,15 +260,15 @@ public class CatanBoard {
      */
     public void triggerBoard(int diceNumber, Bank bank) {
         log.info("Triggering board for dice number: {}", diceNumber);
-        List<Resource> triggertTiles = new ArrayList<>();
-
-        for (IntTupel coords : board.keySet()) {
-            if (board.get(coords).getDiceNumber() == diceNumber) {
-                triggertTiles.add( (Resource) board.get(coords));
+        List<Resource> tiles = new ArrayList<>();
+        for (Tile tile : board.values()) {
+            if (tile.getDiceNumber() == diceNumber) {
+                tiles.add( (Resource) tile);
             }
         }
-        if (triggertTiles != null) {
-            triggertTiles.forEach(tile -> tile.trigger(bank));
+
+        if (tiles != null) {
+            tiles.forEach(tile -> tile.trigger(bank));
         }
     }
 

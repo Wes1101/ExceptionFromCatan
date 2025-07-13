@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -23,6 +24,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundSize;
 
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;  //+++
 
 
@@ -67,6 +69,19 @@ public class SceneBoardController implements Initializable, GameUI {
   private Label wool_card_number;
   @FXML
   private Label lumber_card_number;
+  @FXML
+  private StackPane victory_points_container_1;
+  @FXML
+  private StackPane victory_points_container_2;
+  @FXML
+  private StackPane victory_points_container_3;
+  @FXML
+  private StackPane victory_points_container_4;
+  @FXML
+  private StackPane victory_points_container_5;
+  @FXML
+  private StackPane victory_points_container_6;
+
   @FXML
   private Label player_1_label;
   @FXML
@@ -159,7 +174,40 @@ public class SceneBoardController implements Initializable, GameUI {
   private Button build_road;
 
   @FXML
-  private Label victory_points_background_number;
+  private ImageView victory_points_background_1;
+
+  @FXML
+  private ImageView victory_points_background_2;
+
+  @FXML
+  private ImageView victory_points_background_3;
+
+  @FXML
+  private ImageView victory_points_background_4;
+
+  @FXML
+  private ImageView victory_points_background_5;
+
+  @FXML
+  private ImageView victory_points_background_6;
+
+  @FXML
+  private Label victory_points_player_1;
+
+  @FXML
+  private Label victory_points_player_2;
+
+  @FXML
+  private Label victory_points_player_3;
+
+  @FXML
+  private Label victory_points_player_4;
+
+  @FXML
+  private Label victory_points_player_5;
+
+  @FXML
+  private Label victory_points_player_6;
 
   private final Image[] diceImages = new Image[6];
   private Image diceEmptyImage;
@@ -279,7 +327,6 @@ public class SceneBoardController implements Initializable, GameUI {
     tile_layer.getChildren().stream()
             .filter(n -> n instanceof EdgeFX && n.getId() != null && n.getId().startsWith("road_"))
             .forEach(n -> n.setOnMouseClicked(evt -> {
-                      System.out.println("Straße geklickt: fx:id=" + n.getId());
 
                       log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + n.getId());
                       log.debug("🔴 Callback is: " + streetClickCallback);
@@ -349,8 +396,6 @@ public class SceneBoardController implements Initializable, GameUI {
     Button btn = (Button) event.getSource();
     String fxId = btn.getId();
 
-    System.out.println("Straße geklickt: fx:id=" + fxId);
-
     log.debug("\uD83D\uDD35 Button clicked:  fx:id=" + fxId);
     log.debug("🔴 Callback is: " + streetClickCallback);
 
@@ -380,13 +425,16 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   @FXML
-  private void onBuildSettlement(MouseEvent event) {
+  private void onBuildSettlement(ActionEvent event) {
+    System.out.println("<UNK> Build Settlement button clicked!?!?!?!?!?!?!?!?!?!??!?!?!??!?!?!?!?!");
     waitingForSettlementClick = true;
     settlementClickHandler = (Button btn) -> {
       log.debug("🟢 Settlement button clicked: " + btn.getId());
 
       int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
       gameController.buildSettlement(nodeId, activePlayer);
+      updatePlayerResources(gameController.getPlayers());
+      this.updateBoard(catanBoard);
 
       waitingForSettlementClick = false;
       settlementClickHandler = null;
@@ -394,14 +442,16 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   @FXML
-  private void onBuildCity(MouseEvent event) {
+  private void onBuildCity(ActionEvent event) {
+    System.out.println("<UNK> Build Settlement button clicked!?!?!?!?!?!?!?!?!?!??!?!?!??!?!?!?!?!jkwfwrjk fwr ");
     waitingForCityClick = true;
     cityClickHandler = (Button btn) -> {
       log.debug("🟢 City button clicked: " + btn.getId());
 
       int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
       gameController.buildCity(nodeId, activePlayer);
-
+      updatePlayerResources(gameController.getPlayers());
+      this.updateBoard(catanBoard);
       waitingForCityClick = false;
       cityClickHandler = null;
     };
@@ -410,7 +460,7 @@ public class SceneBoardController implements Initializable, GameUI {
   //johann
   @FXML
   private void onBuildRoad(ActionEvent event) {
-    System.out.println("<UNK> Build Road button clicked");
+    System.out.println("wfhawdfvs avfsaefvfsnvkf");
     waitingForStreetClick = true;
     streetClickHandler = (Button btn) -> {
       log.debug("🟢 Street button clicked: " + btn.getId());
@@ -419,7 +469,8 @@ public class SceneBoardController implements Initializable, GameUI {
       String[] parts = idPart.split("_");
       IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
       gameController.buildStreet(streetId, activePlayer);
-
+      updatePlayerResources(gameController.getPlayers());
+      this.updateBoard(catanBoard);
       waitingForStreetClick = false;
       streetClickHandler = null;
     };
@@ -566,11 +617,7 @@ public class SceneBoardController implements Initializable, GameUI {
       boolean exists = tile_layer.getChildren().stream()
               .anyMatch(n -> ("node_" + node.getId()).equals(n.getId()));
       if (exists) {
-        System.out.println("Node " + node.getId() + " already exists");
         continue;
-      }
-      else {
-        System.out.println("Node " + node.getId() + " is new");
       }
 
       Button redButton = new NodeFX();
@@ -578,7 +625,6 @@ public class SceneBoardController implements Initializable, GameUI {
       redButton.setLayoutY(y - 7);
       //redButton.setMouseTransparent(true);
       redButton.setId("node_" + node.getId());
-      System.out.println(redButton.getId());
 
       // Optional: EventHandler für später
       //redButton.setOnAction(this::onNodeClicked);
@@ -607,7 +653,6 @@ public class SceneBoardController implements Initializable, GameUI {
       boolean exists = tile_layer.getChildren().stream()
               .anyMatch(n -> id.equals(n.getId()));
       if (exists) {
-        System.out.println("street " + id + " already exists");
         continue;
       }
 
@@ -690,32 +735,32 @@ public class SceneBoardController implements Initializable, GameUI {
       int r = coords.r();
 
       double x = offsetX + (q * width) + (r * (width / 2));
-      double y = offsetY - (r * height);
+      double y = offsetY + (r * height);
 
       Tile tile = hexes.get(coords);
 
-      // Wasser
-      if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
-        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, "Water", this);
-        tile_layer.getChildren().add(frontendHex);
-        frontendHex.toBack();
-      }
-
-      // Hafen
-      else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
-        String resourceName = h.getResourceType().name() + "_Harbour";
-        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, resourceName, this);
-        tile_layer.getChildren().add(frontendHex);
-        frontendHex.toBack();
-      }
-
-      // Ressourcen
-      else if (tile instanceof Resource resTile) {
-        String resourceName = resTile.getResourceType().name();
-        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, resourceName, this);
-        tile_layer.getChildren().add(frontendHex);
-        frontendHex.toBack();
-      }
+//      // Wasser
+//      if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
+//        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, "Water", this);
+//        tile_layer.getChildren().add(frontendHex);
+//        frontendHex.toBack();
+//      }
+//
+//      // Hafen
+//      else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
+//        String resourceName = h.getResourceType().name() + "_Harbour";
+//        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, resourceName, this);
+//        tile_layer.getChildren().add(frontendHex);
+//        frontendHex.toBack();
+//      }
+//
+//      // Ressourcen
+//      else if (tile instanceof Resource resTile) {
+//        String resourceName = resTile.getResourceType().name();
+//        HexTile frontendHex = new HexTile(hexes.get(coords), x, y, size, resourceName, this);
+//        tile_layer.getChildren().add(frontendHex);
+//        frontendHex.toBack();
+//      }
 
       // Show bandit overlay if needed
       if (tile instanceof Resource resTile) {
@@ -799,7 +844,6 @@ public class SceneBoardController implements Initializable, GameUI {
         buildingView.setFitHeight(imgSize);
 
         String nodeID = "node_" + node.getId();
-        System.out.println(nodeID);
         tile_layer.getChildren().stream()
                 .filter(node1 -> node1 instanceof NodeFX && node1.getId().equals(nodeID))
                 .forEach(node1 -> {
@@ -840,7 +884,6 @@ public class SceneBoardController implements Initializable, GameUI {
                 .orElse(null);
 
         if (sharedTile == null) {
-          System.out.println("No shared tile between node " + i + " and node " + j);
           continue; // skip drawing
         }
 
@@ -856,7 +899,6 @@ public class SceneBoardController implements Initializable, GameUI {
           NodeFX nodeFX = maybeNode.get();
           Ax = nodeFX.getLayoutX();
           Ay = nodeFX.getLayoutY();
-          System.out.println("Ax = " + Ax + ", Ay = " + Ay);
         }
 
         maybeNode = tile_layer.getChildren().stream()
@@ -871,7 +913,6 @@ public class SceneBoardController implements Initializable, GameUI {
           NodeFX nodeFX = maybeNode.get();
           Bx = nodeFX.getLayoutX();
           By = nodeFX.getLayoutY();
-          System.out.println("Bx = " + Bx + ", By = " + By);
         }
 
         // Estimate screen positions of the nodes
@@ -880,7 +921,6 @@ public class SceneBoardController implements Initializable, GameUI {
         if (posA == null || posB == null) continue;
 
         if (posA == null || posB == null) {
-          System.out.println("Could not find position for edge between " + i + " and " + j);
           continue;
         }
 
@@ -892,12 +932,11 @@ public class SceneBoardController implements Initializable, GameUI {
                 getClass().getResourceAsStream("/de/dhbw/frontEnd/board/street.png")));
         ImageView roadView = new ImageView(roadImage);
 
-        roadView.setFitWidth(length * 0.9);
+        roadView.setFitWidth(length * 0.8);
         roadView.setFitHeight(size * 0.6);
 
 
         String nodeID = "road_" + nodeA.getId() + "_" + nodeB.getId();
-        System.out.println(nodeID);
         tile_layer.getChildren().stream()
                 .filter(node1 -> node1 instanceof EdgeFX && node1.getId().equals(nodeID))
                 .forEach(node1 -> {
@@ -931,12 +970,26 @@ public class SceneBoardController implements Initializable, GameUI {
 
   public void setPlayerAmount(int playerCount) {
     // Set the visibility of player labels based on the number of players
-    player_1_label.setVisible(playerCount >= 1);
-    player_2_label.setVisible(playerCount >= 2);
-    player_3_label.setVisible(playerCount >= 3);
-    player_4_label.setVisible(playerCount >= 4);
-    player_5_label.setVisible(playerCount >= 5);
-    player_6_label.setVisible(playerCount >= 6);
+
+      for (javafx.scene.Node child : victory_points_container_1.getChildren()) {
+        child.setVisible(playerCount >= 1);
+      }
+      for (javafx.scene.Node child : victory_points_container_2.getChildren()) {
+        child.setVisible(playerCount >= 2);
+      }
+      for (javafx.scene.Node child : victory_points_container_3.getChildren()) {
+        child.setVisible(playerCount >= 3);
+      }
+      for (javafx.scene.Node child : victory_points_container_4.getChildren()) {
+        child.setVisible(playerCount >= 4);
+      }
+      for (javafx.scene.Node child : victory_points_container_5.getChildren()) {
+        child.setVisible(playerCount >= 5);
+      }
+      for (javafx.scene.Node child : victory_points_container_6.getChildren()) {
+        child.setVisible(playerCount >= 6);
+      }
+
 
     // Log-Ausgabe zur Überprüfung
     log.info("Anzahl der Spieler in SceneBoardController gesetzt: {}", playerCount);
@@ -948,13 +1001,12 @@ public class SceneBoardController implements Initializable, GameUI {
    * @param player Currently active player
    */
   @Override
-  public void setactivePlayer(Player player) {
+  public void setactivePlayer(Player player, Player[] players) {
     this.activePlayer = player; // Den übergebenen Spieler in der Instanzvariablen speichern
     int ID = player.getId();
 
-    victory_points_background_number.setText(Integer.toString(player.getVictoryPoints()));
-
     this.setActivePlayerLabel(ID);
+    this.updateVictoryPoints(players);
     this.updatePlayerResources(player);
     this.showUserMessage("New active Player!",
             "Player " + (player.getId() + 1) + " is now active.", Alert.AlertType.INFORMATION);
@@ -964,7 +1016,34 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
+  private void updateVictoryPoints(Player[] players) {
+    for (Player player : players) {
+      switch (player.getId()) {
+        case 0:
+          victory_points_player_1.setText(Integer.toString(player.getVictoryPoints()));
+          break;
+        case 1:
+          victory_points_player_2.setText(Integer.toString(player.getVictoryPoints()));
+          break;
+        case 2:
+          victory_points_player_3.setText(Integer.toString(player.getVictoryPoints()));
+          break;
+        case 3:
+          victory_points_player_4.setText(Integer.toString(player.getVictoryPoints()));
+          break;
+        case 4:
+          victory_points_player_5.setText(Integer.toString(player.getVictoryPoints()));
+          break;
+        case 5:
+          victory_points_player_6.setText(Integer.toString(player.getVictoryPoints()));
+          break;
+      }
+    }
+
+  }
+
   private void updatePlayerResources(Player player) {
+    log.info("player resources: {}", player.getResources());
     grain_card_number.setText(Integer.toString(player.getResources(Resources.WHEAT)));
     brick_card_number.setText(Integer.toString(player.getResources(Resources.BRICK)));
     ore_card_number.setText(Integer.toString(player.getResources(Resources.STONE)));
@@ -974,77 +1053,70 @@ public class SceneBoardController implements Initializable, GameUI {
 
   private void setActivePlayerLabel(int id) {
 
+    DropShadow glow = new DropShadow();
+    glow.setColor(Color.GOLD);
+    glow.setRadius(10);
+    glow.setSpread(0.6);
+
     switch (id) {
       case 0:
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
+        victory_points_background_1.setEffect(glow);
+        victory_points_background_2.setEffect(null);
+        victory_points_background_3.setEffect(null);
+        victory_points_background_4.setEffect(null);
+        victory_points_background_5.setEffect(null);
+        victory_points_background_6.setEffect(null);
 
-
-        player_1_label.setStyle("-fx-text-fill: red");
         log.info("Spieler 1 ist aktiv coloured");
-
-
         break;
+
       case 1:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
-
-
-        player_2_label.setStyle("-fx-text-fill: red");
+        victory_points_background_1.setEffect(null);
+        victory_points_background_2.setEffect(glow);
+        victory_points_background_3.setEffect(null);
+        victory_points_background_4.setEffect(null);
+        victory_points_background_5.setEffect(null);
+        victory_points_background_6.setEffect(null);
         log.info("Spieler 2 ist aktiv coloured");
-
         break;
+
       case 2:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
-
-
-        player_3_label.setStyle("-fx-text-fill: red");
+        victory_points_background_1.setEffect(null);
+        victory_points_background_2.setEffect(null);
+        victory_points_background_3.setEffect(glow);
+        victory_points_background_4.setEffect(null);
+        victory_points_background_5.setEffect(null);
+        victory_points_background_6.setEffect(null);
         log.info("Spieler 3 ist aktiv coloured");
-
         break;
+
       case 3:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
-
-
-        player_4_label.setStyle("-fx-text-fill: red");
+        victory_points_background_1.setEffect(null);
+        victory_points_background_2.setEffect(null);
+        victory_points_background_3.setEffect(null);
+        victory_points_background_4.setEffect(glow);
+        victory_points_background_5.setEffect(null);
+        victory_points_background_6.setEffect(null);
         log.info("Spieler 4 ist aktiv coloured");
-
         break;
+
       case 4:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
-
-
-        player_5_label.setStyle("-fx-text-fill: red");
+        victory_points_background_1.setEffect(null);
+        victory_points_background_2.setEffect(null);
+        victory_points_background_3.setEffect(null);
+        victory_points_background_4.setEffect(null);
+        victory_points_background_5.setEffect(glow);
+        victory_points_background_6.setEffect(null);
         log.info("Spieler 5 ist aktiv coloured");
-
         break;
+
       case 5:
-
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-
-        player_6_label.setStyle("-fx-text-fill: red");
+        victory_points_background_1.setEffect(null);
+        victory_points_background_2.setEffect(null);
+        victory_points_background_3.setEffect(null);
+        victory_points_background_4.setEffect(null);
+        victory_points_background_5.setEffect(null);
+        victory_points_background_6.setEffect(glow);
         log.info("Spieler 6 ist aktiv coloured");
         break;
     }
@@ -1092,7 +1164,7 @@ public class SceneBoardController implements Initializable, GameUI {
    * @param dice2 the value of the second dice
    */
   public void showDice(int dice1, int dice2) {
-    System.out.println("🎲 Ergebnis anzeigen: " + dice1 + ", " + dice2);
+    log.info("🎲 Ergebnis anzeigen: " + dice1 + ", " + dice2);
 
     Image[] diceImages = {
             null,
@@ -1172,7 +1244,7 @@ public class SceneBoardController implements Initializable, GameUI {
    */
   @Override
   public void updatePlayerResources(Player[] players) {
-
+    updatePlayerResources(players[this.activePlayer.getId()]);
   }
 
   /**
@@ -1215,7 +1287,6 @@ public class SceneBoardController implements Initializable, GameUI {
       try {
         String nodeIdStr = fxId.replace("node_", "");  // ✅ sanitize
         int nodeId = Integer.parseInt(nodeIdStr);
-        System.out.println("🟡 settlementClickCallback INVOKED with: " + nodeId);
         if (!settlenemtNodeSelectionFuture.isDone()) {
           settlenemtNodeSelectionFuture.complete(nodeId);
         }
@@ -1245,7 +1316,6 @@ public class SceneBoardController implements Initializable, GameUI {
         String[] parts = idPart.split("_");
         IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
 
-        System.out.println("🟡 settlementClickCallback INVOKED with: " + streetId);
         if (!streetSelectionFuture.isDone()) {
           streetSelectionFuture.complete(streetId);
         }
@@ -1299,7 +1369,6 @@ public class SceneBoardController implements Initializable, GameUI {
     this.newBanditLocationClickCallback = (IntTupel banditLocation) -> {
       try {
 
-        System.out.println("🟡 waitForBanditLoactionAndPlayer INVOKED with: " + banditLocation);
         if (!triggerBanditFuture.isDone()) {
 
           Player robbedPlayer;

@@ -30,6 +30,7 @@ public class Street extends Building {
         Map<Resources, Integer> cost = new HashMap<>();
         cost.put(Resources.WOOD, 1);
         cost.put(Resources.BRICK, 1);
+        cost.put(Resources.SHEEP, 1);
         return cost;
     }
 }
