@@ -47,12 +47,12 @@ public class StartMenuScene {
         redPane.setPadding(new Insets(15));
 
 
-        Button btnEinzel = new Button("Einzelspieler");
+        Button btnEinzel = new Button("Singleplayer");
         btnEinzel.setId("buttonEinzelMulti");
 
 
 
-        Button btnMehr = new Button("Mehrspieler");
+        Button btnMehr = new Button("Multiplayer {Work in Progress }");
         btnMehr.setId("buttonEinzelMulti");
 
 
