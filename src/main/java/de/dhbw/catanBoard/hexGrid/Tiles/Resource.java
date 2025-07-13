@@ -19,7 +19,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Resource extends Tile {
-
+    private final int numberToken;
     /**
      * Indicates whether this tile is currently blocked (e.g. by the robber).
      */
@@ -31,8 +31,9 @@ public class Resource extends Tile {
      * @param resourceType the type of resource this tile produces
      * @param nodes        the corner nodes surrounding this tile
      */
-    public Resource(Resources resourceType, Node[] nodes) {
+    public Resource(Resources resourceType, Node[] nodes, int numberToken) {
         super(resourceType, nodes);
+        this.numberToken = numberToken;
         this.blocked = false;
     }
 

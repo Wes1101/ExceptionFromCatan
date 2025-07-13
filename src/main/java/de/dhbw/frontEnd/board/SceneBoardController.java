@@ -441,7 +441,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Wasser vom Backend
       if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water", this);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, "Water", 0, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -454,7 +454,7 @@ public class SceneBoardController implements Initializable, GameUI {
         String resourceName = h.getResourceType().name() + "_Harbour";
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, 0,this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -466,16 +466,17 @@ public class SceneBoardController implements Initializable, GameUI {
       else if (hexes.get(coords) instanceof Resource) {
         Resource resTile = (Resource) hexes.get(coords);
         String resourceName = resTile.getResourceType().name();
-
+        int num = resTile.getNumberToken();
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, this);
+                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, num,this);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
 
     }
+
 
   }
 
@@ -504,7 +505,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
       // Wasser
       if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
-        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water", this);
+        HexTile frontendHex = new HexTile(q, r, x, y, size, "Water", 0, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -512,7 +513,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Hafen
       else if (tile instanceof de.dhbw.catanBoard.hexGrid.Tiles.Harbour h) {
         String resourceName = h.getResourceType().name() + "_Harbour";
-        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, 0, this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -520,7 +521,8 @@ public class SceneBoardController implements Initializable, GameUI {
       // Ressourcen
       else if (tile instanceof Resource resTile) {
         String resourceName = resTile.getResourceType().name();
-        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, this);
+        int num            = resTile.getNumberToken();
+        HexTile frontendHex = new HexTile(q, r, x, y, size, resourceName, num ,this);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }

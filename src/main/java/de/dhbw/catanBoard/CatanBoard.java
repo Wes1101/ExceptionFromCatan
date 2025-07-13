@@ -129,15 +129,16 @@ public class CatanBoard {
                     index++;
                 }
             }
+            int chip = numChips.removeFirst();
 
-            Resource tile = new Resource(allResources.removeFirst(), HexNodes);
+            Resource tile = new Resource(allResources.removeFirst(), HexNodes, chip);
             board.put(coords, tile);
 
             for (Node node : HexNodes) {
                 node.addHexTile(tile);
             }
 
-            int chip = numChips.removeFirst();
+
             diceBoard.computeIfAbsent(chip, k -> new ArrayList<>()).add(tile);
         }
 
