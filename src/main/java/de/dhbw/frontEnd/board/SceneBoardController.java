@@ -426,7 +426,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
   private void onBuildSettlement(ActionEvent event) {
-    System.out.println("<UNK> Build Settlement button clicked!?!?!?!?!?!?!?!?!?!??!?!?!??!?!?!?!?!");
+    resetBuildMode();
     waitingForSettlementClick = true;
     settlementClickHandler = (Button btn) -> {
       log.debug("🟢 Settlement button clicked: " + btn.getId());
@@ -443,7 +443,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
   private void onBuildCity(ActionEvent event) {
-    System.out.println("<UNK> Build Settlement button clicked!?!?!?!?!?!?!?!?!?!??!?!?!??!?!?!?!?!jkwfwrjk fwr ");
+    resetBuildMode();
     waitingForCityClick = true;
     cityClickHandler = (Button btn) -> {
       log.debug("🟢 City button clicked: " + btn.getId());
@@ -460,7 +460,7 @@ public class SceneBoardController implements Initializable, GameUI {
   //johann
   @FXML
   private void onBuildRoad(ActionEvent event) {
-    System.out.println("wfhawdfvs avfsaefvfsnvkf");
+    resetBuildMode();
     waitingForStreetClick = true;
     streetClickHandler = (Button btn) -> {
       log.debug("🟢 Street button clicked: " + btn.getId());
@@ -860,7 +860,6 @@ public class SceneBoardController implements Initializable, GameUI {
                 .filter(node1 -> node1 instanceof NodeFX && node1.getId().equals(nodeID))
                 .forEach(node1 -> {
                   ((NodeFX) node1).setGraphic(buildingView);
-                  node1.setStyle("-fx-padding: 0; -fx-background-insets: 0;");;
                 });
 
       }
@@ -948,7 +947,7 @@ public class SceneBoardController implements Initializable, GameUI {
                 getClass().getResourceAsStream(imgPath)));
         ImageView roadView = new ImageView(roadImage);
 
-        roadView.setFitWidth(length * 0.8);
+        roadView.setFitWidth(length * 0.65);
         roadView.setFitHeight(size * 0.6);
 
 
@@ -1338,7 +1337,7 @@ public class SceneBoardController implements Initializable, GameUI {
         streetSelectionFuture.completeExceptionally(e);
       }
       // ✅ Clear the callback so future clicks do nothing
-      this.settlementClickCallback = null;
+      this.streetClickCallback = null;
     };
 
     return streetSelectionFuture;
@@ -1482,4 +1481,19 @@ public class SceneBoardController implements Initializable, GameUI {
           default -> "unknown";
       };
   }
+
+  private void resetBuildMode() {
+    waitingForSettlementClick = false;
+    waitingForCityClick       = false;
+    waitingForStreetClick     = false;
+
+    settlementClickHandler = null;
+    cityClickHandler       = null;
+    streetClickHandler     = null;
+
+    settlementClickCallback = null;
+    streetClickCallback     = null;
+    finishTurnClickCallback = null;
+  }
+
 }

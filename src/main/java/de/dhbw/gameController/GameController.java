@@ -11,6 +11,8 @@
 package de.dhbw.gameController;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -138,40 +140,39 @@ public class GameController {
         log.info("...done. Placing first settlements and streets");
         //place first settlement
         int currentIndex = highestNumberIndex;
-        Player[] orderedPlayers = this.players.clone();
-        for (int i = 0; i < this.players.length; i++) {
-            this.activePlayer(this.players[currentIndex]);
+        //Player[] orderedPlayers = this.players.clone();
+        int n = players.length;
+        currentIndex = ((currentIndex % n) + n) % n;   // Index in [0, n)
+        Collections.rotate(Arrays.asList(players), -currentIndex);
+
+
+        for (int i = this.players.length-1; i >= 0; i--) {
+            this.activePlayer(this.players[i]);
 
             minorGameState = MinorGameStates.BUILDING_TRADING_SPECIAL;
 
             int coordinatesFirstSettlement;
             do {
-                coordinatesFirstSettlement = getCoordinatesFirstSettlement(this.players[currentIndex].getId());
+                coordinatesFirstSettlement = getCoordinatesFirstSettlement(this.players[i].getId());
 
-            } while (!rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, this.players[currentIndex]));
-            log.info("*Building first settlement " + this.players[currentIndex]);
-            this.players[currentIndex].buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
+            } while (!rules.buildFirstSettlement(catanBoard, coordinatesFirstSettlement, this.players[i]));
+            log.info("*Building first settlement " + this.players[i]);
+            this.players[i].buyFirstSettlement(coordinatesFirstSettlement, bank, catanBoard);
 
             this.updatePlayerResources(players);
 
             IntTupel coordinatesFirstStreet;
             do {
-                coordinatesFirstStreet = getCoordinatesFirstStreet(this.players[currentIndex].getId());
-            } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), this.players[currentIndex]));
+                coordinatesFirstStreet = getCoordinatesFirstStreet(this.players[i].getId());
+            } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), this.players[i]));
             int node1 = coordinatesFirstStreet.q();
             int node2 = coordinatesFirstStreet.r();
-            log.info("*Building first street " + this.players[currentIndex]);
-            this.players[currentIndex].buyFirstStreet(node1, node2, bank, catanBoard);
+            log.info("*Building first street " + this.players[i]);
+            this.players[i].buyFirstStreet(node1, node2, bank, catanBoard);
 
             this.updatePlayerResources(players);
-
-            orderedPlayers[this.players.length - 1 - i] = this.players[currentIndex];
-            currentIndex = currentIndex - 1;
-            if (currentIndex < 0) {
-                currentIndex = this.players.length - 1;
-            }
         }
-        this.players = orderedPlayers;
+        //this.players = orderedPlayers;
         minorGameState = MinorGameStates.NO_STATE;
 
         gameRound++;
@@ -195,7 +196,7 @@ public class GameController {
 
             this.updatePlayerResources(players);
 
-            IntTupel coordinatesSecondStreet = new IntTupel(-100, -100);;
+            IntTupel coordinatesSecondStreet;;
             do {
                 coordinatesSecondStreet = getCoordinatesFirstStreet(player.getId());
             } while (!rules.buildFirstStreet(catanBoard, coordinatesSecondStreet.q(), coordinatesSecondStreet.r(), player));
