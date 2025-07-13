@@ -42,19 +42,4 @@ public interface GameUI {
      * Updates the UI to reflect current resources and states of all players.
      */
     void updatePlayerResources();
-
-    /**
-     * Triggers the UI to allow the player to place the bandit.
-     *
-     * @return the coordinates where the bandit should be placed
-     */
-    IntTupel activateBandit();
-
-    /**
-     * Prompts the player to choose another player to rob.
-     *
-     * @param players an array of players eligible to be robbed
-     * @return the selected player to rob
-     */
-    Player getRobbedPlayer(Player[] players);
 }
