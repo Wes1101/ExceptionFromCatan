@@ -598,27 +598,27 @@ public class SceneBoardController implements Initializable, GameUI {
 
     switch (id) {
       case 0:
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
+        player_2_label.setStyle("-fx-text-fill: #412515");
+        player_3_label.setStyle("-fx-text-fill: #412515");
+        player_4_label.setStyle("-fx-text-fill: #412515");
+        player_5_label.setStyle("-fx-text-fill: #412515");
+        player_6_label.setStyle("-fx-text-fill: #412515");
 
 
-        player_1_label.setStyle("-fx-text-fill: red");
+        player_1_label.setStyle("-fx-text-fill: white");
         log.info("Spieler 1 ist aktiv coloured");
 
 
         break;
       case 1:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
+        player_1_label.setStyle("-fx-text-fill: #412515");
+        player_3_label.setStyle("-fx-text-fill: #412515");
+        player_4_label.setStyle("-fx-text-fill: #412515");
+        player_5_label.setStyle("-fx-text-fill: #412515");
+        player_6_label.setStyle("-fx-text-fill: #412515");
 
 
-        player_2_label.setStyle("-fx-text-fill: red");
+        player_2_label.setStyle("-fx-text-fill: white");
         log.info("Spieler 2 ist aktiv coloured");
 
         break;
@@ -630,43 +630,43 @@ public class SceneBoardController implements Initializable, GameUI {
         player_6_label.setStyle("-fx-text-fill: white");
 
 
-        player_3_label.setStyle("-fx-text-fill: red");
+        player_3_label.setStyle("-fx-text-fill: white");
         log.info("Spieler 3 ist aktiv coloured");
 
         break;
       case 3:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
+        player_1_label.setStyle("-fx-text-fill: #412515");
+        player_2_label.setStyle("-fx-text-fill: #412515");
+        player_3_label.setStyle("-fx-text-fill: #412515");
+        player_5_label.setStyle("-fx-text-fill: #412515");
+        player_6_label.setStyle("-fx-text-fill: #412515");
 
 
-        player_4_label.setStyle("-fx-text-fill: red");
+        player_4_label.setStyle("-fx-text-fill: white");
         log.info("Spieler 4 ist aktiv coloured");
 
         break;
       case 4:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
+        player_1_label.setStyle("-fx-text-fill: #412515");
+        player_2_label.setStyle("-fx-text-fill: #412515");
+        player_3_label.setStyle("-fx-text-fill: #412515");
+        player_4_label.setStyle("-fx-text-fill: #412515");
+        player_6_label.setStyle("-fx-text-fill: #412515");
 
 
-        player_5_label.setStyle("-fx-text-fill: red");
+        player_5_label.setStyle("-fx-text-fill: white");
         log.info("Spieler 5 ist aktiv coloured");
 
         break;
       case 5:
 
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_3_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
+        player_1_label.setStyle("-fx-text-fill: #412515");
+        player_2_label.setStyle("-fx-text-fill: #412515");
+        player_3_label.setStyle("-fx-text-fill: #412515");
+        player_4_label.setStyle("-fx-text-fill: #412515");
+        player_5_label.setStyle("-fx-text-fill: #412515");
 
-        player_6_label.setStyle("-fx-text-fill: red");
+        player_6_label.setStyle("-fx-text-fill: white");
         log.info("Spieler 6 ist aktiv coloured");
         break;
     }
