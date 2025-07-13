@@ -4,8 +4,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -30,17 +28,17 @@
                      <children>
                         <StackPane alignment="TOP_LEFT">
                            <children>
-                              <ImageView fx:id="victory_points_background" fitHeight="35.0" fitWidth="210.0" StackPane.alignment="CENTER_LEFT">
+                              <ImageView fx:id="victory_points_background" fitHeight="28.0" fitWidth="158.0" StackPane.alignment="CENTER_LEFT">
                                  <image>
                                     <Image url="@victory_points.png" />
                                  </image>
                               </ImageView>
                               <Label fx:id="victory_points_background_number" alignment="TOP_CENTER" text="0" textFill="#412515">
                                  <font>
-                                    <Font name="EB Garamond Regular" size="29.0" />
+                                    <Font name="Serif Regular" size="23.0" />
                                  </font>
                                  <StackPane.margin>
-                                    <Insets left="180.0" />
+                                    <Insets left="138.0" />
                                  </StackPane.margin>
                               </Label>
                            </children>
@@ -113,12 +111,12 @@
                               <Insets right="200.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildSettlement">
+                        <Button fx:id="build_settlement" layoutX="27.0" layoutY="130.0" mnemonicParsing="false" onAction="#onBuildSettlement" styleClass="build" stylesheets="@main_style.css">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
                         </Button>
-                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildCity">
+                        <Button fx:id="build_city" layoutX="27.0" layoutY="67.0" mnemonicParsing="false" onAction="#onBuildCity" styleClass="build" stylesheets="@main_style.css">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
@@ -126,7 +124,7 @@
                               <Insets top="63.0" />
                            </StackPane.margin>
                         </Button>
-                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" styleClass="build" stylesheets="@main_style.css" onAction="#onBuildRoad">
+                        <Button fx:id="build_road" layoutX="27.0" layoutY="99.0" mnemonicParsing="false" onAction="#onBuildRoad" styleClass="build" stylesheets="@main_style.css">
                            <padding>
                               <Insets bottom="10.0" right="200.0" />
                            </padding>
@@ -150,9 +148,7 @@
                               <Pane fx:id="tile_layer" prefHeight="200.0" prefWidth="200.0">
                                  <children>
                                     <ImageView fitHeight="467.0" fitWidth="677.0" layoutX="65.0" layoutY="52.0" visible="false">
-                                       <image>
-                                          <Image url="@Spielfeld.PNG" />
-                                       </image>
+                                       <!-- FALSE_ID -->
                                     </ImageView>
                                     <Rectangle fx:id="road_47_48" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="179.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
                                     <Rectangle fx:id="road_19_20" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="265.0" layoutY="281.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
@@ -188,7 +184,7 @@
                                     <Rectangle fx:id="road_11_34" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="550.0" layoutY="319.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
                                     <Rectangle fx:id="road_22_51" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="286.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
                                     <Rectangle fx:id="road_6_23" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="374.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
-                                    <Rectangle fx:id="road_8_9" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="461.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
+                                    <Rectangle fx:id="road_8_9_FALSE_ID" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="461.0" layoutY="172.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
                                     <Rectangle fx:id="road_16_17" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="331.0" layoutY="393.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
                                     <Rectangle fx:id="road_14_15" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="419.0" layoutY="393.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
                                     <Rectangle fx:id="road_13_36" arcHeight="5.0" arcWidth="5.0" fill="#f3e99c" height="36.0" layoutX="506.0" layoutY="391.0" rotate="-60.0" stroke="#00000080" strokeType="INSIDE" style="-fx-opacity: 0.5;" styleClass="road" width="8.0" />
@@ -442,8 +438,6 @@
                                        <font>
                                           <Font size="1.0" />
                                        </font></Button>
-                                    <Button fx:id="diceButton1" layoutX="645.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0"/>
-                                    <Button fx:id="diceButton2" layoutX="728.0" layoutY="469.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" />
                                  </children></Pane>
                            </children>
                         </StackPane>
@@ -599,16 +593,6 @@
                      </HBox.margin>
                   </StackPane>
                   <StackPane fx:id="development_card_group" alignment="BOTTOM_CENTER" prefHeight="140.0" styleClass="card">
-                     <children>
-                        <ImageView cache="true" fitHeight="140.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@development_card.png" />
-                           </image>
-                           <StackPane.margin>
-                              <Insets left="15.0" />
-                           </StackPane.margin>
-                        </ImageView>
-                     </children>
                      <HBox.margin>
                         <Insets top="75.0" />
                      </HBox.margin>
@@ -637,7 +621,7 @@
                               <Insets right="20.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" styleClass="round-button" onMouseClicked="#onFinishTurnClicked">
+                        <ImageView fx:id="finish_turn_button" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#onFinishTurnClicked" pickOnBounds="true" styleClass="round-button">
                            <image>
                               <Image url="@finish-turn_icon.png" />
                            </image>
@@ -645,176 +629,25 @@
                               <Insets right="20.0" top="20.0" />
                            </VBox.margin>
                         </ImageView>
-                        <StackPane fx:id="trade_menue" alignment="CENTER_RIGHT" prefHeight="530.0" prefWidth="240.0">
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
                            <VBox.margin>
-                              <Insets right="20.0" />
+                              <Insets right="20.0" top="460.0" />
                            </VBox.margin>
                            <children>
-                              <ImageView fitHeight="480.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@trade_background.png" />
-                                 </image>
-                              </ImageView>
-                              <MenuButton mnemonicParsing="false" style="-fx-background-color: 0; -fx-border-color: #412515; -fx-border-width: 1.5;">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Player 1" />
-                                  <MenuItem mnemonicParsing="false" text="Player 2" />
-                                    <MenuItem mnemonicParsing="false" text="Player 3" />
-                                </items>
+                              <Button fx:id="diceButton2" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" rotate="5.0">
                                  <StackPane.margin>
-                                    <Insets bottom="250.0" right="31.0" />
-                                 </StackPane.margin>
-                                 <padding>
-                                    <Insets left="110.0" />
-                                 </padding>
-                              </MenuButton>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets bottom="60.0" right="90.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="252.0" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets bottom="-38.0" right="90.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="227.0" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets bottom="12.0" right="90.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="86.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="135.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="233.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="282.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="330.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="380.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Label alignment="TOP_CENTER" layoutX="131.0" layoutY="447.0" text="0" textFill="#412515">
-                                 <font>
-                                    <Font name="EB Garamond Regular" size="24.0" />
-                                 </font>
-                                 <StackPane.margin>
-                                    <Insets right="90.0" top="430.0" />
-                                 </StackPane.margin>
-                              </Label>
-                              <Button fx:id="grain_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="233.0" />
+                                    <Insets left="150.0" top="80.0" />
                                  </StackPane.margin>
                               </Button>
-                              <Button fx:id="brick_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
+                              <Button fx:id="diceButton1" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" rotate="-5.0">
                                  <StackPane.margin>
-                                    <Insets right="40.0" top="282.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="ore_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="330.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="wool_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="380.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="lumber_plus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="+">
-                                 <StackPane.margin>
-                                    <Insets right="40.0" top="430.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="lumber_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="430.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="wool_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="380.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="ore_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="330.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="brick_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="282.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="grain_minus_button" mnemonicParsing="false" styleClass="round-button" stylesheets="@main_style.css" text="-">
-                                 <StackPane.margin>
-                                    <Insets right="10.0" top="233.0" />
-                                 </StackPane.margin>
-                              </Button>
-                              <Button fx:id="close" mnemonicParsing="false" style="-fx-background-color: D35050; -fx-text-fill: #FFFFFF; -fx-border-color: #FFFFFF; -fx-border-width: 2;" styleClass="round-button" stylesheets="@main_style.css" text="X">
-                                 <StackPane.margin>
-                                    <Insets bottom="470.0" right="-10.0" />
+                                    <Insets bottom="50.0" left="10.0" />
                                  </StackPane.margin>
                               </Button>
                            </children>
                         </StackPane>
                      </children>
                   </VBox>
-                  <ImageView fx:id="trade_card" cache="true" fitHeight="140.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" styleClass="round-button">
-                     <image>
-                        <Image url="@trade_card.png" />
-                     </image>
-                     <VBox.margin>
-                        <Insets right="20.0" />
-                     </VBox.margin>
-                  </ImageView>
                </children>
             </VBox>
          </children>

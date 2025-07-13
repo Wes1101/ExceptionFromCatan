@@ -12,6 +12,9 @@ import lombok.Setter;
  * These nodes are used to determine which players receive resources and where buildings can be placed.
  * </p>
  */
+
+
+// HIER IST EIN BEISPIEL// HIER IST EIN BEISPIEL
 @Getter
 @Setter
 public class Tile {
