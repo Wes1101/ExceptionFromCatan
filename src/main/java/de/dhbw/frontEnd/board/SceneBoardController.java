@@ -767,6 +767,7 @@ public class SceneBoardController implements Initializable, GameUI {
         ImageView banditView = new ImageView(banditImage);
 
         banditView.setFitWidth(size);
+        banditView.setFitWidth(size);
         banditView.setFitHeight(size);
         banditView.setX(x - size / 2);
         banditView.setY(y - size / 2);
