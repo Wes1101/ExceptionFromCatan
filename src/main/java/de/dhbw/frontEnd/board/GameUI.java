@@ -14,7 +14,7 @@ public interface GameUI {
      *
      * @param player Currently active player
      */
-    void setactivePlayer(Player player);
+    void setactivePlayer(Player player, Player[] players);
 
     /**
      * Starts the dice roll animation.

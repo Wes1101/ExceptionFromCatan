@@ -3,10 +3,12 @@ package de.dhbw.player;
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.catanBoard.hexGrid.Tile;
+import de.dhbw.catanBoard.hexGrid.Tiles.Resource;
 import de.dhbw.gamePieces.*;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 
@@ -16,6 +18,7 @@ import java.util.*;
  */
 @Getter
 @Setter
+@Slf4j
 public class Player implements ResourceReceiver {
     @Override
     public void addResources(Resources type, int amount) {
@@ -87,7 +90,6 @@ public class Player implements ResourceReceiver {
                 bank.removeResources(tile.getResourceType(), 1, this);
             }
         }
-
     }
 
     public boolean buyFirstSettlement(int node, Bank bank, CatanBoard board) {
@@ -148,11 +150,15 @@ public class Player implements ResourceReceiver {
     }
 
     public boolean enoughResources(Map<Resources, Integer> costs) {
+        log.info("has the player enough resources?");
         for (Resources resource : costs.keySet()) {
             if (costs.get(resource) > this.getResources(resource)) {
+                log.info("❌not enough resources {}", resource);
+                log.info("costs: " + costs.get(resource) + "/ have:" + this.getResources(resource));
                 return false;
             }
         }
+        log.info("✅enough resources");
         return true;
     }
 
@@ -216,13 +222,18 @@ public class Player implements ResourceReceiver {
             if (total > threshold) {
                 int toDiscard = total / 2;
 
-                // TODO: GUI soll resToRemove liefern
-                Resources[] resToRemove = {Resources.WOOD, Resources.STONE}; //dummy placeholder
+                List<Resources> toRemove = new ArrayList<>();
+                Random r = new Random();
 
-                // Discard each resource and return it to the bank
-                for (Resources res : resToRemove) {
-                    this.removeResources(res, 1, bank);
-                    bank.addResources(res, 1);
+                for (int i = 0; i < toDiscard; i++) {
+                    Resources randRes = Resources.values()[r.nextInt(Resources.values().length)];
+                    if (randRes != Resources.NONE && this.getResources().get(randRes) > 0) {
+                        this.removeResources(randRes, 1, bank);
+                        bank.addResources(randRes, 1);
+                    }
+                    else {
+                        i--;
+                    }
                 }
             }
 

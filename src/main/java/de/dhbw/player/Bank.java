@@ -26,7 +26,7 @@ public class Bank implements ResourceReceiver {
         //cards = new ArrayList<>();
 
         for (Player player : players) {
-            initBuildings(player, 5, 5, 6);
+            initBuildings(player, 5, 5, 10);
         }
     }
 

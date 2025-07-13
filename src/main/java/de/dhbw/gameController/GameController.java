@@ -16,6 +16,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import de.dhbw.gameRules.Rules;
+import de.dhbw.resources.Resources;
 import javafx.application.Platform;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ import de.dhbw.player.Player;
 
 @Slf4j
 public class GameController {
+    @Getter
     private Player[] players;
     private final Bank bank;
     @Getter
@@ -87,6 +89,7 @@ public class GameController {
         this.victoryPoints = victoryPoints;
         this.gameControllerType = gameControllerType;
         this.bandit = new Bandit(catanBoard.getDesertCoords());
+        this.catanBoard.blockHex(catanBoard.getDesertCoords());
         this.syso = syso;
     }
 
@@ -151,7 +154,7 @@ public class GameController {
 
             this.updatePlayerResources(players);
 
-            IntTupel coordinatesFirstStreet = new IntTupel(-100, -100);
+            IntTupel coordinatesFirstStreet;
             do {
                 coordinatesFirstStreet = getCoordinatesFirstStreet(this.players[currentIndex].getId());
             } while (!rules.buildFirstStreet(catanBoard, coordinatesFirstStreet.q(), coordinatesFirstStreet.r(), this.players[currentIndex]));
@@ -325,7 +328,7 @@ public class GameController {
             log.debug("im just a client and was told to tell the gui the active player");
             if (!this.syso) {
                 Platform.runLater(() -> {
-                    gui.setactivePlayer(player);
+                    gui.setactivePlayer(player, players);
                 });
             }
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
@@ -504,21 +507,41 @@ public class GameController {
 
     public void buildSettlement(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            activePlayer.buildSettlement(nodeId, bank, activePlayer, catanBoard);
+            if (rules.buildSettlement(catanBoard, nodeId, activePlayer)) {
+                activePlayer.buildSettlement(nodeId, bank, activePlayer, catanBoard);
+                log.info("Build settlement successful");
+            }
+            else {
+                log.warn("build Settlement was called but rule was not successful");
+            }
+
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildStreet(IntTupel location, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            activePlayer.buildStreet(location.q(), location.r(), bank, activePlayer, catanBoard);
+            if (rules.buildStreet(catanBoard, location.q(), location.r(), activePlayer)) {
+                activePlayer.buildStreet(location.q(), location.r(), bank, activePlayer, catanBoard);
+                log.info("Build street successful");
+            }
+            else {
+                log.warn("build Street was called but rule was not successful");
+            }
+
         }
         //TODO: Necessary for Server and Client????
     }
 
     public void buildCity(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
-            activePlayer.buildCity(nodeId, bank, activePlayer, catanBoard);
+            if (rules.buildCity(catanBoard, nodeId, activePlayer)) {
+                activePlayer.buildCity(nodeId, bank, activePlayer, catanBoard);
+                log.info("Build street successful");
+            }
+            else {
+                log.warn("build City was called but rule was not successful");
+            }
         }
         //TODO: Necessary for Server and Client????
     }

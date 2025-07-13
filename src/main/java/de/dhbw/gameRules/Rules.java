@@ -78,14 +78,16 @@ public class Rules {
      * @return true if valid, otherwise false
      */
     public boolean buildSettlement(CatanBoard board, int node, Player player) {
+
         if (node < 0 || node >= board.getGraph().getNodes().length) {
             log.warn("Invalid node index {} for player {}", node, player.getId());
             return false; // Invalid node index
         }
         boolean canBuild = nextToOwnStreet(board, node, player)
                 && !isBuilt(board, node)
-                && areEnemyBuildingsNext(board, node, player)
+                && !areEnemyBuildingsNext(board, node, player)
                 && player.enoughResources(Settlement.getBuildCost());
+
         log.info("Player {} attempting to build settlement at node {}: {}", player.getId(), node, canBuild);
         return canBuild;
     }
@@ -215,10 +217,11 @@ public class Rules {
     private boolean nextToOwnStreet(CatanBoard board, int node, Player player) {
         for (Edge edge : board.getGraph().getGraph()[node]) {
             if (edge != null && edge.getStreet() != null && edge.getStreet().getOwner() == player) {
-                log.info("Node {} is next to a street owned by player {}", node, player.getId());
+                log.info("✅Node {} is next to a street owned by player (you) {}", node, player.getId());
                 return true;
             }
         }
+        log.info("❌ no own street found");
         return false;
     }
     /**
@@ -239,8 +242,10 @@ public class Rules {
     }
     private boolean isStreetBuildable(CatanBoard board, int node1, int node2) {
         if (board.getGraph().getGraph()[node1][node2] != null) {
+            log.info("✅Street buildable found near node {} from player {}", node1, node2);
             return true;
         }
+        log.info("❌street not buildable");
         return false;
     }
 }

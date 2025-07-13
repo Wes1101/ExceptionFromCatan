@@ -30,7 +30,7 @@ public class Settlement extends Building {
         cost.put(Resources.WOOD, 1);
         cost.put(Resources.BRICK, 1);
         cost.put(Resources.SHEEP, 1);
-        cost.put(Resources.WHEAT, 1);
+        cost.put(Resources.STONE, 1);
         return cost;
     }
 }

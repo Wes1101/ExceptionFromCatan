@@ -29,7 +29,6 @@ public class CatanBoard {
 
     private IntTupel[] hex_coords;
     private final Map<IntTupel, Tile> board = new HashMap<>();
-    private final Map<Integer, List<Resource>> diceBoard = new HashMap<>();
     private final Graph graph;
 
     /**
@@ -261,7 +260,13 @@ public class CatanBoard {
      */
     public void triggerBoard(int diceNumber, Bank bank) {
         log.info("Triggering board for dice number: {}", diceNumber);
-        List<Resource> tiles = diceBoard.get(diceNumber);
+        List<Resource> tiles = new ArrayList<>();
+        for (Tile tile : board.values()) {
+            if (tile.getDiceNumber() == diceNumber) {
+                tiles.add( (Resource) tile);
+            }
+        }
+
         if (tiles != null) {
             tiles.forEach(tile -> tile.trigger(bank));
         }
