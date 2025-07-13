@@ -8,6 +8,7 @@ import de.dhbw.catanBoard.hexGrid.Tiles.Water;
 import de.dhbw.gamePieces.Building;
 import de.dhbw.gamePieces.Street;
 import de.dhbw.player.Bank;
+import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -18,17 +19,31 @@ import java.util.*;
 /**
  * Represents the game board for Catan.
  * <p>
- * Handles the creation and initialization of resource tiles, number tokens, harbours, water tiles,
- * and the graph structure used for settlements and roads.
+ * This class handles the initialization and layout of the hexagonal game board,
+ * including resource tiles, number tokens, harbours, water tiles, and the graph
+ * structure for settlements and roads. It also supports interaction with game logic
+ * such as building settlements, cities, streets, and triggering resource production.
  * </p>
  */
 @Getter
 public class CatanBoard {
 
+    /** Logger instance for debug and info logging during board setup and interaction */
     private static final Logger log = LoggerFactory.getLogger(CatanBoard.class);
 
+    /**
+     * Stores axial coordinates (q, r) of all hex tiles used to define layout and structure of the board.
+     */
     private IntTupel[] hex_coords;
+
+    /**
+     * Holds all hex tiles mapped to their coordinates, including resources, water, and harbours.
+     */
     private final Map<IntTupel, Tile> board = new HashMap<>();
+
+    /**
+     * Graph structure representing all nodes (corners of tiles) and edges (possible streets) on the board.
+     */
     private final Graph graph;
 
     /**
@@ -263,7 +278,7 @@ public class CatanBoard {
         List<Resource> tiles = new ArrayList<>();
         for (Tile tile : board.values()) {
             if (tile.getDiceNumber() == diceNumber) {
-                tiles.add( (Resource) tile);
+                tiles.add((Resource) tile);
             }
         }
 

@@ -12,6 +12,7 @@ import de.dhbw.gameController.GameController;
 import de.dhbw.player.Bank;
 import de.dhbw.player.Player;
 import de.dhbw.resources.Resources;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Bandit {
     // Current coordinates of the Bandit (on a hex tile)
+    @Getter
     private IntTupel coords;
 
     /**

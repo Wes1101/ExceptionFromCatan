@@ -56,10 +56,8 @@ public interface GameUI {
 
     /**
      * Updates the UI to reflect the latest resource values and states of all players.
-     *
-     * @param players an array of all players with their updated states
      */
-    void updatePlayerResources(Player[] players);
+    void updatePlayerResources();
 
     /**
      * Activates the bandit placement phase in the UI.

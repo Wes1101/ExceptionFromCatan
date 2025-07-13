@@ -18,10 +18,25 @@ import org.slf4j.LoggerFactory;
 @Getter
 public class Graph {
 
+    /**
+     * Minimum length of a road required to qualify for the longest road bonus.
+     */
     private static final int MIN_LONGEST = 4;   // Mindestlänge für die Wertung
 
+    /**
+     * Logger instance for this class.
+     */
     private static final Logger log = LoggerFactory.getLogger(Graph.class);
+
+    /**
+     * 2D array representing the graph's edges between nodes.
+     * graph[i][j] represents an edge between node i and node j.
+     */
     private Edge[][] graph;
+
+    /**
+     * Array of all nodes in the graph.
+     */
     private Node[] nodes;
 
     /**
@@ -29,7 +44,6 @@ public class Graph {
      *
      * @param nodes total number of nodes to initialize in the graph
      */
-
     public Graph(int nodes) {
         initNodes(nodes);
         graph = new Edge[nodes][nodes];
@@ -40,7 +54,6 @@ public class Graph {
      *
      * @param numNodes number of nodes to create
      */
-
     private void initNodes(int numNodes) {
         nodes = new Node[numNodes];
         for (int i = 0; i < numNodes; i++) {
@@ -55,7 +68,6 @@ public class Graph {
      * @param i index of the first node
      * @param j index of the second node
      */
-
     public void createEdge(int i, int j) {
         graph[i][j] = new Edge();
         graph[j][i] = new Edge();
@@ -72,15 +84,14 @@ public class Graph {
      * @param j      second node index
      * @param street the street to assign to the edge
      */
-
     public void updateEdge(int i, int j, Street street) {
     if(graph[i][j]==null)
         {
-        log.info("Keine kante für("+i+","+j+"), gefunden -> somit uss eine neue erstellt werden.");
+        log.info("No edge found for ("+i+","+j+") -> creating a new one.");
         createEdge(i,j);
         }
         graph[i][j].setStreet(street);
-        graph[j][i].setStreet(street); //zum testen einmal drinnen lassen und dann einmal entfernen bitte.
+        graph[j][i].setStreet(street); // Keep this for testing, then remove it later.
         log.info("Street built between node {} and node {} by PlayerID {}", i, j, street.getOwner().getId());
     }
 
@@ -93,7 +104,6 @@ public class Graph {
      * @param player the player whose roads are being analyzed
      * @return the length of the longest connected road owned by the player (minimum 3 to count)
      */
-
     public int findLongestTradeRoutes(Player player) {
         int maxLength = 0;
         for (int startNode = 0; startNode < graph.length; startNode++) {
@@ -113,7 +123,6 @@ public class Graph {
      * @param player   the player owning the roads
      * @return length of the longest path found from this node
      */
-
     private int dfsLength(int current, int from, boolean[] searched, Player player) {
         searched[current] = true;
         int maxDepth = 1;
@@ -136,16 +145,16 @@ public class Graph {
 
     /**
      * Determines which player currently has the longest road.
+     * <p>
+     * Returns {@code null} if:
+     * <ul>
+     *   <li>No player reaches the minimum required length (MIN_LONGEST)</li>
+     *   <li>Multiple players have the same maximum length</li>
+     * </ul>
+     * </p>
      *
      * @param players array of all players
      * @return the player with the longest road, or {@code null} if no one qualifies
-     */
-
-    /**
-     * Ermittelt den Spieler mit der längsten Straße.
-     * Gibt {@code null} zurück, wenn
-     *   – niemand MIN_LONGEST erreicht oder
-     *   – mehrere Spieler dieselbe maximale Länge haben.
      */
     public Player findPlayerLongestStreet(Player[] players) {
         int maxLength = 0;          // aktuelle Bestmarke
@@ -182,12 +191,21 @@ public class Graph {
      * @param winner    the current leading player
      * @param maxLength the length of the longest road so far
      */
-
     private void logRouteDetails(Player player, int length, Player winner, int maxLength) {
         log.info("Player {} has a road length of {}", player, length);
         log.info("Current longest road is by Player {} with length {}", winner, maxLength);
     }
 
+    /**
+     * Retrieves the edge between two specified nodes.
+     * <p>
+     * Performs bounds checking to prevent array index out of bounds exceptions.
+     * </p>
+     *
+     * @param i index of the first node
+     * @param j index of the second node
+     * @return the edge between nodes i and j, or null if no edge exists or indices are invalid
+     */
     public Edge getEdge(int i, int j) {
         if (i < 0 || j < 0 || i >= graph.length || j >= graph[i].length) return null;
         return graph[i][j];

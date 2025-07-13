@@ -12,6 +12,7 @@ import de.dhbw.resources.Resources;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -439,7 +440,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
       int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
       gameController.buildSettlement(nodeId, activePlayer);
-      updatePlayerResources(gameController.getPlayers());
+      updatePlayerResources();
       this.updateBoard(catanBoard);
 
       waitingForSettlementClick = false;
@@ -455,7 +456,7 @@ public class SceneBoardController implements Initializable, GameUI {
 
       int nodeId = Integer.parseInt(btn.getId().replace("node_", ""));
       gameController.buildCity(nodeId, activePlayer);
-      updatePlayerResources(gameController.getPlayers());
+      updatePlayerResources();
       this.updateBoard(catanBoard);
       waitingForCityClick = false;
       cityClickHandler = null;
@@ -473,7 +474,7 @@ public class SceneBoardController implements Initializable, GameUI {
       String[] parts = idPart.split("_");
       IntTupel streetId = new IntTupel(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
       gameController.buildStreet(streetId, activePlayer);
-      updatePlayerResources(gameController.getPlayers());
+      updatePlayerResources();
       this.updateBoard(catanBoard);
       waitingForStreetClick = false;
       streetClickHandler = null;
@@ -1015,7 +1016,7 @@ public class SceneBoardController implements Initializable, GameUI {
     this.setLongestStreet(player_longest_street);
 
     this.updateVictoryPoints(players);
-    this.updatePlayerResources(player);
+    this.updatePlayerResources();
     this.showUserMessage("New active Player!",
             "Player " + (player.getId() + 1) + " is now active.", Alert.AlertType.INFORMATION);
 
@@ -1050,7 +1051,9 @@ public class SceneBoardController implements Initializable, GameUI {
 
   }
 
-  private void updatePlayerResources(Player player) {
+  @Override
+  public void updatePlayerResources() {
+    Player player = this.activePlayer;
     log.info("player resources: {}", player.getResources());
     grain_card_number.setText(Integer.toString(player.getResources(Resources.WHEAT)));
     brick_card_number.setText(Integer.toString(player.getResources(Resources.BRICK)));
@@ -1247,15 +1250,6 @@ public class SceneBoardController implements Initializable, GameUI {
     return 0;
   }
 
-  /**
-   * Updates the UI to reflect the latest resource values and states of all players.
-   *
-   * @param players an array of all players with their updated states
-   */
-  @Override
-  public void updatePlayerResources(Player[] players) {
-    updatePlayerResources(players[this.activePlayer.getId()]);
-  }
 
   /**
    * Activates the bandit placement phase in the UI.
@@ -1367,84 +1361,94 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
   public CompletableFuture<PlayerTupelVar> waitForBanditLoctionAndPlayer(Player[] players) {
-    log.debug("\uD83D\uDFE2 waitForBanditLoactionAndPlayer CALLED");
+    log.debug("🟢 waitForBanditLoactionAndPlayer CALLED");
 
-    this.showUserMessage("Click on new Bandit location", "Please click on a new Bandit location",
-            Alert.AlertType.INFORMATION);
+    // Kurze Info für den Nutzer
+    showUserMessage(
+            "Click on new Bandit location",
+            "Please click on a new Bandit location",
+            Alert.AlertType.INFORMATION
+    );
 
-    triggerBanditFuture = new CompletableFuture<PlayerTupelVar>();
+    triggerBanditFuture = new CompletableFuture<>();
 
-    // Set a one-time callback to complete the future when a button is clicked
-    this.newBanditLocationClickCallback = (IntTupel banditLocation) -> {
+    // Callback, das exakt einmal feuert, wenn das Hex geklickt wurde
+    newBanditLocationClickCallback = banditLocation -> {
       try {
-
         if (!triggerBanditFuture.isDone()) {
 
-          Player robbedPlayer;
-          do {
-            robbedPlayer = promptPlayerToRob(players);
-          } while (robbedPlayer == null);
+          // 👉 EIN einziger Aufruf reicht
+          Player robbedPlayer = promptPlayerToRob(banditLocation);
+          // robbedPlayer kann null sein (keine Spieler / Cancel)
 
-          triggerBanditFuture.complete(new PlayerTupelVar(banditLocation, robbedPlayer));
+          triggerBanditFuture.complete(
+                  new PlayerTupelVar(banditLocation, robbedPlayer)
+          );
         }
-      } catch (NumberFormatException e) {
-        triggerBanditFuture.completeExceptionally(e);
+      } catch (Exception ex) {
+        triggerBanditFuture.completeExceptionally(ex);
+      } finally {
+        // Callback deaktivieren, damit weitere Klicks ignoriert werden
+        newBanditLocationClickCallback = null;
       }
-      // ✅ Clear the callback so future clicks do nothing
-      this.newBanditLocationClickCallback = null;
     };
 
     return triggerBanditFuture;
   }
 
-  public Player promptPlayerToRob(Player[] players) {
-    // Create a dialog
+
+  public Player promptPlayerToRob(IntTupel banditLocation) {
+
+    // --- 1) Kandidaten holen + frühzeitig prüfen ----------------------------
+    List<Player> banditPlayers = gameController.getBanditPlayers(banditLocation);  // kann null sein
+    if (banditPlayers == null || banditPlayers.isEmpty()) {
+
+      // Kurzes Info-Popup statt ComboBox-Dialog
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("No player available");
+      alert.setHeaderText(null);
+      alert.setContentText("No player to steal resources from.");
+      alert.showAndWait();
+
+      return null;   // Vorgang übersprungen
+    }
+
+    // --- 2) Standard-Dialog aufbauen ----------------------------------------
     Dialog<Player> dialog = new Dialog<>();
     dialog.setTitle("Rob a Player");
     dialog.setHeaderText("Please select the player you would like to steal a random resource from");
 
-    // Add buttons
     ButtonType stealButtonType = new ButtonType("Steal", ButtonBar.ButtonData.OK_DONE);
     dialog.getDialogPane().getButtonTypes().addAll(stealButtonType, ButtonType.CANCEL);
 
-    // ComboBox with player IDs
     ComboBox<Player> comboBox = new ComboBox<>();
-    comboBox.getItems().addAll(players);
+    comboBox.setItems(FXCollections.observableArrayList(banditPlayers));
     comboBox.setPromptText("Select a player");
 
-    // Display player ID in dropdown (instead of toString)
-    comboBox.setCellFactory(listView -> new ListCell<>() {
-      @Override
-      protected void updateItem(Player player, boolean empty) {
-        super.updateItem(player, empty);
-        setText(empty || player == null ? null : "Player " + (player.getId() + 1));
+    // Dropdown- und Button-Anzeige
+    comboBox.setCellFactory(lv -> new ListCell<>() {
+      @Override protected void updateItem(Player p, boolean empty) {
+        super.updateItem(p, empty);
+        setText(empty || p == null ? null : "Player " + (p.getId() + 1));
       }
     });
     comboBox.setButtonCell(new ListCell<>() {
-      @Override
-      protected void updateItem(Player player, boolean empty) {
-        super.updateItem(player, empty);
-        setText(empty || player == null ? null : "Player " + player.getId());
+      @Override protected void updateItem(Player p, boolean empty) {
+        super.updateItem(p, empty);
+        setText(empty || p == null ? null : "Player " + (p.getId() + 1));
       }
     });
 
-    // Layout
-    VBox vbox = new VBox(10);
+    VBox vbox = new VBox(10, comboBox);
     vbox.setPadding(new Insets(15));
-    vbox.getChildren().add(comboBox);
     dialog.getDialogPane().setContent(vbox);
 
-    // Result converter
-    dialog.setResultConverter(dialogButton -> {
-      if (dialogButton == stealButtonType) {
-        return comboBox.getValue();
-      }
-      return null;
-    });
+    dialog.setResultConverter(btn ->
+            btn == stealButtonType ? comboBox.getValue() : null
+    );
 
-    // Show dialog and return selected player
-    Optional<Player> result = dialog.showAndWait();
-    return result.orElse(null);
+    // --- 3) Dialog anzeigen und Ergebnis zurückgeben ------------------------
+    return dialog.showAndWait().orElse(null);
   }
 
   public Consumer<IntTupel> getNewBanditLocationClickCallback() {

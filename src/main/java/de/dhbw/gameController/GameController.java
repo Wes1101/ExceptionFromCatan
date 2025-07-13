@@ -11,12 +11,12 @@
 package de.dhbw.gameController;
 
 import java.awt.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import de.dhbw.catanBoard.hexGrid.Node;
+import de.dhbw.catanBoard.hexGrid.Tile;
 import de.dhbw.gameRules.Rules;
 import de.dhbw.resources.Resources;
 import javafx.application.Platform;
@@ -81,10 +81,10 @@ public class GameController {
 
         if (playerAmount > 4) {
             this.catanBoard = new CatanBoard(4);
-            this.bank = new Bank(25, players);
+            this.bank = new Bank(250, players);
         } else {
             this.catanBoard = new CatanBoard(3);
-            this.bank = new Bank(19, players);
+            this.bank = new Bank(190, players);
         }
 
         this.rules = new Rules(victoryPoints);
@@ -447,7 +447,7 @@ public class GameController {
             log.debug("Another update for the players resources, seriously?");
             if (!this.syso) {
                 Platform.runLater(() -> {
-                    gui.updatePlayerResources(players);
+                    gui.updatePlayerResources();
                     gui.updateBoard(catanBoard);
                 });
             }
@@ -546,5 +546,17 @@ public class GameController {
             }
         }
         //TODO: Necessary for Server and Client????
+    }
+
+    public List<Player> getBanditPlayers(IntTupel newLocation) {
+        List<Player> players = new ArrayList<>();
+        Tile blockedTile = catanBoard.getBoard().get(newLocation);
+
+        for (Node node : blockedTile.getHexTileNodes()) {
+            if (node.getBuilding() != null) {
+                players.add(node.getBuilding().getOwner());
+            }
+        }
+        return players;
     }
 }

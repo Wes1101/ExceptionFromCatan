@@ -27,7 +27,15 @@ public class Tile {
      * Used to determine which players are adjacent to the tile.
      */
     private Node[] hexTileNodes;
+
+    /**
+     * Axial coordinates (q, r) of the tile on the hex grid.
+     */
     private IntTupel coordinates;
+
+    /**
+     * Dice number assigned to this tile. Determines which dice roll triggers resource production.
+     */
     private int diceNumber;
 
     /**
@@ -37,7 +45,9 @@ public class Tile {
      * </p>
      *
      * @param resourceType the resource type associated with this tile
+     * @param diceNumber   the number token on the tile (used in dice rolls)
      * @param nodes        the six corner nodes (can be null)
+     * @param coordinates  axial coordinates of the tile on the board
      */
     public Tile(Resources resourceType, int diceNumber, Node[] nodes, IntTupel coordinates) {
         this.resourceType = resourceType;
