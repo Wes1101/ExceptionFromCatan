@@ -565,7 +565,7 @@ public class SceneBoardController implements Initializable, GameUI {
       // Wasser vom Backend
       if (hexes.get(coords) instanceof de.dhbw.catanBoard.hexGrid.Tiles.Water) {
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, "Water", this);
+                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, "Water", this, 0);
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
@@ -578,22 +578,34 @@ public class SceneBoardController implements Initializable, GameUI {
         String resourceName = h.getResourceType().name() + "_Harbour";
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, resourceName, this);
+                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, resourceName, this, 0);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
       }
 
-
+//      // Ressource vom Backend
+//      else if (hexes.get(coords) instanceof Resource) {
+//        Resource resTile = (Resource) hexes.get(coords);
+//        String resourceName = resTile.getResourceType().name();
+//        int num = resTile.getNumberToken();
+//
+//        de.dhbw.frontEnd.board.HexTile frontendHex =
+//                new de.dhbw.frontEnd.board.HexTile(q, r, x, y, size, resourceName, num,this);
+//
+//        tile_layer.getChildren().add(frontendHex);
+//        frontendHex.toBack();
+//      }
 
       // Ressource vom Backend
       else if (hexes.get(coords) instanceof Resource) {
         Resource resTile = (Resource) hexes.get(coords);
         String resourceName = resTile.getResourceType().name();
+        int num = resTile.getDiceNumber();
 
 
         de.dhbw.frontEnd.board.HexTile frontendHex =
-                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, resourceName, this);
+                new de.dhbw.frontEnd.board.HexTile(hexes.get(coords), x, y, size, resourceName, this, num);
 
         tile_layer.getChildren().add(frontendHex);
         frontendHex.toBack();
@@ -1060,63 +1072,62 @@ public class SceneBoardController implements Initializable, GameUI {
 
     switch (id) {
       case 0:
-        victory_points_background_1.setEffect(glow);
-        victory_points_background_2.setEffect(null);
-        victory_points_background_3.setEffect(null);
-        victory_points_background_4.setEffect(null);
-        victory_points_background_5.setEffect(null);
-        victory_points_background_6.setEffect(null);
-
+        victory_points_background_1.setOpacity(1);
+        victory_points_background_2.setOpacity(0.5);
+        victory_points_background_3.setOpacity(0.5);
+        victory_points_background_4.setOpacity(0.5);
+        victory_points_background_5.setOpacity(0.5);
+        victory_points_background_6.setOpacity(0.5);
         log.info("Spieler 1 ist aktiv coloured");
         break;
 
       case 1:
-        victory_points_background_1.setEffect(null);
-        victory_points_background_2.setEffect(glow);
-        victory_points_background_3.setEffect(null);
-        victory_points_background_4.setEffect(null);
-        victory_points_background_5.setEffect(null);
-        victory_points_background_6.setEffect(null);
+        victory_points_background_1.setOpacity(0.5);
+        victory_points_background_2.setOpacity(1);
+        victory_points_background_3.setOpacity(0.5);
+        victory_points_background_4.setOpacity(0.5);
+        victory_points_background_5.setOpacity(0.5);
+        victory_points_background_6.setOpacity(0.5);
         log.info("Spieler 2 ist aktiv coloured");
         break;
 
       case 2:
-        victory_points_background_1.setEffect(null);
-        victory_points_background_2.setEffect(null);
-        victory_points_background_3.setEffect(glow);
-        victory_points_background_4.setEffect(null);
-        victory_points_background_5.setEffect(null);
-        victory_points_background_6.setEffect(null);
+        victory_points_background_1.setOpacity(0.5);
+        victory_points_background_2.setOpacity(0.5);
+        victory_points_background_3.setOpacity(1);
+        victory_points_background_4.setOpacity(0.5);
+        victory_points_background_5.setOpacity(0.5);
+        victory_points_background_6.setOpacity(0.5);
         log.info("Spieler 3 ist aktiv coloured");
         break;
 
       case 3:
-        victory_points_background_1.setEffect(null);
-        victory_points_background_2.setEffect(null);
-        victory_points_background_3.setEffect(null);
-        victory_points_background_4.setEffect(glow);
-        victory_points_background_5.setEffect(null);
-        victory_points_background_6.setEffect(null);
+        victory_points_background_1.setOpacity(0.5);
+        victory_points_background_2.setOpacity(0.5);
+        victory_points_background_3.setOpacity(0.5);
+        victory_points_background_4.setOpacity(1);
+        victory_points_background_5.setOpacity(0.5);
+        victory_points_background_6.setOpacity(0.5);
         log.info("Spieler 4 ist aktiv coloured");
         break;
 
       case 4:
-        victory_points_background_1.setEffect(null);
-        victory_points_background_2.setEffect(null);
-        victory_points_background_3.setEffect(null);
-        victory_points_background_4.setEffect(null);
-        victory_points_background_5.setEffect(glow);
-        victory_points_background_6.setEffect(null);
+        victory_points_background_1.setOpacity(0.5);
+        victory_points_background_2.setOpacity(0.5);
+        victory_points_background_3.setOpacity(0.5);
+        victory_points_background_4.setOpacity(0.5);
+        victory_points_background_5.setOpacity(1);
+        victory_points_background_6.setOpacity(0.5);
         log.info("Spieler 5 ist aktiv coloured");
         break;
 
       case 5:
-        victory_points_background_1.setEffect(null);
-        victory_points_background_2.setEffect(null);
-        victory_points_background_3.setEffect(null);
-        victory_points_background_4.setEffect(null);
-        victory_points_background_5.setEffect(null);
-        victory_points_background_6.setEffect(glow);
+        victory_points_background_1.setOpacity(0.5);
+        victory_points_background_2.setOpacity(0.5);
+        victory_points_background_3.setOpacity(0.5);
+        victory_points_background_4.setOpacity(0.5);
+        victory_points_background_5.setOpacity(0.5);
+        victory_points_background_6.setOpacity(1);
         log.info("Spieler 6 ist aktiv coloured");
         break;
     }

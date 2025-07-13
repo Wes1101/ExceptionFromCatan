@@ -8,7 +8,10 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -22,11 +25,13 @@ public class HexTile extends Group {
   private final int q, r;
   private final String resourceName;
   private final SceneBoardController boardController;
+  int diceNumber;
 
-  public HexTile(Tile hexTile, double centerX, double centerY, double size, String resourceName, SceneBoardController boardController) {
+  public HexTile(Tile hexTile, double centerX, double centerY, double size, String resourceName, SceneBoardController boardController, int diceNumber) {
     this.q = hexTile.getCoordinates().q();
     this.r = hexTile.getCoordinates().r();
     this.resourceName = resourceName;
+    this.diceNumber = diceNumber;
     this.boardController = boardController;
 
     // Hexagon erzeugen
@@ -67,6 +72,19 @@ public class HexTile extends Group {
     if (hexTile instanceof Resource) {
       boardController.addCornerButtons(hexTile, cornerPoints);
       boardController.addEdgeButtons(hexTile, cornerPoints);
+      if (this.diceNumber > 0) {
+        double radius = size * 0.30;
+
+        Circle badge = new Circle(centerX, centerY, radius, Color.web("#E2DBC7"));
+        badge.setStroke(Color.web("#412515"));
+
+        Text txt = new Text(centerX - 4, centerY + 4, String.valueOf(this.diceNumber));
+        txt.setFont(Font.font("Serif", size * 0.20));       // ← Serif-Schrift
+        txt.setFill(Color.web("#412515"));                  // ← brauner Farbton
+        txt.setMouseTransparent(true);                      // Klick geht ans HexTile
+
+        getChildren().addAll(badge, txt);
+      }
     }
 
     // Mausklick-Callback
