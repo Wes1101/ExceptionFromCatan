@@ -96,7 +96,7 @@ public class SinglePlayerScene {
 
 
         Button startButton = new Button("Start Game");
-        startButton.setId("buttons");
+        startButton.setId("buttonsb");
         startButton.setPrefWidth(220);
         startButton.setPrefHeight(50);
 
