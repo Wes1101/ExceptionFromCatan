@@ -140,14 +140,10 @@ public class SceneBoardController implements Initializable, GameUI {
   @FXML
   private ImageView setting_button;
 
-  @FXML
-  private StackPane trade_menue;
 
   @FXML
   private StackPane setting_menue;
 
-  @FXML
-  private Button close;
 
   @FXML
   private Button close_option_menue;
@@ -296,11 +292,6 @@ public class SceneBoardController implements Initializable, GameUI {
     addHover(development_card_group);
 
     // Menue setup
-    trade_menue.setVisible(false);
-    trade_menue.setOpacity(0);
-
-    trade_card.setOnMouseClicked(this::onOpenTrade);
-    close.setOnAction(this::onCloseTrade);
 
     setting_menue.setVisible(false);
     setting_menue.setOpacity(0);
@@ -343,7 +334,6 @@ public class SceneBoardController implements Initializable, GameUI {
             ));
 
     finish_turn_button.setMouseTransparent(true);
-    trade_card.setMouseTransparent(true);
     build_settlement.setDisable(true);
     build_city.setDisable(true);
     build_road.setDisable(true);
@@ -414,7 +404,6 @@ public class SceneBoardController implements Initializable, GameUI {
   private void onFinishTurnClicked(MouseEvent event) {
     log.debug("🔵 Finish Turn button clicked");
     finish_turn_button.setMouseTransparent(true);
-    trade_card.setMouseTransparent(true);
     build_settlement.setDisable(true);
     build_city.setDisable(true);
     build_road.setDisable(true);
@@ -501,23 +490,7 @@ public class SceneBoardController implements Initializable, GameUI {
   }
 
 
-  private void onOpenTrade(MouseEvent event) {
-    // Trade menue animation (open)
-    trade_menue.setVisible(true);
-    FadeTransition fadeIn = new FadeTransition(FADE_DURATION, trade_menue);
-    fadeIn.setFromValue(0);
-    fadeIn.setToValue(1);
-    fadeIn.play();
-  }
 
-  private void onCloseTrade(ActionEvent event) {
-    // Trade menue animation (close)
-    FadeTransition fadeOut = new FadeTransition(FADE_DURATION, trade_menue);
-    fadeOut.setFromValue(1);
-    fadeOut.setToValue(0);
-    fadeOut.setOnFinished(e -> trade_menue.setVisible(false));
-    fadeOut.play();
-  }
 
   private void onOpenSetting(MouseEvent event) {
     // Setting menue animation (open)
@@ -1344,7 +1317,6 @@ public class SceneBoardController implements Initializable, GameUI {
     log.debug("\uD83D\uDFE2 waitForFinishTurnClick CALLED");
 
     finish_turn_button.setMouseTransparent(false);
-    trade_card.setMouseTransparent(false);
     build_settlement.setDisable(false);
     build_city.setDisable(false);
     build_road.setDisable(false);
