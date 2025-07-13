@@ -1,27 +1,57 @@
 ```mermaid
+
 classDiagram
-
-%% === Benutzer & Rollen ===
-
-    class Init {
+    class Menu {
         +static main(string args[])
     }
 
-    class GUI {
+    class Application {
+        <<abstract>>
+        -static methods()----------------------------------------------------------------------
+        +launch(var0: Class<? extends Application>, var1: String...): void
+        +launch(var0: String...): void
+        +getUserAgentStylesheet(): String
+        +setUserAgentStylesheet(var0: String): void
+        -instance methods()--------------------------------------------------------------------
+        +init(): void
+        +start(var1: Stage): void
+        <<abstract>>
+        +stop(): void
+        +getHostServices(): HostServices
+        +getParameters(): Parameters
+        +notifyPreloader(var1: Preloader.PreloaderNotification): void
+        -center abstract classes()---------------------------------------------------------------
+        +getRaw(): List<String>(abstract)
+        +getUnnamed(): List<String>(abstract)
+        +getNamed(): Map<String, String>(abstract)
+    }
 
+    class GUI {
+        +start(stage): void
+        +handle(Event): void
+    }
+
+    GUI <.. Eventhandler_ActionEvent: implements
+
+    class Eventhandler_ActionEvent {
+    }
+    
+    class GameStates{
+        <<enumeration>>
+        +WAITING_FOR_GAME_START
     }
 
     class GameController {
-        -list~Player~ players
-        -list~Player~ sequence
+        -array~Player~ players
+        -int playerAmount
         -Bank bank
         -CatanBoard catanboard
         -int gameRound
         -int dice1
         -int dice2
-        -int victoryPoints
-
+        -const int victoryPoints
         +GameController()
+        +getPlayerAmount()
         +gameStart()
         +mainGame()
         +gameEnd()
@@ -36,36 +66,29 @@ classDiagram
 
     class CatanBoard {
         <<abstract>>
-
-        +triggerBoard(diceNumber)
+        +graph: int[][][]
+        +nodes: Node[]
+        +HexTiles: HexTile[]
+        +triggerBoard(diceNumber) void
+        +initializeNodes(numNodes: int) void
+        +initializeHexTiles(numHexTiles: int, nodes: Node[]) void
+        +initializeGraph() void
     }
 
-    class Edge {
+    class Node {
         +id
-        +list HexTile
-        +EdgeA
-        +EdgeB
-        +boolean road
-        +String player
-    }
-
-    class Vertex {
-        +id
-        +list HexTile
-        +list Vertex
-        +list Edge
-        +String building
-        +String player
+        +Building building
+        +Player player
     }
 
     class HexTile {
-        +axialCoord
-        +diceNumber
-        +list Vertex
-        +list Edges
-        +NumberPieces diceNumber
-
-        +getCoord()
+        -int q
+        -int r
+        -int diceNumber
+        -list HexTileNodes
+        +triggerHexTile()
+        +getAxialCoord()
+        +getDiceNumber()
     }
 
     class Desert {
@@ -101,32 +124,16 @@ classDiagram
     class Harbor {
         +id
         +resource
-
         +trade()
     }
 
     class Resources {
-        <<abstract>>
-    }
-
-    class Wood {
-
-    }
-
-    class Sheep {
-
-    }
-
-    class Wheat {
-
-    }
-
-    class Bricks {
-
-    }
-
-    class Stone {
-
+        <<enumeration>>
+        +WOOD
+        +SHEEP
+        +WHEAT
+        +BRICKS
+        +STONE
     }
 
     class Development {
@@ -135,27 +142,21 @@ classDiagram
     }
 
     class Knight {
-
     }
 
     class Progress {
-
     }
 
     class Monopoly {
-
     }
 
     class StreetConstructing {
-
     }
 
     class Invention {
-
     }
 
     class VictoryPoints {
-
     }
 
     class Special {
@@ -164,11 +165,9 @@ classDiagram
     }
 
     class LongestStreet {
-
     }
 
     class LargestKnightPower {
-
     }
 
     class GamePieces {
@@ -180,29 +179,31 @@ classDiagram
     }
 
     class City {
-
     }
 
     class Settelment {
-
     }
 
     class Street {
-
     }
 
     class Bandit {
         -HexTile location
         -discardTrigger
-
         moveBandit(player)
     }
 
-    class Player {
+    class Player{
         <<abstract>>
-        -list~Resource~ resources
-        -list~Development~ cards
+        -resources [Resources][int]
+        -cards Development[]
+        +addResources(type: Resources, amount : int) : void
+        +removeResources(type: Resources, amount : int, target : Player) : void
+    }
 
+    class Gamer {
+        <<abstract>>
+        -name: String
         +buySettelment()
         +buyCity()
         +buyStreet()
@@ -211,55 +212,83 @@ classDiagram
         +trade()
     }
 
-    class Human {
+    class Bank {
+        +buyDevelopmentCard() card
+    }
 
+    class Human {
     }
 
     class Bot {
-
     }
 
-    class Bank {
-        -int wood
-        -int SheepField
-        -int wheat
-        -int bricks
-        -int stone
-        -list~Development~ cards
-
-        +buyDevelopmentCard() card
-        +spendResources(player, resource, amount)
+    class Client {
+        - Socket clientSocket
+        - PrintWriter out
+        + Client()
+        + void connect(String host, int port)
+        + void close()
+        + static void main(String[] args)
     }
 
-    class NetworkManager {
-        <<abstract>>
-        +start()
-        +stop()
-        +send(data)
-        +receive() data
+    class ServerHandler {
+        - Socket socket
+        - BufferedReader in
+        + ServerHandler(Socket socket)
+        + void run()
+        - void handleServerMessage(String message)
     }
 
-    class HostServer {
-        +start()
-        +acceptClients()
-        +broadcast(data)
-        +handleMove(data)
+    class Server {
+        - ServerSocket serverSocket
+        - static int PORT
+        - static String HOST
+        - List~PrintWriter~ clientWriters
+        - GameController gameController
+        - static CountDownLatch startLatch
+        + Server(GameController gameController)
+        - void initConnections()
+        + void broadcast(String message)
+        - void close()
+        + static void main(String[] args)
     }
 
-    class ClientConnection {
-        +connectToHost(address)
-        +sendToHost(data)
-        +receiveFromHost() data
+    class ClientHandler {
+        - Socket clientSocket
+        - BufferedReader in
+        - CountDownLatch startLatch
+        + ClientHandler(Socket clientSocket, CountDownLatch startLatch)
+        + void run()
+        + void close()
     }
 
-    GameController --> NetworkManager
-    NetworkManager <|-- HostServer
-    NetworkManager <|-- ClientConnection
+    class NetworkMessage {
+        - Type type
+        - Object data
+        + NetworkMessage(Type type, Object data)
+    }
 
+    class Type {
+        <<enum>>
+    }
+
+    class GameController {
+        + GameController(int playerAmount, int somethingElse)
+        + int getPlayerAmount()
+    }
+
+    Client "1" -- "1" ServerHandler : uses >
+    Server "1" -- "*" ClientHandler : creates >
+    Server "1" -- "1" GameController : uses >
+    ClientHandler "1" -- "1" CountDownLatch : uses >
+    NetworkMessage "1" -- "1" Type : uses >
+
+    
 
 %% Relationshis
 
 %% Inheritance
+    Application <|-- GUI
     HexTile <|-- Desert
     HexTile <|-- Forest
     HexTile <|-- SheepField
@@ -267,30 +296,17 @@ classDiagram
     HexTile <|-- BricksField
     HexTile <|-- StoneField
     HexTile <|-- Harbor
-
-    CatanBoard <|-- HexTile
-    CatanBoard <|-- Edge
-    CatanBoard <|-- Vertex
-
-    Player <|-- Human
-    Player <|-- Bot
-
+    Player <|-- Gamer
+    Player <|-- Bank
+    Gamer <|-- Human
+    Gamer <|-- Bot
     GamePieces <|-- Buildings
     GamePieces <|-- Bandit
-
     Buildings <|-- City
     Buildings <|-- Settelment
     Buildings <|-- Street
-
     Special <|-- LongestStreet
     Special <|-- LargestKnightPower
-
-    Resources <|-- Wood
-    Resources <|-- Sheep
-    Resources <|-- Wheat
-    Resources <|-- Bricks
-    Resources <|-- Stone
-
     Development <|-- Knight
     Development <|-- Progress
     Development <|-- Monopoly
@@ -298,35 +314,13 @@ classDiagram
     Development <|-- Invention
     Development <|-- VictoryPoints
 
-%% Association
-    Init --> GameController
-    Init --> GUI
-
-    GUI <--> GameController
-
-    GameController --> CatanBoard
-    GameController --> Special
-    GameController --> GamePieces
-    GameController --> Player
-    GameController --> Bank
-
-    CatanBoard --> Bank
-
-    Bank <--> Player
-    Bank --> Development
-    Bank --> Resources
-
-    Player --> Buildings
-    Player --> CatanBoard
-
 %%Priority
     style Init fill: red
     style GUI fill: red
     style GameController fill: red
     style Rules fill: red
     style CatanBoard fill: red
-    style Edge fill: red
-    style Vertex fill: red
+    style Node fill: red
     style HexTile fill: red
     style Desert fill: red
     style Forest fill: red
