@@ -940,8 +940,12 @@ public class SceneBoardController implements Initializable, GameUI {
         double dy = By - Ay;
         double length = Math.hypot(dx, dy);
 
+        String imgPath;
+        imgPath = "/de/dhbw/frontEnd/board/street-"+this.playerIdToColor(edge.getStreet().getOwner().getId())+".png";
+
+
         Image roadImage = new Image(Objects.requireNonNull(
-                getClass().getResourceAsStream("/de/dhbw/frontEnd/board/street.png")));
+                getClass().getResourceAsStream(imgPath)));
         ImageView roadView = new ImageView(roadImage);
 
         roadView.setFitWidth(length * 0.8);
