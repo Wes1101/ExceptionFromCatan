@@ -54,17 +54,17 @@ import javafx.geometry.Insets;
 public class SceneBoardController implements Initializable, GameUI {
 
   @FXML
-  private Label player_1_label;
+  private StackPane player_1_background;
   @FXML
-  private Label player_2_label;
+  private StackPane player_2_background;
   @FXML
-  private Label player_3_label;
+  private StackPane player_3_background;
   @FXML
-  private Label player_4_label;
+  private StackPane player_4_background;
   @FXML
-  private Label player_5_label;
+  private StackPane player_5_background;
   @FXML
-  private Label player_6_label;
+  private StackPane player_6_background;
 
   @FXML
   private HBox root;
@@ -566,12 +566,12 @@ public class SceneBoardController implements Initializable, GameUI {
 
   public void setPlayerAmount(int playerCount) {
     // Set the visibility of player labels based on the number of players
-    player_1_label.setVisible(playerCount >= 1);
-    player_2_label.setVisible(playerCount >= 2);
-    player_3_label.setVisible(playerCount >= 3);
-    player_4_label.setVisible(playerCount >= 4);
-    player_5_label.setVisible(playerCount >= 5);
-    player_6_label.setVisible(playerCount >= 6);
+    player_1_background.setVisible(playerCount >= 1);
+    player_2_background.setVisible(playerCount >= 2);
+    player_3_background.setVisible(playerCount >= 3);
+    player_4_background.setVisible(playerCount >= 4);
+    player_5_background.setVisible(playerCount >= 5);
+    player_6_background.setVisible(playerCount >= 6);
 
     // Log-Ausgabe zur Überprüfung
     log.info("Anzahl der Spieler in SceneBoardController gesetzt: {}", playerCount);
@@ -600,75 +600,75 @@ public class SceneBoardController implements Initializable, GameUI {
 
     switch (id) {
       case 0:
-        player_2_label.setStyle("-fx-text-fill: #412515");
-        player_3_label.setStyle("-fx-text-fill: #412515");
-        player_4_label.setStyle("-fx-text-fill: #412515");
-        player_5_label.setStyle("-fx-text-fill: #412515");
-        player_6_label.setStyle("-fx-text-fill: #412515");
+        player_2_background.setOpacity(0.5);
+        player_3_background.setOpacity(0.5);
+        player_4_background.setOpacity(0.5);
+        player_5_background.setOpacity(0.5);
+        player_6_background.setOpacity(0.5);
 
 
-        player_1_label.setStyle("-fx-text-fill: white");
+        player_1_background.setOpacity(1.0);
         log.info("Spieler 1 ist aktiv coloured");
 
 
         break;
       case 1:
-        player_1_label.setStyle("-fx-text-fill: #412515");
-        player_3_label.setStyle("-fx-text-fill: #412515");
-        player_4_label.setStyle("-fx-text-fill: #412515");
-        player_5_label.setStyle("-fx-text-fill: #412515");
-        player_6_label.setStyle("-fx-text-fill: #412515");
+        player_1_background.setOpacity(0.5);
+        player_3_background.setOpacity(0.5);
+        player_4_background.setOpacity(0.5);
+        player_5_background.setOpacity(0.5);
+        player_6_background.setOpacity(0.5);
 
 
-        player_2_label.setStyle("-fx-text-fill: white");
+        player_2_background.setOpacity(1.0);
         log.info("Spieler 2 ist aktiv coloured");
 
         break;
       case 2:
-        player_1_label.setStyle("-fx-text-fill: white");
-        player_2_label.setStyle("-fx-text-fill: white");
-        player_4_label.setStyle("-fx-text-fill: white");
-        player_5_label.setStyle("-fx-text-fill: white");
-        player_6_label.setStyle("-fx-text-fill: white");
+        player_1_background.setOpacity(0.5);
+        player_2_background.setOpacity(0.5);
+        player_4_background.setOpacity(0.5);
+        player_5_background.setOpacity(0.5);
+        player_6_background.setOpacity(0.5);
 
 
-        player_3_label.setStyle("-fx-text-fill: white");
+        player_3_background.setOpacity(1.0);
         log.info("Spieler 3 ist aktiv coloured");
 
         break;
       case 3:
-        player_1_label.setStyle("-fx-text-fill: #412515");
-        player_2_label.setStyle("-fx-text-fill: #412515");
-        player_3_label.setStyle("-fx-text-fill: #412515");
-        player_5_label.setStyle("-fx-text-fill: #412515");
-        player_6_label.setStyle("-fx-text-fill: #412515");
+        player_1_background.setOpacity(0.5);
+        player_2_background.setOpacity(0.5);
+        player_3_background.setOpacity(0.5);
+        player_5_background.setOpacity(0.5);
+        player_6_background.setOpacity(0.5);
 
 
-        player_4_label.setStyle("-fx-text-fill: white");
+        player_4_background.setOpacity(1.0);
         log.info("Spieler 4 ist aktiv coloured");
 
         break;
       case 4:
-        player_1_label.setStyle("-fx-text-fill: #412515");
-        player_2_label.setStyle("-fx-text-fill: #412515");
-        player_3_label.setStyle("-fx-text-fill: #412515");
-        player_4_label.setStyle("-fx-text-fill: #412515");
-        player_6_label.setStyle("-fx-text-fill: #412515");
+        player_1_background.setOpacity(0.5);
+        player_2_background.setOpacity(0.5);
+        player_3_background.setOpacity(0.5);
+        player_4_background.setOpacity(0.5);
+        player_6_background.setOpacity(0.5);
 
 
-        player_5_label.setStyle("-fx-text-fill: white");
+        player_5_background.setOpacity(1.0);
         log.info("Spieler 5 ist aktiv coloured");
 
         break;
       case 5:
 
-        player_1_label.setStyle("-fx-text-fill: #412515");
-        player_2_label.setStyle("-fx-text-fill: #412515");
-        player_3_label.setStyle("-fx-text-fill: #412515");
-        player_4_label.setStyle("-fx-text-fill: #412515");
-        player_5_label.setStyle("-fx-text-fill: #412515");
+        player_1_background.setOpacity(0.5);
+        player_2_background.setOpacity(0.5);
+        player_3_background.setOpacity(0.5);
+        player_4_background.setOpacity(0.5);
+        player_5_background.setOpacity(0.5);
 
-        player_6_label.setStyle("-fx-text-fill: white");
+        player_6_background.setOpacity(1.0);
         log.info("Spieler 6 ist aktiv coloured");
         break;
     }
