@@ -484,74 +484,102 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Wartet darauf, dass der Spieler seinen Zug beendet.
+     * Wird über die GUI getriggert.
+     *
+     * @return Ein String, wenn der Spieler beendet hat, oder "ERROR" bei Timeout
+     */
     public String awaitFinishTurnClicked() {
         if (this.gameControllerType == GameControllerTypes.CLIENT ||
                 this.gameControllerType == GameControllerTypes.LOCAL) {
             log.debug("await finish turn called");
             try {
                 log.info("You have 2 minutes to click on a Settlement location");
+                // Wartet max. 2 Minuten auf den Klick, danach Timeout
                 return gui.waitForFinishTurnClick()
                         .orTimeout(2, TimeUnit.MINUTES)
-                        .join();  // Blocks until click or timeout
+                        .join();
             } catch (Exception e) {
                 log.error("Timeout or invalid");
-                return "ERROR";  // or handle however you want
+                return "ERROR";
             }
-
         } else if (this.gameControllerType == GameControllerTypes.SERVER) {
-            /*   TODO: @David   */
+            // TODO: Server-Implementierung notwendig
         } else {
-            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}",
-                    this.gameControllerType);
+            log.warn("getCoordinatesFirstSettlement() was called, but GameControllerType is {}", this.gameControllerType);
         }
         return null;
     }
 
+    /**
+     * Baut eine Siedlung für den aktiven Spieler, falls die Regeln erfüllt sind.
+     *
+     * @param nodeId        Die ID des Knotens, an dem gebaut werden soll
+     * @param activePlayer  Der Spieler, der aktuell am Zug ist
+     */
     public void buildSettlement(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // Regelprüfung: Darf Spieler hier bauen?
             if (rules.buildSettlement(catanBoard, nodeId, activePlayer)) {
                 activePlayer.buildSettlement(nodeId, bank, activePlayer, catanBoard);
                 log.info("Build settlement successful");
-            }
-            else {
+            } else {
                 log.warn("build Settlement was called but rule was not successful");
             }
-
         }
-        //TODO: Necessary for Server and Client????
+        // TODO: Implementierung für SERVER und CLIENT prüfen
     }
 
+    /**
+     * Baut eine Straße an der angegebenen Position für den aktiven Spieler.
+     *
+     * @param location      Ein IntTupel mit den beiden Knotenpunkten der Straße
+     * @param activePlayer  Der Spieler, der aktuell am Zug ist
+     */
     public void buildStreet(IntTupel location, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // Regelprüfung für Straßenbau
             if (rules.buildStreet(catanBoard, location.q(), location.r(), activePlayer)) {
                 activePlayer.buildStreet(location.q(), location.r(), bank, activePlayer, catanBoard);
                 log.info("Build street successful");
-            }
-            else {
+            } else {
                 log.warn("build Street was called but rule was not successful");
             }
-
         }
-        //TODO: Necessary for Server and Client????
+        // TODO: Implementierung für SERVER und CLIENT prüfen
     }
 
+    /**
+     * Baut eine Stadt (Upgrades eine Siedlung) für den aktiven Spieler.
+     *
+     * @param nodeId        Die ID des Knotens mit der bestehenden Siedlung
+     * @param activePlayer  Der Spieler, der aktuell am Zug ist
+     */
     public void buildCity(int nodeId, Player activePlayer) {
         if (this.gameControllerType == GameControllerTypes.LOCAL) {
+            // Regelprüfung für Stadtbau
             if (rules.buildCity(catanBoard, nodeId, activePlayer)) {
                 activePlayer.buildCity(nodeId, bank, activePlayer, catanBoard);
-                log.info("Build street successful");
-            }
-            else {
+                log.info("Build city successful");
+            } else {
                 log.warn("build City was called but rule was not successful");
             }
         }
-        //TODO: Necessary for Server and Client????
+        // TODO: Implementierung für SERVER und CLIENT prüfen
     }
 
+    /**
+     * Ermittelt alle Spieler, die angrenzend zur neuen Banditenposition bauen und somit bestohlen werden können.
+     *
+     * @param newLocation Die neue Position des Banditen
+     * @return Eine Liste von Spielern mit Gebäuden an den angrenzenden Nodes
+     */
     public List<Player> getBanditPlayers(IntTupel newLocation) {
         List<Player> players = new ArrayList<>();
         Tile blockedTile = catanBoard.getBoard().get(newLocation);
 
+        // Iteriert durch alle angrenzenden Nodes der betroffenen Kachel
         for (Node node : blockedTile.getHexTileNodes()) {
             if (node.getBuilding() != null) {
                 players.add(node.getBuilding().getOwner());
@@ -559,4 +587,5 @@ public class GameController {
         }
         return players;
     }
+
 }

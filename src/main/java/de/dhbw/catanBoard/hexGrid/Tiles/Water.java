@@ -14,7 +14,13 @@ import de.dhbw.catanBoard.hexGrid.Tile;
 public class Water extends Tile {
 
     /**
-     * Constructs a water tile with no resource type and no adjacent nodes.
+     * Constructs a water tile.
+     * <p>
+     * Initializes a tile with no resource type, no dice number, and no adjacent nodes.
+     * It is placed at the specified board coordinates.
+     * </p>
+     *
+     * @param coords axial coordinates of this water tile on the hex grid
      */
     public Water(IntTupel coords) {
         super(null, 0, null, coords);

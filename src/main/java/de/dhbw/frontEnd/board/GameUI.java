@@ -1,6 +1,11 @@
+
 /**
  * GameUI Interface
- * Used to define communication from GameController to GameUI
+ * <p>
+ * Defines the communication bridge from the GameController to the UI.
+ * This interface ensures consistent user interaction for game mechanics such as
+ * building, dice rolling, and player updates.
+ * </p>
  */
 
 package de.dhbw.frontEnd.board;
@@ -9,70 +14,68 @@ import de.dhbw.catanBoard.hexGrid.IntTupel;
 import de.dhbw.player.Player;
 
 public interface GameUI {
+
     /**
-     * Method to pass active player to UI. Needed to show in the UI whose currently  playing via player id or name
+     * Passes the currently active player to the UI.
+     * This allows the UI to display whose turn it is.
      *
-     * @param player Currently active player
+     * @param player the currently active player
+     * @param players the array of all players in the game
      */
     void setactivePlayer(Player player, Player[] players);
 
     /**
-     * Starts the dice roll animation.
-     * This is optional and can be implemented for visual effect.
+     * Starts a dice roll animation.
+     * Can be implemented to provide visual feedback during rolling.
      */
     void startRollDiceAnimation();
 
     /**
-     * Displays the result of a die roll.
+     * Displays the outcome of a dice roll.
      *
-     * @param dice1 the value of the first dice
-     * @param dice2 the value of the second dice
+     * @param dice1 value of the first dice
+     * @param dice2 value of the second dice
      */
-    void showDice (int dice1, int dice2);
+    void showDice(int dice1, int dice2);
 
     /**
      * Prompts the player to select a location to build a settlement.
-     * The UI should display an instruction like "Please select a node to build a settlement."
      *
-     * @return the node ID where the settlement should be built
+     * @return the ID of the node selected for settlement placement
      */
     int buildSettlement();
 
     /**
-     * Prompts the player to select a location to build a street.
-     * The UI should display an instruction like "Please select a location to build a street."
+     * Prompts the player to select a location to build a road.
      *
-     * @return the two adjacent nodes of where the street should be built
+     * @return an IntTupel representing the two nodes that define the road
      */
     IntTupel buildStreet();
 
     /**
      * Prompts the player to select a location to build a city.
-     * The UI should display an instruction like "Please select a node to build a city."
      *
-     * @return the node ID where the city should be built
+     * @return the ID of the node selected for city placement
      */
     int buildCity();
 
     /**
-     * Updates the UI to reflect the latest resource values and states of all players.
+     * Updates the UI to reflect current resources and states of all players.
      */
     void updatePlayerResources();
 
     /**
-     * Activates the bandit placement phase in the UI.
-     * Should return the new location for the bandit.
+     * Triggers the UI to allow the player to place the bandit.
      *
-     * @return the coordinates (as an IntTupel) of the new bandit location
+     * @return the coordinates where the bandit should be placed
      */
     IntTupel activateBandit();
 
     /**
-     * Prompts the user to select which player to rob.
-     * The UI should allow choosing from a list of players.
+     * Prompts the player to choose another player to rob.
      *
-     * @param players an array of all possible players to be robbed
-     * @return the player who was selected to be robbed
+     * @param players an array of players eligible to be robbed
+     * @return the selected player to rob
      */
     Player getRobbedPlayer(Player[] players);
 }

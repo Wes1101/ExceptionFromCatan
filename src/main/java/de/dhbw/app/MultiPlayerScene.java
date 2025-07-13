@@ -1,3 +1,4 @@
+
 package de.dhbw.app;
 
 import javafx.geometry.Insets;
@@ -13,22 +14,28 @@ import java.util.Objects;
 import java.util.function.UnaryOperator;
 
 /**
- * Diese Klasse stellt die Benutzeroberfläche für den Mehrspielermodus dar.
- * Der Benutzer kann ein Spiel hosten oder einem bestehenden Spiel beitreten.
+ * Represents the user interface for the multiplayer mode.
+ * <p>
+ * Allows the user to host a game or join an existing one by entering IP address, port, and player name.
+ * </p>
  */
-
 public class MultiPlayerScene {
+
+    /** JavaFX scene representing the multiplayer screen */
     private final Scene scene;
+
+    /** Reference to the start menu scene for navigation */
     private StartMenuScene startMenuScene;
+
+    /** Reference to the single-player scene for later configuration */
     private SinglePlayerScene singlePlayerScene;
 
     /**
-     * Erstellt das Layout für die Mehrspieler-Szene mit Buttons, IP- und Namensfeld.
+     * Constructs the multiplayer scene layout, including all input fields and navigation buttons.
      *
-     * @param primaryStage Die Hauptbühne der Anwendung.
+     * @param primaryStage the main stage of the application
      */
-
-    public MultiPlayerScene(Stage primaryStage) {  // Aufbau der Mehrspieler-GUI
+    public MultiPlayerScene(Stage primaryStage) {
         Font.loadFont(Objects.requireNonNull(getClass().getResource("/fonts/GrusskartenGotisch.ttf")).toExternalForm(), 36);
 
         VBox root = new VBox(25);
@@ -41,13 +48,11 @@ public class MultiPlayerScene {
         StackPane labelPane = new StackPane(multiplayerLabel);
         labelPane.setPadding(new Insets(15));
 
-
         Button hostButton = new Button("Host Game");
         hostButton.setId("buttonhj");
         hostButton.setStyle("-fx-font-size: 35; -fx-text-fill: #FFFFFF");
         StackPane hostPane = new StackPane(hostButton);
         hostPane.setPadding(new Insets(15));
-
 
         Button joinButton = new Button("Join Game");
         joinButton.setId("buttonhj");
@@ -55,108 +60,64 @@ public class MultiPlayerScene {
         StackPane joinPane = new StackPane(joinButton);
         joinPane.setPadding(new Insets(15));
 
-
-        // IP-Feld (linke Hälfte)
         TextField ipField = new TextField();
         ipField.setPromptText("Insert IP-Address");
+        ipField.setTooltip(new Tooltip("IPv4 format: XXX.XXX.XXX.XXX"));
+        ipField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
 
-        // Hier IP-Filter einfügen:
         UnaryOperator<TextFormatter.Change> ipFilter = change -> {
             String newText = change.getControlNewText();
-
-            // Erlaube nur Ziffern und Punkte
-            if (!newText.matches("[0-9.]*")) {
-                return null;
-            }
-
-            // Prüfe grob: maximal 3 Punkte und maximal 4 Blöcke
+            if (!newText.matches("[0-9.]*")) return null;
             String[] parts = newText.split("\\.");
-            if (parts.length > 4) {
-                return null;
-            }
-
-            // Prüfe, ob jeder Block maximal 3 Ziffern hat und zwischen 0 und 255 liegt
+            if (parts.length > 4) return null;
             for (String part : parts) {
                 if (!part.isEmpty()) {
                     try {
                         int num = Integer.parseInt(part);
-                        if (num < 0 || num > 255) {
-                            return null;
-                        }
+                        if (num < 0 || num > 255) return null;
                     } catch (NumberFormatException e) {
                         return null;
                     }
                 }
             }
-
             return change;
         };
         ipField.setTextFormatter(new TextFormatter<>(ipFilter));
-
-        ipField.setTooltip(new Tooltip("IPv4 Format XXX.XXX.XXX.XXX"));
-// Styling
-        ipField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
-
         StackPane ipPane = new StackPane(ipField);
         ipPane.setPadding(new Insets(15));
 
-
-        // === Port-TextField definieren ===
         TextField portField = new TextField();
         portField.setPromptText("Enter Port");
-        portField.setStyle("-fx-font-size: 16px; " + "-fx-background-color: #222; " + "-fx-text-fill: #66ccff;");
-
+        portField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
         StackPane portPane = new StackPane(portField);
         portPane.setPadding(new Insets(15));
 
-// Eingabe-Filter: Nur Zahlen bis 5 Stellen erlauben
         UnaryOperator<TextFormatter.Change> filter = change -> {
             String newText = change.getControlNewText();
-
-            if (newText.isEmpty()) return change; // Eingabe darf leer sein
-            if (newText.matches("\\d{0,5}")) return change; // Max. 5 Ziffern erlaubt
-
-            portField.setTooltip(new Tooltip("Port muss zwischen 49152 und 65535 liegen."));
-            return null; // Alles andere wird blockiert
+            if (newText.isEmpty()) return change;
+            if (newText.matches("\\d{0,5}")) return change;
+            portField.setTooltip(new Tooltip("Port must be between 49152 and 65535."));
+            return null;
         };
-
         portField.setTextFormatter(new TextFormatter<>(filter));
 
-// === Auslesen und prüfen (z. B. bei Button klick) ===
-        String input = portField.getText();
-        try {
-            int port = Integer.parseInt(input);
-            if (port >= 49152 && port <= 65535) {
-                System.out.println("Gültiger Port: " + port);
-                // → Hier kannst du den Port weiterverwenden
-            } else {
-                System.out.println("Port muss zwischen 49152 und 65535 liegen.");
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Bitte eine gültige Zahl eingeben.");
-        }
-
-
-        // Namensfeld (rechte Hälfte)
         TextField nameField = new TextField();
         nameField.setPromptText("Insert Playername");
         nameField.setStyle("-fx-font-size: 16px; -fx-background-color: #222; -fx-text-fill: #66ccff;");
         StackPane namePane = new StackPane(nameField);
         namePane.setPadding(new Insets(15));
 
-        // HBox für horizontale Anordnung der Textfelder
-        HBox inputBox = new HBox(10); // 10px Abstand zwischen den Feldern
+        HBox inputBox = new HBox(10);
         inputBox.setAlignment(Pos.CENTER);
         inputBox.getChildren().addAll(ipPane, portPane, namePane);
 
         Button backButton = new Button("Back");
         backButton.setId("buttonhj");
-        backButton.setStyle("-fx-font-size: 24; -fx-pref-height: 50; -fx-pref-width: 150; -fx-text-fill: #FFFFFF ");
-
+        backButton.setStyle("-fx-font-size: 24; -fx-pref-height: 50; -fx-pref-width: 150; -fx-text-fill: #FFFFFF");
 
         root.getChildren().addAll(labelPane, hostPane, joinPane, inputBox, backButton);
 
-        // Eventhandler
+        // Button handlers
         backButton.setOnAction(e -> primaryStage.setScene(startMenuScene.getScene()));
         hostButton.setOnAction(e -> primaryStage.setScene(singlePlayerScene.getScene()));
         joinButton.setOnAction(e -> {
@@ -168,9 +129,9 @@ public class MultiPlayerScene {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("ALERT {WiP}");
             alert.setHeaderText("Server-Game not yet implemented");
-            alert.setContentText("The Local Servergame option is not implemented at the current time");
+            alert.setContentText("The local server game option is not implemented at the current time.");
             alert.showAndWait();
-            /*@TODO Hier übergabe an Client bzw Serverlogin*/
+            // TODO: Handle connection to client/server login here
         });
 
         this.scene = new Scene(root, 1344, 776);
@@ -178,33 +139,29 @@ public class MultiPlayerScene {
     }
 
     /**
-     * Gibt die aktuelle Szene zurück.
+     * Returns the current scene instance.
      *
-     * @return Die JavaFX-Szene für den Mehrspielermodus.
+     * @return the JavaFX scene for multiplayer mode
      */
-
     public Scene getScene() {
         return scene;
     }
 
     /**
-     * Setzt die Referenz zur Startmenü-Szene.
+     * Sets the reference to the start menu scene.
      *
-     * @param scene Die Startmenü-Szene.
+     * @param scene the start menu scene to return to
      */
-
     public void setStartMenuScene(StartMenuScene scene) {
         this.startMenuScene = scene;
     }
 
     /**
-     * Setzt die Referenz zur Spielkonfigurations-Szene.
+     * Sets the reference to the single-player scene for later game configuration.
      *
-     * @param scene Die Einzelspieler-Szene (für spätere Konfiguration).
+     * @param scene the single-player scene
      */
-
     public void setGameSettingsScene(SinglePlayerScene scene) {
         this.singlePlayerScene = scene;
     }
 }
-//

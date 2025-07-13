@@ -1,24 +1,28 @@
 package de.dhbw.gamePieces;
+
 import de.dhbw.player.Player;
-import de.dhbw.resources.Resources;
-
-import java.util.Map;
-
 
 /**
- This abstract class manages all core functions of buildings in the game.
- * Subclasses include specific building types like City and Street.
- *
- * @author Atussa Mehrawari
- * @version 1.0
- *
+ * Abstract base class for all building types in the game (e.g., Settlement, City, Street).
+ * <p>
+ * Contains shared attributes and logic relevant to all buildings, such as the owning player
+ * and the building type. Specific building types should extend this class.
+ * </p>
  */
-
 @lombok.Getter
 public abstract class Building {
+
+    /** The player who owns this building. */
     protected Player owner;
+
+    /** The type of the building (e.g., CITY, STREET, SETTLEMENT). */
     BuildingTypes buildingType;
 
+    /**
+     * Constructs a building with the specified owner.
+     *
+     * @param owner the player who owns the building
+     */
     public Building(Player owner) {
         this.owner = owner;
     }

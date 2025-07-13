@@ -2,15 +2,19 @@ package de.dhbw.dto;
 
 /**
  * Enumerates the possible types of network messages exchanged
- * between client and server.
- *
- * @author David Willig
- * @version 1.0
- * @since 2024-06-09
+ * between a client and a server during setup and gameplay.
  */
 public enum NetMsgType {
-  NO_TYPE, // empty type (not possible/valid)
-  DISCOVER_SERVER, // Indicates a request to discover a server
-  IS_SERVER, // Respond to discover server with IP and Port
-  GAME_START // Indicates the start of a game
+
+  /** Represents an undefined or uninitialized message type (should not be used). */
+  NO_TYPE,
+
+  /** Message sent by a client to discover available servers on the network. */
+  DISCOVER_SERVER,
+
+  /** Server's response to a discovery request, including its IP and port. */
+  IS_SERVER,
+
+  /** Indicates that the game has officially started. */
+  GAME_START
 }

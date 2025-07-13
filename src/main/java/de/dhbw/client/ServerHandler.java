@@ -8,52 +8,46 @@ import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Thread that continuously listens for messages from the server
- * and processes them.
- *
- * @author David Willig
- * @version 1.0
- * @since 2024-06-09
+ * A runnable thread responsible for continuously reading and processing messages from the server.
+ * <p>
+ * Used by {@link NetworkClient} to asynchronously handle incoming data.
+ * </p>
  */
 @Slf4j
 public class ServerHandler implements Runnable {
-  /**
-   * The socket connected to the server.
-   */
+
+  /** Socket connected to the server. */
   private final Socket socket;
 
-  /**
-   * Reader for incoming messages from the server.
-   */
+  /** Reader used to read incoming messages from the server. */
   private BufferedReader in;
 
   /**
-   * Constructs a new ServerHandler for the given socket.
+   * Constructs a new {@code ServerHandler} bound to the specified socket.
    *
-   * @param socket the socket connected to the server
+   * @param socket the active connection to the server
    */
   public ServerHandler(Socket socket) {
     this.socket = socket;
     try {
-      this.in =
-        new BufferedReader(
-          new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
-        );
+      this.in = new BufferedReader(
+              new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
+      );
     } catch (IOException e) {
       log.error("Error initializing input stream: {}", e.getMessage());
     }
   }
 
   /**
-   * Listens for messages from the server and processes them.
-   * Cleans up resources when the thread ends.
+   * Continuously reads and logs messages from the server.
+   * Terminates when the connection is closed or an error occurs.
    */
   @Override
   public void run() {
     String message;
     try {
       while (!socket.isClosed() && (message = in.readLine()) != null) {
-        log.info("Received from client: {}", message);
+        log.info("Received from server: {}", message);
         handleServerMessage(message);
       }
     } catch (IOException e) {
@@ -62,12 +56,15 @@ public class ServerHandler implements Runnable {
   }
 
   /**
-   * Handles a message received from the server.
+   * Processes a message received from the server.
+   * <p>
+   * This method should be extended to perform actions based on the content of the message.
+   * </p>
    *
-   * @param message the message received
+   * @param message the message received from the server
    */
   private void handleServerMessage(String message) {
-    // TODO: @David Implement message handling logic
+    // TODO: Implement custom handling logic (e.g., JSON parsing, commands)
     log.info("Server: {}", message);
   }
 }

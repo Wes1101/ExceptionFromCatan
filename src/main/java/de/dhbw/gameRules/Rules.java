@@ -1,10 +1,12 @@
 package de.dhbw.gameRules;
+
 import de.dhbw.catanBoard.CatanBoard;
 import de.dhbw.catanBoard.hexGrid.Edge;
 import de.dhbw.gamePieces.*;
 import de.dhbw.player.Player;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
 /**
  * Represents the complete rule set for building structures and determining game progress in Catan.
  * <p>
@@ -24,6 +26,8 @@ public class Rules {
 
     /**
      * Constructs a new Rules object with no longest road owner initially set.
+     *
+     * @param victoryPoints the number of victory points required to win the game
      */
     public Rules(int victoryPoints) {
         this.playerWithLongestRoad = null;
@@ -51,6 +55,7 @@ public class Rules {
         log.info("Player {} attempting to build first settlement at node {}: {}", player.getId(), node, canBuild);
         return canBuild;
     }
+
     public boolean buildFirstStreet(CatanBoard board, int node1, int node2, Player player) {
         if (node1 < 0 || node1 >= board.getGraph().getNodes().length
                 || node2 < 0 || node2 >= board.getGraph().getNodes().length) {
@@ -66,6 +71,7 @@ public class Rules {
         log.info("Player {} attempting to build street between nodes {} and {}: {}", player.getId(), node1, node2, canBuild);
         return canBuild;
     }
+
     /**
      * Checks if a player can build a regular settlement.
      * <p>
@@ -78,10 +84,9 @@ public class Rules {
      * @return true if valid, otherwise false
      */
     public boolean buildSettlement(CatanBoard board, int node, Player player) {
-
         if (node < 0 || node >= board.getGraph().getNodes().length) {
             log.warn("Invalid node index {} for player {}", node, player.getId());
-            return false; // Invalid node index
+            return false;
         }
         boolean canBuild = nextToOwnStreet(board, node, player)
                 && !isBuilt(board, node)
@@ -91,11 +96,9 @@ public class Rules {
         log.info("Player {} attempting to build settlement at node {}: {}", player.getId(), node, canBuild);
         return canBuild;
     }
+
     /**
      * Checks if a city can be built on top of an existing settlement.
-     * <p>
-     * The player must own a settlement at the target node and have the required resources.
-     * </p>
      *
      * @param board  the game board
      * @param node   the node to upgrade
@@ -105,18 +108,16 @@ public class Rules {
     public boolean buildCity(CatanBoard board, int node, Player player) {
         if (node < 0 || node >= board.getGraph().getNodes().length) {
             log.warn("Invalid node index {} for player {}", node, player.getId());
-            return false; // Invalid node index
+            return false;
         }
         boolean canBuild = hasOwnSettlement(board, node, player)
                 && player.enoughResources(City.getBuildCost());
         log.info("Player {} attempting to build city at node {}: {}", player.getId(), node, canBuild);
         return canBuild;
     }
+
     /**
      * Checks if a player can build a road between two given nodes.
-     * <p>
-     * Requires adjacency to a player's own structure or street, unoccupied edge, and enough resources.
-     * </p>
      *
      * @param board  the game board
      * @param node1  first node index
@@ -128,7 +129,7 @@ public class Rules {
         if (node1 < 0 || node1 >= board.getGraph().getNodes().length
                 || node2 < 0 || node2 >= board.getGraph().getNodes().length) {
             log.warn("Invalid node indices {} and {} for player {}", node1, node2, player.getId());
-            return false; // Invalid node indices
+            return false;
         }
         boolean builtNode1 = hasOwnSettlement(board, node1, player);
         boolean builtNode2 = hasOwnSettlement(board, node2, player);
@@ -139,14 +140,13 @@ public class Rules {
         log.info("Player {} attempting to build street between nodes {} and {}: {}", player.getId(), node1, node2, canBuild);
         return canBuild;
     }
+
     /**
      * Assigns the "Longest Road" bonus to the player who qualifies for it.
-     * <p>
-     * Deducts 2 victory points from the previous holder and awards 2 to the new one.
-     * </p>
      *
      * @param board   the game board
      * @param players all players in the game
+     * @return ID of the player with the longest road, or -1 if none
      */
     public int assignLongestRoadToPlayer(CatanBoard board, Player[] players) {
         if (this.playerWithLongestRoad != null) {
@@ -159,35 +159,23 @@ public class Rules {
             this.playerWithLongestRoad.setVictoryPoints(playerWithLongestRoad.getVictoryPoints() + 2);
             log.info("Assigned longest road bonus to player {}", this.playerWithLongestRoad.getId());
         }
-
-        if (this.playerWithLongestRoad != null) {
-            return this.playerWithLongestRoad.getId();
-        }
-        else {
-            return -1;
-        }
-
+        return (this.playerWithLongestRoad != null) ? this.playerWithLongestRoad.getId() : -1;
     }
+
     /**
      * Checks if the player has reached the victory point goal.
      *
-     * @param player         the player to check
-     * @return the player if they have won, otherwise null
+     * @param player the player to check
+     * @return true if the player has won, false otherwise
      */
     public Boolean checkWin(Player player) {
         boolean hasWon = player.getVictoryPoints() >= this.victoryPoints;
         log.info("Checking win condition for player {}: {}", player.getId(), hasWon);
         return hasWon;
     }
+
     // === Private Helper Methods ===
-    /**
-     * Verifies that no enemy buildings are adjacent to the given node.
-     *
-     * @param board  the game board
-     * @param node   the node to evaluate
-     * @param player the current player
-     * @return true if no enemy buildings are adjacent, false otherwise
-     */
+
     private boolean areEnemyBuildingsNext(CatanBoard board, int node, Player player) {
         int allNodes = board.getGraph().getNodes().length;
         for (int i = 0; i < allNodes; i++) {
@@ -202,44 +190,24 @@ public class Rules {
         }
         return false;
     }
-    /**
-     * Checks if the given node is unoccupied.
-     *
-     * @param board the game board
-     * @param node  the node to evaluate
-     * @return true if unoccupied, false otherwise
-     */
+
     private boolean isBuilt(CatanBoard board, int node) {
         boolean result = board.getGraph().getNodes()[node].getBuilding() != null;
         log.info("Node {} is built: {}", node, result);
         return result;
     }
-    /**
-     * Checks if the node is adjacent to a road owned by the player.
-     *
-     * @param board  the game board
-     * @param node   the node to check
-     * @param player the player in question
-     * @return true if adjacent to player's road, false otherwise
-     */
+
     private boolean nextToOwnStreet(CatanBoard board, int node, Player player) {
         for (Edge edge : board.getGraph().getGraph()[node]) {
             if (edge != null && edge.getStreet() != null && edge.getStreet().getOwner() == player) {
-                log.info("✅Node {} is next to a street owned by player (you) {}", node, player.getId());
+                log.info("\u2705Node {} is next to a street owned by player (you) {}", node, player.getId());
                 return true;
             }
         }
-        log.info("❌ no own street found");
+        log.info("\u274C no own street found");
         return false;
     }
-    /**
-     * Determines if the player owns a settlement on the given node.
-     *
-     * @param board  the game board
-     * @param node   the node to check
-     * @param player the player in question
-     * @return true if the player owns a settlement here, false otherwise
-     */
+
     private boolean hasOwnSettlement(CatanBoard board, int node, Player player) {
         Building building = board.getGraph().getNodes()[node].getBuilding();
         boolean ownsSettlement = building != null
@@ -248,12 +216,13 @@ public class Rules {
         log.info("Player {} owns settlement at node {}: {}", player.getId(), node, ownsSettlement);
         return ownsSettlement;
     }
+
     private boolean isStreetBuildable(CatanBoard board, int node1, int node2) {
         if (board.getGraph().getGraph()[node1][node2] != null) {
-            log.info("✅Street buildable found near node {} from player {}", node1, node2);
+            log.info("\u2705Street buildable found near node {} from player {}", node1, node2);
             return true;
         }
-        log.info("❌street not buildable");
+        log.info("\u274Cstreet not buildable");
         return false;
     }
 }

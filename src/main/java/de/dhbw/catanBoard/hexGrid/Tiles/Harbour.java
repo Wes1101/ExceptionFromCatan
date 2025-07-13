@@ -30,6 +30,7 @@ public class Harbour extends Tile {
      *
      * @param resourceType the resource this harbour specializes in, or NONE for generic
      * @param nodes        the nodes surrounding the harbour tile
+     * @param coordinates  the axial coordinates of this harbour tile
      */
     public Harbour(Resources resourceType, Node[] nodes, IntTupel coordinates) {
         super(resourceType, 0, nodes, coordinates);
@@ -38,7 +39,7 @@ public class Harbour extends Tile {
     /**
      * Allows the given player to perform a trade via this harbour if adjacent.
      * <p>
-     * - 3:1 harbours allow any 3 resources for 1 of any other.<br>
+     * - 3:1 harbours allow any 3 of the same resource for 1 of any other resource.<br>
      * - 2:1 harbours require 2 of the specified resource for 1 of any other.
      * </p>
      *

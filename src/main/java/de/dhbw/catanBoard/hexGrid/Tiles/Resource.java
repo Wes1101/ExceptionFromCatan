@@ -23,6 +23,7 @@ public class Resource extends Tile {
 
     /**
      * Indicates whether this tile is currently blocked (e.g. by the robber).
+     * When blocked, it does not produce any resources during dice rolls.
      */
     private boolean blocked;
 
@@ -30,7 +31,9 @@ public class Resource extends Tile {
      * Constructs a resource tile with the given resource type and corner nodes.
      *
      * @param resourceType the type of resource this tile produces
+     * @param diceNumber   the number that triggers this tile during a dice roll
      * @param nodes        the corner nodes surrounding this tile
+     * @param coordinates  axial coordinates of the tile on the board
      */
     public Resource(Resources resourceType, int diceNumber, Node[] nodes, IntTupel coordinates) {
         super(resourceType, diceNumber, nodes, coordinates);

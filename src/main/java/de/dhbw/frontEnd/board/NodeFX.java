@@ -1,3 +1,12 @@
+
+/**
+ * NodeFX represents a circular UI button element for nodes on the Catan board.
+ * <p>
+ * This class provides basic styling and interactive hover effects to enhance visual feedback.
+ * It uses JavaFX DropShadow effects to highlight nodes when hovered over.
+ * </p>
+ */
+
 package de.dhbw.frontEnd.board;
 
 import javafx.scene.control.Button;
@@ -6,7 +15,7 @@ import javafx.scene.paint.Color;
 
 public class NodeFX extends Button {
 
-    private static final int SIZE = 14; // Durchmesser in px
+    private static final int SIZE = 14; // Diameter in pixels
 
     private static final String BASE_STYLE =
             "-fx-background-color: rgba(255,255,255,0.3); " +
@@ -31,6 +40,9 @@ public class NodeFX extends Button {
                     "-fx-border-width: 1px; " +
                     "-fx-padding: 0;";
 
+    /**
+     * Constructs a NodeFX button with default style and hover effect.
+     */
     public NodeFX() {
         this.setStyle(BASE_STYLE);
 
@@ -39,11 +51,13 @@ public class NodeFX extends Button {
         glow.setRadius(10);
         glow.setSpread(0.6);
 
+        // Apply hover effect
         this.setOnMouseEntered(event -> {
             this.setStyle(HOVER_STYLE);
             this.setEffect(glow);
         });
 
+        // Reset on mouse exit
         this.setOnMouseExited(event -> {
             this.setStyle(BASE_STYLE);
             this.setEffect(null);

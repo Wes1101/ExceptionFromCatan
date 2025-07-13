@@ -1,3 +1,4 @@
+
 package de.dhbw.app;
 
 import javafx.geometry.Insets;
@@ -14,22 +15,31 @@ import java.net.URL;
 import java.util.Objects;
 
 /**
- * Diese Klasse repräsentiert das Startmenü des Spiels.
- * Von hier aus kann der Benutzer zwischen Einzelspieler- und Mehrspielermodus wählen.
+ * Represents the start menu of the game.
+ * <p>
+ * Allows the user to choose between single-player and multiplayer modes.
+ * </p>
  */
-
 public class StartMenuScene {
-    boolean ServerGame;
+
+    /** Flag indicating if multiplayer (server game) mode is selected */
+    private boolean ServerGame;
+
+    /** The JavaFX scene representing the start menu */
     private final Scene scene;
+
+    /** Reference to the single-player scene */
     private SinglePlayerScene singlePlayerScene;
+
+    /** Reference to the multiplayer scene */
     private MultiPlayerScene multiPlayerScene;
 
     /**
-     * Konstruktor, der das Layout und die Buttons des Startmenüs erstellt.
+     * Constructs the layout and initializes the buttons for the start menu.
      *
-     * @param primaryStage Die Stage, auf der die Szene angezeigt wird.
+     * @param primaryStage the main application window where this scene is displayed
      */
-    public StartMenuScene(Stage primaryStage) {  // Aufbau des GUI-Layouts mit Buttons und Eventhandlern
+    public StartMenuScene(Stage primaryStage) {
         URL fontUrl = getClass().getResource("/de/dhbw/frontEnd/menu/GotischeInitialien.ttf");
         System.out.println(">>> FONT URL = " + fontUrl);
 
@@ -46,36 +56,28 @@ public class StartMenuScene {
         StackPane redPane = new StackPane(title);
         redPane.setPadding(new Insets(15));
 
-
         Button btnEinzel = new Button("Singleplayer");
         btnEinzel.setId("buttonEinzelMulti");
 
-
-
-        Button btnMehr = new Button("Multiplayer {Work in Progress }");
+        Button btnMehr = new Button("Multiplayer {Work in Progress}");
         btnMehr.setId("buttonEinzelMulti");
-
-
 
         StackPane pinkPane1 = new StackPane(btnEinzel);
         pinkPane1.setPadding(new Insets(20));
 
-
         StackPane pinkPane2 = new StackPane(btnMehr);
         pinkPane2.setPadding(new Insets(20));
 
-
         root.getChildren().addAll(redPane, pinkPane1, pinkPane2);
 
-        // Eventhandler
+        // Button event handlers
         btnEinzel.setOnAction(e -> {
             ServerGame = false;
-
             primaryStage.setScene(singlePlayerScene.getScene());
         });
+
         btnMehr.setOnAction(e -> {
             ServerGame = true;
-
             primaryStage.setScene(multiPlayerScene.getScene());
         });
 
@@ -84,43 +86,38 @@ public class StartMenuScene {
     }
 
     /**
-     * Gibt die JavaFX-Szene zurück.
+     * Returns the JavaFX scene of the start menu.
      *
-     * @return Die Szene des Startmenüs.
+     * @return the configured scene instance
      */
-
     public Scene getScene() {
         return scene;
     }
 
     /**
-     * Setzt die Szene für den Einzelspielermodus.
+     * Sets the reference to the single-player scene.
      *
-     * @param scene Die Einzelspieler-Szene.
+     * @param scene the single-player scene
      */
-
     public void setSinglePlayerScene(SinglePlayerScene scene) {
         this.singlePlayerScene = scene;
     }
 
     /**
-     * Setzt die Szene für den Mehrspielermodus.
+     * Sets the reference to the multiplayer scene.
      *
-     * @param scene Die Mehrspieler-Szene.
+     * @param scene the multiplayer scene
      */
-
     public void setMultiPlayerScene(MultiPlayerScene scene) {
         this.multiPlayerScene = scene;
     }
 
     /**
-     * Gibt zurück, ob der Mehrspielermodus (ServerGame) aktiviert wurde.
+     * Returns whether the server game (multiplayer) option is enabled.
      *
-     * @return true, wenn Mehrspielermodus aktiviert ist, sonst false.
+     * @return true if multiplayer is selected, false otherwise
      */
-
     public boolean getServerGame() {
         return ServerGame;
     }
 }
-//
